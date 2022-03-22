@@ -13,7 +13,9 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      // ...
+        $this->publishes([
+            __DIR__ . '/../config/backend.php' => config_path('backend.php'),
+        ], 'backend');
     }
 
     /**
@@ -23,6 +25,6 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function register()
     {
-      // ...
+        // ...
     }
 }
