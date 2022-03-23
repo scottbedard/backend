@@ -2,16 +2,20 @@
 
 namespace Bedard\Backend\Console;
 
-use Illuminate\Console\Command;
+use Bedard\Backend\Console\StubParams;
+use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
-class ResourceCommand extends Command
+class ResourceCommand extends GeneratorCommand
 {
+    use StubParams;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'backend:resource';
+    protected $signature = 'backend:resource {name}';
 
     /**
      * The console command description.
@@ -21,14 +25,97 @@ class ResourceCommand extends Command
     protected $description = 'Create a backend resource';
 
     /**
-     * Execute the console command.
+     * Build the class with the given name.
      *
-     * @return int
+     * @param  string  $name
+     * @return string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function handle()
+    protected function buildClass($name)
     {
-        $this->info('Hello from the resource command');
+        $stub = $this->files->get($this->getStub());
 
-        return 0;
+        $model = $this->getModelParam();
+
+        return $this->replaceParams($stub, [
+            'class' => $this->getClassParam($model),
+            'model' => $model,
+            'route' => $this->getRouteParam($model),
+            'title' => $this->getTitleParam($model),
+        ]);  
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace . '\Backend\Resources';
+    }
+
+    /**
+     * Resource class param.
+     *
+     * @param string $model
+     *
+     * @return string
+     */
+    private function getClassParam(string $model)
+    {
+        return $model . 'Resource';
+    }
+
+    /**
+     * Guess the model name of a resource.
+     *
+     * @param string
+     */
+    private function getModelParam()
+    {
+        $name = trim($this->argument('name'));
+
+        if (Str::endsWith($name, 'Resource')) {
+            $name = Str::substr($name, 0, -8);
+        }
+
+        return Str::studly(Str::singular($name));
+    }
+
+    /**
+     * Resource route param.
+     *
+     * @param string $model
+     *
+     * @return string
+     */
+    private function getRouteParam(string $model)
+    {
+        return Str::plural(Str::kebab($model));
+    }
+
+    /**
+     * Resource title param.
+     *
+     * @param string $model
+     *
+     * @return string
+     */
+    private function getTitleParam(string $model)
+    {
+        return Str::plural(Str::words($model));
+    }
+
+    /**
+     * Get stub.
+     *
+     * @return string
+     */
+    public function getStub()
+    {
+        return realpath(__DIR__ . '/stubs/resource.stub');
     }
 }

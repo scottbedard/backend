@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Backend\Resources;
+
+use Bedard\Backend\Resource;
+
+class {{ class }} extends Resource
+{
+    /**
+     * Resource icon.
+     *
+     * See https://lucide.dev/
+     *
+     * @var string
+     */
+    public static $icon = 'smile';
+  
+    /**
+     * The model corresponding to this resource.
+     *
+     * @var string
+     */
+    public static $model = \App\Models\{{ model }}::class;
+
+    /**
+     * Resource route.
+     *
+     * @var string
+     */
+    public static $route = '{{ route }}';
+
+    /**
+     * Resource title.
+     *
+     * @var string
+     */
+    public static $title = '{{ title }}';
+}
