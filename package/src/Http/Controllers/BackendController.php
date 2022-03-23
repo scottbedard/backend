@@ -5,6 +5,7 @@ namespace Bedard\Backend\Http\Controllers;
 use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class BackendController extends Controller
@@ -16,9 +17,14 @@ class BackendController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::getUser();
+
         return view('backend::index', [
             'context' => json_encode([
                 'config' => [],
+                'prefix' => config('backend.path'),
+                'resources' => [],
+                'user' => $user,
             ]),
             'local' => app()->environment('local'),
             'manifest' => $this->manifest(),

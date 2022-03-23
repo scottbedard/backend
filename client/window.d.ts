@@ -9,7 +9,7 @@ import { RequiredKeys } from '@bedard/utils'
 export declare global {
 	interface Window {
 		context: {
-			prefix: string
+			path: string
 			resources: Resource[]
 			user: RequiredKeys<User, 'backendPermissions'>
 		}
