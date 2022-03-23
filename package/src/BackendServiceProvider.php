@@ -7,18 +7,6 @@ use Illuminate\Support\ServiceProvider;
 class BackendServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            __DIR__ . '/../config/backend.php' => config_path('backend.php'),
-        ], 'backend');
-    }
-
-    /**
      * Register services.
      *
      * @return void
@@ -26,5 +14,35 @@ class BackendServiceProvider extends ServiceProvider
     public function register()
     {
         // ...
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->bootConsoleCommands();
+
+        $this->publishes([
+            __DIR__ . '/../config/backend.php' => config_path('backend.php'),
+        ], 'backend');
+    }
+
+    /**
+     * Bootstrap console commands.
+     *
+     * @return void
+     */
+    private function bootConsoleCommands()
+    {
+        if (!$this->app->runningInConsole()) {
+            return;
+        }
+
+        $this->commands([
+            \Bedard\Backend\Console\ResourceCommand::class,
+        ]);
     }
 }
