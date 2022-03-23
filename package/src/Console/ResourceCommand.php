@@ -64,7 +64,7 @@ class ResourceCommand extends GeneratorCommand
      *
      * @return string
      */
-    private function getClassParam(string $model)
+    protected function getClassParam(string $model)
     {
         return $model . 'Resource';
     }
@@ -74,7 +74,7 @@ class ResourceCommand extends GeneratorCommand
      *
      * @param string
      */
-    private function getModelParam()
+    protected function getModelParam()
     {
         $name = trim($this->argument('name'));
 
@@ -86,13 +86,23 @@ class ResourceCommand extends GeneratorCommand
     }
 
     /**
+     * Get the desired class name from the input.
+     *
+     * @return string
+     */
+    protected function getNameInput()
+    {
+        return $this->getClassParam($this->getModelParam());
+    }
+
+    /**
      * Resource route param.
      *
      * @param string $model
      *
      * @return string
      */
-    private function getRouteParam(string $model)
+    protected function getRouteParam(string $model)
     {
         return Str::plural(Str::kebab($model));
     }
@@ -104,7 +114,7 @@ class ResourceCommand extends GeneratorCommand
      *
      * @return string
      */
-    private function getTitleParam(string $model)
+    protected function getTitleParam(string $model)
     {
         return Str::plural(Str::words($model));
     }
