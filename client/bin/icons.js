@@ -60,7 +60,7 @@ export type IconName = keyof typeof icons
 `
 
 // write output to disk
-fs.writeFileSync(path.resolve(__dirname, '../client/app/icons.ts'), output)
+fs.writeFileSync(path.resolve(__dirname, '../app/icons.ts'), output)
 
 console.log('\x1b[32m', 'Successfully generated icons!')
 console.log('\x1b[0m', `Total: ${icons.length.toLocaleString()}`)
