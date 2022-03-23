@@ -15,6 +15,6 @@ class BackendController extends Controller
      */
     public function index(Request $request)
     {
-        return Backend::hello();
+        dd(Backend::resourceConfig());
     }
 }

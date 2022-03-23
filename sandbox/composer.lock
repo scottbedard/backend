@@ -12,17 +12,15 @@
             "dist": {
                 "type": "path",
                 "url": "packages/bedard/backend",
-                "reference": "81e9373088eb273bc510f13764b98daafb017afc"
+                "reference": "2b52331326823be70de1c8e6e11e8bcd60001665"
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.2",
+                "haydenpierce/class-finder": "^0.4.3",
                 "laravel/framework": "^9.2",
                 "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "laravel/sanctum": "^2.14.1",
-                "nunomaduro/collision": "^6.1",
-                "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.5.10"
             },
             "type": "library",
@@ -935,6 +933,51 @@
                 }
             ],
             "time": "2022-03-20T21:55:58+00:00"
+        },
+        {
+            "name": "haydenpierce/class-finder",
+            "version": "0.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/hpierce1102/ClassFinder.git",
+                "reference": "d6c68f386c764674c59ee336d1dfca35aada5f90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/hpierce1102%2FClassFinder/repository/archive.zip?sha=d6c68f386c764674c59ee336d1dfca35aada5f90",
+                "reference": "d6c68f386c764674c59ee336d1dfca35aada5f90",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "~9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HaydenPierce\\ClassFinder\\": "src/",
+                    "HaydenPierce\\ClassFinder\\UnitTest\\": "test/unit"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hayden Pierce",
+                    "email": "hayden@haydenpierce.com"
+                }
+            ],
+            "description": "A library that can provide of a list of classes in a given namespace",
+            "support": {
+                "issues": "https://gitlab.com/api/v4/projects/7670051/issues"
+            },
+            "time": "2021-01-05T20:50:49+00:00"
         },
         {
             "name": "laravel/framework",

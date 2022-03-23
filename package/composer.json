@@ -19,14 +19,12 @@
   "name": "bedard/backend",
   "prefer-stable": true,
   "require-dev": {
-    "laravel/sanctum": "^2.14.1",
-    "nunomaduro/collision": "^6.1",
-    "orchestra/testbench": "^6.0",
     "phpunit/phpunit": "^9.5.10"
   },
   "require": {
     "guzzlehttp/guzzle": "^7.2",
     "laravel/framework": "^9.2",
-    "php": "^7.3|^8.0"
+    "php": "^7.3|^8.0",
+    "haydenpierce/class-finder": "^0.4.3"
   }
 }
