@@ -15,8 +15,9 @@ class BackendServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootConsoleCommands();
-        $this->bootRoutes();
         $this->bootPublished();
+        $this->bootRoutes();
+        $this->bootViews();
     }
 
     /**
@@ -56,6 +57,16 @@ class BackendServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
         ], 'backend');
+    }
+
+    /**
+     * Bootstrap views.
+     *
+     * @return void
+     */
+    private function bootViews()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
     }
 
     /**
