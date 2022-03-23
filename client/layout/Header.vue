@@ -4,18 +4,18 @@
       <RouterLink :to="{ name: 'home' }">Backend title</RouterLink>
     </div>
 
-    <!-- <div>
+    <div>
       <Switch
         v-model="isDark"
         off-icon="sun"
         on-icon="moon"
         :title="`Toggle ${ isDark ? 'light' : 'dark' } mode`" />
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-// import { isDark } from '@/app/store/state'
-// import { RouterLink } from 'vue-router'
-// import { Switch } from '@/components'
+import { isDark } from '@/app/store/state'
+import { RouterLink } from 'vue-router'
+import { Switch } from '@/components'
 </script>
