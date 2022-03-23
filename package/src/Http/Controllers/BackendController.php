@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Http\Controllers;
 
+use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,6 @@ class BackendController extends Controller
      */
     public function index(Request $request)
     {
-        return 'Hello from the backend!';
+        return Backend::hello();
     }
 }

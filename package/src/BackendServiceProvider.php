@@ -86,7 +86,7 @@ class BackendServiceProvider extends ServiceProvider
     private function registerFacades()
     {
         $this->app->bind('backend', function () {
-            return new \Bedard\Backend\Backend;
+            return new \Bedard\Backend\Backend();
         });
     }
 }

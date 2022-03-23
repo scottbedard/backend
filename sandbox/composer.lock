@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "packages/bedard/backend",
-                "reference": "1cb9f88f20a42517dd6b0488ce8d383ab2160375"
+                "reference": "81e9373088eb273bc510f13764b98daafb017afc"
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.2",
@@ -28,6 +28,9 @@
             "type": "library",
             "extra": {
                 "laravel": {
+                    "aliases": {
+                        "Backend": "Bedard\\Backend\\Facades\\BackendFacade"
+                    },
                     "providers": [
                         "Bedard\\Backend\\BackendServiceProvider"
                     ]

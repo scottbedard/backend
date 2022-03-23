@@ -6,6 +6,9 @@
   },
   "extra": {
     "laravel": {
+      "aliases": {
+        "Backend": "Bedard\\Backend\\Facades\\BackendFacade"
+      },
       "providers": [
         "Bedard\\Backend\\BackendServiceProvider"
       ]
