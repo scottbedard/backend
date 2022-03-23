@@ -2,20 +2,11 @@
 
 namespace Bedard\Backend;
 
+use Backend;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        // ...
-    }
-
     /**
      * Bootstrap services.
      *
@@ -24,10 +15,19 @@ class BackendServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootConsoleCommands();
+        $this->bootRoutes();
+        $this->bootPublished();
+    }
 
-        $this->publishes([
-            __DIR__ . '/../config/backend.php' => config_path('backend.php'),
-        ], 'backend');
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->registerConfig();
+        $this->registerFacades();
     }
 
     /**
@@ -44,5 +44,49 @@ class BackendServiceProvider extends ServiceProvider
         $this->commands([
             \Bedard\Backend\Console\ResourceCommand::class,
         ]);
+    }
+
+    /**
+     * Bootstrap published files.
+     *
+     * @return void
+     */
+    private function bootPublished()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/backend.php' => config_path('backend.php'),
+        ], 'backend');
+    }
+
+    /**
+     * Bootstrap backend routes.
+     *
+     * @return void
+     */
+    private function bootRoutes()
+    {
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+    }
+
+    /**
+     * Register package configuration.
+     *
+     * @return void
+     */
+    private function registerConfig()
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/backend.php', 'backend');
+    }
+
+    /**
+     * Register facades.
+     *
+     * @return void
+     */
+    private function registerFacades()
+    {
+        $this->app->bind('backend', function () {
+            return new \Bedard\Backend\Backend;
+        });
     }
 }
