@@ -1,0 +1,1 @@
+import{d as r,c,o as s,a,b as l,e as n,f as _}from"./vendor.411adab3.js";const p={class:"flex flex-col min-h-screen"},h=a("h1",{class:"text-2xl"},"Hello world!",-1),m=[h],u=r({setup(t){return(o,e)=>(s(),c("div",p,m))}}),f=l({history:n(),routes:[],scrollBehavior:(t,o,e)=>e!=null?e:{top:0}});_(u).use(f).mount("#backend");

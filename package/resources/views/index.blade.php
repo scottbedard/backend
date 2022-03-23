@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
     <head>
         <title>Backend</title>
 
@@ -18,7 +18,7 @@
         <div id="backend"></div>
 
         <script>
-            window.context = {!! $context !!}
+            // window.context = {!! $context !!}
         </script>
 
         @if ($local)

@@ -56,6 +56,7 @@ class BackendServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
+            __DIR__ . '/../../client/public' => public_path('vendor/backend'),
         ], 'backend');
     }
 

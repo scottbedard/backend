@@ -1,14 +1,16 @@
-import './index.scss'
+import './index.css'
+
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/app/routes'
+// import { routes } from '@/app/routes'
 import App from './App.vue'
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes.map(route => Object.assign(route, {
-    path: `/${window.context.prefix}${route.path}`,
-  })),
+  routes: [],
+  // routes: routes.map(route => Object.assign(route, {
+  //   path: `/${window.context.prefix}${route.path}`,
+  // })),
   scrollBehavior: (_to, _from, savedPosition) => savedPosition ?? { top: 0 },
 })
 

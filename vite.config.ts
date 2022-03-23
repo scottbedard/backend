@@ -9,7 +9,7 @@ export default defineConfig({
     manifest: true,
     outDir: './public/dist',
     rollupOptions: {
-      input: '/main.ts'
+      input: '/client/main.ts',
     },
   },
   plugins: [
@@ -19,7 +19,7 @@ export default defineConfig({
     alias: [
       {
         find: '@',
-        replacement: path.resolve(__dirname),
+        replacement: path.resolve(__dirname, 'client'),
       },
     ],
   },

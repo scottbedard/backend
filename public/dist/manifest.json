@@ -1,0 +1,16 @@
+{
+  "client/main.ts": {
+    "file": "assets/main.7db9eb9b.js",
+    "src": "client/main.ts",
+    "isEntry": true,
+    "imports": [
+      "_vendor.411adab3.js"
+    ],
+    "css": [
+      "assets/main.b74e3206.css"
+    ]
+  },
+  "_vendor.411adab3.js": {
+    "file": "assets/vendor.411adab3.js"
+  }
+}
