@@ -1,7 +1,7 @@
 module.exports = {
   content: [
-    './client/**/*.{vue,js,jsx,ts,tsx}',
-    './package/**/*.blade.php',
+    './src/**/*.{vue,js,jsx,ts,tsx}',
+    '../package/**/*.blade.php',
   ],
   darkMode: 'class',
   plugins: [],

@@ -6,6 +6,7 @@ use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Js;
 
 class BackendController extends Controller
@@ -15,11 +16,11 @@ class BackendController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function index(Request $request)
+    public function index()
     {
         return view('backend::index', [
             'context' => $this->context(),
-            'local' => app()->environment('local'),
+            'local' => (bool) app()->environment('local'),
             'manifest' => $this->manifest(),
         ]);
     }
@@ -50,6 +51,6 @@ class BackendController extends Controller
     {
         $manifest = public_path('vendor/backend/dist/manifest.json');
 
-        return json_decode($manifest, true);
+        return json_decode(File::get($manifest), true);
     }
 }

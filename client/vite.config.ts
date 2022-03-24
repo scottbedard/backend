@@ -3,13 +3,12 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  base: '/vendor/backend/dist/',
   build: {
     emptyOutDir: true,
     manifest: true,
     outDir: './public/dist',
     rollupOptions: {
-      input: '/client/main.ts',
+      input: '/src/main.ts',
     },
   },
   plugins: [
@@ -19,7 +18,7 @@ export default defineConfig({
     alias: [
       {
         find: '@',
-        replacement: path.resolve(__dirname, 'client'),
+        replacement: path.resolve(__dirname, 'src'),
       },
     ],
   },

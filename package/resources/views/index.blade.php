@@ -9,7 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Source+Code+Pro&display=swap" rel="stylesheet">
 
         @unless ($local)
-            @foreach ($manifest['client/main.ts']['css'] as $stylesheet)
+            @foreach ($manifest['src/main.ts']['css'] as $stylesheet)
                 <link href="/vendor/backend/dist/{{ $stylesheet }}" rel="stylesheet">
             @endforeach
         @endunless
@@ -23,9 +23,9 @@
 
         @if ($local)
             <script type="module" src="http://localhost:3000/@vite/client"></script>
-            <script type="module" src="http://localhost:3000/client/main.ts"></script>
+            <script type="module" src="http://localhost:3000/src/main.ts"></script>
         @else
-            <script type="module" src="/vendor/backend/dist/{{ $manifest['client/main.ts']['file'] }}"></script>
+            <script type="module" src="/vendor/backend/dist/{{ $manifest['src/main.ts']['file'] }}"></script>
         @endif
     </body>
 </html>

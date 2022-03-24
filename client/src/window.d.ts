@@ -1,5 +1,4 @@
 import type {
-	BackendPermission,
 	ResourceInfo,
 	User,
 } from '@/app/types'
@@ -12,7 +11,6 @@ export declare global {
 			config: any
 			path: string
 			resources: ResourceInfo[]
-			user: RequiredKeys<User, 'backendPermissions'>
 		}
 	}
 }
