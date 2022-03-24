@@ -15,6 +15,7 @@ class BackendServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootConsoleCommands();
+        $this->bootMigrations();
         $this->bootPublished();
         $this->bootRoutes();
         $this->bootViews();
@@ -45,6 +46,16 @@ class BackendServiceProvider extends ServiceProvider
         $this->commands([
             \Bedard\Backend\Console\ResourceCommand::class,
         ]);
+    }
+
+    /**
+     * Bootstrap migrations.
+     *
+     * @return void
+     */
+    private function bootMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
     /**
