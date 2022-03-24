@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('backend_permissions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('section');
+            $table->string('area');
             $table->string('code');
             $table->timestamps();
         });

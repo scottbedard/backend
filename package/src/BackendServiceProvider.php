@@ -44,6 +44,7 @@ class BackendServiceProvider extends ServiceProvider
         }
 
         $this->commands([
+            \Bedard\Backend\Console\PermissionCommand::class,
             \Bedard\Backend\Console\ResourceCommand::class,
         ]);
     }

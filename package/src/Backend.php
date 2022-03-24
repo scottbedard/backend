@@ -2,9 +2,9 @@
 
 namespace Bedard\Backend;
 
-use HaydenPierce\ClassFinder\ClassFinder;
-use ReflectionClass;
 use Bedard\Backend\Classes\ResourceInfo;
+use HaydenPierce\ClassFinder\ClassFinder;
+use Illuminate\Database\Eloquent\Builder;
 
 class Backend
 {
@@ -27,5 +27,15 @@ class Backend
             ])
             ->values()
             ->toArray();
+    }
+
+    /**
+     * Query application users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function userQuery(): Builder
+    {
+        return config('backend.user')::query();
     }
 }
