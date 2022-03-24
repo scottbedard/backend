@@ -18,7 +18,7 @@
         <div id="backend"></div>
 
         <script>
-            window.context = {!! $context !!}
+            window.context = {{ $context }}
         </script>
 
         @if ($local)

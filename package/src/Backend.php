@@ -4,32 +4,28 @@ namespace Bedard\Backend;
 
 use HaydenPierce\ClassFinder\ClassFinder;
 use ReflectionClass;
+use Bedard\Backend\Classes\ResourceInfo;
 
 class Backend
 {
     /**
-     * Get backend resources.
+     * Get backend resources with static configuration.
      *
      * @return string[]
      */
     public function resources()
     {
-        return ClassFinder::getClassesInNamespace('App\\Backend\\Resources');
-    }
+        $classes = ClassFinder::getClassesInNamespace('App\\Backend\\Resources');
 
-    /**
-     * Get static properties from resources.
-     */
-    public function resourceConfig()
-    {
-        return collect($this->resources())
+        return collect($classes)
             ->map(function (string $className) {
-                return new ReflectionClass($className);
+                return (new ResourceInfo($className))->toArray();
             })
-            ->reduce(function (array $acc, ReflectionClass $class) {
-                $acc[$class->name] = $class->getStaticProperties();
-
-                return $acc;
-            }, []);
+            ->sortBy([
+                ['order', 'asc'],
+                ['title', 'asc'],
+            ])
+            ->values()
+            ->toArray();
     }
 }

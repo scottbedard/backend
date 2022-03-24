@@ -1,8 +1,10 @@
 <?php
 
-namespace Bedard\Backend;
+namespace App\Backend\Resources;
 
-class Resource
+use Bedard\Backend\Resource;
+
+class PostResource extends Resource
 {
     /**
      * Resource icon.
@@ -18,26 +20,19 @@ class Resource
      *
      * @var string
      */
-    public static $model = null;
-
-    /**
-     * Resource order.
-     *
-     * @var int
-     */
-    public static $order = 0;
+    public static $model = \App\Models\Post::class;
 
     /**
      * Resource route.
      *
      * @var string
      */
-    public static $route = null;
+    public static $route = 'posts';
 
     /**
      * Resource title.
      *
      * @var string
      */
-    public static $title = null;
+    public static $title = 'Posts';
 }

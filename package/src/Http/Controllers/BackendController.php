@@ -6,7 +6,7 @@ use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Js;
 
 class BackendController extends Controller
 {
@@ -17,18 +17,28 @@ class BackendController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::getUser();
-
         return view('backend::index', [
-            'context' => json_encode([
-                'config' => [],
-                'prefix' => config('backend.path'),
-                'resources' => [],
-                'user' => $user,
-            ]),
+            'context' => $this->context(),
             'local' => app()->environment('local'),
             'manifest' => $this->manifest(),
         ]);
+    }
+
+    /**
+     * Get frontend context. This will be exposed to the view under `window.context`.
+     *
+     * @return string
+     */
+    private function context()
+    {
+        $context = [
+            'config' => [],
+            'path' => config('backend.path'),
+            'resources' => Backend::resources(),
+            'user' => Auth::getUser(),
+        ];
+
+        return Js::from($context);
     }
 
     /**

@@ -1,8 +1,15 @@
 <template>
   <div>
     <SidebarLink
+      v-if="isSuper"
+      icon="shield-check"
+      text="Administrators"
+      :active="routeParam === 'administrators'"
+      :to="'#'" />
+
+    <SidebarLink
       v-for="(resource, index) in resources"
-      :active="resource.class === currentResource?.class"
+      :active="resource.className === currentResource?.className"
       :icon="resource.icon"
       :key="index"
       :text="resource.title"
@@ -12,13 +19,6 @@
           route: resource.route,
         },
       }" />
-
-    <SidebarLink
-      v-if="isSuper"
-      icon="shield-check"
-      text="Administrators"
-      :active="routeParam === 'administrators'"
-      :to="'#'" />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ import SidebarLink from '@/partials/layout/SidebarLink.vue'
 /**
  * Resources
  */
-const { resources } = window.context
+const resources = window.context.resources
 
 /**
  * Route param

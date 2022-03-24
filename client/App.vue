@@ -8,14 +8,14 @@
       </div>
 
       <div class="flex-1">
-        <!-- <Content /> -->
+        <Content />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-// import Content from '@/layout/Content.vue'
+import Content from '@/layout/Content.vue'
 import Header from '@/layout/Header.vue'
 import Sidebar from '@/layout/Sidebar.vue'
 </script>

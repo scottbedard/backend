@@ -1,6 +1,6 @@
 import type {
 	BackendPermission,
-	Resource,
+	ResourceInfo,
 	User,
 } from '@/app/types'
 
@@ -9,8 +9,9 @@ import { RequiredKeys } from '@bedard/utils'
 export declare global {
 	interface Window {
 		context: {
+			config: any
 			path: string
-			resources: Resource[]
+			resources: ResourceInfo[]
 			user: RequiredKeys<User, 'backendPermissions'>
 		}
 	}
