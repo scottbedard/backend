@@ -7,17 +7,13 @@ This is just an experiment, proceed with caution.
 If this package is ever released, a more thorough installation guide will be provided. For now, the package can be installed for local development by executing the following.
 
 ```bash
-# clone the repository and configure package directory
-$ git clone git@github.com:scottbedard/backend.git my-app
+# clone the repository and create symlink for local package
+$ git clone git@github.com:scottbedard/backend.git backend && cd "$_"
+$ ln -s $(realpath package) $(realpath application/packages/bedard/backend)
 
-$ ln -s /path/to/my-app/package /path/to/my-app/sandbox/packages/bedard/backend
-
-# install dependencies and package
-$ cd my-app/application
-
-$ composer install
-
-$ php artisan vendor:publish
+# install dependencies and configuration
+$ composer install -d application
+$ php application/artisan vendor:publish
 
 # run migrations
 $ php artisan migrate
