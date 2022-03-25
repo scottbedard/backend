@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class PermissionCommand extends Command
 {
     /**
+     * Super admin confirmation message.
+     *
+     * @var string
+     */
+    public static $superAdminConfirmation = "Are you sure you want to create a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins";
+
+    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -53,7 +60,7 @@ class PermissionCommand extends Command
 
         // grant super admin
         if ($this->super($area, $code)) {
-            if ($this->confirm("Are you sure you want to create a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins")) {
+            if ($this->confirm(self::$superAdminConfirmation)) {
                 BackendPermission::grant($user->id, 'all', 'super');
 
                 $this->info('Super admin created!');
