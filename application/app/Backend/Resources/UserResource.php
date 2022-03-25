@@ -2,6 +2,7 @@
 
 namespace App\Backend\Resources;
 
+use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
 
 class UserResource extends Resource
@@ -35,4 +36,16 @@ class UserResource extends Resource
      * @var string
      */
     public static $title = 'Users';
+
+    /**
+     * Fields
+     *
+     * @return array
+     */
+    public function fields()
+    {
+        return [
+            Field::number('id')->label('id'),
+        ];
+    }
 }
