@@ -27,6 +27,10 @@ jobs:
           php-version: '8.0'
       - name: Install Composer dependencies
         run: composer install -d application
+      - name: Create symlink to local package
+        run: |
+          realpath .
+          ln -s (realpath package) (realpath application/packages/bedard/backend)
       - name: Configure application
         run: |
           cp ./application/.env.example ./application/.env
