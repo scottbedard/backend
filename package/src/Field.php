@@ -2,6 +2,8 @@
 
 namespace Bedard\Backend;
 
+use Illuminate\Support\Arr;
+
 class Field
 {
     /**
@@ -9,33 +11,44 @@ class Field
      *
      * @var string
      */
-    protected string $column;
+    public string $column;
 
     /**
      * Label
      *
      * @var string
      */
-    protected string $label;
-
-    /**
-     * Type
-     *
-     * @var string
-     */
-    protected string $type;
+    public string $label;
 
     /**
      * Field construction
      *
-     * @param string $type
-     * @param array $arguments
+     * @param string $field
+     * @param array $args
      *
      * @return \Bedard\Backend\Field
      */
-    public static function __callStatic(string $type, array $arguments)
+    public static function __callStatic(string $field, array $args = [])
     {
-        return new self($type, 'temp');
+        $common = [
+            'number' => \Bedard\Backend\Fields\NumberField::class
+        ];
+
+        if (Arr::exists($common, $field)) {
+            return new ($common[$field])(...$args);
+        }
+    }
+
+    /**
+     * Static constructor for custom field types
+     *
+     * @param string $column
+     *
+     * @return \Bedard\Backend\Field
+     */
+    public static function make(string $column)
+    {
+        return new static($column);
     }
 
     /**
@@ -43,11 +56,9 @@ class Field
      *
      * @return void
      */
-    public function __construct(string $type, string $column)
+    public function __construct(string $column)
     {
         $this->column = $column;
-
-        $this->type = $type;
     }
 
     /**
