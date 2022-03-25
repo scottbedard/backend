@@ -44,5 +44,6 @@ jobs:
           DB_USER: root
           DB_PASSWORD: password
         run: |
-          php ./application/artisan migrate
-          php ./application/artisan test
+          cd application
+          php artisan migrate
+          php artisan test
