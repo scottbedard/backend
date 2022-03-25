@@ -31,7 +31,7 @@ return [
     | Unauthorized redirect
     |--------------------------------------------------------------------------
     |
-    | Guests and unauthorized users will be redirected here.
+    | Authenticated users without backend permissions will be redirected here.
     |
     */
 
