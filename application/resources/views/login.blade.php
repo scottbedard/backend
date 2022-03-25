@@ -18,9 +18,12 @@
         </style>
     </head>
     <body class="antialiased text-gray-900 dark:text-white">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+        <form
+            action="/login"
+            class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0"
+            method="POST">
+            @csrf
             <div class="max-w-6xl mx-auto p-6 w-full sm:px-6 lg:px-8">
-                
                 <div class="flex justify-center">
                     <a href="/">
                         <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 mx-auto w-auto sm:h-20">
@@ -31,26 +34,36 @@
                     </a>
                 </div>
 
+                @if ($failed)
+                    <div class="mt-8 text-center">
+                        Invalid email / password combination.
+                    </div>
+                @endif
+
                 <div class="bg-white gap-6 grid max-w-md mt-8 mx-auto p-6 shadow w-full dark:bg-gray-700 sm:rounded-lg">
                     <label class="gap-2 grid">
                         <div>Email</div>
 
                         <input
                             autofocus
-                            class="p-2 rounded shadow w-full"
+                            class="bg-gray-500 p-2 rounded shadow w-full dark:bg-gray-800"
+                            name="email"
                             placeholder="Email address"
                             required
-                            type="email" />
+                            type="email"
+                            value="admin@example.com" />
                     </label>
 
                     <label class="gap-2 grid">
                         <div>Password</div>
 
                         <input
-                            class="p-2 rounded shadow w-full"
-                            placeholder="password"
+                            class="bg-gray-500 p-2 rounded shadow w-full dark:bg-gray-800"
+                            name="password"
+                            placeholder="Password"
                             required
-                            type="password" />
+                            type="password"
+                            value="password" />
                     </label>
 
                     <div class="flex justify-end">
@@ -62,6 +75,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </body>
 </html>
