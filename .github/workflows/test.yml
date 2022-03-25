@@ -26,11 +26,7 @@ jobs:
         with:
           php-version: '8.0'
       - name: Install Composer dependencies
-        run: composer install
-      - name: Install Node dependencies
-        run: |
-          cd ./client
-          npm install
+        run: composer install -d application
       - name: Configure application
         run: |
           cp ./application/.env.example ./application/.env
