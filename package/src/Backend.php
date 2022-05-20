@@ -25,8 +25,7 @@ class Backend
                 ['order', 'asc'],
                 ['title', 'asc'],
             ])
-            ->values()
-            ->toArray();
+            ->values();
     }
 
     /**

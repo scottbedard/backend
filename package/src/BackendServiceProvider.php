@@ -16,8 +16,8 @@ class BackendServiceProvider extends ServiceProvider
     {
         $this->bootConsoleCommands();
         $this->bootMigrations();
+        $this->bootModels();
         $this->bootPublished();
-        $this->bootRelationships();
         $this->bootRoutes();
         $this->bootViews();
     }
@@ -61,6 +61,28 @@ class BackendServiceProvider extends ServiceProvider
     }
 
     /**
+     * Boot models.
+     *
+     * @return void
+     */
+    private function bootModels()
+    {
+        $model = config('backend.user');
+
+        $model::resolveRelationUsing('backendPermissions', function ($user) {
+            return $user->hasMany(BackendPermission::class, 'user_id');
+        });
+
+        $model::addGlobalScope('hasBackendPermission', function () {
+            dd('thing');
+        });
+
+        BackendPermission::resolveRelationUsing('user', function ($permission) use ($model) {
+            return $permission->belongsTo($model, 'id');
+        });
+    }
+
+    /**
      * Bootstrap published files.
      *
      * @return void
@@ -71,24 +93,6 @@ class BackendServiceProvider extends ServiceProvider
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
             __DIR__ . '/../../client/public' => public_path('vendor/backend'),
         ], 'backend');
-    }
-
-    /**
-     * Boot package model relationships.
-     *
-     * @return void
-     */
-    private function bootRelationships()
-    {
-        $model = config('backend.user');
-
-        $model::resolveRelationUsing('backendPermissions', function ($user) {
-            return $user->hasMany(BackendPermission::class, 'user_id');
-        });
-
-        BackendPermission::resolveRelationUsing('user', function ($permission) use ($model) {
-            return $permission->belongsTo($model, 'id');
-        });
     }
 
     /**
