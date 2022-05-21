@@ -19,15 +19,7 @@ class BackendController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        if (!$user) {
-            return redirect(config('backend.guest_redirect'));
-        }
-
-        if ($user->backendPermissions()->count() === 0) {
-            return redirect(config('backend.unauthorized_redirect'));
-        }
-
+        
         return view('backend::index', [
             'context' => $this->context(),
             'local' => (bool) app()->environment('local'),

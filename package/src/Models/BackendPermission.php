@@ -11,6 +11,17 @@ class BackendPermission extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'area',
+        'code',
+        'user_id',
+    ];
+
+    /**
      * Grant backend permission to a user.
      *
      * @param int $userId

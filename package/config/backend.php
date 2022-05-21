@@ -15,6 +15,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Guest redirect
+    |--------------------------------------------------------------------------
+    |
+    | Route middleware alias to restrict access to the backend. Users must be
+    | authenticated and have atleast one backend permission to pass middleware.
+    |
+    */
+
+    'middleware_alias' => env('BACKEND_MIDDLEWARE_ALIAS', 'backend'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Path
     |--------------------------------------------------------------------------
     |

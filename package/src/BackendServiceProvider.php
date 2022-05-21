@@ -2,7 +2,9 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Http\Middleware\BackendMiddleware;
 use Bedard\Backend\Models\BackendPermission;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class BackendServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootConsoleCommands();
+        $this->bootMiddleware();
         $this->bootMigrations();
         $this->bootModels();
         $this->bootPublished();
@@ -51,6 +54,18 @@ class BackendServiceProvider extends ServiceProvider
     }
 
     /**
+     * Bootstrap middleware.
+     *
+     * @return void
+     */
+    private function bootMiddleware()
+    {
+        $router = $this->app->make(Router::class);
+
+        $router->aliasMiddleware(config('backend.middleware_alias'), BackendMiddleware::class);
+    }
+
+    /**
      * Bootstrap migrations.
      *
      * @return void
@@ -74,7 +89,7 @@ class BackendServiceProvider extends ServiceProvider
         });
 
         $model::addGlobalScope('hasBackendPermission', function () {
-            dd('thing');
+            // dd('hello');
         });
 
         BackendPermission::resolveRelationUsing('user', function ($permission) use ($model) {
