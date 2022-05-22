@@ -13,8 +13,18 @@ class BackendSettingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function toggle()
+    public function toggle(Request $request)
     {
-        return 'hello';
+        $setting = Auth::user()
+            ->backendSettings()
+            ->firstOrNew(['key' => $request->key]);
+
+        $setting->value = ! (bool) $setting->value;
+
+        $setting->save();
+
+        return [
+            'setting' => $setting,
+        ];
     }
 }

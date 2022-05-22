@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class BackendMiddlewareTest extends TestCase
@@ -19,8 +18,6 @@ class BackendMiddlewareTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Auth::login($user);
-
         $request = $this
             ->actingAs($user)
             ->get(config('backend.path'));
@@ -30,14 +27,7 @@ class BackendMiddlewareTest extends TestCase
 
     public function test_permitting_admin_user()
     {
-        $user = User::factory()->create();
-
-        $user->backendPermissions()->create([
-            'area' => 'all',
-            'code' => 'super',
-        ]);
-
-        Auth::login($user);
+        $user = $this->createSuperAdmin();
 
         $request = $this
             ->actingAs($user)
