@@ -4,6 +4,7 @@ namespace Bedard\Backend;
 
 use Bedard\Backend\Http\Middleware\BackendMiddleware;
 use Bedard\Backend\Models\BackendPermission;
+use Bedard\Backend\Models\BackendSetting;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
@@ -85,18 +86,28 @@ class BackendServiceProvider extends ServiceProvider
      */
     private function bootModels()
     {
+        // extend user model
         $model = config('backend.user');
 
         $model::resolveRelationUsing('backendPermissions', function ($user) {
             return $user->hasMany(BackendPermission::class, 'user_id');
         });
 
-        $model::addGlobalScope('hasBackendPermission', function () {
-            // dd('hello');
+        $model::resolveRelationUsing('backendSettings', function ($user) {
+            return $user->hasMany(BackendSetting::class, 'user_id');
         });
 
+        $model::addGlobalScope('hasBackendPermission', function () {
+            // @todo
+        });
+
+        // add user relationship to backend models
         BackendPermission::resolveRelationUsing('user', function ($permission) use ($model) {
             return $permission->belongsTo($model, 'id');
+        });
+
+        BackendPermission::resolveRelationUsing('user', function ($setting) use ($model) {
+            return $setting->belongsTo($model, 'id');
         });
     }
 
