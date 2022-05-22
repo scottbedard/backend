@@ -2,12 +2,10 @@ import { post } from './utils'
 
 const attr = 'data-toggle-dark-mode'
 
-const selector = `[${attr}]`
+document.querySelector(`[${attr}]`)?.addEventListener('click', async (e: Event) => {
+  const { setting } = await post((e.target as Element)
+    .closest(`[${attr}]`)!
+    .getAttribute(attr)!, { key: 'dark-mode' })
 
-const toggle = async (e: Event) => {
-  const route = (e.target as HTMLElement).closest(selector)!.getAttribute(attr)!;
-
-  await post(route, { key: 'dark-mode' })
-}
-
-document.querySelector(selector)?.addEventListener('click', toggle)
+  document.documentElement.classList[setting.value ? 'add' : 'remove']('dark')
+})

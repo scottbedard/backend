@@ -1,9 +1,6 @@
 <body class="dark:bg-gray-800 dark:text-white">
     {{ $slot }}
 
-    {{-- toggle dark mode as soon as possible to avoid a flicker --}}
-    <script>if(JSON.parse(window.localStorage.getItem('darkMode')))document.documentElement.classList.add('dark')</script>
-
     <script src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
 
     @if (env('APP_ENV') === 'local')

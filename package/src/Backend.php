@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\File;
 class Backend
 {
     /**
+     * Test if a user has a backend setting enabled
+     */
+    public function enabled($user, string $key)
+    {
+        return (bool) $user->backendSettings->where('key', $key)->where('value', '1')->count();
+    }
+
+    /**
      * Get backend resources with static configuration.
      *
      * @return string[]

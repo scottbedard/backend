@@ -17,7 +17,14 @@ class BackendController extends Controller
     {
         $user = Auth::user();
 
-        return view('backend::index');
+        $user->load([
+            'backendPermissions',
+            'backendSettings',
+        ]);
+
+        return view('backend::index', [
+            'user' => $user,
+        ]);
     }
 
     // /**

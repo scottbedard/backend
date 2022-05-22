@@ -1,4 +1,4 @@
-<x-backend::layout.html>
+<x-backend::layout.html :user="$user">
     <x-backend::layout.head />
 
     <x-backend::layout.body>
