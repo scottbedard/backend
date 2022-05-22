@@ -10,11 +10,19 @@ use Illuminate\Support\Facades\File;
 class Backend
 {
     /**
-     * Test if a user has a backend setting enabled
+     * Test if a user's backend setting is disabled
+     */
+    public function disabled($user, string $key)
+    {
+        return ! $this->enabled($user, $key);
+    }
+
+    /**
+     * Test if a user's backend setting is enabled
      */
     public function enabled($user, string $key)
     {
-        return (bool) $user->backendSettings->where('key', $key)->where('value', '1')->count();
+        return (bool) $user->backendSettings()->where('key', $key)->where('value', true)->count();
     }
 
     /**
