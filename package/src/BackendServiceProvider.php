@@ -130,7 +130,7 @@ class BackendServiceProvider extends ServiceProvider
      */
     private function bootViews()
     {
-        // load backend manifest file
+        // load manifest file
         $manifest = public_path('vendor/backend/dist/manifest.json');
 
         if (File::exists($manifest)) {
@@ -139,7 +139,9 @@ class BackendServiceProvider extends ServiceProvider
             View::share('manifest', null);
         }
 
-        // register backend component namespace
+        // register components
+        Blade::component('icon', \Bedard\Backend\Views\Components::class);
+
         Blade::componentNamespace('Bedard\\Backend\\Views\\Components', 'backend');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
