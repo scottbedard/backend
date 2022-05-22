@@ -4,7 +4,7 @@
         padded-x>
         <div>Logo</div>
 
-        <button data-toggle-dark-mode>
+        <button data-toggle-dark-mode="{{ route('backend.settings.toggle') }}">
             <x-backend::icon class="dark:hidden" name="sun" />
 
             <x-backend::icon class="hidden dark:block" name="moon" />

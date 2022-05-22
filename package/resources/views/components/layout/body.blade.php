@@ -1,4 +1,4 @@
-<body class="dark:bg-gray-800">
+<body class="dark:bg-gray-800 dark:text-white">
     {{ $slot }}
 
     {{-- toggle dark mode as soon as possible to avoid a flicker --}}

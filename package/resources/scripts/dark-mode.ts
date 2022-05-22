@@ -1,19 +1,13 @@
-const key = 'darkMode'
+import { post } from './utils'
 
-const dark = () => JSON.parse(localStorage.getItem(key) as any)
+const attr = 'data-toggle-dark-mode'
 
-if (dark()) {
-  document.documentElement.classList.add('dark')
+const selector = `[${attr}]`
+
+const toggle = async (e: Event) => {
+  const route = (e.target as HTMLElement).closest(selector)!.getAttribute(attr)!;
+
+  await post(route, { key: 'dark-mode' })
 }
 
-document.querySelector('[data-toggle-dark-mode]')?.addEventListener('click', () => {
-  const [addOrRemove, trueOrFalse] = dark()
-    ? ['remove' as const, 'false']
-    : ['add' as const, 'true']
-
-  localStorage.setItem(key, trueOrFalse)
-
-  document.documentElement.classList[addOrRemove]('dark')
-
-  console.log({ addOrRemove, trueOrFalse });
-})
+document.querySelector(selector)?.addEventListener('click', toggle)
