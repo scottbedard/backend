@@ -3,9 +3,6 @@
   "bugs": {
     "url": "https://github.com/scottbedard/backend/issues"
   },
-  "directories": {
-    "test": "tests"
-  },
   "homepage": "https://github.com/scottbedard/backend",
   "license": "MIT",
   "name": "@bedard/backend",

@@ -5,6 +5,7 @@ namespace Bedard\Backend;
 use Bedard\Backend\Http\Middleware\BackendMiddleware;
 use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
@@ -128,6 +129,8 @@ class BackendServiceProvider extends ServiceProvider
     private function bootViews()
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
+
+        Blade::componentNamespace('Bedard\\Backend\\Views\\Components', 'backend');
     }
 
     /**

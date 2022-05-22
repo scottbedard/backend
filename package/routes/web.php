@@ -8,6 +8,6 @@ Route::prefix(config('backend.path'))
     ->middleware(['web', config('backend.middleware_alias')])
     ->group(function () {
 
-        Route::get('/{path?}', [BackendController::class, 'index'])->where('path', '.*');
+        Route::get('/', [BackendController::class, 'index']);
         
     });

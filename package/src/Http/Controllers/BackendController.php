@@ -20,11 +20,7 @@ class BackendController extends Controller
     {
         $user = Auth::user();
         
-        return view('backend::index', [
-            'context' => $this->context(),
-            'local' => (bool) app()->environment('local'),
-            'manifest' => $this->manifest(),
-        ]);
+        return view('backend::index');
     }
 
     /**

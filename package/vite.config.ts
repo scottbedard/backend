@@ -8,7 +8,7 @@ export default defineConfig({
     manifest: true,
     outDir: './public/dist',
     rollupOptions: {
-      input: '/src/main.ts',
+      input: '/resources/scripts/main.ts',
     },
   },
   plugins: [
@@ -18,7 +18,7 @@ export default defineConfig({
     alias: [
       {
         find: '@',
-        replacement: path.resolve(__dirname, 'src'),
+        replacement: path.resolve(__dirname, 'resources/scripts'),
       },
     ],
   },
