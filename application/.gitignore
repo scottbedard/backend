@@ -8,6 +8,7 @@ _ide_helper.php
 /packages/bedard/backend
 /public/hot
 /public/storage
+/public/vendor/backend
 /storage/*.key
 /vendor
 Homestead.json
