@@ -23,37 +23,52 @@ class Icon extends Component
 
     public function render()
     {
-        $dir = __DIR__ . '/../../../resources/icons/';
+        return function ($data)
+        {
+            $dir = __DIR__ . '/../../../resources/icons/';
 
-        $path = $dir . $this->name . '.svg';
+            $path = $dir . $this->name . '.svg';
 
-        try {
-            $svg = File::get($path);
+            try {
+                $svg = preg_replace([
+                    '/[^-]height="\d+"/',
+                    '/[^-]width="\d+"/',
+                    '/stroke-width="\d+"/',
+                    '/^<svg /',
+                ], [
+                    "height=\"{$this->size}\"",
+                    "width=\"{$this->size}\"",
+                    "stroke-width=\"{$this->strokeWidth}\"",
+                    "<svg {$data['attributes']->toHtml()}",
+                ], File::get($path));
 
-            return preg_replace([
-                '/[^-]height="\d+"/',
-                '/[^-]width="\d+"/',
-                '/stroke-width="\d+"/',
-            ], [
-                "height=\"{$this->size}\"",
-                "width=\"{$this->size}\"",
-                "stroke-width=\"{$this->strokeWidth}\"",
-            ], $svg);
-        } catch (FileNotFoundException $e) {
-            $closest = null;
-            $closestDistance = INF;
+                return $svg;
+            } catch (FileNotFoundException $e) {
+                $closest = null;
+                $closestDistance = INF;
 
-            foreach (File::allFiles($dir) as $file) {
-                $icon = substr($file->getFilename(), 0, -4);
-                $distance = levenshtein($this->name, $icon);
+                foreach (File::allFiles($dir) as $file) {
+                    $icon = substr($file->getFilename(), 0, -4);
+                    $distance = levenshtein($this->name, $icon);
 
-                if ($distance < $closestDistance) {
-                    $closest = $icon;
-                    $closestDistance = $distance;
+                    if ($distance < $closestDistance) {
+                        $closest = $icon;
+                        $closestDistance = $distance;
+                    }
                 }
-            }
 
-            throw new FileNotFoundException("Unknown icon \"{$this->name}\", did you mean \"{$closest}\"?");
-        }
+                collect(File::allFiles($dir))->each(function ($file) use (&$closest, &$closestDistance) {
+                    $icon = substr($file->getFilename(), 0, -4);
+                    $distance = levenshtein($this->name, $icon);
+
+                    if ($distance < $closestDistance) {
+                        $closest = $icon;
+                        $closestDistance = $distance;
+                    }
+                });
+
+                throw new FileNotFoundException("Unknown icon \"{$this->name}\", did you mean \"{$closest}\"?");
+            }  
+        };
     }
 }

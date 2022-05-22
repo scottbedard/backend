@@ -4,8 +4,10 @@
         padded-x>
         <div>Logo</div>
 
-        <div>
-            <x-backend::icon name="alarm-clock" />
-        </div>
+        <button data-toggle-dark-mode>
+            <x-backend::icon class="dark:hidden" name="sun" />
+
+            <x-backend::icon class="hidden dark:block" name="moon" />
+        </button>
     </x-backend::layout.margin>
 </header>
