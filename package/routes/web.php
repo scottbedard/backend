@@ -9,5 +9,5 @@ Route::prefix(config('backend.path'))
     ->group(function () {
 
         Route::get('/', [BackendController::class, 'index']);
-        
+
     });

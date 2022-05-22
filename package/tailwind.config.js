@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     './resources/**/*.{js,jsx,ts,tsx}',
@@ -6,6 +8,14 @@ module.exports = {
   darkMode: 'class',
   plugins: [],
   theme: {
+    colors: {
+      black: '#000',
+      current: 'currentColor',
+      gray: colors.slate,
+      primary: colors.blue,
+      transparent: 'transparent',
+      white: '#fff',
+    },
     extend: {},
     fontFamily: {
       mono: '"Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
