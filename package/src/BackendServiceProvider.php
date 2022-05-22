@@ -6,6 +6,8 @@ use Bedard\Backend\Http\Middleware\BackendMiddleware;
 use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
@@ -107,7 +109,7 @@ class BackendServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
-            __DIR__ . '/../../client/public' => public_path('vendor/backend'),
+            __DIR__ . '/../public' => public_path('vendor/backend'),
         ], 'backend');
     }
 
@@ -128,9 +130,19 @@ class BackendServiceProvider extends ServiceProvider
      */
     private function bootViews()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
+        // load backend manifest file
+        $manifest = public_path('vendor/backend/dist/manifest.json');
 
+        if (File::exists($manifest)) {
+            View::share('manifest', json_decode(File::get($manifest), true));
+        } else {
+            View::share('manifest', null);
+        }
+
+        // register backend component namespace
         Blade::componentNamespace('Bedard\\Backend\\Views\\Components', 'backend');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
     }
 
     /**

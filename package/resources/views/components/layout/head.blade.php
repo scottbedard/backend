@@ -6,9 +6,9 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Source+Code+Pro&display=swap" rel="stylesheet">
 
-    @unless (env('APP_ENV') === 'local')
-        @foreach ($manifest['src/main.ts']['css'] as $stylesheet)
+    @if (env('APP_ENV') !== 'local' && $manifest)
+        @foreach ($manifest['resources/scripts/main.ts']['css'] as $stylesheet)
             <link href="/vendor/backend/dist/{{ $stylesheet }}" rel="stylesheet">
         @endforeach
-    @endunless
+    @endif
 </head>

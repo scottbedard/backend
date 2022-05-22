@@ -1,37 +1,10 @@
 {
-  "src/main.ts": {
-    "file": "assets/main.30f40f0a.js",
-    "src": "src/main.ts",
+  "resources/scripts/main.ts": {
+    "file": "assets/main.2a1cba9d.js",
+    "src": "resources/scripts/main.ts",
     "isEntry": true,
-    "imports": [
-      "_vendor.84db3998.js"
-    ],
-    "dynamicImports": [
-      "src/controllers/Home.vue",
-      "src/controllers/Resource.vue"
-    ],
     "css": [
-      "assets/main.99442ab9.css"
-    ]
-  },
-  "_vendor.84db3998.js": {
-    "file": "assets/vendor.84db3998.js"
-  },
-  "src/controllers/Home.vue": {
-    "file": "assets/Home.fcb5faad.js",
-    "src": "src/controllers/Home.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_vendor.84db3998.js"
-    ]
-  },
-  "src/controllers/Resource.vue": {
-    "file": "assets/Resource.acbbbf10.js",
-    "src": "src/controllers/Resource.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/main.ts",
-      "_vendor.84db3998.js"
+      "assets/main.c0be76ec.css"
     ]
   }
 }

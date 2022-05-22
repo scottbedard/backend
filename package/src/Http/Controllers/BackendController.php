@@ -6,7 +6,6 @@ use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Js;
 
 class BackendController extends Controller
@@ -19,7 +18,7 @@ class BackendController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         return view('backend::index');
     }
 
@@ -38,17 +37,5 @@ class BackendController extends Controller
         ];
 
         return Js::from($context);
-    }
-
-    /**
-     * Get the frontend manifest from Vite.
-     *
-     * @return array
-     */
-    private function manifest()
-    {
-        $manifest = public_path('vendor/backend/dist/manifest.json');
-
-        return json_decode(File::get($manifest), true);
     }
 }

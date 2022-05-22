@@ -1,1 +1,0 @@
-import{d as o,c as t,io as n,iz as c,u as r,iw as s,o as a}from"./vendor.84db3998.js";const l=s(" Hello from the home controller! "),_=o({setup(i){const e=window.context;return(p,d)=>(a(),t("div",null,[l,n("pre",null,c({context:r(e)}),1)]))}});export{_ as default};

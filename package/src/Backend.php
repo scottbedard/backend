@@ -5,6 +5,7 @@ namespace Bedard\Backend;
 use Bedard\Backend\Classes\ResourceInfo;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\File;
 
 class Backend
 {
