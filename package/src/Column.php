@@ -7,6 +7,13 @@ use Illuminate\Support\Arr;
 class Column
 {
     /**
+     * Align
+     *
+     * @var string
+     */
+    public string $align = 'left';
+
+    /**
      * Column
      *
      * @var string
@@ -63,6 +70,20 @@ class Column
     }
 
     /**
+     * Align
+     *
+     * @param string $header
+     *
+     * @return \Bedard\Backend\Column
+     */
+    public function align(string $align)
+    {
+        $this->align = $align;
+
+        return $this;
+    }
+
+    /**
      * Header
      *
      * @param string $header
@@ -82,6 +103,7 @@ class Column
     public function renderHeader()
     {
         return view('backend::columns.default-header', [
+            'align' => $this->align,
             'header' => $this->header,
         ]);
     }
