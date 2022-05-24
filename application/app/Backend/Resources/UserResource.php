@@ -59,8 +59,14 @@ class UserResource extends Resource
     {
         return [
             Column::number('id')->header('ID'),
-            
+
+            Column::text('name')->header('Name'),
+
             Column::text('email')->header('Email address'),
+
+            Column::text('created_at')->header('Created'),
+
+            Column::text('updated_at')->header('Updated'),
         ];
     }
 }

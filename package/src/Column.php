@@ -75,4 +75,14 @@ class Column
 
         return $this;
     }
+
+    /**
+     * Render column header
+     */
+    public function renderHeader()
+    {
+        return view('backend::columns.default-header', [
+            'header' => $this->header,
+        ]);
+    }
 }
