@@ -6,7 +6,7 @@ use Bedard\Backend\Models\BackendSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BackendSettingsController extends Controller
+class SettingsController extends Controller
 {
     /**
      * Toggle a boolean setting.
