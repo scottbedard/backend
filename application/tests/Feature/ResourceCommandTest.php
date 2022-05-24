@@ -28,10 +28,10 @@ class ResourceCommandTest extends TestCase
 
         $this->assertFileExists($path);
 
-        $resource = Backend::resource('test');
+        $resource = Backend::resource('tests');
 
         $this->assertEquals('App\Models\Test', $resource::$model);
-        $this->assertEquals('test', $resource::$id);
+        $this->assertEquals('tests', $resource::$id);
         $this->assertEquals('Tests', $resource::$title);
         $this->assertEquals(0, $resource::$order);
     }

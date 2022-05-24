@@ -2,12 +2,28 @@
 
 namespace Tests\Feature;
 
+use App\Backend\Resources\UserResource;
 use App\Models\User;
 use Backend;
 use Tests\TestCase;
 
 class BackendFacadeTest extends TestCase
 {
+    public function test_disabled_setting()
+    {
+        $user = $this->createSuperAdmin();
+
+        $this->assertTrue(Backend::disabled($user, 'foo'));
+
+        $user->backendSettings()->create(['key' => 'foo', 'value' => false]);
+
+        $this->assertTrue(Backend::disabled($user, 'foo'));
+
+        $user->backendSettings()->where('key', 'foo')->update(['value' => true]);
+
+        $this->assertFalse(Backend::disabled($user, 'foo'));
+    }
+
     public function test_enabled_setting()
     {
         $user = $this->createSuperAdmin();
@@ -23,18 +39,16 @@ class BackendFacadeTest extends TestCase
         $this->assertTrue(Backend::enabled($user, 'foo'));
     }
 
-    public function test_disabled_setting()
+    public function test_get_resources()
     {
-        $user = $this->createSuperAdmin();
+        $resources = Backend::resources();
 
-        $this->assertTrue(Backend::disabled($user, 'foo'));
+        $this->assertEquals(1, $resources->count());
+        $this->assertEquals(UserResource::class, $resources->first());
+    }
 
-        $user->backendSettings()->create(['key' => 'foo', 'value' => false]);
-
-        $this->assertTrue(Backend::disabled($user, 'foo'));
-
-        $user->backendSettings()->where('key', 'foo')->update(['value' => true]);
-
-        $this->assertFalse(Backend::disabled($user, 'foo'));
+    public function test_get_resource_by_id()
+    {
+        $this->assertEquals(UserResource::class, Backend::resource('users'));
     }
 }

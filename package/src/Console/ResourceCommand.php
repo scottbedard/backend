@@ -40,8 +40,8 @@ class ResourceCommand extends GeneratorCommand
 
         return $this->replaceParams($stub, [
             'class' => $this->getClassParam($model),
-            'model' => $model,
             'id' => $this->getIdParam($model),
+            'model' => $model,
             'title' => $this->getTitleParam($model),
         ]);  
     }
@@ -78,7 +78,7 @@ class ResourceCommand extends GeneratorCommand
      */
     protected function getIdParam(string $model)
     {
-        return Str::singular(Str::kebab($model));
+        return Str::plural(Str::kebab($model));
     }
 
     /**
