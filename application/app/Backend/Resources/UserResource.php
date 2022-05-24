@@ -48,4 +48,16 @@ class UserResource extends Resource
             Field::number('id')->label('id'),
         ];
     }
+
+    /**
+     * Table schema
+     *
+     * @return array
+     */
+    public function schema()
+    {
+        return [
+            // ...
+        ];
+    }
 }

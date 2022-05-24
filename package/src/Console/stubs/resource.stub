@@ -45,7 +45,19 @@ class {{ class }} extends Resource
     public function fields()
     {
         return [
-            Field::number('id')->label('id'),
+            // ...
+        ];
+    }
+
+    /**
+     * Table schema
+     *
+     * @return array
+     */
+    public function schema()
+    {
+        return [
+            // ...
         ];
     }
 }

@@ -2,7 +2,7 @@
     @foreach (Backend::resources() as $resource)
         <a
             class="flex gap-3 items-center"
-            href="{{ route('backend.resources.show', ['resource' => $resource::$id]) }}">
+            href="{{ route('backend.resources.show', ['id' => $resource::$id]) }}">
             <x-backend::icon :name="$resource::$icon" />
 
             {{ $resource::$title }}

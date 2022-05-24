@@ -40,4 +40,28 @@ class Resource
      * @var string
      */
     public static $title = null;
+
+    /**
+     * Fields
+     *
+     * @return array
+     */
+    public function fields()
+    {
+        return [
+            // ...
+        ];
+    }
+
+    /**
+     * Table schema
+     *
+     * @return array
+     */
+    public function schema()
+    {
+        return [
+            // ...
+        ];
+    }
 }

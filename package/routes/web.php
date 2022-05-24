@@ -11,7 +11,7 @@ Route::prefix(config('backend.path'))
 
         Route::get('/', [IndexController::class, 'index'])->name('backend.index');
 
-        Route::get('/resources/{resource}', [ResourcesController::class, 'show'])->name('backend.resources.show');
+        Route::get('/resources/{id}', [ResourcesController::class, 'show'])->name('backend.resources.show');
         
         Route::post('/settings/toggle', [SettingsController::class, 'toggle'])->name('backend.settings.toggle');
 
