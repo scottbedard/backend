@@ -2,6 +2,7 @@
 
 namespace App\Backend\Resources;
 
+use Bedard\Backend\Column;
 use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
 
@@ -57,7 +58,9 @@ class UserResource extends Resource
     public static function schema()
     {
         return [
-            // ...
+            Column::number('id')->header('ID'),
+            
+            Column::text('email')->header('Email address'),
         ];
     }
 }
