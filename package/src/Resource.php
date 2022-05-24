@@ -46,7 +46,7 @@ class Resource
      *
      * @return array
      */
-    public function fields()
+    public static function fields()
     {
         return [
             // ...
@@ -58,7 +58,7 @@ class Resource
      *
      * @return array
      */
-    public function schema()
+    public static function schema()
     {
         return [
             // ...

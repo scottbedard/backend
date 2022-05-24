@@ -4,6 +4,8 @@
             Upper section
         </div>
 
+        <pre>{{ json_encode($resource::schema()) }}</pre>
+
         <x-backend::table />
     </div>
 </x-backend::layout.main>
