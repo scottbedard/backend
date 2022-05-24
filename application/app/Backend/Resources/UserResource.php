@@ -8,6 +8,13 @@ use Bedard\Backend\Resource;
 class UserResource extends Resource
 {
     /**
+     * Unique resource identifier.
+     *
+     * @var string
+     */
+    public static $id = 'users';
+
+    /**
      * Resource icon.
      *
      * See https://lucide.dev/
@@ -22,13 +29,6 @@ class UserResource extends Resource
      * @var string
      */
     public static $model = \App\Models\User::class;
-
-    /**
-     * Resource route.
-     *
-     * @var string
-     */
-    public static $route = 'users';
 
     /**
      * Resource title.

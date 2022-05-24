@@ -5,6 +5,13 @@ namespace Bedard\Backend;
 class Resource
 {
     /**
+     * Unique resource identifier.
+     *
+     * @var string
+     */
+    public static $id = '';
+
+    /**
      * Resource icon.
      *
      * See https://lucide.dev/
@@ -26,13 +33,6 @@ class Resource
      * @var int
      */
     public static $order = 0;
-
-    /**
-     * Resource route.
-     *
-     * @var string
-     */
-    public static $route = null;
 
     /**
      * Resource title.

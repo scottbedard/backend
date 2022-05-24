@@ -5,3 +5,7 @@
 body {
   scrollbar-gutter: stable;
 }
+
+a {
+  @apply hover:text-primary-500;
+}

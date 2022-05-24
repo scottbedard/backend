@@ -8,6 +8,13 @@ use Bedard\Backend\Resource;
 class {{ class }} extends Resource
 {
     /**
+     * Unique resource identifier.
+     *
+     * @var string
+     */
+    public static $id = '{{ id }}';
+
+    /**
      * Resource icon.
      *
      * See https://lucide.dev/
@@ -22,13 +29,6 @@ class {{ class }} extends Resource
      * @var string
      */
     public static $model = \App\Models\{{ model }}::class;
-
-    /**
-     * Resource route.
-     *
-     * @var string
-     */
-    public static $route = '{{ route }}';
 
     /**
      * Resource title.

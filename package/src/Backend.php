@@ -26,23 +26,29 @@ class Backend
     }
 
     /**
-     * Get backend resources with static configuration.
-     *
-     * @return string[]
+     * Get a backend resource by ID
+     */
+    public function resource(string $id)
+    {
+        return self::resources()->firstOrFail(function ($resource) use ($id) {
+            return $resource::$id === $id;
+        });
+    }
+
+    /**
+     * Get collection of backend resources
      */
     public function resources()
     {
-        $classes = ClassFinder::getClassesInNamespace('App\\Backend\\Resources');
-
-        return collect($classes)
-            ->map(function (string $className) {
-                return (new ResourceInfo($className))->toArray();
-            })
+        return collect(ClassFinder::getClassesInNamespace('App\\Backend\\Resources'))
             ->sortBy([
-                ['order', 'asc'],
-                ['title', 'asc'],
-            ])
-            ->values();
+                function ($a, $b) {
+                    return $a::$order <=> $b::$order;
+                },
+                function ($a, $b) {
+                    return $a::$title <=> $b::$title;
+                },
+            ]);
     }
 
     /**

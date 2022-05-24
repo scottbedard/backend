@@ -1,3 +1,3 @@
 <x-backend::layout.main>
-    Hello
+    {{ Backend::resource('users')::$icon }}
 </x-backend::layout.main>

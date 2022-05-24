@@ -41,7 +41,7 @@ class ResourceCommand extends GeneratorCommand
         return $this->replaceParams($stub, [
             'class' => $this->getClassParam($model),
             'model' => $model,
-            'route' => $this->getRouteParam($model),
+            'id' => $this->getIdParam($model),
             'title' => $this->getTitleParam($model),
         ]);  
     }
@@ -70,6 +70,18 @@ class ResourceCommand extends GeneratorCommand
     }
 
     /**
+     * Resource ID param.
+     *
+     * @param string $model
+     *
+     * @return string
+     */
+    protected function getIdParam(string $model)
+    {
+        return Str::singular(Str::kebab($model));
+    }
+
+    /**
      * Guess the model name of a resource.
      *
      * @param string
@@ -93,18 +105,6 @@ class ResourceCommand extends GeneratorCommand
     protected function getNameInput()
     {
         return $this->getClassParam($this->getModelParam());
-    }
-
-    /**
-     * Resource route param.
-     *
-     * @param string $model
-     *
-     * @return string
-     */
-    protected function getRouteParam(string $model)
-    {
-        return Str::plural(Str::kebab($model));
     }
 
     /**
