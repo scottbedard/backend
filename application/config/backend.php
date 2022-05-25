@@ -4,6 +4,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Guest redirect
+    |--------------------------------------------------------------------------
+    |
+    | Unauthenticated users will be redirected here.
+    |
+    */
+
+    'guest_redirect' => env('BACKEND_GUEST_REDIRECT', '/login'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Guest redirect
+    |--------------------------------------------------------------------------
+    |
+    | Route middleware alias to restrict access to the backend. Users must be
+    | authenticated and have atleast one backend permission to pass middleware.
+    |
+    */
+
+    'middleware_alias' => env('BACKEND_MIDDLEWARE_ALIAS', 'backend'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Path
     |--------------------------------------------------------------------------
     |
@@ -20,7 +43,7 @@ return [
     | Unauthorized redirect
     |--------------------------------------------------------------------------
     |
-    | Guests and unauthorized users will be redirected here.
+    | Authenticated users without backend permissions will be redirected here.
     |
     */
 
