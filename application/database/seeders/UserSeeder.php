@@ -18,10 +18,13 @@ class UserSeeder extends Seeder
     {
         User::factory()->create([
             'email' => 'admin@example.com',
+            'name' => 'Super Admin',
             'password' => Hash::make('password'),
         ])->backendPermissions()->create([
             'area' => 'all',
             'code' => 'super',
         ]);
+
+        User::factory()->count(10)->create();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,12 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $user = User::inRandomOrder()->first();
+
         return [
-            //
+            'body' => $this->faker->paragraph(),
+            'title' => $this->faker->words(3, true),
+            'user_id' => $user->id,
         ];
     }
 }
