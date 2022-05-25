@@ -16,8 +16,10 @@ class ResourcesController extends Controller
      */
     public function show(Request $request, string $id)
     {
+        $resource = Backend::resource($id);
+
         return view('backend::resources-show', [
-            'resource' => Backend::resource($id),
+            'resource' => $resource,
         ]);
     }
 }

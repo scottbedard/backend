@@ -42,7 +42,7 @@ class PostResource extends Resource
      *
      * @return array
      */
-    public static function fields()
+    public function fields()
     {
         return [
             // ...
@@ -54,7 +54,7 @@ class PostResource extends Resource
      *
      * @return array
      */
-    public static function schema()
+    public function schema()
     {
         return [
             // ...

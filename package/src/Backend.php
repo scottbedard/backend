@@ -30,9 +30,11 @@ class Backend
      */
     public function resource(string $id)
     {
-        return self::resources()->firstOrFail(function ($resource) use ($id) {
+        $resource = self::resources()->firstOrFail(function ($resource) use ($id) {
             return $resource::$id === $id;
         });
+
+        return new $resource();
     }
 
     /**

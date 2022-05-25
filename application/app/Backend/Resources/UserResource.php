@@ -43,7 +43,7 @@ class UserResource extends Resource
      *
      * @return array
      */
-    public static function fields()
+    public function fields()
     {
         return [
             Field::number('id')->label('id'),
@@ -55,7 +55,7 @@ class UserResource extends Resource
      *
      * @return array
      */
-    public static function schema()
+    public function schema()
     {
         return [
             Column::number('id')->header('ID'),

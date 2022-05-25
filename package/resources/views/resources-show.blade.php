@@ -5,6 +5,6 @@
         </div>
 
         <x-backend::table
-            :schema="$resource::schema()" />
+            :schema="$resource->schema()" />
     </div>
 </x-backend::layout.main>

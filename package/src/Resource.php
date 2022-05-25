@@ -42,11 +42,11 @@ class Resource
     public static $title = null;
 
     /**
-     * Fields
+     * Fields.
      *
      * @return array
      */
-    public static function fields()
+    public function fields()
     {
         return [
             // ...
@@ -54,11 +54,11 @@ class Resource
     }
 
     /**
-     * Table schema
+     * Table schema.
      *
      * @return array
      */
-    public static function schema()
+    public function schema()
     {
         return [
             // ...
