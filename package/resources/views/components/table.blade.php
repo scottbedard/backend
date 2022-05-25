@@ -17,7 +17,11 @@
         @foreach ($data as $row)
             <tr>
                 @foreach ($schema as $column)
-                    <td>{{ $column->render($row) }}</td>
+                    <td class="{{ implode(' ', [
+                        $column->align === 'left' ? 'text-left' : '',
+                        $column->align === 'center' ? 'text-center' : '',
+                        $column->align === 'right' ? 'text-right' : '',
+                    ]) }}">{{ $column->render($row) }}</td>
                 @endforeach
             </tr>
         @endforeach
