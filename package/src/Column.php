@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class Column
@@ -18,14 +19,14 @@ class Column
      *
      * @var string
      */
-    public string $column;
+    public string $column = '';
 
     /**
      * Header
      *
      * @var string
      */
-    public string $header;
+    public string $header = '';
 
     /**
      * Field construction
@@ -45,6 +46,8 @@ class Column
         if (Arr::exists($common, $column)) {
             return new ($common[$column])(...$args);
         }
+
+        return new static($column);
     }
 
     /**
@@ -96,6 +99,14 @@ class Column
 
         return $this;
     }
+    
+    /**
+     * Render column
+     */
+    public function render(Model $model)
+    {
+        return $model->{$this->column};
+    }
 
     /**
      * Render column header
@@ -104,7 +115,7 @@ class Column
     {
         return view('backend::columns.default-header', [
             'align' => $this->align,
-            'header' => $this->header,
+            'header' => $this->header ?: $this->column,
         ]);
     }
 }

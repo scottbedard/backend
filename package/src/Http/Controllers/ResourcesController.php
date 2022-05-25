@@ -18,8 +18,13 @@ class ResourcesController extends Controller
     {
         $resource = Backend::resource($id);
 
+        $data = $resource->data();
+
+        $schema = $resource->schema();
+
         return view('backend::resources-show', [
-            'resource' => $resource,
+            'data' => $data,
+            'schema' => $schema,
         ]);
     }
 }

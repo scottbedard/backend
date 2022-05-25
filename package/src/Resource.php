@@ -42,6 +42,16 @@ class Resource
     public static $title = null;
 
     /**
+     * Table data.
+     */
+    public function data()
+    {
+        $query = static::$model::query();
+
+        return $query->get();
+    }
+
+    /**
      * Fields.
      *
      * @return array

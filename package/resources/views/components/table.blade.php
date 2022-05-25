@@ -1,10 +1,7 @@
 @props([
+    'data' => [],
     'schema' => [],
 ])
-
-<div>
-    {{ json_encode($schema) }}
-</div>
 
 <table class="border border-primary-500 border-collapse">
     <thead>
@@ -16,4 +13,13 @@
             @endforeach
         </tr>
     </thead>
+    <tbody>
+        @foreach ($data as $row)
+            <tr>
+                @foreach ($schema as $column)
+                    <td>{{ $column->render($row) }}</td>
+                @endforeach
+            </tr>
+        @endforeach
+    </tbody>
 </table>

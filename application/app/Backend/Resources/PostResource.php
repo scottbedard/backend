@@ -2,6 +2,7 @@
 
 namespace App\Backend\Resources;
 
+use Bedard\Backend\Column;
 use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
 
@@ -57,7 +58,13 @@ class PostResource extends Resource
     public function schema()
     {
         return [
-            // ...
+            Column::number('id')->header('ID'),
+
+            Column::text('title')->header('Title'),
+
+            Column::text('created_at')->header('Created'),
+
+            Column::text('updated_at')->header('Updated'),
         ];
     }
 }
