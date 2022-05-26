@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Views\Components;
 
+use Bedard\Backend\Util;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\Component;
@@ -44,30 +45,11 @@ class Icon extends Component
 
                 return $svg;
             } catch (FileNotFoundException $e) {
-                $closest = null;
-                $closestDistance = INF;
+                $suggestion = Util::suggest($this->name, array_map(function ($file) {
+                    return substr($file->getFilename(), 0, -4);
+                }, File::allFiles(($dir))));
 
-                foreach (File::allFiles($dir) as $file) {
-                    $icon = substr($file->getFilename(), 0, -4);
-                    $distance = levenshtein($this->name, $icon);
-
-                    if ($distance < $closestDistance) {
-                        $closest = $icon;
-                        $closestDistance = $distance;
-                    }
-                }
-
-                collect(File::allFiles($dir))->each(function ($file) use (&$closest, &$closestDistance) {
-                    $icon = substr($file->getFilename(), 0, -4);
-                    $distance = levenshtein($this->name, $icon);
-
-                    if ($distance < $closestDistance) {
-                        $closest = $icon;
-                        $closestDistance = $distance;
-                    }
-                });
-
-                throw new FileNotFoundException("Unknown icon \"{$this->name}\", did you mean \"{$closest}\"?");
+                throw new FileNotFoundException("Unknown icon \"{$this->name}\", did you mean \"{$suggestion}\"?");
             }  
         };
     }
