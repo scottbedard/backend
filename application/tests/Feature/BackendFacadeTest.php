@@ -43,12 +43,11 @@ class BackendFacadeTest extends TestCase
     {
         $resources = Backend::resources();
 
-        $this->assertEquals(1, $resources->count());
-        $this->assertEquals(UserResource::class, $resources->first());
+        $this->assertTrue($resources->contains(UserResource::class));
     }
 
     public function test_get_resource_by_id()
     {
-        $this->assertEquals(UserResource::class, Backend::resource('users'));
+        $this->assertInstanceOf(UserResource::class, Backend::resource('users'));
     }
 }
