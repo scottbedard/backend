@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Util;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -81,6 +82,20 @@ class Column
      */
     public function align(string $align)
     {
+        $alignments = [
+            'center', 
+            'left', 
+            'right',
+        ];
+
+        $str = trim(strtolower($align));
+
+        if (!in_array($str, $alignments)) {
+            $suggestion = Util::suggest($str, $alignments);
+            
+            throw new \Exception("Invalid column alignment \"{$align}\", did you mean \"{$suggestion}\"?");
+        }
+
         $this->align = $align;
 
         return $this;
