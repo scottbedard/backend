@@ -5,10 +5,13 @@ namespace Tests\Feature;
 use App\Backend\Resources\UserResource;
 use App\Models\User;
 use Backend;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BackendFacadeTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_disabled_setting()
     {
         $user = $this->createSuperAdmin();

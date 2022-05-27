@@ -87,12 +87,32 @@ class Backend
     }
 
     /**
-     * Query application users.
+     * Query backend users.
+     *
+     * @param string $area
+     * @param string $code
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function user(): Builder
+    public function users(string $area = '', string $code = ''): Builder
     {
-        return config('backend.user')::query();
+        return config('backend.user')::query()
+            ->whereHas('backendPermissions', function (Builder $query) use ($area, $code) {
+                if ($area) {
+                    $query->where(function ($q) use ($area) {
+                        $q
+                            ->where('area', BackendPermission::normalize($area))
+                            ->orWhere('area', 'all');
+                    });
+                }
+
+                if ($code) {
+                    $query->where(function ($q) use ($code) {
+                        $q
+                            ->where('code', BackendPermission::normalize($code))
+                            ->orWhere('code', 'super');
+                    });
+                }
+            });
     }
 }
