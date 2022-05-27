@@ -50,4 +50,19 @@ class BackendFacadeTest extends TestCase
     {
         $this->assertInstanceOf(UserResource::class, Backend::resource('users'));
     }
+
+    public function test_authorizing_backend_permissions()
+    {
+        $user = User::factory()->create();
+
+        $permission1 = Backend::authorize($user, 'all', 'super');
+        $this->assertEquals('all', $permission1->area);
+        $this->assertEquals('super', $permission1->code);
+        $this->assertEquals(1, $user->backendPermissions()->count());
+
+        // re-authorizing should have no effect
+        $permission2 = Backend::authorize($user, 'all', 'super');
+        $this->assertEquals($permission1->id, $permission2->id);
+        $this->assertEquals(1, $user->backendPermissions()->count());
+    }
 }

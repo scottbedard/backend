@@ -97,10 +97,6 @@ class BackendServiceProvider extends ServiceProvider
             return $user->hasMany(BackendSetting::class, 'user_id');
         });
 
-        $model::addGlobalScope('hasBackendPermission', function () {
-            // @todo
-        });
-
         // add user relationship to backend models
         BackendPermission::resolveRelationUsing('user', function ($permission) use ($model) {
             return $permission->belongsTo($model, 'id');

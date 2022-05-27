@@ -47,7 +47,7 @@ class PermissionCommand extends Command
         $id = $this->argument('user');
 
         try {
-            $user = Backend::userQuery()->findOrFail($id);
+            $user = config('backend.user')::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             $this->error('User not found');
 
@@ -55,13 +55,13 @@ class PermissionCommand extends Command
         }
 
         // normalize options
-        $area = BackendPermission::normalizeArea($this->option('area') ?? '');
-        $code = BackendPermission::normalizeCode($this->option('code') ?? 'super');
+        $area = BackendPermission::normalize($this->option('area') ?? '');
+        $code = BackendPermission::normalize($this->option('code') ?? 'super');
 
-        // grant super admin
+        // authorize super admin
         if ($this->super($area, $code)) {
             if ($this->confirm(self::$superAdminConfirmation)) {
-                BackendPermission::grant($user->id, 'all', 'super');
+                Backend::authorize($user, 'all', 'super');
 
                 $this->info('Super admin created!');
 
@@ -80,7 +80,7 @@ class PermissionCommand extends Command
             return 1;
         }
 
-        BackendPermission::grant($user->id, $area, $code);
+        Backend::authorize($user, $area, $code);
 
         $this->info('Backend permission created!');
 

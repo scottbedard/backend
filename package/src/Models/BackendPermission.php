@@ -22,58 +22,14 @@ class BackendPermission extends Model
     ];
 
     /**
-     * Grant backend permission to a user.
+     * Normalize an area / code value.
      *
-     * @param int $userId
-     * @param string $area
-     * @param string $code
-     *
-     * @return \Bedard\Backend\Models\BackendPermission
-     */
-    public static function grant(int $userId, string $area, string $code)
-    {
-        $area = self::normalizeArea($area);
-        $code = self::normalizeArea($code);
-        
-        $permission = self::query()
-            ->where('user_id', $userId)
-            ->where('area', $area)
-            ->where('code', $code)
-            ->firstOrNew();
-
-        if ($permission->id) {
-            return $permission;
-        }
-
-        $permission->user_id = $userId;
-        $permission->area = $area;
-        $permission->code = $code;
-        $permission->save();
-
-        return $permission;
-    }
-
-    /**
-     * Normalize a permission area.
-     *
-     * @param string $area
+     * @param string $str
      *
      * @return string
      */
-    public static function normalizeArea(string $area)
+    public static function normalize(string $str): string
     {
-        return Str::snake(trim(stripslashes($area)));
-    }
-
-    /**
-     * Normalize a permission code.
-     *
-     * @param string $code
-     *
-     * @return string
-     */
-    public static function normalizeCode(string $code)
-    {
-        return trim(strtolower($code));
+        return strtolower(trim(Str::snake($str)));
     }
 }

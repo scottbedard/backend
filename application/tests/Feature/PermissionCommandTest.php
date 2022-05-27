@@ -16,12 +16,12 @@ class PermissionCommandTest extends TestCase
         $user = User::factory()->create();
 
         $this
-            ->artisan("backend:permission {$user->id} --area=App\Backend\Resources\Whatever --code=create")
+            ->artisan("backend:permission {$user->id} --area=whatever --code=create")
             ->assertSuccessful();
 
         $permission = $user->backendPermissions()->firstOrFail();
 
-        $this->assertEquals('app_backend_resources_whatever', $permission->area);
+        $this->assertEquals('whatever', $permission->area);
         $this->assertEquals('create', $permission->code);
     }
 
