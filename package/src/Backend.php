@@ -3,7 +3,6 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Exceptions\AlreadyAuthorizedException;
-use Bedard\Backend\Models\BackendPermission;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
@@ -26,8 +25,8 @@ class Backend
         }
         
         return $user->backendPermissions()->create([
-            'area' => BackendPermission::normalize($area),
-            'code' => BackendPermission::normalize($code),
+            'area' => $area,
+            'code' => $code,
         ]);
     }
 

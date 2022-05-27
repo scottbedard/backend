@@ -59,4 +59,28 @@ class BackendPermission extends Model
     {
         $query->where('code', self::normalize($code));
     }
+
+    /**
+     * Set a permission area.
+     *
+     * @param string $area
+     *
+     * @return void
+     */
+    public function setAreaAttribute(string $area)
+    {
+        $this->attributes['area'] = self::normalize($area);
+    }
+
+    /**
+     * Set a permission code.
+     *
+     * @param string $code
+     *
+     * @return void
+     */
+    public function setCodeAttribute(string $code)
+    {
+        $this->attributes['code'] = self::normalize($code);
+    }
 }
