@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -31,5 +32,31 @@ class BackendPermission extends Model
     public static function normalize(string $str): string
     {
         return strtolower(trim(Str::snake($str)));
+    }
+
+    /**
+     * Select permission by area.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $area
+     *
+     * @return void
+     */
+    public function scopeArea(Builder $query, string $area)
+    {
+        $query->where('area', self::normalize($area));
+    }
+
+    /**
+     * Select permission by code.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $code
+     *
+     * @return void
+     */
+    public function scopeCode(Builder $query, string $code)
+    {
+        $query->where('code', self::normalize($code));
     }
 }

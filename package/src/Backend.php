@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Exceptions\AlreadyAuthorizedException;
 use Bedard\Backend\Models\BackendPermission;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,7 +21,11 @@ class Backend
      */
     public function authorize(User $user, string $area, string $code)
     {
-        return $user->backendPermissions()->firstOrCreate([
+        if (self::test($user, $area, $code)) {
+            throw new AlreadyAuthorizedException;
+        }
+        
+        return $user->backendPermissions()->create([
             'area' => BackendPermission::normalize($area),
             'code' => BackendPermission::normalize($code),
         ]);
@@ -102,14 +107,10 @@ class Backend
             ->where(function ($query) use ($area, $code) {
                 $query
                     ->where(function ($q) use ($area) {
-                        $q
-                            ->where('area', 'all')
-                            ->orWhere('area', BackendPermission::normalize($area));
+                        $q->area('all')->orWhere->area($area);
                     })
                     ->where(function ($q) use ($code) {
-                        $q
-                            ->where('code', 'super')
-                            ->orWhere('code', BackendPermission::normalize($code));
+                        $q->code('super')->orWhere->code($code);
                     });
             })
             ->exists();
@@ -129,17 +130,13 @@ class Backend
             ->whereHas('backendPermissions', function (Builder $query) use ($area, $code) {
                 if ($area) {
                     $query->where(function ($q) use ($area) {
-                        $q
-                            ->where('area', 'all')
-                            ->orWhere('area', BackendPermission::normalize($area));
+                        $q->area('all')->orWhere->area($area);
                     });
                 }
 
                 if ($code) {
                     $query->where(function ($q) use ($code) {
-                        $q
-                            ->where('code', 'super')
-                            ->orWhere('code', BackendPermission::normalize($code));
+                        $q->code('super')->orWhere->code($code);
                     });
                 }
             });
