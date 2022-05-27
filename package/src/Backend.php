@@ -87,6 +87,35 @@ class Backend
     }
 
     /**
+     * Test if a user has a given backend permission.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param string $area
+     * @param string $code
+     *
+     * @return bool
+     */
+    public function test(User $user, string $area, string $code)
+    {
+        return $user
+            ->backendPermissions()
+            ->where(function ($query) use ($area, $code) {
+                $query
+                    ->where(function ($q) use ($area) {
+                        $q
+                            ->where('area', 'all')
+                            ->orWhere('area', BackendPermission::normalize($area));
+                    })
+                    ->where(function ($q) use ($code) {
+                        $q
+                            ->where('code', 'super')
+                            ->orWhere('code', BackendPermission::normalize($code));
+                    });
+            })
+            ->exists();
+    }
+
+    /**
      * Query backend users.
      *
      * @param string $area
@@ -101,16 +130,16 @@ class Backend
                 if ($area) {
                     $query->where(function ($q) use ($area) {
                         $q
-                            ->where('area', BackendPermission::normalize($area))
-                            ->orWhere('area', 'all');
+                            ->where('area', 'all')
+                            ->orWhere('area', BackendPermission::normalize($area));
                     });
                 }
 
                 if ($code) {
                     $query->where(function ($q) use ($code) {
                         $q
-                            ->where('code', BackendPermission::normalize($code))
-                            ->orWhere('code', 'super');
+                            ->where('code', 'super')
+                            ->orWhere('code', BackendPermission::normalize($code));
                     });
                 }
             });
