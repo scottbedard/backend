@@ -16,7 +16,7 @@ class UsersTest extends TestCase
         $alice = User::factory()->create();
         $bob = User::factory()->create();
 
-        Backend::authorize($alice, 'all', 'super');
+        Backend::authorize($alice, 'all', 'all');
 
         $users = Backend::users()->get();
 
@@ -31,9 +31,9 @@ class UsersTest extends TestCase
         $sally = User::factory()->create();
         $john = User::factory()->create();
 
-        Backend::authorize($alice, 'all', 'super');
-        Backend::authorize($bob, 'foo', 'super');
-        Backend::authorize($sally, 'bar', 'super');
+        Backend::authorize($alice, 'all', 'all');
+        Backend::authorize($bob, 'foo', 'all');
+        Backend::authorize($sally, 'bar', 'all');
 
         $users = Backend::users('foo')->get();
 
@@ -50,11 +50,11 @@ class UsersTest extends TestCase
         $john = User::factory()->create();
         $mary = User::factory()->create();
 
-        Backend::authorize($alice, 'foo', 'super');
+        Backend::authorize($alice, 'foo', 'all');
         Backend::authorize($bob, 'foo', 'create');
         Backend::authorize($sally, 'foo', 'delete');
         Backend::authorize($john, 'bar', 'delete');
-        Backend::authorize($mary, 'bar', 'super');
+        Backend::authorize($mary, 'bar', 'all');
 
         $users = Backend::users('foo', 'create')->get();
 

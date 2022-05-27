@@ -15,9 +15,9 @@ class TestTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'all', 'super');
+        Backend::authorize($user, 'all', 'all');
 
-        $this->assertTrue(Backend::test($user, 'foo', 'super'));
+        $this->assertTrue(Backend::test($user, 'foo', 'all'));
         $this->assertTrue(Backend::test($user, 'foo', 'create'));
     }
 
@@ -25,9 +25,9 @@ class TestTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'foo', 'super');
+        Backend::authorize($user, 'foo', 'all');
 
-        $this->assertTrue(Backend::test($user, 'foo', 'super'));
+        $this->assertTrue(Backend::test($user, 'foo', 'all'));
         $this->assertTrue(Backend::test($user, 'foo', 'create'));
         $this->assertFalse(Backend::test($user, 'bar', 'create'));
     }

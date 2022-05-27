@@ -17,10 +17,10 @@ class AuthorizeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $permission = Backend::authorize($user, 'all', 'super');
+        $permission = Backend::authorize($user, 'all', 'all');
 
         $this->assertEquals('all', $permission->area);
-        $this->assertEquals('super', $permission->code);
+        $this->assertEquals('all', $permission->code);
         $this->assertEquals(1, $user->backendPermissions()->count());
     }
 
@@ -51,7 +51,7 @@ class AuthorizeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'all', 'super');
+        Backend::authorize($user, 'all', 'all');
 
         $this->expectException(AlreadyAuthorizedException::class);
 
@@ -62,7 +62,7 @@ class AuthorizeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'foo', 'super');
+        Backend::authorize($user, 'foo', 'all');
 
         $this->expectException(AlreadyAuthorizedException::class);
 

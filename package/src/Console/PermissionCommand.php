@@ -56,12 +56,12 @@ class PermissionCommand extends Command
 
         // normalize options
         $area = BackendPermission::normalize($this->option('area') ?? '');
-        $code = BackendPermission::normalize($this->option('code') ?? 'super');
+        $code = BackendPermission::normalize($this->option('code') ?? 'all');
 
         // authorize super admin
         if ($this->super($area, $code)) {
             if ($this->confirm(self::$superAdminConfirmation)) {
-                Backend::authorize($user, 'all', 'super');
+                Backend::authorize($user, 'all', 'all');
 
                 $this->info('Super admin created!');
 
@@ -97,11 +97,11 @@ class PermissionCommand extends Command
      */
     private function super(string $area, string $code): bool
     {
-        if ($this->option('super')) {
+        if ($area === 'all' && $code === 'all') {
             return true;
         }
 
-        if ($area === 'all' && $code === 'super') {
+        if ($this->option('super')) {
             return true;
         }
 

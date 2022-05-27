@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
 
         $user->backendPermissions()->create([
             'area' => 'all',
-            'code' => 'super',
+            'code' => 'all',
         ]);
 
         return $user;

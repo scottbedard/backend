@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ])->backendPermissions()->create([
             'area' => 'all',
-            'code' => 'super',
+            'code' => 'all',
         ]);
 
         User::factory()->count(10)->create();

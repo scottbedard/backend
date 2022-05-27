@@ -37,7 +37,7 @@ class PermissionCommandTest extends TestCase
         $permission = $user->backendPermissions()->firstOrFail();
 
         $this->assertEquals('all', $permission->area);
-        $this->assertEquals('super', $permission->code);
+        $this->assertEquals('all', $permission->code);
     }
 
     public function test_creating_super_admin_confirmation_declined()

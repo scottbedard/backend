@@ -109,7 +109,7 @@ class Backend
                         $q->area('all')->orWhere->area($area);
                     })
                     ->where(function ($q) use ($code) {
-                        $q->code('super')->orWhere->code($code);
+                        $q->code('all')->orWhere->code($code);
                     });
             })
             ->exists();
@@ -135,7 +135,7 @@ class Backend
 
                 if ($code) {
                     $query->where(function ($q) use ($code) {
-                        $q->code('super')->orWhere->code($code);
+                        $q->code('all')->orWhere->code($code);
                     });
                 }
             });
