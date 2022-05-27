@@ -23,6 +23,18 @@ class BackendPermission extends Model
     ];
 
     /**
+     * Booted.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::saved(function ($model) {
+            $model->purgeLesserPermissions();
+        });
+    }
+
+    /**
      * Normalize an area / code value.
      *
      * @param string $str
@@ -32,6 +44,24 @@ class BackendPermission extends Model
     public static function normalize(string $str): string
     {
         return strtolower(trim(Str::snake($str)));
+    }
+
+    /**
+     * Purge permissions that are subsets of the current model.
+     *
+     * @return void
+     */
+    public function purgeLesserPermissions()
+    {
+        if ($this->code === 'all') {
+            $query = self::where('user_id', $this->user_id);
+
+            if ($this->area !== 'all') {
+                $query->where('area', $this->area);
+            }
+            
+            $query->whereNot('id', $this->id)->delete();
+        }
     }
 
     /**
