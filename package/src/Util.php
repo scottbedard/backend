@@ -3,6 +3,7 @@
 namespace Bedard\Backend;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Util
 {
@@ -15,7 +16,7 @@ class Util
      *
      * @return string
      */
-    public static function suggest(string $needle, iterable $haystack, callable $normalizer = null)
+    public static function suggest(string $needle, iterable $haystack, callable $normalizer = null): string
     {
         $normalizer = $normalizer ?: fn ($str) => $str;
         $needle = $normalizer($needle);
