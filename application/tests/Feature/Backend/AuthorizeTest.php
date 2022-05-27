@@ -73,12 +73,14 @@ class AuthorizeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'foo', 'create');
+        $foo = Backend::authorize($user, 'foo', 'create');
+        $bar = Backend::authorize($user, 'bar', 'create');
         
         $permission = Backend::authorize($user, 'foo', 'all');
         
-        $this->assertEquals(1, $user->backendPermissions()->count());
-        $this->assertEquals($permission->id, $user->backendPermissions()->first()->id);
+        $this->assertEquals(2, $user->backendPermissions()->count());
+        $this->assertTrue($user->backendPermissions()->where('id', $bar->id)->exists());
+        $this->assertTrue($user->backendPermissions()->where('id', $permission->id)->exists());
     }
 
     public function test_promoting_area_admin_to_super_admin()
