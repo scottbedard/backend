@@ -31,6 +31,28 @@ class Backend
     }
 
     /**
+     * Revoke backend permission from a user.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param string $area
+     * @param string $code
+     *
+     * @return void
+     */
+    public function deauthorize(User $user, string $area, string $code)
+    {
+        if (! self::test($user, $area, $code)) {
+            dd('@todo');
+        }
+
+        $user
+            ->backendPermissions()
+            ->area($area)
+            ->code($code)
+            ->delete();
+    }
+
+    /**
      * Test if a user's backend setting is disabled
      *
      * @param \Illuminate\Foundation\Auth\User $user
