@@ -7,14 +7,14 @@ use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class PermissionCommand extends Command
+class AuthorizeCommand extends Command
 {
     /**
      * Super admin confirmation message.
      *
      * @var string
      */
-    public static $superAdminConfirmation = "Are you sure you want to create a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins";
+    public static $superAdminConfirmation = "Are you sure you want to authorize a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins.";
 
     /**
      * The name and signature of the console command.
@@ -22,11 +22,11 @@ class PermissionCommand extends Command
      * @var string
      */
     protected $signature = '
-        backend:permission
+        backend:authorize
             {user}
-            {--area= : Backend area. For resources, this is the full namespace and class name}
-            {--code= : Permission code (create, read, update, delete, etc...)}
-            {--super : Create super-user, with full access to everything}
+            {--area= : Backend area}
+            {--code= : Permission code}
+            {--super : Create super-admin, with full access to everything}
     ';
 
     /**
@@ -34,7 +34,7 @@ class PermissionCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create backend permission to a user';
+    protected $description = 'Grant backend permissions to a user';
 
     /**
      * Execute the console command.

@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Bedard\Backend\Console\PermissionCommand;
+use Bedard\Backend\Console\AuthorizeCommand;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class PermissionCommandTest extends TestCase
+class AuthorizeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -16,7 +16,7 @@ class PermissionCommandTest extends TestCase
         $user = User::factory()->create();
 
         $this
-            ->artisan("backend:permission {$user->id} --area=whatever --code=create")
+            ->artisan("backend:authorize {$user->id} --area=whatever --code=create")
             ->assertSuccessful();
 
         $permission = $user->backendPermissions()->firstOrFail();
@@ -30,8 +30,8 @@ class PermissionCommandTest extends TestCase
         $user = User::factory()->create();
 
         $this
-            ->artisan("backend:permission {$user->id} --super")
-            ->expectsConfirmation(PermissionCommand::$superAdminConfirmation, 'yes')
+            ->artisan("backend:authorize {$user->id} --super")
+            ->expectsConfirmation(AuthorizeCommand::$superAdminConfirmation, 'yes')
             ->assertSuccessful();
 
         $permission = $user->backendPermissions()->firstOrFail();
@@ -45,8 +45,8 @@ class PermissionCommandTest extends TestCase
         $user = User::factory()->create();
 
         $this
-            ->artisan("backend:permission {$user->id} --super")
-            ->expectsConfirmation(PermissionCommand::$superAdminConfirmation, 'no')
+            ->artisan("backend:authorize {$user->id} --super")
+            ->expectsConfirmation(AuthorizeCommand::$superAdminConfirmation, 'no')
             ->assertFailed();
 
         $this->assertEquals(0, $user->backendPermissions()->count());
