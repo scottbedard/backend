@@ -7,14 +7,15 @@ use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AuthorizeCommand extends Command
+class DeauthorizeCommand extends Command
 {
     /**
      * Confirmation message.
      *
      * @var string
      */
-    public static $confirmation = "Are you sure you want to authorize a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins.";
+    public static $confirmation = "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.";
+
 
     /**
      * The name and signature of the console command.
@@ -22,11 +23,11 @@ class AuthorizeCommand extends Command
      * @var string
      */
     protected $signature = '
-        backend:authorize
+        backend:deauthorize
             {user}
             {--area= : Backend area}
             {--code= : Permission code}
-            {--super : Create super-admin, with full access to everything}
+            {--super : Revoke all permissions, blocking access to everything}
     ';
 
     /**
@@ -34,7 +35,7 @@ class AuthorizeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Grant backend permissions to a user';
+    protected $description = 'Revoke backend permissions from a user';
 
     /**
      * Execute the console command.
@@ -58,17 +59,17 @@ class AuthorizeCommand extends Command
         $area = BackendPermission::normalize($this->option('area') ?? '');
         $code = BackendPermission::normalize($this->option('code') ?? 'all');
 
-        // authorize super admin
+        // deauthorize super admin
         if ($this->super($area, $code)) {
             if ($this->confirm(self::$confirmation)) {
-                Backend::authorize($user, 'all', 'all');
+                Backend::deauthorize($user, 'all', 'all');
 
-                $this->info('Authorization complete!');
+                $this->info('Deauthorization complete!');
 
                 return 0;
             }
 
-            $this->error('Authorization canceled.');
+            $this->error('Deauthorization canceled.');
 
             return 1;
         }
@@ -80,9 +81,9 @@ class AuthorizeCommand extends Command
             return 1;
         }
 
-        Backend::authorize($user, $area, $code);
+        Backend::deauthorize($user, $area, $code);
 
-        $this->info('Authorization complete!');
+        $this->info('Deauthorization complete!');
 
         return 0;
     }

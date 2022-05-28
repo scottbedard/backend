@@ -53,6 +53,7 @@ class BackendServiceProvider extends ServiceProvider
 
         $this->commands([
             \Bedard\Backend\Console\AuthorizeCommand::class,
+            \Bedard\Backend\Console\DeauthorizeCommand::class,
             \Bedard\Backend\Console\ResourceCommand::class,
         ]);
     }

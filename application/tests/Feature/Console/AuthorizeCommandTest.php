@@ -7,7 +7,7 @@ use Bedard\Backend\Console\AuthorizeCommand;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AuthorizeTest extends TestCase
+class AuthorizeCommandTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -31,7 +31,7 @@ class AuthorizeTest extends TestCase
 
         $this
             ->artisan("backend:authorize {$user->id} --super")
-            ->expectsConfirmation(AuthorizeCommand::$superAdminConfirmation, 'yes')
+            ->expectsConfirmation(AuthorizeCommand::$confirmation, 'yes')
             ->assertSuccessful();
 
         $permission = $user->backendPermissions()->firstOrFail();
@@ -46,7 +46,7 @@ class AuthorizeTest extends TestCase
 
         $this
             ->artisan("backend:authorize {$user->id} --super")
-            ->expectsConfirmation(AuthorizeCommand::$superAdminConfirmation, 'no')
+            ->expectsConfirmation(AuthorizeCommand::$confirmation, 'no')
             ->assertFailed();
 
         $this->assertEquals(0, $user->backendPermissions()->count());

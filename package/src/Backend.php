@@ -148,7 +148,7 @@ class Backend
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function users(string $area = '', string $code = ''): Builder
+    public function users(?string $area = '', ?string $code = ''): Builder
     {
         return config('backend.user')::query()
             ->whereHas('backendPermissions', function (Builder $query) use ($area, $code) {
