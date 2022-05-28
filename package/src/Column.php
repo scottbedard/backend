@@ -11,6 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 class Column
 {
     /**
+     * Default column types.
+     *
+     * @var array
+     */
+    public static $types = [
+        'carbon' => \Bedard\Backend\Columns\CarbonColumn::class,
+        'number' => \Bedard\Backend\Columns\NumberColumn::class,
+        'text' => \Bedard\Backend\Columns\TextColumn::class,
+    ];
+
+    /**
      * Align
      *
      * @var string
@@ -62,17 +73,11 @@ class Column
      */
     public static function __callStatic(string $type, array $args = [])
     {
-        $common = [
-            'carbon' => \Bedard\Backend\Columns\CarbonColumn::class,
-            'number' => \Bedard\Backend\Columns\NumberColumn::class,
-            'text' => \Bedard\Backend\Columns\TextColumn::class,
-        ];
-
-        if (array_key_exists($type, $common)) {
-            return new ($common[$type])(...$args);
+        if (array_key_exists($type, self::$types)) {
+            return new (self::$types[$type])(...$args);
         }
 
-        $suggestion = Util::suggest($type, array_keys($common));
+        $suggestion = Util::suggest($type, array_keys(self::$types));
 
         throw new UnknownColumnTypeException("Unknown column type \"{$type}\", did you mean \"{$suggestion}\"?");
     }

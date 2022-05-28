@@ -56,6 +56,8 @@ class ColumnTest extends TestCase
             'number' => \Bedard\Backend\Columns\NumberColumn::class,
             'text' => \Bedard\Backend\Columns\TextColumn::class,
         ];
+
+        $this->assertEqualsCanonicalizing($types, Column::$types);
         
         foreach ($types as $name => $class) {
             $this->assertInstanceOf($class, Column::{$name}('id'));
