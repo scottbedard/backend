@@ -64,9 +64,9 @@ class UserResource extends Resource
 
             Column::text('email')->header('Email address'),
 
-            Column::text('created_at')->header('Created')->align('right'),
+            Column::carbon('created_at')->header('Created'),
 
-            Column::text('updated_at')->header('Updated')->align('right'),
+            Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
         ];
     }
 }
