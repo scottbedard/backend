@@ -12,10 +12,17 @@
             </a>
         </div>
 
-        <button data-toggle-dark-mode="{{ route('backend.settings.toggle') }}">
-            <x-backend::icon class="dark:hidden" name="sun" />
+        <div class="flex gap-6">
+            <a data-toggle-dark-mode="{{ route('backend.settings.toggle') }}" href="javascript:;">
+                <x-backend::icon class="dark:hidden" name="sun" />
 
-            <x-backend::icon class="hidden dark:block" name="moon" />
-        </button>
+                <x-backend::icon class="hidden dark:block" name="moon" />
+            </a>
+
+            <a href="/logout">
+                <x-backend::icon name="log-out" />
+            </a>
+        </div>
+
     </x-backend::layout.margin>
 </header>
