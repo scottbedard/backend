@@ -8,7 +8,7 @@
             <div class="flex flex-1">
                 <x-backend::layout.nav />
 
-                <div class="flex-1">
+                <div class="flex-1 overflow-x-auto overflow-y-hidden">
                     {{ $slot }}
                 </div>
             </div>
