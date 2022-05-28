@@ -90,7 +90,7 @@ class Column
     }
 
     /**
-     * Static constructor for custom column types
+     * Construct a generic column.
      *
      * @param string $key
      *
