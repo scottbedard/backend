@@ -15,7 +15,7 @@
     </div>
     <div class="table-row-group">
         @foreach ($data as $row)
-            <a class="table-row odd:bg-gray-100" href="javascript:void 0;">
+            <a class="table-row odd:bg-gray-100 dark:odd:bg-gray-600" href="javascript:void 0;">
                 @foreach ($schema as $column)
                     <div class="{{ implode(' ', [
                         'table-cell',

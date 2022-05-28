@@ -1,4 +1,4 @@
-<body class="dark:bg-gray-800 dark:text-white">
+<body {{ $attributes->class([]) }}>
     {{ $slot }}
 
     <script src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js" defer></script>

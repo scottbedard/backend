@@ -1,4 +1,4 @@
-<nav {{ $attributes->class(['bg-gray-700 py-3 text-white']) }}>
+<nav {{ $attributes->class(['bg-gray-700 py-3 text-white dark:bg-gray-800']) }}>
     @foreach (Backend::resources() as $resource)
         <a
             class="flex gap-3 group items-center px-6 py-3 unstyled w-full"
