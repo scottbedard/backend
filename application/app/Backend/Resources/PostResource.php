@@ -62,9 +62,9 @@ class PostResource extends Resource
 
             Column::text('title')->header('Title'),
 
-            Column::text('created_at')->header('Created'),
+            Column::carbon('created_at')->header('Created'),
 
-            Column::text('updated_at')->header('Updated'),
+            Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
         ];
     }
 }

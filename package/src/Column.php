@@ -2,6 +2,8 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Exceptions\UnknownColumnPropertyException;
+use Bedard\Backend\Exceptions\UnknownColumnTypeException;
 use Bedard\Backend\Util;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -16,13 +18,6 @@ class Column
     public string $align = 'left';
 
     /**
-     * Column
-     *
-     * @var string
-     */
-    public string $column = '';
-
-    /**
      * Header
      *
      * @var string
@@ -30,47 +25,80 @@ class Column
     public string $header = '';
 
     /**
-     * Field construction
+     * Key
+     *
+     * @var string
+     */
+    public string $key = '';
+
+    /**
+     * Set column properties
+     *
+     * @param string $name
+     * @param array $args
+     */
+    public function __call($name, array $args = [])
+    {
+        if (!method_exists($this, $name)) {
+            if (property_exists($this, $name)) {
+                $this->{$name} = $args[0];
+            } else {
+                $suggestion = Util::suggest($name, array_keys(get_object_vars($this)));
+                
+                throw new UnknownColumnPropertyException("Unknown column property \"{$name}\", did you mean \"{$suggestion}\"?");
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Construct common column types.
      *
      * @param string $column
      * @param array $args
      *
      * @return \Bedard\Backend\Column
      */
-    public static function __callStatic(string $column, array $args = [])
+    public static function __callStatic(string $type, array $args = [])
     {
         $common = [
+            'carbon' => \Bedard\Backend\Columns\CarbonColumn::class,
             'number' => \Bedard\Backend\Columns\NumberColumn::class,
             'text' => \Bedard\Backend\Columns\TextColumn::class,
         ];
 
-        if (Arr::exists($common, $column)) {
-            return new ($common[$column])(...$args);
+        if (Arr::exists($common, $type)) {
+            return new ($common[$type])(...$args);
         }
 
-        return new static($column);
-    }
+        $suggestion = Util::suggest($type, array_keys($common));
 
-    /**
-     * Static constructor for custom column types
-     *
-     * @param string $column
-     *
-     * @return \Bedard\Backend\Column
-     */
-    public static function make(string $column)
-    {
-        return new static($column);
+        throw new UnknownColumnTypeException("Unknown column type \"{$type}\", did you mean \"{$suggestion}\"?");
     }
 
     /**
      * Construct
      *
+     * @param string $key
+     *
      * @return void
      */
-    public function __construct(string $column)
+    public function __construct(string $key)
     {
-        $this->column = $column;
+        $this->key = $key;
+    }
+
+    /**
+     * Static constructor for custom column types
+     *
+     * @param string $key
+     *
+     * @return \Bedard\Backend\Column
+     */
+    public static function make(string $key)
+    {
+        return new static($key);
     }
 
     /**
@@ -100,27 +128,13 @@ class Column
 
         return $this;
     }
-
-    /**
-     * Header
-     *
-     * @param string $header
-     *
-     * @return \Bedard\Backend\Column
-     */
-    public function header(string $header)
-    {
-        $this->header = $header;
-
-        return $this;
-    }
     
     /**
      * Render column
      */
     public function render(Model $model)
     {
-        return $model->{$this->column};
+        return $model->{$this->key};
     }
 
     /**
