@@ -50,7 +50,9 @@ class Backend
                         $q->area('all')->orWhere->area($area);
                     })
                     ->where(function ($q) use ($code) {
-                        $q->code('all')->orWhere->code($code);
+                        if ($code !== 'any') {
+                            $q->code('all')->orWhere->code($code);
+                        }
                     });
             })
             ->exists();

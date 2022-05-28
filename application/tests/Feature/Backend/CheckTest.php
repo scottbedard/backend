@@ -42,4 +42,13 @@ class CheckTest extends TestCase
         $this->assertFalse(Backend::check($user, 'foo', 'delete'));
         $this->assertFalse(Backend::check($user, 'bar', 'create'));
     }
+
+    public function test_area_any_code()
+    {
+        $user = User::factory()->create();
+
+        Backend::authorize($user, 'foo', 'create');
+
+        $this->assertTrue(Backend::check($user, 'foo', 'any'));
+    }
 }
