@@ -3,6 +3,7 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Exceptions\AlreadyAuthorizedException;
+use Bedard\Backend\Models\BackendPermission;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
@@ -39,17 +40,19 @@ class Backend
      *
      * @return void
      */
-    public function deauthorize(User $user, string $area, string $code)
+    public function deauthorize(User $user, string $area = 'all', string $code = 'all')
     {
-        if (! self::test($user, $area, $code)) {
-            dd('@todo');
+        $query = $user->backendPermissions();
+        
+        if (BackendPermission::normalize($area) !== 'all') {
+            $query->area($area);
         }
 
-        $user
-            ->backendPermissions()
-            ->area($area)
-            ->code($code)
-            ->delete();
+        if (BackendPermission::normalize($code) !== 'all') {
+            $query->code($code);
+        }
+
+        $query->delete();
     }
 
     /**
@@ -116,12 +119,12 @@ class Backend
      * Test if a user has a given backend permission.
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $area
-     * @param string $code
+     * @param ?string $area
+     * @param ?string $code
      *
      * @return bool
      */
-    public function test(User $user, string $area, string $code)
+    public function test(User $user, ?string $area, ?string $code)
     {
         return $user
             ->backendPermissions()
