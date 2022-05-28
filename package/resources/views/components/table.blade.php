@@ -3,26 +3,27 @@
     'schema' => [],
 ])
 
-<table class="border border-primary-500 border-collapse">
-    <thead>
-        <tr>
+<div class="border border-primary-500 table">
+    <div class="table-header-group">
+        <div class="table-row">
             @foreach ($schema as $column)
-                <th class="border border-black px-6 tracking-wide">
+                <div class="border border-black px-6 table-cell tracking-wide">
                     {{ $column->renderHeader() }}
-                </th>
+                </div>
             @endforeach
-        </tr>
-    </thead>
-    <tbody>
+        </div>
+    </div>
+    <div class="table-row-group">
         @foreach ($data as $row)
-            <tr>
+            <a class="table-row" href="javascript:void 0;">
                 @foreach ($schema as $column)
-                    <td class="{{ implode(' ', [
+                    <div class="{{ implode(' ', [
+                        'table-cell',
                         $column->align === 'center' ? 'text-center' : '',
                         $column->align === 'right' ? 'text-right' : '',
-                    ]) }}">{{ $column->render($row) }}</td>
+                    ]) }}">{{ $column->render($row) }}</div>
                 @endforeach
-            </tr>
+            </a>
         @endforeach
-    </tbody>
-</table>
+    </div>
+</div>
