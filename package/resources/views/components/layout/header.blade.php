@@ -1,6 +1,6 @@
 <header>
     <x-backend::margin
-        class="flex h-16 items-center justify-between"
+        class="bg-gray-900 flex h-16 items-center justify-between text-white"
         padded-x>
         <div>
             <a

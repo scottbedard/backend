@@ -6,6 +6,6 @@ body {
   scrollbar-gutter: stable;
 }
 
-a {
+a:not(.unstyled) {
   @apply hover:text-primary-500;
 }

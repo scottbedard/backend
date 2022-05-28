@@ -3,7 +3,7 @@
     'schema' => [],
 ])
 
-<div class="border border-primary-500 table">
+<div class="table">
     <div class="table-header-group">
         <div class="table-row">
             @foreach ($schema as $column)
@@ -15,13 +15,17 @@
     </div>
     <div class="table-row-group">
         @foreach ($data as $row)
-            <a class="table-row" href="javascript:void 0;">
+            <a class="table-row odd:bg-gray-100" href="javascript:void 0;">
                 @foreach ($schema as $column)
                     <div class="{{ implode(' ', [
                         'table-cell',
                         $column->align === 'center' ? 'text-center' : '',
                         $column->align === 'right' ? 'text-right' : '',
-                    ]) }}">{{ $column->render($row) }}</div>
+                    ]) }}">
+                        <div class="flex h-12 items-center px-6">
+                            {{ $column->render($row) }}
+                        </div>
+                    </div>
                 @endforeach
             </a>
         @endforeach
