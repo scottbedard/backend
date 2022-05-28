@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Backend;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -16,15 +17,25 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create([
+        // super admin
+        $admin = User::factory()->create([
             'email' => 'admin@example.com',
             'name' => 'Super Admin',
             'password' => Hash::make('password'),
-        ])->backendPermissions()->create([
-            'area' => 'all',
-            'code' => 'all',
         ]);
 
+        Backend::authorize($admin, 'all', 'all');
+
+        // user manager
+        $users = User::factory()->create([
+            'email' => 'users@example.com',
+            'name' => 'User Manager',
+            'password' => Hash::make('password'),
+        ]);
+
+        Backend::authorize($users, 'users', 'all');
+
+        // regular users
         User::factory()->count(10)->create();
     }
 }

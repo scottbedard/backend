@@ -5,6 +5,7 @@ namespace Bedard\Backend\Http\Controllers;
 use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResourcesController extends Controller
 {
@@ -27,7 +28,13 @@ class ResourcesController extends Controller
      */
     public function show(Request $request, string $id)
     {
+        $user = Auth::user();
+
         $resource = Backend::resource($id);
+        
+        if (!Backend::check($user, $resource::$area, 'read')) {
+            return abort(401);
+        }
 
         $data = $resource->data();
 

@@ -5,6 +5,13 @@ namespace Bedard\Backend;
 class Resource
 {
     /**
+     * Backend permission area.
+     *
+     * @var string
+     */
+    public static $area = '';
+
+    /**
      * Unique resource identifier.
      *
      * @var string

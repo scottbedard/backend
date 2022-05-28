@@ -26,6 +26,12 @@ Route::get('/login', function () {
     ]);
 });
 
+Route::get('/logout', function () {
+    Auth::logout();
+
+    return redirect('/');
+});
+
 Route::post('/login', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],

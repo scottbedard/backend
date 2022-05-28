@@ -9,6 +9,13 @@ use Bedard\Backend\Resource;
 class PostResource extends Resource
 {
     /**
+     * Backend permission area.
+     *
+     * @var string
+     */
+    public static $area = 'posts';
+
+    /**
      * Unique resource identifier.
      *
      * @var string
