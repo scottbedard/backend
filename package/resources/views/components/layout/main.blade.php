@@ -5,8 +5,8 @@
         <div class="flex flex-col min-h-screen">
             <x-backend::layout.header />
 
-            <div class="flex">
-                <x-backend::layout.nav class="min-w-min w-64" />
+            <div class="flex flex-1">
+                <x-backend::layout.nav />
 
                 <div class="flex-1">
                     {{ $slot }}

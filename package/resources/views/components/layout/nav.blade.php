@@ -1,13 +1,19 @@
-<nav {{ $attributes->class(['bg-gray-700 py-3 text-white dark:bg-gray-800']) }}>
+<nav {{ $attributes->class(['bg-gray-700 text-white w-20 dark:bg-gray-800']) }}>
     @foreach (Backend::resources() as $resource)
         <a
-            class="flex gap-3 group items-center px-6 py-3 unstyled w-full"
+            class="aspect-square flex flex-wrap group items-center justify-center unstyled w-full"
             href="{{ route('backend.resources.show', ['id' => $resource::$id]) }}">
-            <x-backend::icon
-                class="group-hover:text-primary-500"
-                :name="$resource::$icon" />
+            <div class="flex flex-wrap gap-3 justify-center">
+                <div class="aspect-square flex justify-center w-6">
+                    <x-backend::icon
+                        class="h-full w-full group-hover:text-primary-500"
+                        :name="$resource::$icon" />
+                </div>
 
-            {{ $resource::$title }}
+                <div class="text-center text-sm w-full">
+                    {{ $resource::$title }}
+                </div>
+            </div>
         </a>
     @endforeach
 </nav>
