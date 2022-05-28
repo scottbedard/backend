@@ -14,26 +14,28 @@ class DeauthorizeTest extends TestCase
     public function test_deauthorizing_a_backend_permission()
     {
         $user = User::factory()->create();
-        $foo = $user->backendPermissions()->create(['area' => 'foo', 'code' => 'create']);
-        $bar = $user->backendPermissions()->create(['area' => 'bar', 'code' => 'create']);
+        $user->backendPermissions()->create(['area' => 'foo', 'code' => 'create']);
+        $user->backendPermissions()->create(['area' => 'foo', 'code' => 'update']);
+        $user->backendPermissions()->create(['area' => 'bar', 'code' => 'create']);
 
         Backend::deauthorize($user, 'foo', 'create');
         
-        $this->assertEquals(1, $user->backendPermissions()->count());
-        $this->assertEquals($bar->id, $user->backendPermissions()->first()->id);
+        $this->assertEquals(2, $user->backendPermissions()->count());
+        $this->assertTrue($user->backendPermissions()->area('foo')->code('update')->exists());
+        $this->assertTrue($user->backendPermissions()->area('bar')->code('create')->exists());
     }
 
     public function test_deauthorizing_an_entire_backend_area()
     {
         $user = User::factory()->create();
-        $foo1 = $user->backendPermissions()->create(['area' => 'foo', 'code' => 'create']);
-        $foo2 = $user->backendPermissions()->create(['area' => 'foo', 'code' => 'update']);
-        $bar = $user->backendPermissions()->create(['area' => 'bar', 'code' => 'create']);
+        $user->backendPermissions()->create(['area' => 'foo', 'code' => 'create']);
+        $user->backendPermissions()->create(['area' => 'foo', 'code' => 'update']);
+        $user->backendPermissions()->create(['area' => 'bar', 'code' => 'create']);
 
         Backend::deauthorize($user, 'foo');
         
         $this->assertEquals(1, $user->backendPermissions()->count());
-        $this->assertEquals($bar->id, $user->backendPermissions()->first()->id);
+        $this->assertTrue($user->backendPermissions()->area('bar')->exists());
     }
 
     public function test_deauthorizing_all_permissions()
