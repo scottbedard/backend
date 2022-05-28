@@ -2,11 +2,11 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Exceptions\InvalidColumnAlignmentException;
 use Bedard\Backend\Exceptions\UnknownColumnPropertyException;
 use Bedard\Backend\Exceptions\UnknownColumnTypeException;
 use Bedard\Backend\Util;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
 class Column
 {
@@ -68,7 +68,7 @@ class Column
             'text' => \Bedard\Backend\Columns\TextColumn::class,
         ];
 
-        if (Arr::exists($common, $type)) {
+        if (array_key_exists($type, $common)) {
             return new ($common[$type])(...$args);
         }
 
@@ -84,7 +84,7 @@ class Column
      *
      * @return void
      */
-    public function __construct(string $key)
+    public function __construct(string $key = '')
     {
         $this->key = $key;
     }
@@ -121,7 +121,7 @@ class Column
         if (!in_array($str, $alignments)) {
             $suggestion = Util::suggest($str, $alignments);
             
-            throw new \Exception("Invalid column alignment \"{$align}\", did you mean \"{$suggestion}\"?");
+            throw new InvalidColumnAlignmentException("Invalid column alignment \"{$align}\", did you mean \"{$suggestion}\"?");
         }
 
         $this->align = $align;
@@ -144,7 +144,7 @@ class Column
     {
         return view('backend::columns.default-header', [
             'align' => $this->align,
-            'header' => $this->header ?: $this->column,
+            'header' => $this->header ?: $this->key,
         ]);
     }
 }
