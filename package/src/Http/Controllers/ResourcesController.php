@@ -9,7 +9,18 @@ use Illuminate\Http\Request;
 class ResourcesController extends Controller
 {
     /**
-     * Backend single page application
+     * Create
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $route
+     */
+    public function create(Request $request, string $id)
+    {
+        return 'Soon...';
+    }
+
+    /**
+     * Show
      *
      * @param \Illuminate\Http\Request $request
      * @param string $route
