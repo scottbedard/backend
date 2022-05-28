@@ -29,6 +29,11 @@ class CarbonColumn extends Column
      */
     public string $parse = 'Y-m-d H:i:s';
 
+    /**
+     * Display time relative to now
+     *
+     * @return \Bedard\Backend\Columns\CarbonColumn
+     */
     public function diffForHumans()
     {
         $this->diffForHumans = true;
