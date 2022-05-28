@@ -21,7 +21,7 @@ class Backend
      */
     public function authorize(User $user, string $area, string $code)
     {
-        if (self::test($user, $area, $code)) {
+        if (self::check($user, $area, $code)) {
             throw new AlreadyAuthorizedException;
         }
         
@@ -29,6 +29,31 @@ class Backend
             'area' => $area,
             'code' => $code,
         ]);
+    }
+
+    /**
+     * Check if a user has a backend permission.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param ?string $area
+     * @param ?string $code
+     *
+     * @return bool
+     */
+    public function check(User $user, ?string $area, ?string $code)
+    {
+        return $user
+            ->backendPermissions()
+            ->where(function ($query) use ($area, $code) {
+                $query
+                    ->where(function ($q) use ($area) {
+                        $q->area('all')->orWhere->area($area);
+                    })
+                    ->where(function ($q) use ($code) {
+                        $q->code('all')->orWhere->code($code);
+                    });
+            })
+            ->exists();
     }
 
     /**
@@ -116,31 +141,6 @@ class Backend
     }
 
     /**
-     * Test if a user has a given backend permission.
-     *
-     * @param \Illuminate\Foundation\Auth\User $user
-     * @param ?string $area
-     * @param ?string $code
-     *
-     * @return bool
-     */
-    public function test(User $user, ?string $area, ?string $code)
-    {
-        return $user
-            ->backendPermissions()
-            ->where(function ($query) use ($area, $code) {
-                $query
-                    ->where(function ($q) use ($area) {
-                        $q->area('all')->orWhere->area($area);
-                    })
-                    ->where(function ($q) use ($code) {
-                        $q->code('all')->orWhere->code($code);
-                    });
-            })
-            ->exists();
-    }
-
-    /**
      * Query backend users.
      *
      * @param string $area
@@ -148,7 +148,7 @@ class Backend
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function users(?string $area = '', ?string $code = ''): Builder
+    public function users(string $area = '', string $code = ''): Builder
     {
         return config('backend.user')::query()
             ->whereHas('backendPermissions', function (Builder $query) use ($area, $code) {

@@ -7,7 +7,7 @@ use Backend;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class TestTest extends TestCase
+class CheckTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -17,8 +17,8 @@ class TestTest extends TestCase
 
         Backend::authorize($user, 'all', 'all');
 
-        $this->assertTrue(Backend::test($user, 'foo', 'all'));
-        $this->assertTrue(Backend::test($user, 'foo', 'create'));
+        $this->assertTrue(Backend::check($user, 'foo', 'all'));
+        $this->assertTrue(Backend::check($user, 'foo', 'create'));
     }
 
     public function test_super_area_admin()
@@ -27,9 +27,9 @@ class TestTest extends TestCase
 
         Backend::authorize($user, 'foo', 'all');
 
-        $this->assertTrue(Backend::test($user, 'foo', 'all'));
-        $this->assertTrue(Backend::test($user, 'foo', 'create'));
-        $this->assertFalse(Backend::test($user, 'bar', 'create'));
+        $this->assertTrue(Backend::check($user, 'foo', 'all'));
+        $this->assertTrue(Backend::check($user, 'foo', 'create'));
+        $this->assertFalse(Backend::check($user, 'bar', 'create'));
     }
 
     public function test_area_admin_code()
@@ -38,8 +38,8 @@ class TestTest extends TestCase
 
         Backend::authorize($user, 'foo', 'create');
 
-        $this->assertTrue(Backend::test($user, 'foo', 'create'));
-        $this->assertFalse(Backend::test($user, 'foo', 'delete'));
-        $this->assertFalse(Backend::test($user, 'bar', 'create'));
+        $this->assertTrue(Backend::check($user, 'foo', 'create'));
+        $this->assertFalse(Backend::check($user, 'foo', 'delete'));
+        $this->assertFalse(Backend::check($user, 'bar', 'create'));
     }
 }
