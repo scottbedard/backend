@@ -125,7 +125,7 @@ class Backend
     /**
      * Get collection of backend resources
      *
-     * @return string[]
+     * @return \Illuminate\Support\Collection
      */
     public function resources()
     {
