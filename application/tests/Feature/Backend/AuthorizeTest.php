@@ -5,6 +5,7 @@ namespace Tests\Feature\Backend;
 use App\Models\User;
 use Backend;
 use Bedard\Backend\Exceptions\AlreadyAuthorizedException;
+use Bedard\Backend\Exceptions\ReservedPermissionCodeException;
 use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -93,5 +94,14 @@ class AuthorizeTest extends TestCase
         
         $this->assertEquals(1, $user->backendPermissions()->count());
         $this->assertEquals($permission->id, $user->backendPermissions()->first()->id);
+    }
+
+    public function test_cannot_create_reserved_permission_code()
+    {
+        $user = User::factory()->create();
+        
+        $this->expectException(ReservedPermissionCodeException::class);
+
+        Backend::authorize($user, 'foo', 'any');
     }
 }

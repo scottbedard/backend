@@ -2,6 +2,9 @@
 
 namespace Bedard\Backend\Models;
 
+use Backend;
+use Bedard\Backend\Exceptions\AlreadyAuthorizedException;
+use Bedard\Backend\Exceptions\ReservedPermissionCodeException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +32,10 @@ class BackendPermission extends Model
      */
     protected static function booted()
     {
+        static::saving(function ($model) {
+            $model->validatePermission();
+        });
+
         static::saved(function ($model) {
             $model->purgeLesserPermissions();
         });
@@ -78,6 +85,30 @@ class BackendPermission extends Model
     }
 
     /**
+     * Check for permission.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $code
+     * @param string $area
+     *
+     * @return void
+     */
+    public function scopeCheck(Builder $query, string $area, string $code = 'any')
+    {
+        $query->where(function ($q) use ($area, $code) {
+            $q
+                ->where(function ($q) use ($area) {
+                    $q->area('all')->orWhere->area($area);
+                })
+                ->where(function ($q) use ($code) {
+                    if ($code !== 'any') {
+                        $q->code('all')->orWhere->code($code);
+                    }
+                });
+        });
+    }
+
+    /**
      * Select permission by code.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -112,5 +143,30 @@ class BackendPermission extends Model
     public function setCodeAttribute(string $code)
     {
         $this->attributes['code'] = self::normalize($code);
+    }
+
+    /**
+     * Validate a permission.
+     * 
+     * @throws \Bedard\Backend\Exceptions\AlreadyAuthorizedException
+     * @throws \Bedard\Backend\Exceptions\ReservedPermissionCodeException
+     *
+     * @return void
+     */
+    public function validatePermission()
+    {
+        if ($this->code === 'any') {
+            throw new ReservedPermissionCodeException;
+        }
+
+        $authorized = self::query()
+            ->whereNot('id', $this->id)
+            ->where('user_id', $this->user_id)
+            ->check($this->area, $this->code)
+            ->exists();
+
+        if ($authorized) {
+            throw new AlreadyAuthorizedException;
+        }
     }
 }

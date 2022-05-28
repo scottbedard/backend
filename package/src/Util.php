@@ -2,11 +2,32 @@
 
 namespace Bedard\Backend;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Util
 {
+    /**
+     * Get a model's ID
+     *
+     * @param \Illuminate\Database\Eloquent\Model|int|string $modelOrId
+     *
+     * @return int
+     */
+    public static function getId(Model|int|string $value)
+    {
+        if ($value instanceof Model) {
+            return $value->id;
+        }
+
+        if (is_int($value)) {
+            return $value;
+        }
+        
+        return intval($value);
+    }
+
     /**
      * Suggest a string based on closest levenshtein distance to other strings.
      *

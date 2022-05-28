@@ -2,8 +2,8 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Exceptions\AlreadyAuthorizedException;
 use Bedard\Backend\Models\BackendPermission;
+use Bedard\Backend\Util;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
@@ -21,10 +21,6 @@ class Backend
      */
     public function authorize(User $user, string $area, string $code)
     {
-        if (self::check($user, $area, $code)) {
-            throw new AlreadyAuthorizedException;
-        }
-        
         return $user->backendPermissions()->create([
             'area' => $area,
             'code' => $code,
@@ -34,27 +30,16 @@ class Backend
     /**
      * Check if a user has a backend permission.
      *
-     * @param \Illuminate\Foundation\Auth\User $user
-     * @param ?string $area
-     * @param ?string $code
+     * @param \Illuminate\Foundation\Auth\User|int|string $user
+     * @param string $area
+     * @param string $code
      *
      * @return bool
      */
-    public function check(User $user, ?string $area, ?string $code)
+    public function check(User|int|string $user, string $area, string $code = 'any')
     {
-        return $user
-            ->backendPermissions()
-            ->where(function ($query) use ($area, $code) {
-                $query
-                    ->where(function ($q) use ($area) {
-                        $q->area('all')->orWhere->area($area);
-                    })
-                    ->where(function ($q) use ($code) {
-                        if ($code !== 'any') {
-                            $q->code('all')->orWhere->code($code);
-                        }
-                    });
-            })
+        return BackendPermission::where('user_id', Util::getId($user))
+            ->check($area, $code)
             ->exists();
     }
 
