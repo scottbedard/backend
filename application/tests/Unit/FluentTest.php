@@ -30,6 +30,11 @@ class Bar extends Fluent
     }
 }
 
+class BooleanSwitch extends Fluent
+{
+    public $enabled = false;
+}
+
 class FluentTest extends TestCase
 {
     public function test_making_generic_fluent_class()
@@ -113,5 +118,16 @@ class FluentTest extends TestCase
         $this->expectException(FluentException::class);
 
         $instance->foo();
+    }
+
+    public function test_toggling_boolean_properties()
+    {
+        $blank = BooleanSwitch::enabled();
+        
+        $this->assertTrue($blank->enabled);
+
+        $explicit = BooleanSwitch::enabled(false);
+
+        $this->assertFalse($explicit->enabled);
     }
 }

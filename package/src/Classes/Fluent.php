@@ -12,9 +12,7 @@ class Fluent
      * 
      * @var array
      */
-    public static array $constructors = [
-        // ...
-    ];
+    public static array $constructors = [];
 
     /**
      * Set class properties.
@@ -25,7 +23,11 @@ class Fluent
     public function __call($name, array $args = [])
     {
         if (!method_exists($this, $name)) {
-            if (property_exists($this, $name)) {
+            $prop = property_exists($this, $name);
+
+            if ($prop && count($args) === 0 && is_bool($this->{$name})) {
+                $this->{$name} = ! $this->{$name};
+            } elseif ($prop) {
                 $this->{$name} = $args[0];
             } else {
                 throw $this->throwFluentException($name);
