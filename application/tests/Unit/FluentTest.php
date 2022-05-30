@@ -91,13 +91,17 @@ class FluentTest extends TestCase
         $this->assertEquals('bar', $bar);
     }
 
-    public function test_unknown_constructor_throws_fluent_exception()
+    public function test_unknown_constructor_falls_back_to_property_assignment()
     {
-        $fluent = new class extends Fluent {};
+        $fluent = new class extends Fluent {
+            public $foo;
+            public $bar;
+        };
 
-        $this->expectException(FluentException::class);
+        $instance = $fluent::foo('foo')->bar('bar');
 
-        $fluent::foo();
+        $this->assertEquals('foo', $instance->foo);
+        $this->assertEquals('bar', $instance->bar);
     }
 
     public function test_unknown_property_throws_fluent_exception()

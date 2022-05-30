@@ -28,7 +28,7 @@ class Fluent
             if (property_exists($this, $name)) {
                 $this->{$name} = $args[0];
             } else {
-                throw $this->propertyException($name);
+                throw $this->throwFluentException($name);
             }
         }
 
@@ -48,26 +48,8 @@ class Fluent
         if (array_key_exists($key, static::$constructors)) {
             return new (static::$constructors[$key])(...$args);
         }
-
-        throw static::constructorException($key);
-    }
-
-    /**
-     * Fluent constructor exception.
-     *
-     * @param string $key
-     *
-     * @return \Bedard\Backend\Exceptions\FluentException
-     */
-    private static function constructorException(string $key)
-    {
-        if (empty(static::$constructors)) {
-            return new FluentException("Unknown constructor \"$key\".");
-        }
-
-        $suggestion = Util::suggest($key, array_keys(static::$constructors));
-
-        return new FluentException("Unknown constructor \"{$key}\", did you mean \"{$suggestion}\"?");
+        
+        return (new static)->{$key}(...$args);
     }
 
     /**
@@ -83,11 +65,11 @@ class Fluent
     }
 
     /**
-     * Fluent exception.
+     * Throw fluent exception.
      *
-     * @return \Bedard\Backend\Exceptions\FluentException
+     * @throws \Bedard\Backend\Exceptions\FluentException
      */
-    private function propertyException(string $name)
+    private function throwFluentException(string $name)
     {
         $properties = get_object_vars($this);
         
@@ -97,6 +79,6 @@ class Fluent
 
         $suggestion = Util::suggest($name, array_keys(get_object_vars($this)));
 
-        return new FluentException("Unknown property \"{$name}\", did you mean \"{$suggestion}\"?");
+        throw new FluentException("Unknown property \"{$name}\", did you mean \"{$suggestion}\"?");
     }
 }

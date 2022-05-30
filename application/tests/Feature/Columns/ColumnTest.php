@@ -5,8 +5,6 @@ namespace Tests\Feature\Columns;
 use App\Models\User;
 use Bedard\Backend\Column;
 use Bedard\Backend\Exceptions\InvalidColumnAlignmentException;
-use Bedard\Backend\Exceptions\UnknownColumnPropertyException;
-use Bedard\Backend\Exceptions\UnknownColumnTypeException;
 use Tests\TestCase;
 
 class ColumnTest extends TestCase
@@ -57,18 +55,11 @@ class ColumnTest extends TestCase
             'text' => \Bedard\Backend\Columns\TextColumn::class,
         ];
 
-        $this->assertEqualsCanonicalizing($types, Column::$types);
+        $this->assertEqualsCanonicalizing($types, Column::$constructors);
         
         foreach ($types as $name => $class) {
             $this->assertInstanceOf($class, Column::{$name}('id'));
         }
-    }
-
-    public function test_constructing_an_unknown_column_type()
-    {
-        $this->expectException(UnknownColumnTypeException::class);
-
-        Column::unknown('id');
     }
 
     public function test_setting_custom_column_properties()
@@ -91,12 +82,5 @@ class ColumnTest extends TestCase
         
         $this->assertEquals('foo', $column->foo);
         $this->assertEquals('bar', $column->bar);
-    }
-
-    public function test_setting_unknown_column_properties()
-    {
-        $this->expectException(UnknownColumnPropertyException::class);
-
-        Column::make('id')->unknownProperty('foo');
     }
 }
