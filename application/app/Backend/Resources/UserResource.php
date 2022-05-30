@@ -65,8 +65,6 @@ class UserResource extends Resource
     public function schema()
     {
         return [
-            Column::number('id')->header('ID'),
-
             Column::text('name')->header('Name'),
 
             Column::text('email')->header('Email address'),
