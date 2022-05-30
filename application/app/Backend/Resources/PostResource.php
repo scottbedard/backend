@@ -3,8 +3,8 @@
 namespace App\Backend\Resources;
 
 use Bedard\Backend\Column;
-use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
+use Bedard\Backend\Table;
 
 class PostResource extends Resource
 {
@@ -58,20 +58,22 @@ class PostResource extends Resource
     }
 
     /**
-     * Table schema
+     * Table definition.
      *
-     * @return array
+     * @return \Bedard\Backend\Table
      */
-    public function schema()
+    public function table(): Table
     {
-        return [
-            Column::number('id')->header('ID'),
+        return Table::columns([
+                Column::number('id')->header('ID'),
 
-            Column::text('title')->header('Title'),
+                Column::text('title')->header('Title'),
 
-            Column::carbon('created_at')->header('Created'),
+                Column::carbon('created_at')->header('Created'),
 
-            Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
-        ];
+                Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
+            ])
+            ->selectable()
+            ->pageSize(20);
     }
 }

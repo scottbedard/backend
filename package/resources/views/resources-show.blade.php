@@ -5,7 +5,7 @@
         </div>
 
         <x-backend::table
-            :data="$data"
-            :schema="$schema" />
+            :columns="$columns"
+            :data="$data" />
     </div>
 </x-backend::layout.main>

@@ -5,6 +5,7 @@ namespace App\Backend\Resources;
 use Bedard\Backend\Column;
 use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
+use Bedard\Backend\Table;
 
 class UserResource extends Resource
 {
@@ -58,20 +59,22 @@ class UserResource extends Resource
     }
 
     /**
-     * Table schema
+     * Table definition.
      *
-     * @return array
+     * @return \Bedard\Backend\Table
      */
-    public function schema()
+    public function table(): Table
     {
-        return [
-            Column::text('name')->header('Name'),
-
-            Column::text('email')->header('Email address'),
-
-            Column::carbon('created_at')->header('Created'),
-
-            Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
-        ];
+        return Table::columns([
+                Column::text('name')->header('Name'),
+    
+                Column::text('email')->header('Email address'),
+    
+                Column::carbon('created_at')->header('Created'),
+    
+                Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
+            ])
+            ->selectable()
+            ->pageSize(20);
     }
 }

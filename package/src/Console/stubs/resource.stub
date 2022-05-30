@@ -4,6 +4,7 @@ namespace App\Backend\Resources;
 
 use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
+use Bedard\Backend\Table;
 
 class {{ class }} extends Resource
 {
@@ -57,14 +58,14 @@ class {{ class }} extends Resource
     }
 
     /**
-     * Table schema
+     * Table definition.
      *
-     * @return array
+     * @return \Bedard\Backend\Table
      */
-    public function schema()
+    public function table(): Table
     {
-        return [
+        return Table::columns([
             // ...
-        ];
+        ]);
     }
 }

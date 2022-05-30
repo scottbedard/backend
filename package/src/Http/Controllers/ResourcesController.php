@@ -36,13 +36,11 @@ class ResourcesController extends Controller
             return abort(401);
         }
 
-        $data = $resource->data();
-
-        $schema = $resource->schema();
+        $table = $resource->table();
 
         return view('backend::resources-show', [
-            'data' => $data,
-            'schema' => $schema,
+            'data' => $resource->data(),
+            'columns' => $table->columns,
         ]);
     }
 }

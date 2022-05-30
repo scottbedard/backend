@@ -2,6 +2,8 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Table;
+
 class Resource
 {
     /**
@@ -80,5 +82,15 @@ class Resource
         return [
             // ...
         ];
+    }
+
+    /**
+     * Table definition.
+     *
+     * @return \Bedard\Backend\Table
+     */
+    public function table(): Table
+    {
+        return Table::make();
     }
 }
