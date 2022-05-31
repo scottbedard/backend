@@ -60,8 +60,12 @@ class Column extends Fluent
      *
      * @return \Bedard\Backend\Column
      */
-    public function align(string $align)
+    public function align(?string $align = null)
     {
+        if ($align === null) {
+            throw new InvalidColumnAlignmentException("Missing column alignment, please specify \"left\", \"right\", or \"center\".");
+        }
+
         $alignments = [
             'center', 
             'left', 
@@ -94,9 +98,6 @@ class Column extends Fluent
      */
     public function renderHeader()
     {
-        return view('backend::columns.default-header', [
-            'align' => $this->align,
-            'header' => $this->header ?: $this->key,
-        ]);
+        return $this->header ?: $this->key;
     }
 }

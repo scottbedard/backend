@@ -6,6 +6,7 @@
 
         <x-backend::table
             :columns="$columns"
-            :data="$data" />
+            :data="$data"
+            :selectable="$selectable" />
     </div>
 </x-backend::layout.main>
