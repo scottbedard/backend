@@ -70,13 +70,15 @@ class Fluent
      * Throw fluent exception.
      *
      * @throws \Bedard\Backend\Exceptions\FluentException
+     *
+     * @return void
      */
-    private function throwFluentException(string $name)
+    private function throwFluentException(string $name): void
     {
         $properties = get_object_vars($this);
         
         if (empty($properties)) {
-            return new FluentException("Unknown property \"{$name}\".");
+            throw new FluentException("Unknown property \"{$name}\".");
         }
 
         $suggestion = Util::suggest($name, array_keys($properties));
