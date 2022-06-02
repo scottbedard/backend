@@ -1,24 +1,17 @@
-export default function (rows: number = 0) {
+import alpine from './alpine'
+
+/**
+ * <x-backend::table>
+ * 
+ * @see package/resources/views/components/table.blade.php
+ */
+export default alpine((rows: number = 0) => {
   return {
     all: false,
 
-    rows: new Array(rows).fill(false),
+    rows: new Array(rows).fill(false) as boolean[],
 
     paused: false,
-
-    init() {
-      // @ts-ignore
-      this.$watch('all', this.check(checked => {
-        for (let i = 0; i < this.rows.length; i++) {
-          this.rows[i] = checked
-        }
-      }))
-
-      // @ts-ignore
-      this.$watch('rows', this.check(() => {
-        this.all = !this.rows.includes(false)
-      }))
-    },
 
     check(fn: (...args: any[]) => void) {
       return async (...args: any[]) => {
@@ -27,12 +20,27 @@ export default function (rows: number = 0) {
   
           fn(...args)
   
-          // @ts-ignore
           await this.$nextTick()
   
           this.paused = false
         }
       }
-    }
+    },
+
+    get checked() {
+      return this.rows.filter(val => val).length
+    },
+
+    init() {
+      this.$watch('all', this.check(checked => {
+        for (let i = 0; i < this.rows.length; i++) {
+          this.rows[i] = checked
+        }
+      }))
+
+      this.$watch('rows', this.check(() => {
+        this.all = !this.rows.includes(false)
+      }))
+    },
   }
-}
+})

@@ -9,7 +9,7 @@
     data-component="table">
     <div class="table text-sm w-full">
         <div
-            class="table-header-group"
+            class="font-bold table-header-group"
             data-table-group="header">
             <div class="table-row">
                 @if ($selectable)
