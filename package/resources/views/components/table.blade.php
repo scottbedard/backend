@@ -6,7 +6,9 @@
 
 <div
     x-data="table({{ count($data) }})"
-    data-component="table">
+    x-modelable="modelable"
+    data-component="table"
+    {{ $attributes->merge([]) }}>
     <div class="table text-sm w-full">
         <div
             class="font-bold table-header-group"

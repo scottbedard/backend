@@ -1,3 +1,4 @@
+import { identity } from 'lodash-es'
 import alpine from './alpine'
 
 /**
@@ -27,10 +28,6 @@ export default alpine((rows: number = 0) => {
       }
     },
 
-    get checked() {
-      return this.rows.filter(val => val).length
-    },
-
     init() {
       this.$watch('all', this.check(checked => {
         for (let i = 0; i < this.rows.length; i++) {
@@ -41,6 +38,10 @@ export default alpine((rows: number = 0) => {
       this.$watch('rows', this.check(() => {
         this.all = !this.rows.includes(false)
       }))
+    },
+
+    get modelable() {
+      return this.rows.filter(identity).length
     },
   }
 })
