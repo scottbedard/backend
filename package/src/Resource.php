@@ -73,18 +73,6 @@ class Resource
     }
 
     /**
-     * Table schema.
-     *
-     * @return array
-     */
-    public function schema()
-    {
-        return [
-            // ...
-        ];
-    }
-
-    /**
      * Table definition.
      *
      * @return \Bedard\Backend\Table

@@ -1,0 +1,10 @@
+@keyframes checkbox {
+  from { stroke-dashoffset: 50 }
+  to { stroke-dashoffset: 0 }
+}
+
+.x-checkbox {
+  input:checked + svg path {
+    animation: checkbox 50ms cubic-bezier(.41,.88,.84,-0.45) 50ms 1 normal forwards;
+  }
+}
