@@ -20,17 +20,18 @@ class ColumnTest extends TestCase
 
     public function test_rendering_a_generic_header()
     {
-        $header = Column::make('id')->renderHeader();
+        $column = Column::make('id');
 
-        $this->assertEquals('left', $header->align);
-        $this->assertEquals('id', $header->header);
+        $this->assertEquals('left', $column->align);
+        $this->assertEquals('', $column->header);
+        $this->assertEquals('id', $column->renderHeader());
     }
 
     public function test_rendering_a_custom_header()
     {
         $header = Column::make('id')->header('foo')->renderHeader();
 
-        $this->assertEquals('foo', $header->header);
+        $this->assertEquals('foo', $header);
     }
 
     public function test_setting_a_custom_alignment()

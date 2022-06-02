@@ -96,7 +96,7 @@ class Column extends Fluent
     /**
      * Render column header
      */
-    public function renderHeader()
+    public function renderHeader(): string
     {
         return $this->header ?: $this->key;
     }
