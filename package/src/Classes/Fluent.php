@@ -79,7 +79,7 @@ class Fluent
             return new FluentException("Unknown property \"{$name}\".");
         }
 
-        $suggestion = Util::suggest($name, array_keys(get_object_vars($this)));
+        $suggestion = Util::suggest($name, array_keys($properties));
 
         throw new FluentException("Unknown property \"{$name}\", did you mean \"{$suggestion}\"?");
     }
