@@ -30,7 +30,7 @@ class Fluent
             } elseif ($prop) {
                 $this->{$name} = $args[0];
             } else {
-                throw $this->throwFluentException($name);
+                $this->throwFluentException($name);
             }
         }
 
