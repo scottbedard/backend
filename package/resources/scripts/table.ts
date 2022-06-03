@@ -6,38 +6,40 @@ import alpine from './alpine'
  * 
  * @see package/resources/views/components/table.blade.php
  */
-export default alpine((rows: number = 0) => {
+export default alpine((count: number = 0) => {
+  const arr = (checked: boolean): boolean[] => new Array(count).fill(checked)
+  
   return {
     all: false,
 
-    rows: new Array(rows).fill(false) as boolean[],
+    rows: arr(false),
 
     paused: false,
 
-    check(fn: (...args: any[]) => void) {
-      return async (...args: any[]) => {
-        if (!this.paused) {
-          this.paused = true
-  
-          fn(...args)
-  
-          await this.$nextTick()
-  
-          this.paused = false
-        }
+    async check(fn: () => any) {
+      if (!this.paused) {
+        this.paused = true
+
+        fn()
+
+        await this.$nextTick()
+
+        this.paused = false
       }
     },
 
     init() {
-      this.$watch('all', this.check(checked => {
-        for (let i = 0; i < this.rows.length; i++) {
-          this.rows[i] = checked
-        }
-      }))
+      this.$watch('all', async checked => {
+        this.check(() => {
+          this.rows.splice(0, count, ...arr(checked))
+        })
+      })
 
-      this.$watch('rows', this.check(() => {
-        this.all = !this.rows.includes(false)
-      }))
+      this.$watch('rows', async rows => {
+        this.check(() => {
+          this.all = !rows.includes(false)
+        })
+      })
     },
 
     get modelable() {
