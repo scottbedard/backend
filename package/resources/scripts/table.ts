@@ -1,4 +1,3 @@
-import { identity } from 'lodash-es'
 import alpine from './alpine'
 
 /**
@@ -43,7 +42,7 @@ export default alpine((count: number = 0) => {
     },
 
     get modelable() {
-      return this.rows.filter(identity).length
+      return this.rows.filter(x => x).length
     },
   }
 })
