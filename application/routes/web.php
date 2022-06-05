@@ -26,6 +26,10 @@ Route::get('/login', function () {
     ]);
 });
 
+Route::get('/unauthorized', function () {
+    return view('unauthorized');
+});
+
 Route::get('/logout', function () {
     Auth::logout();
 

@@ -2,69 +2,39 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Models\BackendPermission;
-use Bedard\Backend\Util;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
+use Spatie\Permission\Models\Permission;
 
 class Backend
 {
     /**
-     * Grant backend permission to a user.
+     * Grant permission to a user.
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $area
-     * @param string $code
+     * @param string $name
      *
-     * @return \Bedard\Backend\Models\BackendPermission
+     * @return \Illuminate\Foundation\Auth\User
      */
-    public function authorize(User $user, string $area, string $code)
+    public function authorize(User $user, string $name)
     {
-        return $user->backendPermissions()->create([
-            'area' => $area,
-            'code' => $code,
-        ]);
-    }
+        $permission = Permission::findOrCreate($name);
 
-    /**
-     * Check if a user has a backend permission.
-     *
-     * @param \Illuminate\Foundation\Auth\User|int|string $user
-     * @param string $area
-     * @param string $code
-     *
-     * @return bool
-     */
-    public function check(User|int|string $user, string $area, string $code = 'any')
-    {
-        return BackendPermission::where('user_id', Util::getId($user))
-            ->check($area, $code)
-            ->exists();
+        return $user->givePermissionTo($permission);
     }
 
     /**
      * Revoke backend permission from a user.
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $area
-     * @param string $code
+     * @param string $name
      *
      * @return void
      */
     public function deauthorize(User $user, string $area = 'all', string $code = 'all')
     {
-        $query = $user->backendPermissions();
-        
-        if (BackendPermission::normalize($area) !== 'all') {
-            $query->area($area);
-        }
-
-        if (BackendPermission::normalize($code) !== 'all') {
-            $query->code($code);
-        }
-
-        $query->delete();
+        // ...
     }
 
     /**

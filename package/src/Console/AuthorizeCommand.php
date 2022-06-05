@@ -2,19 +2,25 @@
 
 namespace Bedard\Backend\Console;
 
+use App\Models\User;
 use Backend;
-use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuthorizeCommand extends Command
 {
     /**
-     * Confirmation message.
+     * Console output.
      *
-     * @var string
+     * @var arr
      */
-    public static $confirmation = "Are you sure you want to authorize a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins.";
+    public static $messages = [
+        'canceled' => "Authorization canceled.",
+        'complete' => "Authorization complete!",
+        'confirmSuperAdmin' => "Are you sure you want to authorize a new super admin?\n <fg=default>This grants all permissions, including the ability to create other super admins.",
+        'invalidOptions' => "Invalid arguments, please specify --permission, --role, or --super.",
+        'userNotFound' => "User not found.",
+    ];
 
     /**
      * The name and signature of the console command.
@@ -23,9 +29,9 @@ class AuthorizeCommand extends Command
      */
     protected $signature = '
         backend:authorize
-            {user}
-            {--area= : Backend area}
-            {--code= : Permission code}
+            {userId}
+            {--role= : Role name}
+            {--permission= : Permission code}
             {--super : Create super-admin, with full access to everything}
     ';
 
@@ -37,71 +43,130 @@ class AuthorizeCommand extends Command
     protected $description = 'Grant backend permissions to a user';
 
     /**
-     * Execute the console command.
+     * Authorize a user for a specific permission.
+     *
+     * @param \App\Models\User $user
+     * @param string $permission
      *
      * @return int
      */
-    public function handle()
+    private function authPermission(User $user, string $permission): int
     {
-        // fetch the user
-        $id = $this->argument('user');
+        Backend::authorize($user, $permission);
 
-        try {
-            $user = config('backend.user')::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            $this->error('User not found');
+        $this->info(self::$messages['complete']);
 
-            return 1;
+        return 0;
+    }
+
+    private function authRole()
+    {
+        dd('not implemented');
+    }
+
+    /**
+     * Authorize a super admin.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return int
+     */
+    private function authSuper(User $user): int
+    {
+        if ($this->confirm(self::$messages['confirmSuperAdmin'])) {
+            return $this->authPermission($user, 'super admin');
         }
 
-        // normalize options
-        $area = BackendPermission::normalize($this->option('area') ?? '');
-        $code = BackendPermission::normalize($this->option('code') ?? 'all');
-
-        // authorize super admin
-        if ($this->super($area, $code)) {
-            if ($this->confirm(self::$confirmation)) {
-                Backend::authorize($user, 'all', 'all');
-
-                $this->info('Authorization complete!');
-
-                return 0;
-            }
-
-            $this->error('Authorization canceled.');
-
-            return 1;
-        }
-
-        // permission area
-        if (!$area) {
-            $this->error('No backend area specified.');
-
-            return 1;
-        }
-
-        Backend::authorize($user, $area, $code);
-
-        $this->info('Authorization complete!');
+        $this->info(self::$messages['canceled']);
 
         return 0;
     }
 
     /**
-     * Test for super flag or options.
+     * Execute the console command.
      *
-     * @param string $area
-     * @param string $code
+     * @return int
+     */
+    public function handle(): int
+    {
+        // fetch the user
+        $id = $this->argument('userId');
+
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            $this->error(self::$messages['userNotFound']);
+
+            return 1;
+        }
+
+        if (!$this->valid()) {
+            $this->error(self::$messages['invalidOptions']);
+
+            return 1;
+        }
+
+        if ($this->super()) {
+            return $this->authSuper($user);
+        }
+
+        elseif ($this->permission()) {
+            return $this->authPermission($user, $this->option('permission'));
+        }
+
+        // elseif ($this->role()) {
+        //     return $this->authRole($user);
+        // }
+
+        dd('bad params');
+    }
+
+    /**
+     * Test for the permission flag.
      *
      * @return bool
      */
-    private function super(string $area, string $code): bool
+    private function permission(): bool
     {
-        if ($area === 'all' && $code === 'all') {
+        return (bool) $this->option('permission');
+    }
+
+    /**
+     * Test for the role flag.
+     *
+     * @return bool
+     */
+    private function role(): bool
+    {
+        return (bool) $this->option('role');
+    }
+
+    /**
+     * Test for super flag or equivalent permission.
+     *
+     * @return bool
+     */
+    private function super(): bool
+    {
+        return $this->option('super') || strtolower($this->option('permission') || '') === 'super admin';
+    }
+
+    /**
+     * Test if parameter combinations are valid.
+     *
+     * @return bool
+     */
+    private function valid(): bool
+    {
+        if ($this->super() && !$this->permission() && !$this->role()) {
             return true;
         }
 
-        if ($this->option('super')) {
+        elseif ($this->permission() && !$this->role() && !$this->super()) {
+            return true;
+        }
+
+        elseif ($this->role() && !$this->permission() && !$this->super()) {
             return true;
         }
 

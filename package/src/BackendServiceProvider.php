@@ -3,11 +3,10 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Http\Middleware\BackendMiddleware;
-use Bedard\Backend\Models\BackendPermission;
-use Bedard\Backend\Models\BackendSetting;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,9 +20,9 @@ class BackendServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootConsoleCommands();
+        $this->bootGates();
         $this->bootMiddleware();
         $this->bootMigrations();
-        $this->bootModels();
         $this->bootPublished();
         $this->bootRoutes();
         $this->bootViews();
@@ -53,9 +52,25 @@ class BackendServiceProvider extends ServiceProvider
 
         $this->commands([
             \Bedard\Backend\Console\AuthorizeCommand::class,
-            \Bedard\Backend\Console\DeauthorizeCommand::class,
+            // \Bedard\Backend\Console\DeauthorizeCommand::class,
             \Bedard\Backend\Console\ResourceCommand::class,
         ]);
+    }
+
+    /**
+     * Boot authorization gates.
+     *
+     * @return void
+     */
+    private function bootGates()
+    {
+        Gate::before(function ($user) {
+            if ($user->hasPermissionTo('super admin')) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     /**
@@ -78,34 +93,6 @@ class BackendServiceProvider extends ServiceProvider
     private function bootMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-    }
-
-    /**
-     * Boot models.
-     *
-     * @return void
-     */
-    private function bootModels()
-    {
-        // extend user model
-        $model = config('backend.user');
-
-        $model::resolveRelationUsing('backendPermissions', function ($user) {
-            return $user->hasMany(BackendPermission::class, 'user_id');
-        });
-
-        $model::resolveRelationUsing('backendSettings', function ($user) {
-            return $user->hasMany(BackendSetting::class, 'user_id');
-        });
-
-        // add user relationship to backend models
-        BackendPermission::resolveRelationUsing('user', function ($permission) use ($model) {
-            return $permission->belongsTo($model, 'id');
-        });
-
-        BackendPermission::resolveRelationUsing('user', function ($setting) use ($model) {
-            return $setting->belongsTo($model, 'id');
-        });
     }
 
     /**
