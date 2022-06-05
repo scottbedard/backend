@@ -54,7 +54,7 @@ class BackendServiceProvider extends ServiceProvider
 
         $this->commands([
             \Bedard\Backend\Console\AuthorizeCommand::class,
-            // \Bedard\Backend\Console\DeauthorizeCommand::class,
+            \Bedard\Backend\Console\DeauthorizeCommand::class,
             \Bedard\Backend\Console\ResourceCommand::class,
         ]);
     }
@@ -67,7 +67,6 @@ class BackendServiceProvider extends ServiceProvider
     private function bootGates()
     {
         Gate::before(function ($user) {
-            dd('hey');
             if ($user->hasPermissionTo('super admin')) {
                 return true;
             }

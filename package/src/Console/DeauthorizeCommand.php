@@ -10,17 +10,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class DeauthorizeCommand extends Command
 {
     /**
-     * Confirmation message.
-     *
-     * @var string
-     */
-    public static $confirmation = "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.";
-    /**
      * Console output.
      *
      * @var arr
      */
     public static $messages = [
+        'complete' => 'Authorization revoked!',
+        'canceled' => 'Deauthorization canceled.',
         'confirmTotalDeauthorization' => "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.",
         'userNotFound' => "User not found.",
     ];
@@ -32,7 +28,7 @@ class DeauthorizeCommand extends Command
      */
     protected $signature = '
         backend:deauthorize
-            {user}
+            {userId}
             {--role= : Role name}
             {--permission= : Permission code}
     ';
@@ -44,6 +40,41 @@ class DeauthorizeCommand extends Command
      */
     protected $description = 'Revoke backend permissions from a user';
 
+
+    /**
+     * Authorize a user for a specific permission.
+     *
+     * @param \App\Models\User $user
+     * @param string $name
+     *
+     * @return int
+     */
+    private function deauthorizePermission(User $user, string $name): int
+    {
+        Backend::deauthorize($user, $name);
+
+        $this->info(self::$messages['complete']);
+
+        return 0;
+    }
+
+    /**
+     * Assign a user to a role.
+     *
+     * @param \App\Models\User $user
+     * @param string $name
+     *
+     * @return int
+     */
+    private function deauthorizeRole(User $user, string $name): int
+    {
+        Backend::unassign($user, $name);
+
+        $this->info(self::$messages['complete']);
+
+        return 0;
+    }
+
     /**
      * Remove all of a users permissions and roles.
      *
@@ -51,7 +82,7 @@ class DeauthorizeCommand extends Command
      *
      * @return int
      */
-    private function authSuper(User $user): int
+    private function deauthorizeTotal(User $user): int
     {
         if ($this->confirm(self::$messages['confirmTotalDeauthorization'])) {
             $user->permissions()->delete();
@@ -87,6 +118,36 @@ class DeauthorizeCommand extends Command
         if ($this->total()) {
             return $this->deauthorizeTotal($user);
         }
+
+        elseif ($this->permission()) {
+            return $this->deauthorizePermission($user, $this->option('permission'));
+        }
+
+        elseif ($this->role()) {
+            return $this->deauthorizeRole($user, $this->option('role'));
+        }
+
+        return 1;
+    }
+
+    /**
+     * Test for the permission flag.
+     *
+     * @return bool
+     */
+    private function permission(): bool
+    {
+        return (bool) $this->option('permission');
+    }
+
+    /**
+     * Test for the role flag.
+     *
+     * @return bool
+     */
+    private function role(): bool
+    {
+        return (bool) $this->option('role');
     }
 
     /**

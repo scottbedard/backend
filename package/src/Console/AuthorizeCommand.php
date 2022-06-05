@@ -61,6 +61,11 @@ class AuthorizeCommand extends Command
 
     /**
      * Assign a user to a role.
+     *
+     * @param \App\Models\User $user
+     * @param string $name
+     *
+     * @return int
      */
     private function authRole(User $user, string $name): int
     {

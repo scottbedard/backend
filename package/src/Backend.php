@@ -67,9 +67,11 @@ class Backend
      *
      * @return void
      */
-    public function deauthorize(User $user, string $area = 'all', string $code = 'all')
+    public function deauthorize(User $user, string $name)
     {
-        // ...
+        $permission = Permission::findOrCreate($name);
+
+        $user->revokePermissionTo($permission);
     }
 
     /**
@@ -130,6 +132,21 @@ class Backend
                     return $a::$title <=> $b::$title;
                 },
             ]);
+    }
+
+    /**
+     * Unassign a user to a role.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param string $name
+     *
+     * @return void
+     */
+    public function unassign(User $user, string $name): void
+    {
+        $role = Role::findOrCreate($name);
+
+        $user->removeRole($role);
     }
 
     /**
