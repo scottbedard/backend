@@ -6,9 +6,25 @@ use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class Backend
 {
+    /**
+     * Assign a user to a role.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param string $name
+     *
+     * @return \Illuminate\Foundation\Auth\User
+     */
+    public function assign(User $user, string $name)
+    {
+        $role = Role::findOrCreate($name);
+
+        $user->assignRole($role);
+    }
+
     /**
      * Grant permission to a user.
      *

@@ -46,22 +46,29 @@ class AuthorizeCommand extends Command
      * Authorize a user for a specific permission.
      *
      * @param \App\Models\User $user
-     * @param string $permission
+     * @param string $name
      *
      * @return int
      */
-    private function authPermission(User $user, string $permission): int
+    private function authPermission(User $user, string $name): int
     {
-        Backend::authorize($user, $permission);
+        Backend::authorize($user, $name);
 
         $this->info(self::$messages['complete']);
 
         return 0;
     }
 
-    private function authRole()
+    /**
+     * Assign a user to a role.
+     */
+    private function authRole(User $user, string $name): int
     {
-        dd('not implemented');
+        Backend::assign($user, $name);
+
+        $this->info(self::$messages['complete']);
+
+        return 0;
     }
 
     /**
@@ -89,7 +96,6 @@ class AuthorizeCommand extends Command
      */
     public function handle(): int
     {
-        // fetch the user
         $id = $this->argument('userId');
 
         try {
@@ -114,11 +120,11 @@ class AuthorizeCommand extends Command
             return $this->authPermission($user, $this->option('permission'));
         }
 
-        // elseif ($this->role()) {
-        //     return $this->authRole($user);
-        // }
+        elseif ($this->role()) {
+            return $this->authRole($user, $this->option('role'));
+        }
 
-        dd('bad params');
+        return 1;
     }
 
     /**

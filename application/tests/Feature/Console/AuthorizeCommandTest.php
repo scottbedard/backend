@@ -24,9 +24,21 @@ class AuthorizeCommandTest extends TestCase
         $this->assertTrue($user->hasPermissionTo('whatever'));
     }
 
+    public function test_assigning_to_role()
+    {
+        $user = User::factory()->create();
+
+        $this
+            ->artisan("backend:authorize {$user->id} --role=editor")
+            ->expectsOutput(AuthorizeCommand::$messages['complete'])
+            ->assertSuccessful();
+    }
+
     public function test_authorizing_a_super_admin()
     {
         $user = User::factory()->create();
+
+        Permission::create(['name' => 'super admin']);
 
         $this
             ->artisan("backend:authorize {$user->id} --super")
