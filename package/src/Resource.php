@@ -7,13 +7,6 @@ use Bedard\Backend\Table;
 class Resource
 {
     /**
-     * Backend permission area.
-     *
-     * @var string
-     */
-    public static $area = '';
-
-    /**
      * Unique resource identifier.
      *
      * @var string
@@ -61,11 +54,11 @@ class Resource
     }
 
     /**
-     * Fields.
+     * Form.
      *
      * @return array
      */
-    public function fields()
+    public function form()
     {
         return [
             // ...

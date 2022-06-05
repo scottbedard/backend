@@ -9,13 +9,6 @@ use Bedard\Backend\Table;
 class PostResource extends Resource
 {
     /**
-     * Backend permission area.
-     *
-     * @var string
-     */
-    public static $area = 'posts';
-
-    /**
      * Unique resource identifier.
      *
      * @var string
@@ -46,11 +39,11 @@ class PostResource extends Resource
     public static $title = 'Posts';
 
     /**
-     * Fields
+     * Form
      *
      * @return array
      */
-    public function fields()
+    public function form()
     {
         return [
             // ...

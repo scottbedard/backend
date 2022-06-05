@@ -39,24 +39,11 @@ class ResourceCommand extends GeneratorCommand
         $model = $this->getModelParam();
 
         return $this->replaceParams($stub, [
-            'area' => $this->getAreaParam($model),
             'class' => $this->getClassParam($model),
             'id' => $this->getIdParam($model),
             'model' => $model,
             'title' => $this->getTitleParam($model),
         ]);  
-    }
-
-    /**
-     * Resource ID param.
-     *
-     * @param string $model
-     *
-     * @return string
-     */
-    protected function getAreaParam(string $model)
-    {
-        return Str::plural(Str::snake($model));
     }
 
     /**

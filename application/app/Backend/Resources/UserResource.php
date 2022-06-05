@@ -3,19 +3,11 @@
 namespace App\Backend\Resources;
 
 use Bedard\Backend\Column;
-use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
 use Bedard\Backend\Table;
 
 class UserResource extends Resource
 {
-    /**
-     * Backend permission area.
-     *
-     * @var string
-     */
-    public static $area = 'users';
-
     /**
      * Unique resource identifier.
      *
@@ -47,14 +39,14 @@ class UserResource extends Resource
     public static $title = 'Users';
 
     /**
-     * Fields
+     * Form
      *
      * @return array
      */
-    public function fields()
+    public function form()
     {
         return [
-            Field::number('id')->label('id'),
+            // ...
         ];
     }
 
