@@ -38,8 +38,6 @@ class AuthorizeCommandTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Permission::create(['name' => 'super admin']);
-
         $this
             ->artisan("backend:authorize {$user->id} --super")
             ->expectsConfirmation(AuthorizeCommand::$messages['confirmSuperAdmin'], 'yes')
@@ -52,8 +50,6 @@ class AuthorizeCommandTest extends TestCase
     public function test_declining_super_admin_authorization()
     {
         $user = User::factory()->create();
-
-        Permission::create(['name' => 'super admin']);
 
         $this
             ->artisan("backend:authorize {$user->id} --super")
