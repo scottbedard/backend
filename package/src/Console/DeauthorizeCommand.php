@@ -15,9 +15,10 @@ class DeauthorizeCommand extends Command
      * @var arr
      */
     public static $messages = [
-        'complete' => 'Authorization revoked!',
         'canceled' => 'Deauthorization canceled.',
+        'complete' => 'Authorization revoked!',
         'confirmTotalDeauthorization' => "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.",
+        'invalidOptions' => "Invalid arguments, please specify --permission, --role, or --all.",
         'userNotFound' => "User not found.",
     ];
 
@@ -31,6 +32,7 @@ class DeauthorizeCommand extends Command
             {userId}
             {--role= : Role name}
             {--permission= : Permission code}
+            {--all : Revoke all permissions and roles}
     ';
 
     /**
@@ -40,6 +42,15 @@ class DeauthorizeCommand extends Command
      */
     protected $description = 'Revoke backend permissions from a user';
 
+    /**
+     * Test for all flag.
+     *
+     * @return bool
+     */
+    private function all(): bool
+    {
+        return (bool) $this->option('all');
+    }
 
     /**
      * Authorize a user for a specific permission.
@@ -85,10 +96,15 @@ class DeauthorizeCommand extends Command
     private function deauthorizeTotal(User $user): int
     {
         if ($this->confirm(self::$messages['confirmTotalDeauthorization'])) {
-            $user->permissions()->delete();
-            $user->roles()->delete();
+            $user->roles()->get()->each(function ($role) use ($user) {
+                $user->removeRole($role);
+            });
 
-            $this->info('comlete');
+            $user->permissions()->get()->each(function ($permission) use ($user) {
+                $user->revokePermissionTo($permission);
+            });
+
+            $this->info(self::$messages['complete']);
 
             return 0;
         }
@@ -111,6 +127,12 @@ class DeauthorizeCommand extends Command
             $user = User::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             $this->error(self::$messages['userNotFound']);
+
+            return 1;
+        }
+
+        if (!$this->valid()) {
+            $this->error(self::$messages['invalidOptions']);
 
             return 1;
         }
@@ -156,5 +178,27 @@ class DeauthorizeCommand extends Command
     private function total()
     {
         return $this->option('permission') === null && $this->option('role') === null;
+    }
+
+    /**
+     * Test if parameter combinations are valid.
+     *
+     * @return bool
+     */
+    private function valid(): bool
+    {
+        if ($this->all() && !$this->permission() && !$this->role()) {
+            return true;
+        }
+
+        elseif ($this->permission() && !$this->role() && !$this->all()) {
+            return true;
+        }
+
+        elseif ($this->role() && !$this->permission() && !$this->all()) {
+            return true;
+        }
+
+        return false;
     }
 }
