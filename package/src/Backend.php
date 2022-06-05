@@ -41,6 +41,25 @@ class Backend
     }
 
     /**
+     * Check for a permission
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param ?string $name
+     *
+     * @return bool
+     */
+    public function check(User $user, ?string $name = null): bool
+    {
+        if ($name === null) {
+            return $user->hasAnyPermission();
+        }
+
+        $permission = Permission::findOrCreate($name);
+
+        return $user->hasPermissionTo($permission);
+    }
+
+    /**
      * Revoke backend permission from a user.
      *
      * @param \Illuminate\Foundation\Auth\User $user
