@@ -22,13 +22,9 @@ class BackendMiddleware
             return redirect(config('backend.guest_redirect'));
         }
 
-        if (!Backend::check($user)) {
+        if ($user->permissions()->count() < 1) {
             return redirect(config('backend.unauthorized_redirect'));
         }
-
-        // if ($user->backendPermissions()->count() === 0) {
-        //     return redirect(config('backend.unauthorized_redirect'));
-        // }
 
         return $next($request);
     }

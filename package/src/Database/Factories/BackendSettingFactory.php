@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Database\Factories;
 
+use Bedard\Backend\Models\BackendSetting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +11,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class BackendSettingFactory extends Factory
 {
     /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = BackendSetting::class;
+
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
@@ -17,7 +25,7 @@ class BackendSettingFactory extends Factory
     public function definition()
     {
         return [
-            // ...
+            'user_id' => 0,
         ];
     }
 }

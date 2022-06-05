@@ -67,6 +67,7 @@ class BackendServiceProvider extends ServiceProvider
     private function bootGates()
     {
         Gate::before(function ($user) {
+            dd('hey');
             if ($user->hasPermissionTo('super admin')) {
                 return true;
             }
