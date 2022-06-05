@@ -94,7 +94,7 @@ class BackendServiceProvider extends ServiceProvider
      */
     private function bootMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../src/Database/Migrations');
     }
 
     /**

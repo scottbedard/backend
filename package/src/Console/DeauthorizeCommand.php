@@ -2,8 +2,8 @@
 
 namespace Bedard\Backend\Console;
 
+use App\Models\User;
 use Backend;
-use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -15,7 +15,15 @@ class DeauthorizeCommand extends Command
      * @var string
      */
     public static $confirmation = "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.";
-
+    /**
+     * Console output.
+     *
+     * @var arr
+     */
+    public static $messages = [
+        'confirmTotalDeauthorization' => "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.",
+        'userNotFound' => "User not found.",
+    ];
 
     /**
      * The name and signature of the console command.
@@ -25,9 +33,8 @@ class DeauthorizeCommand extends Command
     protected $signature = '
         backend:deauthorize
             {user}
-            {--area= : Backend area}
-            {--code= : Permission code}
-            {--super : Revoke all permissions, blocking access to everything}
+            {--role= : Role name}
+            {--permission= : Permission code}
     ';
 
     /**
@@ -38,74 +45,55 @@ class DeauthorizeCommand extends Command
     protected $description = 'Revoke backend permissions from a user';
 
     /**
-     * Execute the console command.
+     * Remove all of a users permissions and roles.
+     *
+     * @param \App\Models\User $user
      *
      * @return int
      */
-    public function handle()
+    private function authSuper(User $user): int
     {
-        // fetch the user
-        $id = $this->argument('user');
+        if ($this->confirm(self::$messages['confirmTotalDeauthorization'])) {
+            $user->permissions()->delete();
+            $user->roles()->delete();
 
-        try {
-            $user = config('backend.user')::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            $this->error('User not found');
+            $this->info('comlete');
 
-            return 1;
+            return 0;
         }
 
-        // normalize options
-        $area = BackendPermission::normalize($this->option('area') ?? '');
-        $code = BackendPermission::normalize($this->option('code') ?? 'all');
-
-        // deauthorize super admin
-        if ($this->super($area, $code)) {
-            if ($this->confirm(self::$confirmation)) {
-                Backend::deauthorize($user, 'all', 'all');
-
-                $this->info('Deauthorization complete!');
-
-                return 0;
-            }
-
-            $this->error('Deauthorization canceled.');
-
-            return 1;
-        }
-
-        // permission area
-        if (!$area) {
-            $this->error('No backend area specified.');
-
-            return 1;
-        }
-
-        Backend::deauthorize($user, $area, $code);
-
-        $this->info('Deauthorization complete!');
+        $this->info(self::$messages['canceled']);
 
         return 0;
     }
 
     /**
-     * Test for super flag or options.
+     * Execute the console command.
      *
-     * @param string $area
-     * @param string $code
-     *
-     * @return bool
+     * @return int
      */
-    private function super(string $area, string $code): bool
+    public function handle(): int
     {
-        if ($area === 'all' && $code === 'all') {
-            return true;
-        }
+        $id = $this->argument('userId');
 
-        if ($this->option('super')) {
-            return true;
-        }
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            $this->error(self::$messages['userNotFound']);
 
-        return false;
+            return 1;
+        }
+        
+        if ($this->total()) {
+            return $this->deauthorizeTotal($user);
+        }
+    }
+
+    /**
+     * Test if this is a total deauthorization
+     */
+    private function total()
+    {
+        return $this->option('permission') === null && $this->option('role') === null;
     }
 }
