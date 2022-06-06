@@ -9,6 +9,13 @@ use Bedard\Backend\Table;
 class {{ class }} extends Resource
 {
     /**
+     * Application entity.
+     *
+     * @var string
+     */
+    public static $entity = '{{ entity }}';
+
+    /**
      * Unique resource identifier.
      *
      * @var string

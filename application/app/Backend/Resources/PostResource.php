@@ -9,6 +9,13 @@ use Bedard\Backend\Table;
 class PostResource extends Resource
 {
     /**
+     * Application entity.
+     *
+     * @var string
+     */
+    public static $entity = 'Post';
+
+    /**
      * Unique resource identifier.
      *
      * @var string

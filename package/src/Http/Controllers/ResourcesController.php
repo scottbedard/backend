@@ -41,6 +41,7 @@ class ResourcesController extends Controller
         return view('backend::resources-show', [
             'columns' => $table->columns,
             'data' => $resource->data(),
+            'resource' => $resource,
             'selectable' => $table->selectable,
         ]);
     }

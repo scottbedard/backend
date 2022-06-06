@@ -1,15 +1,22 @@
 <x-backend::layout.main>
-    <div x-data="{ checked: 0 }" class="grid gap-6">
-        <div class="grid gap-6 p-6">
-            Upper section
-            
-            <template x-if="checked">
-                <div><span x-text="checked"></span> <span x-text="checked === 1 ? 'row is' : 'rows are'"></span> selected</div>
-            </template>
+    <div x-data="{ checked: 0 }">
+        <div class="flex flex-wrap gap-x-6 p-6">
+            @can ('create ' . $resource::$id)
+                <x-backend::button icon="plus">
+                    {{ $resource->createButtonText() }}
+                </x-backend::button>
+            @endcan
 
-            <template x-if="!checked">
-                <div>Nothing is selected</div>
-            </template>
+            @if ($resource->table()->selectable)
+                @can ('delete ' . $resource::$id)
+                    <x-backend::button
+                        ::disabled="checked < 1"
+                        icon="trash"
+                        theme="danger">
+                        Delete selected
+                    </x-backend::button>
+                @endcan
+            @endif
         </div>
 
         <x-backend::table

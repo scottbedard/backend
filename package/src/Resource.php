@@ -44,6 +44,16 @@ class Resource
     public static $title = null;
 
     /**
+     * Text for the create button
+     *
+     * @return string
+     */
+    public function createButtonText()
+    {
+        return 'Create new ' . strtolower(static::$entity);
+    }
+
+    /**
      * Table data.
      */
     public function data()

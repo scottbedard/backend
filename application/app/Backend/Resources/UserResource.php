@@ -9,6 +9,13 @@ use Bedard\Backend\Table;
 class UserResource extends Resource
 {
     /**
+     * Application entity.
+     *
+     * @var string
+     */
+    public static $entity = 'User';
+
+    /**
      * Unique resource identifier.
      *
      * @var string

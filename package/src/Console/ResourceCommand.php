@@ -40,6 +40,7 @@ class ResourceCommand extends GeneratorCommand
 
         return $this->replaceParams($stub, [
             'class' => $this->getClassParam($model),
+            'entity' => $this->getEntityParam($model),
             'id' => $this->getIdParam($model),
             'model' => $model,
             'title' => $this->getTitleParam($model),
@@ -67,6 +68,17 @@ class ResourceCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace . '\Backend\Resources';
+    }
+
+    /**
+     * Get the default entity name.
+     *
+     * @param string $model
+     * @return string
+     */
+    protected function getEntityParam($model)
+    {
+        return $model;
     }
 
     /**
