@@ -2,9 +2,12 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Util;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Str;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -41,22 +44,45 @@ class Backend
     }
 
     /**
-     * Check for a permission
+     * Check for any permission.
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param ?string $name
+     * @param array $permissions
      *
      * @return bool
      */
-    public function check(User $user, ?string $name = null): bool
+    public function check(User $user, ...$permissions): bool
     {
-        if ($name === null) {
-            return $user->hasAnyPermission();
+        if (Util::attempt(fn () => $user->hasPermissionTo('super admin'))) {
+            return true;
         }
 
-        $permission = Permission::findOrCreate($name);
+        $resources = [];
 
-        return $user->hasPermissionTo($permission);
+        foreach ($permissions as $permission) {
+            if (Util::attempt(fn () => $user->hasPermissionTo($permission))) {
+                return true;
+            }
+
+            if (Str::of($permission)->match('/^^[a-zA-Z]+ [a-zA-Z]+$$/i')) {
+                $parts = explode(' ', trim($permission));
+
+                if (count($parts) === 2) {
+                    [$action, $resource] = $parts;
+                    
+                    if (
+                        !in_array($resource, $resources) && 
+                        Util::attempt(fn () => $user->hasPermissionTo("manage {$resource}"))
+                    ) {
+                        return true;
+                    }
+
+                    array_push($resources, $resource);
+                }
+            }
+        }
+        
+        return false;
     }
 
     /**

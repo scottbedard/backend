@@ -14,8 +14,8 @@ class ResourcesTest extends TestCase
     public function test_users_can_only_access_authorized_areas()
     {
         $user = User::factory()->create();
-
-        Backend::authorize($user, 'posts', 'all');
+        
+        Backend::authorize($user, 'read posts');
 
         $this
             ->actingAs($user)

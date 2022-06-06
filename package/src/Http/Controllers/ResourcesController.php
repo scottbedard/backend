@@ -31,8 +31,8 @@ class ResourcesController extends Controller
         $user = Auth::user();
 
         $resource = Backend::resource($id);
-        
-        if (!Backend::check($user, $resource::$area, 'read')) {
+
+        if (!Backend::check($user, ...$resource->permissions())) {
             return abort(401);
         }
 

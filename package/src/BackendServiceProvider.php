@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Backend;
 use Bedard\Backend\Http\Middleware\BackendMiddleware;
 use Bedard\Backend\Models\BackendSetting;
 use Illuminate\Routing\Router;
@@ -66,8 +67,8 @@ class BackendServiceProvider extends ServiceProvider
      */
     private function bootGates()
     {
-        Gate::before(function ($user) {
-            if ($user->hasPermissionTo('super admin')) {
+        Gate::before(function ($user, ...$permissions) {
+            if (Backend::check($user, ...$permissions)) {
                 return true;
             }
 

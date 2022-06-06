@@ -66,6 +66,24 @@ class Resource
     }
 
     /**
+     * Permissions that will allow a user to access this resource.
+     *
+     * @return array
+     */
+    public function permissions()
+    {
+        $id = static::$id;
+
+        return [
+            "create {$id}",
+            "delete {$id}",
+            "manage {$id}",
+            "read {$id}",
+            "update {$id}",
+        ];
+    }
+
+    /**
      * Table definition.
      *
      * @return \Bedard\Backend\Table
