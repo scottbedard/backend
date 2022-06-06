@@ -6,12 +6,11 @@
 <button
     {{
         $attributes->class([
-            'flex font-bold items-center gap-2 h-10 px-4 rounded text-sm tracking-wide',
+            'flex font-bold items-center gap-2 h-10 px-4 rounded text-sm tracking-wide whitespace-nowrap',
             'bg-primary-600 text-white hover:bg-primary-500' => $theme === 'primary',
             'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 disabled:pointer-events-none' => $theme === 'default',
             'bg-danger-500 text-white hover:bg-danger-600 disabled:bg-danger-300 dark:disabled:bg-danger-400/90' => $theme === 'danger',
         ])
-        ->merge()
     }}>
     @if ($icon)
         <x-backend::icon

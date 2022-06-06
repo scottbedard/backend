@@ -36,7 +36,8 @@
                     href="javascript:void 0;">
                     @if ($selectable)
                         <x-backend::table-cell>
-                            <x-backend::checkbox x-model="rows[{{ $loop->index }}]" />
+                            <x-backend::checkbox
+                                x-model="rows[{{ $loop->index }}]" />
                         </x-backend::table-cell>
                     @endif
 

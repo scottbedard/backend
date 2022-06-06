@@ -21,6 +21,30 @@ class ResourcesController extends Controller
     }
 
     /**
+     * Destroy
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return void
+     */
+    public function destroy(Request $request, string $id)
+    {
+        $user = Auth::user();
+
+        $resource = Backend::resource($id);
+
+        if ($user->cannot('delete ' . $resource::$id)) {
+            return abort(401);
+        }
+
+        $resource->delete($request->post('resource'));
+
+        return redirect(route('backend.resources.show', [
+            'id' => $id,
+        ]));
+    }
+
+    /**
      * Show
      *
      * @param \Illuminate\Http\Request $request

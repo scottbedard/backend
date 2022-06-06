@@ -50,7 +50,7 @@ class Resource
      */
     public function createButtonText()
     {
-        return 'Create new ' . strtolower(static::$entity);
+        return 'Create ' . strtolower(static::$entity);
     }
 
     /**
@@ -61,6 +61,18 @@ class Resource
         $query = static::$model::query();
 
         return $query->get();
+    }
+
+    /**
+     * Delete resources by ID.
+     *
+     * @param array
+     *
+     * @return void
+     */
+    public function delete(array $ids)
+    {
+        static::$model::whereIn('id', $ids)->delete();
     }
 
     /**
