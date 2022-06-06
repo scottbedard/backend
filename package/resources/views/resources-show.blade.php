@@ -1,5 +1,5 @@
 <x-backend::layout.main>
-    <div x-data="{ checked: 0, loading: true, showDeleteConfirmation: false }">
+    <div x-data="{ checked: [], loading: true, showDeleteConfirmation: false }">
         <div class="flex flex-wrap gap-x-6 p-6">
             @can ('create ' . $resource::$id)
                 <x-backend::button
@@ -12,7 +12,7 @@
             @if ($resource->table()->selectable)
                 @can ('delete ' . $resource::$id)
                     <x-backend::button
-                        ::disabled="checked < 1"
+                        x-bind:disabled="!checked.includes(true)"
                         icon="trash"
                         @click="showDeleteConfirmation = true">
                         Delete selected
