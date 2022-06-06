@@ -16,8 +16,9 @@ class CheckTest extends TestCase
         $user = User::factory()->create();
 
         Backend::authorize($user, 'foo');
-
+        
         $this->assertTrue(Backend::check($user, 'foo'));
+
         $this->assertFalse(Backend::check($user, 'bar'));
     }
 
@@ -37,5 +38,14 @@ class CheckTest extends TestCase
         Backend::authorize($user, 'manage books');
 
         $this->assertTrue(Backend::check($user, 'create books'));
+    }
+
+    public function test_access_permission_action()
+    {
+        $user = User::factory()->create();
+
+        Backend::authorize($user, 'manage posts');
+
+        $this->assertTrue(Backend::check($user, 'access posts'));
     }
 }

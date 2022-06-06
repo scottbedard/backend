@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Str;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -23,9 +24,9 @@ class Backend
      */
     public function assign(User $user, string $name)
     {
-        $role = Role::findOrCreate($name);
-
-        $user->assignRole($role);
+        try {
+            $user->assignRole($name);
+        } catch (RoleDoesNotExist $e) {};
     }
 
     /**
@@ -53,33 +54,47 @@ class Backend
      */
     public function check(User $user, ...$permissions): bool
     {
+        // check for super admin
         if (Util::attempt(fn () => $user->hasPermissionTo('super admin'))) {
             return true;
         }
 
-        $resources = [];
+        // check for explicit permission
+        if (Util::attempt(fn () => $user->hasAnyPermission($permissions))) {
+            return true;
+        }
 
-        foreach ($permissions as $permission) {
-            if (Util::attempt(fn () => $user->hasPermissionTo($permission))) {
+        // process special permissions
+        $special = collect($permissions)
+            ->filter(function ($permission) {
+                return is_string($permission) && preg_match('/^[a-zA-Z]+ [a-zA-Z]+$/i', $permission);
+            })
+            ->map(function ($permission) {
+                return  explode(' ', $permission);
+            });
+            
+        $processed = [];
+
+        foreach ($special as $permission) {
+            if (in_array($permission, $processed)) {
+                continue;
+            }
+            
+            [$action, $resource] = $permission;
+
+            // access only requires one resource permission
+            if ($action === 'access') {
+                $instance = Backend::resource($resource);
+
+                return Util::attempt(fn () => $user->hasAnyPermission($instance->permissions()));
+            }
+
+            // managers can access all areas of their resource
+            if (Util::attempt(fn () => $user->hasPermissionTo("manage {$resource}"))) {
                 return true;
             }
 
-            if (Str::of($permission)->match('/^^[a-zA-Z]+ [a-zA-Z]+$$/i')) {
-                $parts = explode(' ', trim($permission));
-
-                if (count($parts) === 2) {
-                    [$action, $resource] = $parts;
-                    
-                    if (
-                        !in_array($resource, $resources) && 
-                        Util::attempt(fn () => $user->hasPermissionTo("manage {$resource}"))
-                    ) {
-                        return true;
-                    }
-
-                    array_push($resources, $resource);
-                }
-            }
+            array_push($processed, $permission);
         }
         
         return false;
@@ -95,9 +110,9 @@ class Backend
      */
     public function deauthorize(User $user, string $name)
     {
-        $permission = Permission::findOrCreate($name);
-
-        $user->revokePermissionTo($permission);
+        try {
+            $user->revokePermissionTo($name);
+        } catch (PermissionDoesNotExist $e) {}
     }
 
     /**
@@ -170,9 +185,9 @@ class Backend
      */
     public function unassign(User $user, string $name): void
     {
-        $role = Role::findOrCreate($name);
-
-        $user->removeRole($role);
+        try {
+            $user->removeRole($name);
+        } catch (RoleDoesNotExist $e) {}
     }
 
     /**
