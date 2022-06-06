@@ -13,6 +13,8 @@ Route::prefix(config('backend.path'))
 
         Route::get('/resources/{id}', [ResourcesController::class, 'show'])->name('backend.resources.show');
 
+        Route::get('/resource/{id}/update/{uid}', [ResourcesController::class, 'update'])->name('backend.resources.update');
+
         Route::get('/resources/{id}/create', [ResourcesController::class, 'create'])->name('backend.resources.create');
 
         Route::delete('/resources/{id}', [ResourcesController::class, 'destroy'])->name('backend.resources.destroy');

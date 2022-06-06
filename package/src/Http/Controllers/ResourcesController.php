@@ -69,4 +69,25 @@ class ResourcesController extends Controller
             'selectable' => $table->selectable,
         ]);
     }
+
+    /**
+     * Update
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $route
+     */
+    public function update(Request $request, string $id)
+    {
+        $user = Auth::user();
+
+        $resource = Backend::resource($id);
+
+        if (!Backend::check($user, 'update ' . $resource::$id)) {
+            return abort(401);
+        }
+
+        return view('backend::resources-update', [
+            'resource' => $resource,
+        ]);
+    }
 }
