@@ -1,3 +1,7 @@
+@props([
+    'padded' => false,
+])
+
 <template x-teleport="body">
     <div
         {{
@@ -8,7 +12,7 @@
         @click="$dispatch('dismiss')">
         <div
             x-ref="body"
-            class="bg-gray-100 p-6 rounded shadow-lg max-w-xl text-black w-full"
+            class="bg-gray-50 overflow-hidden rounded-lg shadow-lg max-w-xl text-black w-full {{ $padded ? 'p-6' : '' }}"
             @click.stop>
             {{ $slot }}
         </div>

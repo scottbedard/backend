@@ -13,7 +13,7 @@
     @if ($secondaryText)
         <div class="flex-1">
             <a
-                class="inline-flex font-semibold gap-x-2 items-center text-sm unstyled text-gray-400 hover:text-gray-900"
+                class="inline-flex font-bold gap-x-2 items-center text-sm tracking-wide unstyled text-gray-700 hover:text-black"
                 href="#"
                 @click.prevent="$dispatch('secondary-click')">
                 @if ($secondaryIcon)
