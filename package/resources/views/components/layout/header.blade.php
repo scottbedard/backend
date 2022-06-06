@@ -13,6 +13,10 @@
         </div>
 
         <div class="flex gap-6">
+            <div>
+                {{ auth()->user()->email }}
+            </div>
+
             <a data-toggle-dark-mode="{{ route('backend.settings.toggle') }}" href="javascript:;">
                 <x-backend::icon class="dark:hidden" name="sun" />
 
