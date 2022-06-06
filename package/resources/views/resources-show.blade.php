@@ -29,6 +29,8 @@
                                 method="POST">
                                 @csrf
 
+                                <input type="hidden" name="_method" value="DELETE" />
+
                                 @foreach ($data as $row)
                                     <input
                                         class="hidden"

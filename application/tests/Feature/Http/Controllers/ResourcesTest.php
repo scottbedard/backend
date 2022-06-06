@@ -27,4 +27,39 @@ class ResourcesTest extends TestCase
             ->get('/backend/resources/users')
             ->assertUnauthorized();
     }
+
+    public function test_deleting_records()
+    {
+        $admin = User::factory()->create();
+
+        $bob = User::factory()->create();
+
+        $sally = User::factory()->create();
+
+        Backend::authorize($admin, 'delete users');
+
+        $this
+            ->actingAs($admin)
+            ->delete('/backend/resources/users', [
+                'resource' => [$bob->id],
+            ])
+            ->assertRedirect();
+        
+        $this->assertFalse(User::where('id', $bob->id)->exists());
+        $this->assertTrue(User::where('id', $sally->id)->exists());
+    }
+
+    public function test_unauthorized_deleting_records()
+    {
+        $hacker = User::factory()->create();
+
+        Backend::authorize($hacker, 'create users');
+
+        $this
+            ->actingAs($hacker)
+            ->delete('/backend/resources/users', [
+                'resource' => [],
+            ])
+            ->assertUnauthorized();
+    }
 }

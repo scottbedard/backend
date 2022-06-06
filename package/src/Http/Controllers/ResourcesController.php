@@ -33,7 +33,7 @@ class ResourcesController extends Controller
 
         $resource = Backend::resource($id);
 
-        if ($user->cannot('delete ' . $resource::$id)) {
+        if (!Backend::check($user, 'delete ' . $resource::$id)) {
             return abort(401);
         }
 
