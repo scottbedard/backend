@@ -3,9 +3,7 @@
         <!-- new toolbar -->
         <div class="border border-danger-500 flex gap-x-6 p-6">
             @foreach ($toolbar->items as $item)
-                <div>
-                    {!! $item->render() !!}
-                </div>
+                <div>{!! $item->render() !!}</div>
             @endforeach
         </div>
 

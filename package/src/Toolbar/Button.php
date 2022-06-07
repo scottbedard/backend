@@ -8,47 +8,15 @@ use Bedard\Backend\Util;
 
 class Button extends Base
 {
-    /**
-     * Confirmation modal
-     *
-     * @var ?array
-     */
-    public ?array $confirmation = null;
-
-    /**
-     * Method
-     *
-     * @var ?string
-     */
-    public ?string $method = null;
-
-    /**
-     * Icon
-     *
-     * @var ?string
-     */
-    public ?string $icon = null;
-
-    /**
-     * Text
-     *
-     * @var string
-     */
-    public string $text = '';
-
-    /**
-     * Theme
-     *
-     * @var ?string
-     */
-    public ?string $theme = null;
-
-    /**
-     * To
-     *
-     * @var string|callable
-     */
-    public $to = '#';
+    protected $attributes = [
+        'confirm' => null,
+        'icon' => null,
+        'method' => null,
+        'requireSelection' => false,
+        'text' => null,
+        'theme' => null,
+        'to' => '#',
+    ];
 
     /**
      * Render
@@ -57,36 +25,28 @@ class Button extends Base
      */
     public function render()
     {
-        return view('backend::toolbar.button', [
-            'confirmation' => $this->confirmation,
-            'icon' => $this->icon,
-            'method' => $this->method,
-            'text' => $this->text,
-            'theme' => $this->theme,
-        ]);
+        return view('backend::toolbar.button', $this->attributes);
     }
 
-    // /**
-    //  * Set theme
-    //  *
-    //  * @return \Bedard\Backend\Toolbar\Base
-    //  */
-    // public function theme(string $theme)
-    // {
-    //     $themes = [
-    //         'danger',
-    //         'default',
-    //         'primary',
-    //     ];
+    /**
+     * Set theme
+     *
+     * @return \Bedard\Backend\Toolbar\Base
+     */
+    public function setThemeAttribute(string $theme)
+    {
+        $themes = [
+            'danger',
+            'default',
+            'primary',
+        ];
 
-    //     if (!in_array($theme, $themes)) {
-    //         $suggestion = Util::suggest($theme, $themes);
+        if (!in_array($theme, $themes)) {
+            $suggestion = Util::suggest($theme, $themes);
 
-    //         throw new InvalidThemeException("Unknown button theme \"{$theme}\", did you mean \"{$suggestion}\"?");
-    //     }
+            throw new InvalidThemeException("Unknown button theme \"{$theme}\", did you mean \"{$suggestion}\"?");
+        }
 
-    //     $this->theme = $theme;
-
-    //     return $this;
-    // }
+        $this->attributes['theme'] = $theme;
+    }
 }

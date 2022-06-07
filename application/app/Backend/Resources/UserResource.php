@@ -86,10 +86,19 @@ class UserResource extends Resource
      */
     public function toolbar(): Toolbar
     {
-        return Toolbar::make([
+        return Toolbar::items([
                 Button::theme('primary')
                     ->icon('plus')
                     ->text('Create user'),
+
+                Button::make()
+                    ->icon('trash')
+                    ->text('Delete selected')
+                    ->requireSelection()
+                    ->confirm([
+                        'title' => 'Please confirm delete',
+                        'text' => 'This will permenantly delete the selected users.',
+                    ])
             ])
             ->searchable();
     }
