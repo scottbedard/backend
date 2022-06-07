@@ -2,132 +2,114 @@
 
 namespace Tests\Unit;
 
-use Bedard\Backend\Classes\Fluent;
 use Bedard\Backend\Exceptions\FluentException;
 use PHPUnit\Framework\TestCase;
-
-class Foo extends Fluent
-{
-    public static array $constructors = [
-        'bar' => Bar::class,
-    ];
-
-    public $arg;
-
-    public function __construct($arg)
-    {
-        $this->arg = $arg;
-    }
-}
-
-class Bar extends Fluent
-{
-    public $thing;
-
-    public function __construct($thing)
-    {
-        $this->thing = $thing;
-    }
-}
-
-class BooleanSwitch extends Fluent
-{
-    public $enabled = false;
-}
+use Tests\Unit\FluentStubs\Child;
+use Tests\Unit\FluentStubs\Example;
 
 class FluentTest extends TestCase
 {
-    public function test_making_generic_fluent_class()
+    public function test_constructing_fluent_instance()
     {
-        $instance = Foo::make('foo');
+        $instance = Example::make('test');
 
-        $this->assertInstanceOf(Foo::class, $instance);
-        $this->assertEquals('foo', $instance->arg);
+        $this->assertEquals('test', $instance->constructed);
     }
 
-    public function test_setting_property_values()
+    public function test_static_constuctor_aliases()
     {
-        $fluent = new class extends Fluent
-        {
-            public $foo;
+        $instance = Example::child('test');
 
-            public $bar;
-        };
+        $this->assertInstanceOf(Child::class, $instance);
 
-        $instance = $fluent::make()->foo('one')->bar('two');
-
-        $this->assertEquals('one', $instance->foo);
-        $this->assertEquals('two', $instance->bar);
+        $this->assertEquals('test', $instance->attributes['id']);
     }
 
-    public function test_making_named_subclasses()
+    public function test_setting_plain_attribute_by_assignment()
     {
-        $instance = Foo::bar('baz');
+        $instance = Example::make();
 
-        $this->assertInstanceOf(Bar::class, $instance);
-        $this->assertEquals('baz', $instance->thing);
+        $instance->plain = 'test';
+
+        $this->assertEquals('test', $instance->attributes['plain']);
     }
 
-    public function test_overwriting_a_parent_property_with_a_method()
+    public function test_setting_computed_attribute_by_assignment()
     {
-        $child = new class extends Fluent {
-            public $foo = 1;
-            
-            public function foo()
-            {
-                return 'bar';
-            }
-        };
+        $instance = Example::make();
 
-        define('FLUENT_TEST_CHILD_2', $child::class);
+        $instance->computed = 'test';
 
-        $parent = new class extends Fluent
-        {
-            public static array $constructors = [
-                'child' => FLUENT_TEST_CHILD_2,
-            ];
-        };
-
-        $instance = $child::make();
-
-        $bar = $instance->foo(2);
-
-        $this->assertEquals(1, $instance->foo);
-        $this->assertEquals('bar', $bar);
+        $this->assertEquals('TEST', $instance->attributes['computed']);
     }
 
-    public function test_unknown_constructor_falls_back_to_property_assignment()
+    public function test_setting_computed_attribute_from_static_call()
     {
-        $fluent = new class extends Fluent {
-            public $foo;
-            public $bar;
-        };
+        $instance = Example::computed('test');
 
-        $instance = $fluent::foo('foo')->bar('bar');
-
-        $this->assertEquals('foo', $instance->foo);
-        $this->assertEquals('bar', $instance->bar);
+        $this->assertEquals('TEST', $instance->attributes['computed']);
     }
 
-    public function test_unknown_property_throws_fluent_exception()
+    public function test_setting_computed_attribute_from_dynamic_call()
     {
-        $fluent = new class extends Fluent {};
+        $instance = Example::make()->computed('test');
 
-        $instance = $fluent::make();
+        $this->assertEquals('TEST', $instance->attributes['computed']);
+    }
 
+    public function test_setting_plain_attribute_from_static_call()
+    {
+        $instance = Example::plain('test');
+
+        $this->assertEquals('test', $instance->attributes['plain']);
+    }
+
+    public function test_setting_plain_attribute_from_dynamic_call()
+    {
+        $instance = Example::make()->plain('test');
+
+        $this->assertEquals('test', $instance->attributes['plain']);
+    }
+
+    public function test_setting_unknown_attribute_from_static_call()
+    {
         $this->expectException(FluentException::class);
 
-        $instance->foo();
+        Example::unknown('foo');
     }
 
-    public function test_toggling_boolean_properties()
+    public function test_setting_unknown_attribute_from_dynamic_call()
     {
-        $blank = BooleanSwitch::enabled();
-        
-        $this->assertTrue($blank->enabled);
+        $this->expectException(FluentException::class);
 
-        $explicit = BooleanSwitch::enabled(false);
+        Example::make()->unknown('foo');
+    }
 
-        $this->assertFalse($explicit->enabled);
+    public function test_getting_plain_value()
+    {
+        $instance = Example::plain('hello');
+
+        $this->assertEquals('hello', $instance->plain);
+    }
+
+    public function test_getting_computed_value()
+    {
+        $instance = Example::computed('hello');
+
+        $this->assertEquals('~HELLO~', $instance->computed);
+    }
+
+    public function test_toggling_boolean_attribute_from_static_call()
+    {
+        $instance = Example::flagged();
+
+        $this->assertTrue($instance->attributes['flagged']);
+    }
+
+    public function test_toggling_boolean_attribute_from_dynamic_call()
+    {
+        $instance = Example::make()->flagged();
+
+        $this->assertTrue($instance->attributes['flagged']);
     }
 }

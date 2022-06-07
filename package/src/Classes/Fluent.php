@@ -4,62 +4,103 @@ namespace Bedard\Backend\Classes;
 
 use Bedard\Backend\Exceptions\FluentException;
 use Bedard\Backend\Util;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Str;
 
-class Fluent
+class Fluent implements Arrayable
 {
     /**
-     * Constructors.
-     * 
+     * All of the attributes set on the fluent instance
+     *
      * @var array
      */
-    public static array $constructors = [];
+    protected $attributes = [];
 
     /**
-     * Set class properties.
+     * Subclass aliases for static construction
      *
-     * @param string $name
-     * @param array $args
+     * @var array
      */
-    public function __call($name, array $args = [])
-    {
-        if (!method_exists($this, $name)) {
-            $prop = property_exists($this, $name);
+    protected static $subclasses = [];
 
-            if ($prop && count($args) === 0 && is_bool($this->{$name})) {
-                $this->{$name} = ! $this->{$name};
-            } elseif ($prop) {
-                $this->{$name} = $args[0];
-            } else {
-                $this->throwFluentException($name);
-            }
-        }
+    /**
+     * Call
+     *
+     * @param string $key
+     * @param array $value
+     *
+     * @return \Bedard\Backend\Fluent
+     */
+    public function __call(string $key, array $value)
+    {
+        $this->setAttribute($key, $value);
 
         return $this;
     }
 
     /**
-     * Static fluent constructor.
-     *
-     * @param string $key
-     * @param array $args
-     *
-     * @return \Bedard\Backend\Column
+     * Call static
      */
-    public static function __callStatic(string $key, array $args = [])
+    public static function __callStatic(string $key, array $args)
     {
-        if (array_key_exists($key, static::$constructors)) {
-            return new (static::$constructors[$key])(...$args);
+        if (array_key_exists($key, static::$subclasses)) {
+            return count($args)
+                ? static::$subclasses[$key]::make($args[0])
+                : static::$subclasses[$key]::make();
+        }
+
+        if (count($args) > 0) {
+            return static::make()->{$key}($args[0]);
         }
         
-        return (new static)->{$key}(...$args);
+        return static::make()->{$key}();
     }
 
     /**
-     * Construct a generic fluent instance.
+     * Get
+     *
+     * @param string $key
+     *
+     * @return void
+     */
+    public function __get(string $key)
+    {
+        if (property_exists($this, $key)) {
+            return $this->{$key};
+        }
+
+        $getter = Str::camel('get_' . $key . '_attribute');
+
+        if (method_exists($this, $getter)) {
+            return $this->{$getter}();
+        }
+        
+        elseif (array_key_exists($key, $this->attributes)) {
+            return $this->attributes[$key];
+        }
+        
+        else {
+            $this->throwUnknownPropertyException($key);
+        }
+    }
+
+    /**
+     * Set
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function __set(string $key, $value): void
+    {
+        $this->setAttribute($key, [$value]);
+    }
+
+    /**
+     * Make new instance
      *
      * @param array $args
-     *
-     * @return \Bedard\Backend\Classes\Fluent
      */
     public static function make(...$args)
     {
@@ -67,22 +108,63 @@ class Fluent
     }
 
     /**
-     * Throw fluent exception.
+     * Set attribute
      *
-     * @throws \Bedard\Backend\Exceptions\FluentException
+     * @param string $key
+     * @param mixed $value
      *
      * @return void
      */
-    private function throwFluentException(string $name): void
+    private function setAttribute(string $key, $args): void
     {
-        $properties = get_object_vars($this);
+        $setter = Str::camel('set_' . $key . '_attribute');
         
-        if (empty($properties)) {
-            throw new FluentException("Unknown property \"{$name}\".");
+        if (method_exists($this, $setter)) {
+            $this->{$setter}(...$args);
         }
 
-        $suggestion = Util::suggest($name, array_keys($properties));
+        elseif (array_key_exists($key, $this->attributes)) {
+            if (count($args)) {
+                $this->attributes[$key] = $args[0];
+            } elseif (is_bool($this->attributes[$key])) {
+                $this->attributes[$key] = true;
+            } else {
+                $this->throwUnknownPropertyException($key);
+            }
+        }
 
-        throw new FluentException("Unknown property \"{$name}\", did you mean \"{$suggestion}\"?");
+        else {
+            $this->throwUnknownPropertyException($key);
+        }
+    }
+
+    /**
+     * Throw unknown property acception.
+     *
+     * @param string $key
+     *
+     * @throws \Bedard\Backend\Exceptions\FluentException
+     */
+    private function throwUnknownPropertyException(string $key): void
+    {
+        $properties = array_keys($this->attributes);
+
+        if (count($properties) > 0) {
+            $suggestion = Util::suggest($key, $properties);
+
+            throw new FluentException("Unknown property \"{$key}\", did you mean \"{$suggestion}\"?");
+        }
+
+        throw new FluentException("Unknown property \"{$key}\".");
+    }
+
+    /**
+     * Convert to array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->attributes;
     }
 }
