@@ -112,4 +112,19 @@ class FluentTest extends TestCase
 
         $this->assertTrue($instance->attributes['flagged']);
     }
+
+    public function test_inheritting_parent_attrs()
+    {
+        $parent = Example::make();
+
+        $child = Child::make();
+        
+        foreach (array_keys($parent->attributes) as $attr) {
+            $this->assertArrayHasKey($attr, $child->attributes);
+        }
+
+        foreach (array_keys($child->attributes) as $attr) {
+            $this->assertArrayHasKey($attr, $child->attributes);
+        }
+    }
 }

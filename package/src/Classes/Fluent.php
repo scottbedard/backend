@@ -7,7 +7,7 @@ use Bedard\Backend\Util;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
 
-class Fluent implements Arrayable
+abstract class Fluent implements Arrayable
 {
     /**
      * All of the attributes set on the fluent instance
@@ -17,11 +17,11 @@ class Fluent implements Arrayable
     protected $attributes = [];
 
     /**
-     * Subclass aliases for static construction
+     * Subclass constructor aliases
      *
      * @var array
      */
-    protected static $subclasses = [];
+    public static $subclasses = [];
 
     /**
      * Call
@@ -98,13 +98,26 @@ class Fluent implements Arrayable
     }
 
     /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function init()
+    {
+    }
+
+    /**
      * Make new instance
      *
      * @param array $args
      */
     public static function make(...$args)
     {
-        return new static(...$args);
+        $instance = new static;
+    
+        $instance->init(...$args);
+
+        return $instance;
     }
 
     /**
@@ -115,8 +128,16 @@ class Fluent implements Arrayable
      *
      * @return void
      */
-    private function setAttribute(string $key, $args): void
+    public function setAttribute(string $key, $args): void
     {
+        if (property_exists($this, $key)) {
+            if (count($args) > 0) {
+                $this->{$key} = $args[0];
+            }
+
+            return;
+        }
+
         $setter = Str::camel('set_' . $key . '_attribute');
         
         if (method_exists($this, $setter)) {

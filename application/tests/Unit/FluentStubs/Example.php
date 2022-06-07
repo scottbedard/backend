@@ -3,28 +3,31 @@
 namespace Tests\Unit\FluentStubs;
 
 use Bedard\Backend\Classes\Fluent;
+use Bedard\Backend\Traits\InheritParentAttrs;
 
 class Example extends Fluent
 {
-    protected $attributes = [
+    use InheritParentAttrs;
+
+    public $attributes = [
         'computed' => null,
         'constructed' => null,
         'flagged' => false,
         'plain' => null,
     ];
 
-    protected static $subclasses = [
+    public static $subclasses = [
         'child' => \Tests\Unit\FluentStubs\Child::class,
     ];
-
-    public function __construct($constructed = null)
-    {
-        $this->constructed = $constructed;
-    }
 
     public function getComputedAttribute()
     {
         return '~' . $this->attributes['computed'] . '~';
+    }
+
+    public function init($constructed = null)
+    {
+        $this->constructed = $constructed;
     }
 
     public function setComputedAttribute($value)

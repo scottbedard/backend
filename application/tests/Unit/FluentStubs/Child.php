@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\FluentStubs;
 
-use Bedard\Backend\Classes\Fluent;
+use Tests\Unit\FluentStubs\Example;
 
-class Child extends Fluent
+class Child extends Example
 {
-    protected $attributes = [
+    public $attributes = [
         'id' => 0,
     ];
 
-    public function __construct($id)
+    public function init($id = 0)
     {
-        $this->id = $id;
+        $this->attributes['id'] = $id;
     }
 }
