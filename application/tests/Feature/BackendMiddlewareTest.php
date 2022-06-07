@@ -3,10 +3,14 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Backend;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BackendMiddlewareTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_guest_redirect()
     {
         $this
@@ -27,7 +31,9 @@ class BackendMiddlewareTest extends TestCase
 
     public function test_permitting_admin_user()
     {
-        $user = $this->createSuperAdmin();
+        $user = User::factory()->create();
+
+        Backend::authorize($user, 'anything');
 
         $request = $this
             ->actingAs($user)

@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('backend_permissions', function (Blueprint $table) {
+        Schema::create('bedard_backend_settings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('area');
-            $table->string('code');
+            $table->string('key');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('backend_permissions');
+        Schema::dropIfExists('backend_settings');
     }
 };

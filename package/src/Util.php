@@ -2,12 +2,28 @@
 
 namespace Bedard\Backend;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-
 class Util
 {
+    /**
+     * Attempt a function that might throw an error.
+     *
+     * @param function $callback
+     *
+     * @return mixed
+     */
+    public static function attempt($callback)
+    {
+        try {
+            return $callback();
+        } catch (Exception $e) {}
+
+        return null;
+    }
+
     /**
      * Get a model's ID
      *

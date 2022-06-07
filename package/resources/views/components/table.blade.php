@@ -2,6 +2,7 @@
     'columns' => [],
     'data' => [],
     'selectable' => false,
+    'rowRoute' => fn () => '#',
 ])
 
 <div
@@ -27,16 +28,18 @@
                 @endforeach
             </div>
         </div>
+
         <div
             class="table-row-group"
             data-table-group="body">
             @foreach ($data as $row)
                 <a
                     class="table-row unstyled odd:bg-gray-100 hover:bg-primary-100 dark:odd:bg-gray-600 dark:hover:bg-primary-500 dark:hover:bg-opacity-30"
-                    href="javascript:void 0;">
+                    href="{{ $rowRoute($row) }}">
                     @if ($selectable)
                         <x-backend::table-cell>
-                            <x-backend::checkbox x-model="rows[{{ $loop->index }}]" />
+                            <x-backend::checkbox
+                                x-model="rows[{{ $loop->index }}]" />
                         </x-backend::table-cell>
                     @endif
 

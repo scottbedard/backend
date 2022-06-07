@@ -1,21 +1,64 @@
 <x-backend::layout.main>
-    <div x-data="{ checked: 0 }" class="grid gap-6">
-        <div class="grid gap-6 p-6">
-            Upper section
-            
-            <template x-if="checked">
-                <div><span x-text="checked"></span> <span x-text="checked === 1 ? 'row is' : 'rows are'"></span> selected</div>
-            </template>
+    <div x-data="{ checked: [], loading: true, showDeleteConfirmation: false }">
+        <!-- new toolbar -->
+        <div class="border border-danger-500 flex gap-x-6 p-6">
+            @foreach ($toolbar->items as $item)
+                <div>
+                    {!! $item->render() !!}
+                </div>
+            @endforeach
+        </div>
 
-            <template x-if="!checked">
-                <div>Nothing is selected</div>
-            </template>
+        <!-- old toolbar -->
+        <div class="flex flex-wrap gap-x-6 p-6">
+            @can ('create ' . $resource::$id)
+                <x-backend::button
+                    icon="plus"
+                    theme="primary">
+                    {{ $resource->createButtonText() }}
+                </x-backend::button>
+            @endcan
+
+            @if ($resource->table()->selectable)
+                @can ('delete ' . $resource::$id)
+                    <x-backend::button
+                        x-bind:disabled="!checked.includes(true)"
+                        icon="trash"
+                        @click="showDeleteConfirmation = true">
+                        Delete selected
+                    </x-backend::button>
+
+                    <template x-if="showDeleteConfirmation">
+                        <x-backend::action-modal
+                            method="delete"
+                            button-icon="trash"
+                            button-text="Confirm"
+                            button-theme="danger"
+                            button-type="submit"
+                            secondary-icon="arrow-left"
+                            secondary-text="Cancel"
+                            @secondary-click="showDeleteConfirmation = false">
+                            Are you sure you want to delete these records?
+
+                            @foreach ($data as $row)
+                                <input
+                                    class="hidden"
+                                    name="resource[]"
+                                    type="checkbox"
+                                    value="{{ $row->id }}"
+                                    :checked="checked[{{ $loop->index }}]" />
+                            @endforeach
+                        </x-backend::action-modal>
+                    </template>
+                @endcan
+            @endif
         </div>
 
         <x-backend::table
             x-model="checked"
             :columns="$columns"
             :data="$data"
+            :rowRoute="fn ($x) => route('backend.resources.update', ['id' => $resource::$id, 'uid' => $x->id])"
             :selectable="$selectable" />
     </div>
 </x-backend::layout.main>

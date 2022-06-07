@@ -3,25 +3,26 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Table;
+use Bedard\Backend\Toolbar;
 
 class Resource
 {
     /**
-     * Backend permission area.
+     * Application entity
      *
      * @var string
      */
-    public static $area = '';
+    public static $entity = '';
 
     /**
-     * Unique resource identifier.
+     * Unique resource identifier
      *
      * @var string
      */
     public static $id = '';
 
     /**
-     * Resource icon.
+     * Resource icon
      *
      * See https://lucide.dev/
      *
@@ -30,28 +31,38 @@ class Resource
     public static $icon = 'smile';
   
     /**
-     * The model corresponding to this resource.
+     * The model corresponding to this resource
      *
      * @var string
      */
     public static $model = null;
 
     /**
-     * Resource order.
+     * Resource order
      *
      * @var int
      */
     public static $order = 0;
 
     /**
-     * Resource title.
+     * Resource title
      *
      * @var string
      */
     public static $title = null;
 
     /**
-     * Table data.
+     * Text for the create button
+     *
+     * @return string
+     */
+    public function createButtonText()
+    {
+        return 'Create ' . strtolower(static::$entity);
+    }
+
+    /**
+     * Table data
      */
     public function data()
     {
@@ -61,11 +72,23 @@ class Resource
     }
 
     /**
-     * Fields.
+     * Delete resources by ID
+     *
+     * @param array
+     *
+     * @return void
+     */
+    public function delete(array $ids)
+    {
+        static::$model::whereIn('id', $ids)->delete();
+    }
+
+    /**
+     * Form
      *
      * @return array
      */
-    public function fields()
+    public function form()
     {
         return [
             // ...
@@ -73,12 +96,40 @@ class Resource
     }
 
     /**
-     * Table definition.
+     * Permissions that will allow a user to access this resource.
+     *
+     * @return array
+     */
+    public function permissions()
+    {
+        $id = static::$id;
+
+        return [
+            "create {$id}",
+            "delete {$id}",
+            "manage {$id}",
+            "read {$id}",
+            "update {$id}",
+        ];
+    }
+
+    /**
+     * Table
      *
      * @return \Bedard\Backend\Table
      */
     public function table(): Table
     {
         return Table::make();
+    }
+
+    /**
+     * Toolbar
+     *
+     * @return \Bedard\Backend\Toolbar
+     */
+    public function toolbar(): Toolbar
+    {
+        return Toolbar::make();
     }
 }

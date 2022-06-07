@@ -39,24 +39,12 @@ class ResourceCommand extends GeneratorCommand
         $model = $this->getModelParam();
 
         return $this->replaceParams($stub, [
-            'area' => $this->getAreaParam($model),
             'class' => $this->getClassParam($model),
+            'entity' => $this->getEntityParam($model),
             'id' => $this->getIdParam($model),
             'model' => $model,
             'title' => $this->getTitleParam($model),
         ]);  
-    }
-
-    /**
-     * Resource ID param.
-     *
-     * @param string $model
-     *
-     * @return string
-     */
-    protected function getAreaParam(string $model)
-    {
-        return Str::plural(Str::snake($model));
     }
 
     /**
@@ -80,6 +68,17 @@ class ResourceCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace . '\Backend\Resources';
+    }
+
+    /**
+     * Get the default entity name.
+     *
+     * @param string $model
+     * @return string
+     */
+    protected function getEntityParam($model)
+    {
+        return $model;
     }
 
     /**

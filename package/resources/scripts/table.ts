@@ -41,8 +41,8 @@ export default alpine((count: number = 0) => {
       })
     },
 
-    get modelable() {
-      return this.rows.filter(x => x).length
+    get modelable(): any {
+      return this.rows
     },
   }
 })

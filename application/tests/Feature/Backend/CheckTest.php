@@ -11,44 +11,41 @@ class CheckTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_super_admin()
+    public function test_checking_for_a_permission()
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'all', 'all');
+        Backend::authorize($user, 'foo');
+        
+        $this->assertTrue(Backend::check($user, 'foo'));
 
-        $this->assertTrue(Backend::check($user, 'foo', 'all'));
-        $this->assertTrue(Backend::check($user, 'foo', 'create'));
+        $this->assertFalse(Backend::check($user, 'bar'));
     }
 
-    public function test_super_area_admin()
+    public function test_super_admins_always_have_permission()
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'foo', 'all');
+        Backend::authorize($user, 'super admin');
 
-        $this->assertTrue(Backend::check($user, 'foo', 'all'));
-        $this->assertTrue(Backend::check($user, 'foo', 'create'));
-        $this->assertFalse(Backend::check($user, 'bar', 'create'));
+        $this->assertTrue(Backend::check($user, 'foo'));
     }
 
-    public function test_area_admin_code()
+    public function test_managers_can_access_their_resource()
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'foo', 'create');
+        Backend::authorize($user, 'manage books');
 
-        $this->assertTrue(Backend::check($user, 'foo', 'create'));
-        $this->assertFalse(Backend::check($user, 'foo', 'delete'));
-        $this->assertFalse(Backend::check($user, 'bar', 'create'));
+        $this->assertTrue(Backend::check($user, 'create books'));
     }
 
-    public function test_area_any_code()
+    public function test_access_permission_action()
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'foo', 'create');
+        Backend::authorize($user, 'manage posts');
 
-        $this->assertTrue(Backend::check($user, 'foo', 'any'));
+        $this->assertTrue(Backend::check($user, 'access posts'));
     }
 }

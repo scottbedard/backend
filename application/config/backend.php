@@ -47,7 +47,7 @@ return [
     |
     */
 
-    'unauthorized_redirect' => env('BACKEND_UNAUTHORIZED_REDIRECT', '/'),
+    'unauthorized_redirect' => env('BACKEND_UNAUTHORIZED_REDIRECT', '/unauthorized'),
      
 
     /*

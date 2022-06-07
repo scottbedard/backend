@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Http\Middleware;
 
+use Backend;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,7 @@ class BackendMiddleware
             return redirect(config('backend.guest_redirect'));
         }
 
-        if ($user->backendPermissions()->count() === 0) {
+        if ($user->permissions()->count() < 1) {
             return redirect(config('backend.unauthorized_redirect'));
         }
 

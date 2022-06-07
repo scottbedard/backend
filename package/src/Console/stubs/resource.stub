@@ -5,25 +5,26 @@ namespace App\Backend\Resources;
 use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
 use Bedard\Backend\Table;
+use Bedard\Backend\Toolbar;
 
 class {{ class }} extends Resource
 {
     /**
-     * Backend permission area.
+     * Application entity
      *
      * @var string
      */
-    public static $area = '{{ area }}';
+    public static $entity = '{{ entity }}';
 
     /**
-     * Unique resource identifier.
+     * Unique resource identifier
      *
      * @var string
      */
     public static $id = '{{ id }}';
 
     /**
-     * Resource icon.
+     * Resource icon
      *
      * See https://lucide.dev/
      *
@@ -32,25 +33,25 @@ class {{ class }} extends Resource
     public static $icon = 'smile';
   
     /**
-     * The model corresponding to this resource.
+     * The model corresponding to this resource
      *
      * @var string
      */
     public static $model = \App\Models\{{ model }}::class;
 
     /**
-     * Resource title.
+     * Resource title
      *
      * @var string
      */
     public static $title = '{{ title }}';
 
     /**
-     * Fields
+     * Form
      *
      * @return array
      */
-    public function fields()
+    public function form()
     {
         return [
             // ...
@@ -67,5 +68,15 @@ class {{ class }} extends Resource
         return Table::columns([
             // ...
         ]);
+    }
+
+    /**
+     * Toolbar
+     *
+     * @return \Bedard\Backend\Toolbar
+     */
+    public function toolbar(): Toolbar
+    {
+        return Toolbar::make();
     }
 }

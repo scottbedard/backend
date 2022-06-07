@@ -2,20 +2,25 @@
 
 namespace Bedard\Backend\Console;
 
+use App\Models\User;
 use Backend;
-use Bedard\Backend\Models\BackendPermission;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DeauthorizeCommand extends Command
 {
     /**
-     * Confirmation message.
+     * Console output.
      *
-     * @var string
+     * @var arr
      */
-    public static $confirmation = "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.";
-
+    public static $messages = [
+        'canceled' => 'Deauthorization canceled.',
+        'complete' => 'Authorization revoked!',
+        'confirmTotalDeauthorization' => "Are you sure you want to deauthorize this user?\n <fg=default>This fully revokes all backend permissions.",
+        'invalidOptions' => "Invalid arguments, please specify --permission, --role, or --all.",
+        'userNotFound' => "User not found.",
+    ];
 
     /**
      * The name and signature of the console command.
@@ -24,10 +29,10 @@ class DeauthorizeCommand extends Command
      */
     protected $signature = '
         backend:deauthorize
-            {user}
-            {--area= : Backend area}
-            {--code= : Permission code}
-            {--super : Revoke all permissions, blocking access to everything}
+            {userId}
+            {--role= : Role name}
+            {--permission= : Permission code}
+            {--all : Revoke all permissions and roles}
     ';
 
     /**
@@ -38,71 +43,159 @@ class DeauthorizeCommand extends Command
     protected $description = 'Revoke backend permissions from a user';
 
     /**
-     * Execute the console command.
+     * Test for all flag.
+     *
+     * @return bool
+     */
+    private function all(): bool
+    {
+        return (bool) $this->option('all');
+    }
+
+    /**
+     * Authorize a user for a specific permission.
+     *
+     * @param \App\Models\User $user
+     * @param string $name
      *
      * @return int
      */
-    public function handle()
+    private function deauthorizePermission(User $user, string $name): int
     {
-        // fetch the user
-        $id = $this->argument('user');
+        Backend::deauthorize($user, $name);
 
-        try {
-            $user = config('backend.user')::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            $this->error('User not found');
-
-            return 1;
-        }
-
-        // normalize options
-        $area = BackendPermission::normalize($this->option('area') ?? '');
-        $code = BackendPermission::normalize($this->option('code') ?? 'all');
-
-        // deauthorize super admin
-        if ($this->super($area, $code)) {
-            if ($this->confirm(self::$confirmation)) {
-                Backend::deauthorize($user, 'all', 'all');
-
-                $this->info('Deauthorization complete!');
-
-                return 0;
-            }
-
-            $this->error('Deauthorization canceled.');
-
-            return 1;
-        }
-
-        // permission area
-        if (!$area) {
-            $this->error('No backend area specified.');
-
-            return 1;
-        }
-
-        Backend::deauthorize($user, $area, $code);
-
-        $this->info('Deauthorization complete!');
+        $this->info(self::$messages['complete']);
 
         return 0;
     }
 
     /**
-     * Test for super flag or options.
+     * Assign a user to a role.
      *
-     * @param string $area
-     * @param string $code
+     * @param \App\Models\User $user
+     * @param string $name
+     *
+     * @return int
+     */
+    private function deauthorizeRole(User $user, string $name): int
+    {
+        Backend::unassign($user, $name);
+
+        $this->info(self::$messages['complete']);
+
+        return 0;
+    }
+
+    /**
+     * Remove all of a users permissions and roles.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return int
+     */
+    private function deauthorizeTotal(User $user): int
+    {
+        if ($this->confirm(self::$messages['confirmTotalDeauthorization'])) {
+            $user->roles()->get()->each(function ($role) use ($user) {
+                $user->removeRole($role);
+            });
+
+            $user->permissions()->get()->each(function ($permission) use ($user) {
+                $user->revokePermissionTo($permission);
+            });
+
+            $this->info(self::$messages['complete']);
+
+            return 0;
+        }
+
+        $this->info(self::$messages['canceled']);
+
+        return 0;
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle(): int
+    {
+        $id = $this->argument('userId');
+
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            $this->error(self::$messages['userNotFound']);
+
+            return 1;
+        }
+
+        if (!$this->valid()) {
+            $this->error(self::$messages['invalidOptions']);
+
+            return 1;
+        }
+        
+        if ($this->total()) {
+            return $this->deauthorizeTotal($user);
+        }
+
+        elseif ($this->permission()) {
+            return $this->deauthorizePermission($user, $this->option('permission'));
+        }
+
+        elseif ($this->role()) {
+            return $this->deauthorizeRole($user, $this->option('role'));
+        }
+
+        return 1;
+    }
+
+    /**
+     * Test for the permission flag.
      *
      * @return bool
      */
-    private function super(string $area, string $code): bool
+    private function permission(): bool
     {
-        if ($area === 'all' && $code === 'all') {
+        return (bool) $this->option('permission');
+    }
+
+    /**
+     * Test for the role flag.
+     *
+     * @return bool
+     */
+    private function role(): bool
+    {
+        return (bool) $this->option('role');
+    }
+
+    /**
+     * Test if this is a total deauthorization
+     */
+    private function total()
+    {
+        return $this->option('permission') === null && $this->option('role') === null;
+    }
+
+    /**
+     * Test if parameter combinations are valid.
+     *
+     * @return bool
+     */
+    private function valid(): bool
+    {
+        if ($this->all() && !$this->permission() && !$this->role()) {
             return true;
         }
 
-        if ($this->option('super')) {
+        elseif ($this->permission() && !$this->role() && !$this->all()) {
+            return true;
+        }
+
+        elseif ($this->role() && !$this->permission() && !$this->all()) {
             return true;
         }
 

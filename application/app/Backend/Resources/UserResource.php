@@ -3,18 +3,19 @@
 namespace App\Backend\Resources;
 
 use Bedard\Backend\Column;
-use Bedard\Backend\Field;
 use Bedard\Backend\Resource;
 use Bedard\Backend\Table;
+use Bedard\Backend\Toolbar;
+use Bedard\Backend\Toolbar\Button;
 
 class UserResource extends Resource
 {
     /**
-     * Backend permission area.
+     * Application entity.
      *
      * @var string
      */
-    public static $area = 'users';
+    public static $entity = 'User';
 
     /**
      * Unique resource identifier.
@@ -47,14 +48,14 @@ class UserResource extends Resource
     public static $title = 'Users';
 
     /**
-     * Fields
+     * Form
      *
      * @return array
      */
-    public function fields()
+    public function form()
     {
         return [
-            Field::number('id')->label('id'),
+            // ...
         ];
     }
 
@@ -76,5 +77,20 @@ class UserResource extends Resource
             ])
             ->selectable()
             ->pageSize(20);
+    }
+
+    /**
+     * Toolbar definition.
+     *
+     * @return \Bedard\Backend\Toolbar
+     */
+    public function toolbar(): Toolbar
+    {
+        return Toolbar::make([
+                Button::theme('primary')
+                    ->icon('plus')
+                    ->text('Create user'),
+            ])
+            ->searchable();
     }
 }

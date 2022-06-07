@@ -2,69 +2,117 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Models\BackendPermission;
 use Bedard\Backend\Util;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Str;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class Backend
 {
     /**
-     * Grant backend permission to a user.
+     * Assign a user to a role.
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $area
-     * @param string $code
+     * @param string $name
      *
-     * @return \Bedard\Backend\Models\BackendPermission
+     * @return \Illuminate\Foundation\Auth\User
      */
-    public function authorize(User $user, string $area, string $code)
+    public function assign(User $user, string $name)
     {
-        return $user->backendPermissions()->create([
-            'area' => $area,
-            'code' => $code,
-        ]);
+        try {
+            $user->assignRole($name);
+        } catch (RoleDoesNotExist $e) {};
     }
 
     /**
-     * Check if a user has a backend permission.
+     * Grant permission to a user.
      *
-     * @param \Illuminate\Foundation\Auth\User|int|string $user
-     * @param string $area
-     * @param string $code
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param string $name
+     *
+     * @return \Illuminate\Foundation\Auth\User
+     */
+    public function authorize(User $user, string $name)
+    {
+        $permission = Permission::findOrCreate($name);
+
+        return $user->givePermissionTo($permission);
+    }
+
+    /**
+     * Check for any permission.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param array $permissions
      *
      * @return bool
      */
-    public function check(User|int|string $user, string $area, string $code = 'any')
+    public function check(User $user, ...$permissions): bool
     {
-        return BackendPermission::where('user_id', Util::getId($user))
-            ->check($area, $code)
-            ->exists();
+        // check for super admin
+        if (Util::attempt(fn () => $user->hasPermissionTo('super admin'))) {
+            return true;
+        }
+
+        // check for explicit permission
+        if (Util::attempt(fn () => $user->hasAnyPermission($permissions))) {
+            return true;
+        }
+
+        // process special permissions
+        $special = collect($permissions)
+            ->filter(function ($permission) {
+                return is_string($permission) && preg_match('/^[a-zA-Z]+ [a-zA-Z]+$/i', $permission);
+            })
+            ->map(function ($permission) {
+                return  explode(' ', $permission);
+            });
+            
+        $processed = [];
+
+        foreach ($special as $permission) {
+            if (in_array($permission, $processed)) {
+                continue;
+            }
+            
+            [$action, $resource] = $permission;
+
+            // access only requires one resource permission
+            if ($action === 'access') {
+                $instance = Backend::resource($resource);
+
+                return Util::attempt(fn () => $user->hasAnyPermission($instance->permissions()));
+            }
+
+            // managers can access all areas of their resource
+            if (Util::attempt(fn () => $user->hasPermissionTo("manage {$resource}"))) {
+                return true;
+            }
+
+            array_push($processed, $permission);
+        }
+        
+        return false;
     }
 
     /**
      * Revoke backend permission from a user.
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $area
-     * @param string $code
+     * @param string $name
      *
      * @return void
      */
-    public function deauthorize(User $user, string $area = 'all', string $code = 'all')
+    public function deauthorize(User $user, string $name)
     {
-        $query = $user->backendPermissions();
-        
-        if (BackendPermission::normalize($area) !== 'all') {
-            $query->area($area);
-        }
-
-        if (BackendPermission::normalize($code) !== 'all') {
-            $query->code($code);
-        }
-
-        $query->delete();
+        try {
+            $user->revokePermissionTo($name);
+        } catch (PermissionDoesNotExist $e) {}
     }
 
     /**
@@ -125,6 +173,21 @@ class Backend
                     return $a::$title <=> $b::$title;
                 },
             ]);
+    }
+
+    /**
+     * Unassign a user to a role.
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param string $name
+     *
+     * @return void
+     */
+    public function unassign(User $user, string $name): void
+    {
+        try {
+            $user->removeRole($name);
+        } catch (RoleDoesNotExist $e) {}
     }
 
     /**

@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        Backend::authorize($admin, 'all', 'all');
+        Backend::authorize($admin, 'super admin');
 
         // user manager
         $users = User::factory()->create([
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        Backend::authorize($users, 'users', 'all');
+        Backend::authorize($users, 'manage users');
 
         // regular users
         User::factory()->count(10)->create();

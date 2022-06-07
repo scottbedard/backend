@@ -12,48 +12,70 @@ class DeauthorizeCommandTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_revoking_a_permission()
+    public function test_deauthorizing_a_permission()
     {
         $user = User::factory()->create();
+        
+        $user->permissions()->create([
+            'name' => 'foo',
+        ]);
 
-        Backend::authorize($user, 'foo', 'create');
-        Backend::authorize($user, 'foo', 'update');
-        Backend::authorize($user, 'bar', 'create');
+        $this->assertTrue($user->hasPermissionTo('foo'));
 
         $this
-            ->artisan("backend:deauthorize {$user->id} --area=foo --code=create")
+            ->artisan("backend:deauthorize {$user->id} --permission=foo")
+            ->expectsOutput(DeauthorizeCommand::$messages['complete'])
             ->assertSuccessful();
 
-        $this->assertEquals(2, $user->backendPermissions()->count());
-        $this->assertTrue($user->backendPermissions()->area('foo')->code('update')->exists());
-        $this->assertTrue($user->backendPermissions()->area('bar')->exists());
+        $user->refresh();
+            
+        $this->assertFalse($user->hasPermissionTo('foo'));
     }
 
-    public function test_revoking_super_admin_confirmation_accepted()
+    public function test_deauthorize_a_role()
     {
         $user = User::factory()->create();
+        
+        $role = $user->roles()->create([
+            'name' => 'foo',
+        ]);
 
-        Backend::authorize($user, 'all', 'all');
+        $this->assertTrue($user->hasRole($role));
 
         $this
-            ->artisan("backend:deauthorize {$user->id} --super")
-            ->expectsConfirmation(DeauthorizeCommand::$confirmation, 'yes')
+            ->artisan("backend:deauthorize {$user->id} --role=foo")
+            ->expectsOutput(DeauthorizeCommand::$messages['complete'])
             ->assertSuccessful();
 
-        $this->assertEquals(0, $user->backendPermissions()->count());
+        $user->refresh();
+
+        $this->assertFalse($user->hasRole($role));
     }
 
-    public function test_creating_super_admin_confirmation_declined()
+    public function test_total_deauthorization_of_a_user()
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'all', 'all');
+        $permission = $user->permissions()->create([
+            'name' => 'foo',
+        ]);
+        
+        $role = $user->roles()->create([
+            'name' => 'foo',
+        ]);
+
+        $this->assertTrue($user->hasRole($role));
+        $this->assertTrue($user->hasPermissionTo($permission));
 
         $this
-            ->artisan("backend:deauthorize {$user->id} --super")
-            ->expectsConfirmation(DeauthorizeCommand::$confirmation, 'no')
-            ->assertFailed();
+            ->artisan("backend:deauthorize {$user->id} --all")
+            ->expectsConfirmation(DeauthorizeCommand::$messages['confirmTotalDeauthorization'], 'yes')
+            ->expectsOutput(DeauthorizeCommand::$messages['complete'])
+            ->assertSuccessful();
 
-        $this->assertEquals(1, $user->backendPermissions()->count());
+        $user->refresh();
+
+        $this->assertFalse($user->hasRole($role));
+        $this->assertFalse($user->hasPermissionTo($permission));
     }
 }

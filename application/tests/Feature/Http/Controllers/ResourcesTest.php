@@ -14,8 +14,8 @@ class ResourcesTest extends TestCase
     public function test_users_can_only_access_authorized_areas()
     {
         $user = User::factory()->create();
-
-        Backend::authorize($user, 'posts', 'all');
+        
+        Backend::authorize($user, 'read posts');
 
         $this
             ->actingAs($user)
@@ -25,6 +25,41 @@ class ResourcesTest extends TestCase
         $this
             ->actingAs($user)
             ->get('/backend/resources/users')
+            ->assertUnauthorized();
+    }
+
+    public function test_deleting_records()
+    {
+        $admin = User::factory()->create();
+
+        $bob = User::factory()->create();
+
+        $sally = User::factory()->create();
+
+        Backend::authorize($admin, 'delete users');
+
+        $this
+            ->actingAs($admin)
+            ->delete('/backend/resources/users', [
+                'resource' => [$bob->id],
+            ])
+            ->assertRedirect();
+        
+        $this->assertFalse(User::where('id', $bob->id)->exists());
+        $this->assertTrue(User::where('id', $sally->id)->exists());
+    }
+
+    public function test_unauthorized_deleting_records()
+    {
+        $hacker = User::factory()->create();
+
+        Backend::authorize($hacker, 'create users');
+
+        $this
+            ->actingAs($hacker)
+            ->delete('/backend/resources/users', [
+                'resource' => [],
+            ])
             ->assertUnauthorized();
     }
 }
