@@ -9,37 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 class CarbonColumn extends Column
 {
     /**
-     * Difference for humans.
+     * Attributes
      *
-     * @var bool
+     * @var array
      */
-    public bool $diffForHumans = false;
-
-    /**
-     * Format
-     *
-     * @var string
-     */
-    public string $format = 'M jS, Y';
-
-    /**
-     * Parse
-     *
-     * @var string
-     */
-    public string $parse = 'Y-m-d H:i:s';
-
-    /**
-     * Display time relative to now
-     *
-     * @return \Bedard\Backend\Columns\CarbonColumn
-     */
-    public function diffForHumans()
-    {
-        $this->diffForHumans = true;
-
-        return $this;
-    }
+    protected $attributes = [
+        'diffForHumans' => false,
+        'format' => 'M jS, Y',
+        'parse' => 'Y-m-d H:i:s',
+    ];
 
     /**
      * Render

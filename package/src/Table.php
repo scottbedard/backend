@@ -7,30 +7,14 @@ use Bedard\Backend\Classes\Fluent;
 class Table extends Fluent
 {
     /**
-     * Columns
-     * 
-     * @param array
-     */
-    public array $columns = [];
-
-    /**
-     * Default page size
+     * Attributes
      *
-     * @var int
+     * @var array
      */
-    public int $pageSize = 20;
-
-    /**
-     * Selectable
-     *
-     * @var bool
-     */
-    public bool $selectable = false;
-
-    /**
-     * Toolbar
-     *
-     * @param array
-     */
-    public array $toolbar = [];
+    protected $attributes = [
+        'columns' => [],
+        'pageSize' => 20,
+        'selectable' => false,
+        'toolbar' => [],
+    ];
 }

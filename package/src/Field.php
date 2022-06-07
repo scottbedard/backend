@@ -7,49 +7,23 @@ use Illuminate\Support\Arr;
 class Field
 {
     /**
-     * Column
+     * All of the attributes set on the fluent instance
      *
-     * @var string
+     * @var array
      */
-    public string $column;
+    protected $attributes = [
+        'column' => '',
+        'label' => '',
+    ];
 
     /**
-     * Label
+     * Subclass constructor aliases
      *
-     * @var string
+     * @var array
      */
-    public string $label;
-
-    /**
-     * Field construction
-     *
-     * @param string $field
-     * @param array $args
-     *
-     * @return \Bedard\Backend\Field
-     */
-    public static function __callStatic(string $field, array $args = [])
-    {
-        $common = [
-            'number' => \Bedard\Backend\Fields\NumberField::class
-        ];
-
-        if (Arr::exists($common, $field)) {
-            return new ($common[$field])(...$args);
-        }
-    }
-
-    /**
-     * Static constructor for custom field types
-     *
-     * @param string $column
-     *
-     * @return \Bedard\Backend\Field
-     */
-    public static function make(string $column)
-    {
-        return new static($column);
-    }
+    public static $subclasses = [
+        'number' => \Bedard\Backend\Fields\NumberField::class
+    ];
 
     /**
      * Construct
@@ -59,19 +33,5 @@ class Field
     public function __construct(string $column)
     {
         $this->column = $column;
-    }
-
-    /**
-     * Label
-     *
-     * @param string $label
-     *
-     * @return \Bedard\Backend\Field
-     */
-    public function label(string $label)
-    {
-        $this->label = $label;
-
-        return $this;
     }
 }

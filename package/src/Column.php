@@ -4,53 +4,46 @@ namespace Bedard\Backend;
 
 use Bedard\Backend\Classes\Fluent;
 use Bedard\Backend\Exceptions\InvalidColumnAlignmentException;
+use Bedard\Backend\Traits\InheritParentAttrs;
 use Bedard\Backend\Util;
 use Illuminate\Database\Eloquent\Model;
 
 class Column extends Fluent
 {
+    use InheritParentAttrs;
+
     /**
-     * Constructors.
+     * Attributes
      *
      * @var array
      */
-    public static array $constructors = [
+    protected $attributes = [
+        'align' => 'left',
+        'header' => '',
+        'key' => '',
+    ];
+
+    /**
+     * Subclass constructor aliases
+     *
+     * @var array
+     */
+    public static $subclasses = [
         'carbon' => \Bedard\Backend\Columns\CarbonColumn::class,
         'number' => \Bedard\Backend\Columns\NumberColumn::class,
         'text' => \Bedard\Backend\Columns\TextColumn::class,
     ];
 
     /**
-     * Align
-     *
-     * @var string
-     */
-    public string $align = 'left';
-
-    /**
-     * Header
-     *
-     * @var string
-     */
-    public string $header = '';
-
-    /**
-     * Key
-     *
-     * @var string
-     */
-    public string $key = '';
-
-    /**
-     * Construct
+     * Init
      *
      * @param string $key
      *
      * @return void
      */
-    public function __construct(string $key = '')
+    public function init(string $key = '')
     {
-        $this->key = $key;
+        $this->attributes['key'] = $key;
     }
 
     /**
@@ -60,17 +53,13 @@ class Column extends Fluent
      *
      * @return \Bedard\Backend\Column
      */
-    public function align(?string $align = null)
+    public function setAlignAttribute(?string $align = null)
     {
         if ($align === null) {
             throw new InvalidColumnAlignmentException("Missing column alignment, please specify \"left\", \"right\", or \"center\".");
         }
 
-        $alignments = [
-            'center', 
-            'left', 
-            'right',
-        ];
+        $alignments = ['left', 'right', 'center'];
 
         $str = trim(strtolower($align));
 
@@ -80,9 +69,7 @@ class Column extends Fluent
             throw new InvalidColumnAlignmentException("Invalid column alignment \"{$align}\", did you mean \"{$suggestion}\"?");
         }
 
-        $this->align = $align;
-
-        return $this;
+        $this->attributes['align'] = $align;
     }
     
     /**
