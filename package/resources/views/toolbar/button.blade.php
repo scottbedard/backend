@@ -1,4 +1,7 @@
-<div x-data="{ modal: false }">
+<div
+    x-data="{ modal: false }"
+    @dismiss="modal = false"
+    @secondary-click="modal = false">
     <x-backend::button
         x-on:click="modal = true"
         :x-bind:disabled="$requireSelection ? '!checked.includes(true)' : null"
@@ -10,8 +13,6 @@
     @if ($confirm)
         <template x-if="modal">
             <x-backend::action-modal
-                x-on:dismiss="modal = false"
-                x-on:secondary-click="modal = false"
                 method="delete"
                 button-icon="trash"
                 button-text="Confirm"

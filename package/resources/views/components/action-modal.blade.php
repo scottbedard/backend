@@ -21,9 +21,7 @@
         <div class="grid gap-6 p-6">
             <h3 class="font-bold text-xl">{{ $title }}</h3>
 
-            <div>
-                {{ $slot }}
-            </div>
+            <div>{{ $slot }}</div>
         </div>
         
         <x-backend::action-bar
@@ -33,7 +31,6 @@
             :button-text="$buttonText"
             :button-theme="$buttonTheme"
             :secondary-icon="$secondaryIcon"
-            :secondary-text="$secondaryText"
-            @secondary-click="showDeleteConfirmation = false" />
+            :secondary-text="$secondaryText" />
     </form>
 </x-backend::modal>
