@@ -1,5 +1,15 @@
 <x-backend::layout.main>
     <div x-data="{ checked: [], loading: true, showDeleteConfirmation: false }">
+        <!-- new toolbar -->
+        <div class="border border-danger-500 flex gap-x-6 p-6">
+            @foreach ($toolbar->items as $item)
+                <div>
+                    {!! $item->render() !!}
+                </div>
+            @endforeach
+        </div>
+
+        <!-- old toolbar -->
         <div class="flex flex-wrap gap-x-6 p-6">
             @can ('create ' . $resource::$id)
                 <x-backend::button

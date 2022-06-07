@@ -2,9 +2,11 @@
 
 namespace Bedard\Backend\Toolbar;
 
-use Bedard\Backend\Toolbar;
+use Bedard\Backend\Exceptions\InvalidThemeException;
+use Bedard\Backend\Toolbar\Base;
+use Bedard\Backend\Util;
 
-class Button extends Toolbar
+class Button extends Base
 {
     /**
      * Confirmation modal
@@ -37,7 +39,7 @@ class Button extends Toolbar
     /**
      * Theme
      *
-     * @var string
+     * @var ?string
      */
     public ?string $theme = null;
 
@@ -47,4 +49,44 @@ class Button extends Toolbar
      * @var string|callable
      */
     public $to = '#';
+
+    /**
+     * Render
+     *
+     * @return \Illuminate\Contracts\View\View|string
+     */
+    public function render()
+    {
+        return view('backend::toolbar.button', [
+            'confirmation' => $this->confirmation,
+            'icon' => $this->icon,
+            'method' => $this->method,
+            'text' => $this->text,
+            'theme' => $this->theme,
+        ]);
+    }
+
+    // /**
+    //  * Set theme
+    //  *
+    //  * @return \Bedard\Backend\Toolbar\Base
+    //  */
+    // public function theme(string $theme)
+    // {
+    //     $themes = [
+    //         'danger',
+    //         'default',
+    //         'primary',
+    //     ];
+
+    //     if (!in_array($theme, $themes)) {
+    //         $suggestion = Util::suggest($theme, $themes);
+
+    //         throw new InvalidThemeException("Unknown button theme \"{$theme}\", did you mean \"{$suggestion}\"?");
+    //     }
+
+    //     $this->theme = $theme;
+
+    //     return $this;
+    // }
 }

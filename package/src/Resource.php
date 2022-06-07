@@ -3,18 +3,26 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Table;
+use Bedard\Backend\Toolbar;
 
 class Resource
 {
     /**
-     * Unique resource identifier.
+     * Application entity
+     *
+     * @var string
+     */
+    public static $entity = '';
+
+    /**
+     * Unique resource identifier
      *
      * @var string
      */
     public static $id = '';
 
     /**
-     * Resource icon.
+     * Resource icon
      *
      * See https://lucide.dev/
      *
@@ -23,21 +31,21 @@ class Resource
     public static $icon = 'smile';
   
     /**
-     * The model corresponding to this resource.
+     * The model corresponding to this resource
      *
      * @var string
      */
     public static $model = null;
 
     /**
-     * Resource order.
+     * Resource order
      *
      * @var int
      */
     public static $order = 0;
 
     /**
-     * Resource title.
+     * Resource title
      *
      * @var string
      */
@@ -54,7 +62,7 @@ class Resource
     }
 
     /**
-     * Table data.
+     * Table data
      */
     public function data()
     {
@@ -64,7 +72,7 @@ class Resource
     }
 
     /**
-     * Delete resources by ID.
+     * Delete resources by ID
      *
      * @param array
      *
@@ -76,7 +84,7 @@ class Resource
     }
 
     /**
-     * Form.
+     * Form
      *
      * @return array
      */
@@ -106,12 +114,22 @@ class Resource
     }
 
     /**
-     * Table definition.
+     * Table
      *
      * @return \Bedard\Backend\Table
      */
     public function table(): Table
     {
         return Table::make();
+    }
+
+    /**
+     * Toolbar
+     *
+     * @return \Bedard\Backend\Toolbar
+     */
+    public function toolbar(): Toolbar
+    {
+        return Toolbar::make();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Backend\Resources;
 use Bedard\Backend\Column;
 use Bedard\Backend\Resource;
 use Bedard\Backend\Table;
+use Bedard\Backend\Toolbar;
 use Bedard\Backend\Toolbar\Button;
 
 class UserResource extends Resource
@@ -65,29 +66,7 @@ class UserResource extends Resource
      */
     public function table(): Table
     {
-        return Table::toolbar([
-                Button::permission('create users')
-                    ->icon('plus')
-                    ->text('Create user')
-                    ->theme('primary')
-                    ->to(route('backend.resources.create', ['id' => 'users'])),
-
-                Button::permission('delete users')
-                    ->icon('trash')
-                    ->text('Delete users')
-                    ->confirmation([
-                        'title' => 'Are you sure?',
-                        'body' => 'This cannot be undone.',
-                        'buttonText' => 'Delete',
-                        'buttonIcon' => 'trash',
-                        'buttonTheme' => 'danger',
-                        'secondaryText' => 'Cancel',
-                        'secondaryIcon' => 'arrow-left',
-                    ])
-                    ->method('delete')
-                    ->to(route('backend.resources.delete', ['id' => 'users'])),
-            ])
-            ->columns([
+        return Table::columns([
                 Column::text('name')->header('Name'),
     
                 Column::text('email')->header('Email address'),
@@ -98,5 +77,20 @@ class UserResource extends Resource
             ])
             ->selectable()
             ->pageSize(20);
+    }
+
+    /**
+     * Toolbar definition.
+     *
+     * @return \Bedard\Backend\Toolbar
+     */
+    public function toolbar(): Toolbar
+    {
+        return Toolbar::make([
+                Button::theme('primary')
+                    ->icon('plus')
+                    ->text('Create user'),
+            ])
+            ->searchable();
     }
 }

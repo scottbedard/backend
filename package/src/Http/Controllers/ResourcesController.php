@@ -62,11 +62,14 @@ class ResourcesController extends Controller
 
         $table = $resource->table();
 
+        $toolbar = $resource->toolbar();
+
         return view('backend::resources-show', [
             'columns' => $table->columns,
             'data' => $resource->data(),
             'resource' => $resource,
             'selectable' => $table->selectable,
+            'toolbar' => $toolbar,
         ]);
     }
 
