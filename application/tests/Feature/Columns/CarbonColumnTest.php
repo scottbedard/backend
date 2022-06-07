@@ -15,7 +15,7 @@ class CarbonColumnTest extends TestCase
             public $attributes = ['created_at' => '2022-01-01 01:23:45'];
         };
 
-        $column = new CarbonColumn('created_at');
+        $column = CarbonColumn::make('created_at');
 
         $this->assertEquals('Jan 1st, 2022', $column->render($model));
     }
@@ -26,7 +26,7 @@ class CarbonColumnTest extends TestCase
             public $attributes = ['created_at' => '2022-01-01 01:23:45'];
         };
 
-        $column = new CarbonColumn('created_at');
+        $column = CarbonColumn::make('created_at');
 
         $this->assertEquals('January 2022', $column->format('F Y')->render($model));
     }
@@ -37,7 +37,7 @@ class CarbonColumnTest extends TestCase
             public $attributes = ['timestamp' => '1653713409'];
         };
 
-        $column = new CarbonColumn('timestamp');
+        $column = CarbonColumn::make('timestamp');
 
         $this->assertEquals('May 28th, 2022', $column->parse('U')->render($model));
     }
@@ -47,7 +47,7 @@ class CarbonColumnTest extends TestCase
         $model = new class extends Model { };
         $model->created_at = Carbon::yesterday();
 
-        $column = new CarbonColumn('created_at');
+        $column = CarbonColumn::make('created_at');
 
         $this->assertEquals('1 day ago', $column->diffForHumans()->render($model));
     }

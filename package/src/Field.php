@@ -2,10 +2,13 @@
 
 namespace Bedard\Backend;
 
-use Illuminate\Support\Arr;
+use Bedard\Backend\Classes\Fluent;
+use Bedard\Backend\Traits\InheritParentAttrs;
 
-class Field
+class Field extends Fluent
 {
+    use InheritParentAttrs;
+
     /**
      * All of the attributes set on the fluent instance
      *
@@ -26,12 +29,14 @@ class Field
     ];
 
     /**
-     * Construct
+     * Init
+     *
+     * @param string $key
      *
      * @return void
      */
-    public function __construct(string $column)
+    public function init(string $column = '')
     {
-        $this->column = $column;
+        $this->attributes['column'] = $column;
     }
 }
