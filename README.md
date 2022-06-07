@@ -4,7 +4,7 @@
 
 This is just an experiment, proceed with caution.
 
-## Installation
+# Installation
 
 If this package is ever released, a more thorough installation guide will be provided. For now, the package can be installed for local development by executing the following.
 
@@ -23,51 +23,51 @@ $ php application/artisan vendor:publish
 $ php artisan migrate
 ```
 
-## Permissions
+# Permissions
 
-This package contains a fine-grained permissions system to control access the backend. The two main aspects of a permission are the `area` and `code`. The area defines what resources or actions the permission applies to, and the code defines what kind of access is permitted.
+This package builds on top of Spatie's excellent [Laravel Permission](https://github.com/spatie/laravel-permission) package. We do this using a "two word" syntax. The first word representing the action being allowed, and the second word representing the target of that action. For example, to allow an admin to create other users, they would require the "create users" permission.
 
-For example, imagine an application with a `Post` model, and you would like a permission to allow only create actions. That permission might be created using the `authorize` command.
+### Authorization
 
-```php
-Backend::authorize($user, 'posts', 'create');
-```
-
-Similarly, permisions may be revoked using the `deauthorize` command.
+Permissions can be checked for in a couple different ways. The first is to use the `Backend::check` method directly.
 
 ```php
-Backend::deauthorize($user, 'posts', 'create');
-```
+use Backend;
 
-To check for a given permission, use the `check` command.
-
-```php
-if (Backend::check($user, 'posts', 'create') {
-  // ...
+if (Backend::check($user, 'delete posts')) {
+    // ...
 }
 ```
 
-There are two special keywords to be aware of when using permissions. The first, is the `all` keyword, which can apply to both the `area` and `code`. As its name suggests, it can be used to cover all areas or codes. For example, a "super admin" might be created using the following.
+Alternatively, you may use the `can` and `cannot` methods exposed in the `User` class. See Laravel's [authorization documentation](https://laravel.com/docs/9.x/authorization#via-the-user-model) for more on these methods.
 
 ```php
-Backend::authorize($user, 'all', 'all');
-```
-
-Be aware, if a user has the `all` code for an area (or all areas), the `deauthorize` command can only be used to revoke all permissions. Users cannot be demoted to have a smaller scope than they previously had. To do this, use the backend permissions page.
-
-The second keyword to be aware of is `any`, which only applies to checking for area permissions. For example, to check if a user has access to the `posts` area, we might use the following.
-
-```php
-if (Backend::check($user, 'posts', 'any') {
-  // ...
+if ($user->can('delete posts')) {
+    // ...
 }
 ```
 
-## Resources
+For use inside Blade templates, use the `@can` and `@cannot` directives. See the [documentation here](https://laravel.com/docs/9.x/authorization#via-blade-templates) for more info.
+
+```html
+@can('update posts')
+    ...
+@endcan
+```
+
+### Special permissions
+
+There are a few special permissions to be aware of. The most importantly is `super admin`. Users with this permission are granted full access to everything, including the ability to create other super admins.
+
+To grant users access to an entire area, use the `manage` permission. For example, a user with the `manage posts` permission would be granted full access to that resource (`create posts`, `delete posts`, etc...).
+
+The last special permission is the `access` keyword. This isn't a permission given to users directly, but is used to check if a user has a permission related to that resource. For example, a user with an `update posts` permission would also pass checks for `access posts`.
+
+# Resources
 
 TBD
 
-## License
+# License
 
 [MIT](https://github.com/scottbedard/backend/blob/master/LICENSE)
 
