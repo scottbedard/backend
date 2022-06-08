@@ -8,6 +8,11 @@ use Bedard\Backend\Util;
 
 class Button extends Base
 {
+    /**
+     * Attributes
+     *
+     * @var array
+     */
     protected $attributes = [
         'confirm' => null,
         'icon' => null,
@@ -21,19 +26,43 @@ class Button extends Base
     /**
      * Render
      *
+     * @param array $context
+     *
      * @return \Illuminate\Contracts\View\View|string
      */
-    public function render()
+    public function render(array $context)
     {
-        return view('backend::toolbar.button', $this->attributes);
+        return view('backend::toolbar.button', [
+            'attrs' => $this->attributes,
+            'context' => $context,
+        ]);
+    }
+
+    /**
+     * Set confirm
+     *
+     * @param array $confirm
+     *
+     * @return void
+     */
+    public function setConfirmAttribute(array $confirm): void
+    {
+        $this->attributes['confirm'] = array_merge([
+            'buttonText' => 'Confirm',
+            'buttonTheme' => 'primary',
+            'secondaryIcon' => null,
+            'secondaryText' => null,
+            'text' => 'Please confirm the action.',
+            'title' => 'Are you sure?',
+        ], $confirm);
     }
 
     /**
      * Set theme
      *
-     * @return \Bedard\Backend\Toolbar\Base
+     * @return void
      */
-    public function setThemeAttribute(string $theme)
+    public function setThemeAttribute(string $theme): void
     {
         $themes = [
             'danger',

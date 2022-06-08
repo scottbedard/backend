@@ -7,18 +7,22 @@ use Bedard\Backend\Classes\Fluent;
 class Base extends Fluent
 {
     /**
-     * Required permissions
+     * Attributes
      *
      * @var array
      */
-    public array $permissions = [];
+    protected $attributes = [
+        'permissions' => [],
+    ];
 
     /**
      * Render
      *
+     * @param array $context
+     *
      * @return \Illuminate\Contracts\View\View|string
      */
-    public function render()
+    public function render(array $context)
     {
         return '';
     }

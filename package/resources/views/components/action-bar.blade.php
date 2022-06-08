@@ -29,9 +29,7 @@
         <x-backend::button
             :icon="$buttonIcon"
             :theme="$buttonTheme"
-            :type="$buttonType"
-            @click="$dispatch('primary-click')"
-            {{ $attributes->merge([':loading'])}}>
+            :type="$buttonType">
             {{ $buttonText }}
         </x-backend::button>
     </div>

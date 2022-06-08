@@ -96,9 +96,14 @@ class UserResource extends Resource
                     ->text('Delete selected')
                     ->requireSelection()
                     ->confirm([
-                        'title' => 'Please confirm delete',
-                        'text' => 'This will permenantly delete the selected users.',
-                    ])
+                        'buttonIcon' => 'trash',
+                        'buttonText' => 'Confirm delete',
+                        'buttonTheme' => 'danger',
+                        'secondaryIcon' => 'arrow-left',
+                        'secondaryText' => 'Cancel',
+                        'text' => 'Are you sure you want to permenantly delete these users?',
+                        'title' => 'Delete users',
+                    ]),
             ])
             ->searchable();
     }
