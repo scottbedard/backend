@@ -6,6 +6,7 @@ use Bedard\Backend\Exceptions\FluentException;
 use Bedard\Backend\Util;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 abstract class Fluent implements Arrayable
 {
@@ -54,6 +55,28 @@ abstract class Fluent implements Arrayable
         }
         
         return static::make()->{$key}();
+    }
+
+    /**
+     * Construct
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $instance = new ReflectionClass(static::class);
+
+        $attributes = [];
+
+        while ($instance) {
+            $props = $instance->getDefaultProperties();
+
+            $attributes = array_merge(array_key_exists('attributes', $props) ? $props['attributes'] : [], $attributes);
+
+            $instance = $instance->getParentClass();
+        }
+
+        $this->attributes = $attributes;
     }
 
     /**

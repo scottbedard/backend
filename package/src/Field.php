@@ -3,12 +3,9 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Classes\Fluent;
-use Bedard\Backend\Traits\InheritParentAttrs;
 
 class Field extends Fluent
 {
-    use InheritParentAttrs;
-
     /**
      * All of the attributes set on the fluent instance
      *

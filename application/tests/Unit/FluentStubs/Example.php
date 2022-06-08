@@ -3,12 +3,9 @@
 namespace Tests\Unit\FluentStubs;
 
 use Bedard\Backend\Classes\Fluent;
-use Bedard\Backend\Traits\InheritParentAttrs;
 
 class Example extends Fluent
 {
-    use InheritParentAttrs;
-
     public $attributes = [
         'computed' => null,
         'constructed' => null,

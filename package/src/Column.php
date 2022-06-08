@@ -4,14 +4,11 @@ namespace Bedard\Backend;
 
 use Bedard\Backend\Classes\Fluent;
 use Bedard\Backend\Exceptions\InvalidColumnAlignmentException;
-use Bedard\Backend\Traits\InheritParentAttrs;
 use Bedard\Backend\Util;
 use Illuminate\Database\Eloquent\Model;
 
 class Column extends Fluent
 {
-    use InheritParentAttrs;
-
     /**
      * Attributes
      *
