@@ -62,4 +62,24 @@ class ResourcesTest extends TestCase
             ])
             ->assertUnauthorized();
     }
+
+    // @todo: this should probably be tested using dusk
+    public function test_users_only_see_authorized_toolbar_items()
+    {
+        $john = User::factory()->create();
+        $mary = User::factory()->create();
+        
+        Backend::authorize($john, 'create users');
+        Backend::authorize($mary, 'delete users');
+
+        $this
+            ->actingAs($john)
+            ->get('/backend/resources/users')
+            ->assertDontSee('Delete users');
+
+        $this
+            ->actingAs($mary)
+            ->get('/backend/resources/users')
+            ->assertSee('Delete users');
+    }
 }

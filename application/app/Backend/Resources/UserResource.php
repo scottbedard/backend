@@ -87,11 +87,12 @@ class UserResource extends Resource
     public function toolbar(): Toolbar
     {
         return Toolbar::items([
-                Button::theme('primary')
+                Button::permissions('create users')
+                    ->theme('primary')
                     ->icon('plus')
                     ->text('Create user'),
 
-                Button::make()
+                Button::permissions('delete users')
                     ->icon('trash')
                     ->text('Delete selected')
                     ->requireSelection()
