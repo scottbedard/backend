@@ -12,7 +12,7 @@ class Field extends Fluent
      * @var array
      */
     protected $attributes = [
-        'column' => '',
+        'id' => '',
         'label' => '',
     ];
 
@@ -32,8 +32,8 @@ class Field extends Fluent
      *
      * @return void
      */
-    public function init(string $column = '')
+    public function init(string $id = '')
     {
-        $this->attributes['column'] = $column;
+        $this->attributes['id'] = $id;
     }
 }

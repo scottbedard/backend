@@ -1,18 +1,26 @@
 <x-backend::layout.main>
-    <div class="bg-gray-200 flex gap-3 items-center h-12 px-6">
-        <div>{{ $resource::$title }}</div>
+    <div class="bg-gray-200 flex font-bold items-center h-12 text-sm tracking-wide">
+        <a
+            class="bg-gray-300 flex h-full items-center px-6 "
+            href="{{ route('backend.resources.show', ['id' => $resource::$id]) }}">
 
-        <x-backend::icon
-            name="chevron-right"
-            size="16" />
+            {{ $resource::$title }}
+        </a>
         
-        <div>New {{ $resource::$entity }}</div>
+        <div
+            class="border-l-[1.5rem] border-l-gray-300 border-r-0 border-solid border-y-[1.5rem] flex h-full items-center px-6">
+            New {{ $resource::$entity }}
+        </div>
     </div>
 
-    <form class="p-6">
+    <form class="gap-6 grid p-6">
         @csrf
-        
-        Soon...
+
+        @foreach ($fields as $field)
+            <div>
+                {{ $field->label }}
+            </div>
+        @endforeach
     </form>
 
 </x-backend::layout.main>

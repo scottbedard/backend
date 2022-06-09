@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Form;
 use Bedard\Backend\Table;
 use Bedard\Backend\Toolbar;
 
@@ -90,9 +91,7 @@ class Resource
      */
     public function form()
     {
-        return [
-            // ...
-        ];
+        return Form::make();
     }
 
     /**

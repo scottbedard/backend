@@ -3,6 +3,8 @@
 namespace App\Backend\Resources;
 
 use Bedard\Backend\Column;
+use Bedard\Backend\Field;
+use Bedard\Backend\Form;
 use Bedard\Backend\Resource;
 use Bedard\Backend\Table;
 use Bedard\Backend\Toolbar;
@@ -54,9 +56,16 @@ class UserResource extends Resource
      */
     public function form()
     {
-        return [
-            // ...
-        ];
+        return Form::fields([
+            Field::make('id')
+                ->label('ID'),
+                
+            Field::make('id')
+                ->label('Name'),
+
+            Field::make('email')
+                ->label('Email address')
+        ]);
     }
 
     /**
