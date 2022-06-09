@@ -40,7 +40,7 @@ class Icon extends Component
                     "height=\"{$this->size}\"",
                     "width=\"{$this->size}\"",
                     "stroke-width=\"{$this->strokeWidth}\"",
-                    "<svg {$data['attributes']->toHtml()}",
+                    "<svg data-icon {$data['attributes']->toHtml()}",
                 ], File::get($path));
 
                 return $svg;

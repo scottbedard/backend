@@ -1,6 +1,5 @@
 <x-backend::layout.main>
-    <div x-data="{ checked: [], loading: true, showDeleteConfirmation: false }">
-        <!-- new toolbar -->
+    <div x-data="{ checked: [] }">
         <div class="flex gap-x-6 p-6">
             @foreach ($toolbar->items as $item)
                 @can ($item->permissions)

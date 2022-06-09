@@ -1,6 +1,5 @@
 // styles
-import '../styles/base.scss'
-import '../styles/checkbox.scss'
+import '../styles/main.scss'
 
 // raw js
 import './dark-mode'
