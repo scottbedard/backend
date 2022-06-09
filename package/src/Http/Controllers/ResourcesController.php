@@ -17,7 +17,17 @@ class ResourcesController extends Controller
      */
     public function create(Request $request, string $id)
     {
-        return 'Soon...';
+        $user = Auth::user();
+
+        $resource = Backend::resource($id);
+
+        if (!Backend::check($user, 'create ' . $resource::$id)) {
+            return abort(401);
+        }
+
+        return view('backend::resources-create', [
+            'resource' => $resource,
+        ]);
     }
 
     /**

@@ -90,7 +90,8 @@ class UserResource extends Resource
                 Button::permissions('create users')
                     ->theme('primary')
                     ->icon('plus')
-                    ->text('Create user'),
+                    ->text('Create user')
+                    ->to(route('backend.resources.create', ['id' => static::$id])),
 
                 Button::permissions('delete users')
                     ->icon('trash')

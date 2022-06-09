@@ -6,7 +6,8 @@
         x-on:click="modal = true"
         :x-bind:disabled="$attrs['requireSelection'] ? '!checked.includes(true)' : null"
         :icon="$attrs['icon']"
-        :theme="$attrs['theme']">
+        :theme="$attrs['theme']"
+        :to="$attrs['to']">
         {{ $attrs['text'] }}
     </x-backend::button>
 

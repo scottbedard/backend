@@ -20,7 +20,7 @@ class Button extends Base
         'requireSelection' => false,
         'text' => null,
         'theme' => null,
-        'to' => '#',
+        'to' => null,
     ];
 
     /**
