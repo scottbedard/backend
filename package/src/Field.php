@@ -24,6 +24,7 @@ class Field extends Fluent
             'xl' => null,
             '2xl' => null,
         ],
+        'value' => null,
     ];
 
     /**

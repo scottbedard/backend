@@ -29,15 +29,18 @@ class InputField extends Field
      */
     public function render(Model $model)
     {
-        return view('backend::fields.input', [
-            'autofocus' => $this->autofocus,
-            'disabled' => $this->disabled,
-            'label' => $this->label,
-            'placeholder' => $this->placeholder,
-            'readonly' => $this->readonly,
-            'required' => $this->required,
-            'type' => $this->type,
-            'value' => $model->{$this->id},
+        $this->value = $model->{$this->id};
+        return view('backend::fields.input-field', [
+            'field' => $this,
+            // 'autofocus' => $this->autofocus,
+            // 'disabled' => $this->disabled,
+            // 'id' => $this->id,
+            // 'label' => $this->label,
+            // 'placeholder' => $this->placeholder,
+            // 'readonly' => $this->readonly,
+            // 'required' => $this->required,
+            // 'type' => $this->type,
+            // 'value' => $model->{$this->id},
         ]);
     }
 }

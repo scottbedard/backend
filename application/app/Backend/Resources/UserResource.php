@@ -74,7 +74,19 @@ class UserResource extends Resource
                 ->type('email')
                 ->span([
                     'lg' => 6,
-                ])
+                ]),
+
+            Field::input('created_at')
+                ->label('Created')
+                ->span([
+                    'lg' => 6,
+                ]),
+
+            Field::input('updated_at')
+                ->label('Last seen')
+                ->span([
+                    'lg' => 6,
+                ]),
         ]);
     }
 
