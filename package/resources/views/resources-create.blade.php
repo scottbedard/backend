@@ -11,13 +11,6 @@
         </x-slot:right>
     </x-backend::title-bar>
 
-    <form class="gap-6 grid p-6">
-        @csrf
-
-        @foreach ($fields as $field)
-            <div>
-                {{ $field->label }}
-            </div>
-        @endforeach
-    </form>
+    <x-backend::form
+        :fields="$fields" />
 </x-backend::layout.main>
