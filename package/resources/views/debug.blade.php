@@ -1,5 +1,5 @@
 <x-backend::layout.main>
     <div class="p-6">
-        {{ $foo }}
+        {{ $content }}
     </div>
 </x-backend::layout.main>

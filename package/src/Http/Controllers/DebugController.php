@@ -15,7 +15,13 @@ class DebugController extends Controller
     public function index()
     {
         return view('backend::debug', [
-            'foo' => Block::make(),
+            'content' => Block::class('grid gap-6')->items([
+                Block::class('border-4 border-primary-500 p-6')->text('Hello'),
+
+                Block::text('Foo'),
+
+                Block::text('Bar'),
+            ]),
         ]);
     }
 }
