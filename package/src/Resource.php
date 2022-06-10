@@ -39,6 +39,13 @@ class Resource
     public static $model = null;
 
     /**
+     * Unique model property to find records by
+     *
+     * @var string
+     */
+    public static $modelKey = 'id';
+
+    /**
      * Resource order
      *
      * @var int
@@ -110,6 +117,16 @@ class Resource
             "read {$id}",
             "update {$id}",
         ];
+    }
+
+    /**
+     * Query
+     *
+     * @return \Illuminate
+     */
+    public function query()
+    {
+        return static::$model::query();
     }
 
     /**

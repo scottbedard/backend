@@ -14,7 +14,7 @@
             x-model="checked"
             :columns="$columns"
             :data="$data"
-            :rowRoute="fn ($x) => route('backend.resources.update', ['id' => $resource::$id, 'uid' => $x->id])"
+            :rowRoute="fn ($x) => route('backend.resources.update', ['id' => $resource::$id, 'modelId' => $x->{$resource::$modelKey}])"
             :selectable="$selectable" />
     </div>
 </x-backend::layout.main>

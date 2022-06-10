@@ -91,8 +91,11 @@ class ResourcesController extends Controller
      * 
      * @param \Illuminate\Http\Request $request
      * @param string $route
+     * @param mixed $modelId
+     *
+     * @return \Illuminate\Contracts\View\View
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, mixed $modelId)
     {
         $user = Auth::user();
 
@@ -102,10 +105,16 @@ class ResourcesController extends Controller
             return abort(401);
         }
 
+        $model = $resource
+            ->query()
+            ->where($resource::$modelKey, $modelId)
+            ->firstOrFail();
+
         $form = $resource->form();
 
         return view('backend::resources-update', [
             'fields' => $form->fields,
+            'model' => $model,
             'resource' => $resource,
         ]);
     }
