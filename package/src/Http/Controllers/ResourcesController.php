@@ -25,10 +25,13 @@ class ResourcesController extends Controller
             return abort(401);
         }
 
+        $model = new $resource::$model;
+
         $form = $resource->form();
 
         return view('backend::resources-create', [
             'fields' => $form->fields,
+            'model' => $model,
             'resource' => $resource,
         ]);
     }

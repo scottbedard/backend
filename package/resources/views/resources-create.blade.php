@@ -12,5 +12,6 @@
     </x-backend::title-bar>
 
     <x-backend::form
-        :fields="$fields" />
+        :fields="$fields"
+        :model="$model" />
 </x-backend::layout.main>

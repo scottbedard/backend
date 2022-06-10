@@ -59,9 +59,10 @@ class UserResource extends Resource
         return Form::fields([
             Field::input('id')
                 ->label('ID')
-                ->autofocus(),
+                ->autofocus()
+                ->readonly(),
                 
-            Field::input('id')
+            Field::input('name')
                 ->label('Name')
                 ->span([
                     'lg' => 6,

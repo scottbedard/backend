@@ -5,5 +5,8 @@
     <x-backend::input
         :autofocus="$autofocus"
         :placeholder="$placeholder"
-        :type="$type" />
+        :readonly="$readonly"
+        :required="$required"
+        :type="$type"
+        :value="$value" />
 </x-backend::form-field>

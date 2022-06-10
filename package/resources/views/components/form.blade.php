@@ -1,5 +1,6 @@
 @props([
     'fields' => [],
+    'model' => null,
 ])
 
 <form class="p-6">
@@ -75,7 +76,7 @@
                 '2xl:col-span-11' => $field->span['2xl'] === 11,
                 '2xl:col-span-12' => $field->span['2xl'] === 12,
             ])>
-                {{ $field->render() }}
+                {{ $field->render($model) }}
             </div>
         @endforeach
     </div>
