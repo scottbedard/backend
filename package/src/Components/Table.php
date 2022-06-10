@@ -2,10 +2,9 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Classes\Fluent;
 use Bedard\Backend\Components\Component;
-use Illuminate\Contracts\Support\Renderable;
-class Block extends Component
+
+class Table extends Component
 {
     /**
      * Attributes
@@ -13,10 +12,7 @@ class Block extends Component
      * @var array
      */
     protected $attributes = [
-        'class' => '',
-        'items' => [],
-        'permissions' => [],
-        'text' => '',
+        'columns' => [],
     ];
 
     /**
@@ -25,7 +21,7 @@ class Block extends Component
      * @var array
      */
     protected $providable = [
-        'items',
+        'columns',
     ];
 
     /**
@@ -35,10 +31,6 @@ class Block extends Component
      */
     public function render()
     {
-        return view('backend::components.block', [
-            'class' => $this->class,
-            'items' => $this->items,
-            'text' => $this->text,
-        ]);
+        return view('backend::renderables.table');
     }
 }

@@ -1,4 +1,4 @@
-<div class="flex gap-6 p-6">
+<div class="flex gap-6">
     @foreach ($items as $item)
         {{ $item->render() }}
     @endforeach

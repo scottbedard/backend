@@ -3,7 +3,11 @@
         Scoreboard area
     </div>
 
-    <div>
+    <div class="p-6">
         {{ $toolbar()->render() }}
+    </div>
+
+    <div>
+        {{ $table()->render() }}
     </div>
 </x-backend::layout.main>

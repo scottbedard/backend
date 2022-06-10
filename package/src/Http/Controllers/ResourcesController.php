@@ -78,9 +78,10 @@ class ResourcesController extends Controller
 
         $data = $resource->query()->get();
 
-        return view('backend::components.resource-index', [
+        return view('backend::resource-index', [
             'data' => $data,
             'resource' => $resource,
+            'table' => fn () => $resource->table()->provide($data),
             'toolbar' => fn () => $resource->toolbar()->provide($data),
         ]);
 

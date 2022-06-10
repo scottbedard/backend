@@ -6,7 +6,7 @@ use Bedard\Backend\Column;
 use Bedard\Backend\Field;
 use Bedard\Backend\Form;
 use Bedard\Backend\Resource;
-use Bedard\Backend\Table;
+use Bedard\Backend\Components\Table;
 use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Toolbar;
 
@@ -97,17 +97,18 @@ class UserResource extends Resource
      */
     public function table(): Table
     {
-        return Table::columns([
-                Column::text('name')->header('Name'),
+        return Table::make();
+        // return Table::columns([
+        //         Column::text('name')->header('Name'),
     
-                Column::text('email')->header('Email address'),
+        //         Column::text('email')->header('Email address'),
     
-                Column::carbon('created_at')->header('Created'),
+        //         Column::carbon('created_at')->header('Created'),
     
-                Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
-            ])
-            ->selectable()
-            ->pageSize(20);
+        //         Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
+        //     ])
+        //     ->selectable()
+        //     ->pageSize(20);
     }
 
     /**
