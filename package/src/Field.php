@@ -16,6 +16,7 @@ class Field extends Fluent
     protected $attributes = [
         'id' => '',
         'label' => '',
+        'required' => false,
         'span' => [
             'sm' => null,
             'md' => null,

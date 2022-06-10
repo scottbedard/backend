@@ -13,7 +13,7 @@
         ])
     }}>
     <label
-        class="aspect-square bg-gray-50 border border-gray-300 cursor-pointer flex group items-center justify-center rounded-md transform translate-y-px hover:border-gray-400 dark:bg-gray-500 dark:border-gray-800 dark:hover:bg-gray-400 dark:border-opacity-50"
+        class="aspect-square bg-gray-50 border border-gray-300 cursor-pointer flex group items-center justify-center rounded-md transform translate-y-px hover:border-gray-400 dark:bg-gray-500 dark:border-none dark:focus:bg-gray-500/70 dark:hover:bg-gray-500/70"
         style="width: 1.35rem">
         <input
             x-model="checked"

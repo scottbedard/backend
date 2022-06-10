@@ -1,3 +1,11 @@
-<div class="border-2 border-danger-500 p-6">
+@props([
+    'label' => '',
+    'required' => false,
+])
+
+<x-backend::label
+    :text="$label" 
+    :required="$required">
+
     {{ $slot }}
-</div>
+</x-backend::label>

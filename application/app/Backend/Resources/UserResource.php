@@ -58,7 +58,8 @@ class UserResource extends Resource
     {
         return Form::fields([
             Field::input('id')
-                ->label('ID'),
+                ->label('ID')
+                ->autofocus(),
                 
             Field::input('id')
                 ->label('Name')
@@ -68,6 +69,7 @@ class UserResource extends Resource
 
             Field::input('email')
                 ->label('Email address')
+                ->placeholder('Enter email address')
                 ->type('email')
                 ->span([
                     'lg' => 6,

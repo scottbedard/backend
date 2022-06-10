@@ -12,6 +12,8 @@ class InputField extends Field
      * @var array
      */
     protected $attributes = [
+        'autofocus' => false,
+        'placeholder' => null,
         'type' => 'input',
     ];
 
@@ -23,7 +25,10 @@ class InputField extends Field
     public function render()
     {
         return view('backend::fields.input', [
+            'autofocus' => $this->autofocus,
             'label' => $this->label,
+            'placeholder' => $this->placeholder,
+            'required' => $this->required,
             'type' => $this->type,
         ]);
     }
