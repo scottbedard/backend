@@ -118,26 +118,27 @@ class UserResource extends Resource
      */
     public function toolbar()
     {
-        return Toolbar::items([
-            Button::permissions('create users')
-                ->theme('primary')
-                ->icon('plus')
-                ->text('Create user')
-                ->to(route('backend.resources.create', ['id' => static::$id])),
+        return Toolbar::make()
+            ->items([
+                Button::permissions('create users')
+                    ->theme('primary')
+                    ->icon('plus')
+                    ->text('Create user')
+                    ->to(route('backend.resources.create', ['id' => static::$id])),
 
-            Button::permissions('delete users')
-                ->icon('trash')
-                ->text('Delete selected')
-                ->requireSelection()
-                ->confirm([
-                    'buttonIcon' => 'trash',
-                    'buttonText' => 'Confirm delete',
-                    'buttonTheme' => 'danger',
-                    'secondaryIcon' => 'arrow-left',
-                    'secondaryText' => 'Cancel',
-                    'text' => 'Are you sure you want to permenantly delete these users?',
-                    'title' => 'Delete users',
-                ]),
-        ]);
+                Button::permissions('delete users')
+                    ->icon('trash')
+                    ->text('Delete selected')
+                    ->requireSelection()
+                    ->confirm([
+                        'buttonIcon' => 'trash',
+                        'buttonText' => 'Confirm delete',
+                        'buttonTheme' => 'danger',
+                        'secondaryIcon' => 'arrow-left',
+                        'secondaryText' => 'Cancel',
+                        'text' => 'Are you sure you want to permenantly delete these users?',
+                        'title' => 'Delete users',
+                    ]),
+            ]);
     }
 }
