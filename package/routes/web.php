@@ -1,5 +1,6 @@
 <?php
 
+use Bedard\Backend\Http\Controllers\DebugController;
 use Bedard\Backend\Http\Controllers\IndexController;
 use Bedard\Backend\Http\Controllers\ResourcesController;
 use Bedard\Backend\Http\Controllers\SettingsController;
@@ -10,6 +11,8 @@ Route::prefix(config('backend.path'))
     ->group(function () {
 
         Route::get('/', [IndexController::class, 'index'])->name('backend.index');
+
+        Route::get('/debug', [DebugController::class, 'index']);
 
         Route::get('/resources/{id}', [ResourcesController::class, 'show'])->name('backend.resources.show');
 
