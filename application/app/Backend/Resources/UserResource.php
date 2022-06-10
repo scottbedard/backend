@@ -7,8 +7,8 @@ use Bedard\Backend\Field;
 use Bedard\Backend\Form;
 use Bedard\Backend\Resource;
 use Bedard\Backend\Table;
-use Bedard\Backend\Toolbar;
-use Bedard\Backend\Toolbar\Button;
+use Bedard\Backend\Components\Button;
+use Bedard\Backend\Components\Toolbar;
 
 class UserResource extends Resource
 {
@@ -113,31 +113,30 @@ class UserResource extends Resource
     /**
      * Toolbar definition.
      *
-     * @return \Bedard\Backend\Toolbar
+     * @return \Illuminate\View\View
      */
-    public function toolbar(): Toolbar
+    public function toolbar()
     {
         return Toolbar::items([
-                Button::permissions('create users')
-                    ->theme('primary')
-                    ->icon('plus')
-                    ->text('Create user')
-                    ->to(route('backend.resources.create', ['id' => static::$id])),
+            Button::permissions('create users')
+                ->theme('primary')
+                ->icon('plus')
+                ->text('Create user')
+                ->to(route('backend.resources.create', ['id' => static::$id])),
 
-                Button::permissions('delete users')
-                    ->icon('trash')
-                    ->text('Delete selected')
-                    ->requireSelection()
-                    ->confirm([
-                        'buttonIcon' => 'trash',
-                        'buttonText' => 'Confirm delete',
-                        'buttonTheme' => 'danger',
-                        'secondaryIcon' => 'arrow-left',
-                        'secondaryText' => 'Cancel',
-                        'text' => 'Are you sure you want to permenantly delete these users?',
-                        'title' => 'Delete users',
-                    ]),
-            ])
-            ->searchable();
+            Button::permissions('delete users')
+                ->icon('trash')
+                ->text('Delete selected')
+                ->requireSelection()
+                ->confirm([
+                    'buttonIcon' => 'trash',
+                    'buttonText' => 'Confirm delete',
+                    'buttonTheme' => 'danger',
+                    'secondaryIcon' => 'arrow-left',
+                    'secondaryText' => 'Cancel',
+                    'text' => 'Are you sure you want to permenantly delete these users?',
+                    'title' => 'Delete users',
+                ]),
+        ]);
     }
 }

@@ -4,7 +4,7 @@ namespace Bedard\Backend;
 
 use Bedard\Backend\Form;
 use Bedard\Backend\Table;
-use Bedard\Backend\Toolbar;
+use Bedard\Backend\Components\Block;
 
 class Resource
 {
@@ -134,7 +134,7 @@ class Resource
      *
      * @return \Bedard\Backend\Table
      */
-    public function table(): Table
+    public function table()
     {
         return Table::make();
     }
@@ -142,10 +142,10 @@ class Resource
     /**
      * Toolbar
      *
-     * @return \Bedard\Backend\Toolbar
+     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function toolbar(): Toolbar
+    public function toolbar()
     {
-        return Toolbar::make();
+        return Block::make();
     }
 }

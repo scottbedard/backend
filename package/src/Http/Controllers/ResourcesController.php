@@ -76,17 +76,21 @@ class ResourcesController extends Controller
             return abort(401);
         }
 
-        $table = $resource->table();
+        $data = $resource->query()->get();
 
-        $toolbar = $resource->toolbar();
-
-        return view('backend::resources-show', [
-            'columns' => $table->columns,
-            'data' => $resource->data(),
+        return view('backend::components.resource-index', [
+            'data' => $data,
             'resource' => $resource,
-            'selectable' => $table->selectable,
-            'toolbar' => $toolbar,
+            'toolbar' => fn () => $resource->toolbar()->provide($data),
         ]);
+
+        // return view('backend::resources-show', [
+        //     'columns' => $table->columns,
+        //     'data' => $resource->data(),
+        //     'resource' => $resource,
+        //     'selectable' => $table->selectable,
+        //     'toolbar' => $toolbar,
+        // ]);
     }
 
     /**
