@@ -14,7 +14,8 @@ class InputField extends Field
      */
     protected $attributes = [
         'autofocus' => false,
-        'placeholder' => null,
+        'disabled' => false,
+        'placeholder' => '',
         'readonly' => false,
         'type' => 'input',
     ];
@@ -30,6 +31,7 @@ class InputField extends Field
     {
         return view('backend::fields.input', [
             'autofocus' => $this->autofocus,
+            'disabled' => $this->disabled,
             'label' => $this->label,
             'placeholder' => $this->placeholder,
             'readonly' => $this->readonly,

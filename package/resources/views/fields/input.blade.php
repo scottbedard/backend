@@ -4,6 +4,7 @@
     
     <x-backend::input
         :autofocus="$autofocus"
+        :disabled="$disabled"
         :placeholder="$placeholder"
         :readonly="$readonly"
         :required="$required"
