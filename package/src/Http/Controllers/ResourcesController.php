@@ -102,7 +102,10 @@ class ResourcesController extends Controller
             return abort(401);
         }
 
+        $form = $resource->form();
+
         return view('backend::resources-update', [
+            'fields' => $form->fields,
             'resource' => $resource,
         ]);
     }
