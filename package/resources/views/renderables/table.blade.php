@@ -16,8 +16,10 @@
     </div>
 
     <div class="table-row-group">
-        @foreach ($data as $row)
-            <div class="table-row">
+        @foreach ($data['rows'] as $row)
+            <a
+                class="table-row unstyled odd:bg-gray-100 hover:bg-primary-100 dark:odd:bg-gray-500/30 dark:hover:bg-primary-500/20 dark:hover:bg-opacity-30"
+                href="{{ $to($row) }}">
                 @if ($selectable)
                     <div class="table-cell">
                         <x-backend::checkbox />
@@ -29,7 +31,7 @@
                         {{ $row->{$column->id} }}
                     </div>
                 @endforeach
-            </div>
+            </a>
         @endforeach
     </div>
 </div>

@@ -101,21 +101,13 @@ class UserResource extends Resource
                 Column::make('name')->header('Name'),
 
                 Column::make('email')->header('Email address'),
+
+                Column::make('created_at')->header('Created at'),
+
+                Column::make('updated_at')->header('Last seen'),
             ])
             ->selectable()
-            ->pageSize(20)
-            ->to(fn () => '#');
-        // return Table::columns([
-        //         Column::text('name')->header('Name'),
-    
-        //         Column::text('email')->header('Email address'),
-    
-        //         Column::carbon('created_at')->header('Created'),
-    
-        //         Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
-        //     ])
-        //     ->selectable()
-        //     ->pageSize(20);
+            ->pageSize(20);
     }
 
     /**

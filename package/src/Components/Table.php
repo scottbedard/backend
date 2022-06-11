@@ -19,6 +19,16 @@ class Table extends Component
     ];
 
     /**
+     * Data
+     *
+     * @var array
+     */
+    protected $data = [
+        'resource' => null,
+        'rows' => [],
+    ];
+
+    /**
      * Providable
      *
      * @var array
@@ -26,6 +36,21 @@ class Table extends Component
     protected $providable = [
         'columns',
     ];
+
+    /**
+     * Initialize
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->to = function ($row) {
+            return route('backend.resources.update', [
+                'id' => $this->data['resource']::$id,
+                'modelId' => $row->{$this->data['resource']::$modelKey},
+            ]);
+        };
+    }
 
     /**
      * Render

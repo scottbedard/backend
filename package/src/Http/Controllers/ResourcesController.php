@@ -76,13 +76,16 @@ class ResourcesController extends Controller
             return abort(401);
         }
 
-        $data = $resource->query()->get();
+        $rows = $resource->query()->get();
 
         return view('backend::resource-index', [
-            'data' => $data,
+            'data' => $rows,
             'resource' => $resource,
-            'table' => fn () => $resource->table()->provide($data),
-            'toolbar' => fn () => $resource->toolbar()->provide($data),
+            'table' => fn () => $resource->table()->provide([
+                'resource' => $resource,
+                'rows' => $rows,
+            ]),
+            'toolbar' => fn () => $resource->toolbar()->provide($rows),
         ]);
 
         // return view('backend::resources-show', [
