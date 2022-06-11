@@ -8,7 +8,12 @@
             @endif
 
             @foreach ($columns as $column)
-                <div class="table-cell">
+                <div @class([
+                    'table-cell' => true,
+                    'text-left' => $column->align === 'left',
+                    'text-center' => $column->align === 'center',
+                    'text-right' => $column->align === 'right',
+                ])>
                     {{ $column->header }}
                 </div>
             @endforeach

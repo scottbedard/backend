@@ -97,17 +97,25 @@ class UserResource extends Resource
      */
     public function table(): Table
     {
-        return Table::columns([
+        $table = Table::columns([
                 Column::make('name')->header('Name'),
 
                 Column::make('email')->header('Email address'),
 
-                Column::make('created_at')->header('Created at'),
+                Column::date('created_at')
+                    ->align('right')
+                    ->header('Created at')
+                    ->diffForHumans(),
 
-                Column::make('updated_at')->header('Last seen'),
+                Column::date('updated_at')
+                    ->align('right')
+                    ->header('Last seen')
+                    ->diffForHumans(),
             ])
             ->selectable()
             ->pageSize(20);
+
+        return $table;
     }
 
     /**

@@ -44,7 +44,7 @@ class Component extends Fluent implements Renderable
     /**
      * Render
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|string|callable
      */
     public function render()
     {
