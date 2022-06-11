@@ -25,6 +25,7 @@
 
                 @foreach ($data as $row)
                     <input
+                        class="hidden"
                         name="resource[]"
                         type="checkbox"
                         value="{{ $row->id }}"

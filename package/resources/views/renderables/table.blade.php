@@ -1,6 +1,7 @@
 <div
     x-data="table({{ count($data['rows']) }})"
     x-modelable="modelable"
+    x-model="checked"
     data-component="table">
     <div class="table text-sm w-full">
         <div
@@ -9,9 +10,11 @@
             <div class="h-12 table-row">
                 @if ($selectable)
                     <div
-                        class="align-middle cursor-pointer table-cell text-right pl-6 pr-3 w-px"
+                        class="align-middle cursor-pointer pl-6 pr-3 relative table-cell text-right w-px"
                         @click.stop.prevent="all = !all">
-                        <x-backend::checkbox x-model="all" @click.stop />
+                        <div x-bind:class="all ? 'absolute bg-primary-400 left-0 top-0 h-full w-[3px] dark:bg-primary-600' : 'hidden'"></div>
+
+                        <x-backend::checkbox x-model="all" />
                     </div>
                 @endif
 
@@ -37,9 +40,11 @@
                     href="{{ $to($row) }}">
                     @if ($selectable)
                         <div
-                            class="align-middle cursor-pointer table-cell text-right pl-6 pr-3 w-px"
+                            class="align-middle cursor-pointer table-cell text-right pl-6 pr-3 relative w-px"
                             @click.stop.prevent="rows[{{ $loop->index }}] = !rows[{{ $loop->index }}]">
-                            <x-backend::checkbox x-model="rows[{{ $loop->index }}]" @click.stop />
+                            <div x-bind:class="rows[{{ $loop->index }}] ? 'absolute bg-primary-400 left-0 top-0 h-full w-[3px] dark:bg-primary-600' : 'hidden'"></div>
+
+                            <x-backend::checkbox x-model="rows[{{ $loop->index }}]" />
                         </div>
                     @endif
 
