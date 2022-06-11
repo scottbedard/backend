@@ -9,7 +9,7 @@
     role="checkbox"
     {{
         $attributes->merge([
-            'class' => 'x-checkbox cursor-pointer flex h-full items-center justify-center px-2',
+            'class' => 'x-checkbox cursor-pointer flex h-full items-center justify-center',
         ])
     }}>
     <label

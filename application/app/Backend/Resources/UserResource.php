@@ -104,8 +104,7 @@ class UserResource extends Resource
 
                 Column::date('created_at')
                     ->align('right')
-                    ->header('Created at')
-                    ->diffForHumans(),
+                    ->header('Created at'),
 
                 Column::date('updated_at')
                     ->align('right')
