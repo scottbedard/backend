@@ -22,7 +22,7 @@ class Toolbar extends Block
      *
      * @return \Illuminate\View\View
      */
-    public function render()
+    public function render($arg = null)
     {
         return view('backend::renderables.toolbar', [
             'align' => $this->align,

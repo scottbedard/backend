@@ -36,6 +36,6 @@ class Column extends Component
      */
     public function render()
     {
-        return 'hello';
+        return fn ($row) => $row->{$this->id};
     }
 }

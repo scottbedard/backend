@@ -57,7 +57,7 @@ class Table extends Component
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    public function render($arg = null)
     {
         return view('backend::renderables.table', [
             'columns' => $this->columns,

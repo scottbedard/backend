@@ -24,7 +24,7 @@ class Button extends Block
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    public function render($arg = null)
     {
         return view('backend::renderables.button', [
             'confirm' => $this->confirm,

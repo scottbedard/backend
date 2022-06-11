@@ -1,4 +1,4 @@
-<div class="border-4 border-primary-500 table text-sm w-full">
+<div class="table text-sm w-full">
     <div class="font-bold table-header-group">
         <div class="table-row">
             @if ($selectable)
@@ -28,7 +28,7 @@
 
                 @foreach ($columns as $column)
                     <div class="table-cell">
-                        {{ $row->{$column->id} }}
+                        <x-backend::renderable :content="$column" :data="$row" />
                     </div>
                 @endforeach
             </a>

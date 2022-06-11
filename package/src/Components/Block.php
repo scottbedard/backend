@@ -2,9 +2,7 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Classes\Fluent;
 use Bedard\Backend\Components\Component;
-use Illuminate\Contracts\Support\Renderable;
 class Block extends Component
 {
     /**
@@ -33,7 +31,7 @@ class Block extends Component
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    public function render($arg = null)
     {
         return view('backend::components.block', [
             'class' => $this->class,
