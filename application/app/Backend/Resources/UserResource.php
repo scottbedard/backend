@@ -2,13 +2,13 @@
 
 namespace App\Backend\Resources;
 
-use Bedard\Backend\Column;
+use Bedard\Backend\Components\Button;
+use Bedard\Backend\Components\Column;
+use Bedard\Backend\Components\Table;
+use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Field;
 use Bedard\Backend\Form;
 use Bedard\Backend\Resource;
-use Bedard\Backend\Components\Table;
-use Bedard\Backend\Components\Button;
-use Bedard\Backend\Components\Toolbar;
 
 class UserResource extends Resource
 {
@@ -97,7 +97,14 @@ class UserResource extends Resource
      */
     public function table(): Table
     {
-        return Table::make();
+        return Table::columns([
+                Column::make('name')->header('Name'),
+
+                Column::make('email')->header('Email address'),
+            ])
+            ->selectable()
+            ->pageSize(20)
+            ->to(fn () => '#');
         // return Table::columns([
         //         Column::text('name')->header('Name'),
     

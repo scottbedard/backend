@@ -133,6 +133,8 @@ abstract class Fluent implements Arrayable
      * Make new instance
      *
      * @param array $args
+     *
+     * @return \Bedard\Backend\Classes\Fluent
      */
     public static function make(...$args)
     {

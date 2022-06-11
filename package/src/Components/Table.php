@@ -13,6 +13,9 @@ class Table extends Component
      */
     protected $attributes = [
         'columns' => [],
+        'pageSize' => 20,
+        'selectable' => false,
+        'to' => null,
     ];
 
     /**
@@ -27,10 +30,16 @@ class Table extends Component
     /**
      * Render
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|string
      */
     public function render()
     {
-        return view('backend::renderables.table');
+        return view('backend::renderables.table', [
+            'columns' => $this->columns,
+            'data' => $this->data,
+            'pageSize' => $this->pageSize,
+            'selectable' => $this->selectable,
+            'to' => $this->to,
+        ]);
     }
 }
