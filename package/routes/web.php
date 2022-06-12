@@ -16,7 +16,7 @@ Route::prefix(config('backend.path'))
 
         Route::get('/resources/{id}', [ResourcesController::class, 'show'])->name('backend.resources.show');
 
-        Route::get('/resource/{id}/update/{modelId}', [ResourcesController::class, 'update'])->name('backend.resources.update');
+        Route::get('/resource/{id}/edit/{modelId}', [ResourcesController::class, 'edit'])->name('backend.resources.edit');
 
         Route::get('/resources/{id}/create', [ResourcesController::class, 'create'])->name('backend.resources.create');
 

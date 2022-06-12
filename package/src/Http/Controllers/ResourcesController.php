@@ -123,7 +123,7 @@ class ResourcesController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function update(Request $request, string $id, mixed $modelId)
+    public function edit(Request $request, string $id, mixed $modelId)
     {
         $user = Auth::user();
 
@@ -138,10 +138,13 @@ class ResourcesController extends Controller
             ->where($resource::$modelKey, $modelId)
             ->firstOrFail();
 
-        $form = $resource->form();
+        $data = [
+            'model' => $model,
+            'resource' => $resource,
+        ];
 
-        return view('backend::resources-update', [
-            'fields' => $form->fields,
+        return view('backend::resources-show', [
+            'form' => fn () => $resource->form()->provide($data),
             'model' => $model,
             'resource' => $resource,
         ]);

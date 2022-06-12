@@ -2,12 +2,13 @@
 
 namespace App\Backend\Resources;
 
+use Bedard\Backend\Components\Block;
 use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Column;
+use Bedard\Backend\Components\Field;
+use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Table;
 use Bedard\Backend\Components\Toolbar;
-use Bedard\Backend\Field;
-use Bedard\Backend\Form;
 use Bedard\Backend\Resource;
 
 class UserResource extends Resource
@@ -57,37 +58,40 @@ class UserResource extends Resource
     public function form()
     {
         return Form::fields([
-            Field::input('id')
-                ->label('ID')
-                ->readonly(),
-                
-            Field::input('name')
-                ->label('Name')
-                ->autofocus()
-                ->span([
-                    'lg' => 6,
-                ]),
-
-            Field::input('email')
-                ->label('Email address')
-                ->placeholder('Enter email address')
-                ->type('email')
-                ->span([
-                    'lg' => 6,
-                ]),
-
-            Field::input('created_at')
-                ->label('Created')
-                ->span([
-                    'lg' => 6,
-                ]),
-
-            Field::input('updated_at')
-                ->label('Last seen')
-                ->span([
-                    'lg' => 6,
-                ]),
+            // Field::make(),
         ]);
+        // return Form::fields([
+        //     Field::input('id')
+        //         ->label('ID')
+        //         ->readonly(),
+                
+        //     Field::input('name')
+        //         ->label('Name')
+        //         ->autofocus()
+        //         ->span([
+        //             'lg' => 6,
+        //         ]),
+
+        //     Field::input('email')
+        //         ->label('Email address')
+        //         ->placeholder('Enter email address')
+        //         ->type('email')
+        //         ->span([
+        //             'lg' => 6,
+        //         ]),
+
+        //     Field::input('created_at')
+        //         ->label('Created')
+        //         ->span([
+        //             'lg' => 6,
+        //         ]),
+
+        //     Field::input('updated_at')
+        //         ->label('Last seen')
+        //         ->span([
+        //             'lg' => 6,
+        //         ]),
+        // ]);
     }
 
     /**

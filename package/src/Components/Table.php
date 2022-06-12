@@ -44,12 +44,10 @@ class Table extends Component
      */
     public function init()
     {
-        $this->to = function ($row) {
-            return route('backend.resources.update', [
-                'id' => $this->data['resource']::$id,
-                'modelId' => $row->{$this->data['resource']::$modelKey},
-            ]);
-        };
+        $this->to = fn ($row) => route('backend.resources.edit', [
+            'id' => $this->data['resource']::$id,
+            'modelId' => $row->{$this->data['resource']::$modelKey},
+        ]);
     }
 
     /**
