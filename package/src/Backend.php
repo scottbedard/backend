@@ -54,13 +54,15 @@ class Backend
      */
     public function check(User $user, ...$permissions): bool
     {
+        $checks = array_filter($permissions, fn ($p) => $p);
+
         // check for super admin
-        if (Util::attempt(fn () => $user->hasPermissionTo('super admin'))) {
+        if (empty($checks) || Util::attempt(fn () => $user->hasPermissionTo('super admin'))) {
             return true;
         }
 
         // check for explicit permission
-        if (Util::attempt(fn () => $user->hasAnyPermission($permissions))) {
+        if (Util::attempt(fn () => $user->hasAnyPermission($checks))) {
             return true;
         }
 

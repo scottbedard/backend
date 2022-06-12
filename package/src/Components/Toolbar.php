@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\Components;
 
-use Backend;
 use Bedard\Backend\Exceptions\InvalidAttributeException;
 use Bedard\Backend\Util;
 
@@ -23,16 +22,12 @@ class Toolbar extends Block
      *
      * @return \Illuminate\View\View
      */
-    public function render($arg = null)
+    public function render()
     {
-        $user = auth()->user();
-
-        $items = collect($this->items)->filter(fn ($item) => Backend::check($user, $item->permission));
-
-        return view('backend::renderables.toolbar', [
+        return fn () => $this->view('backend::renderables.toolbar', [
             'align' => $this->align,
             'data' => $this->data,
-            'items' => $items,
+            'items' => $this->items,
         ]);
     }
 
@@ -47,7 +42,7 @@ class Toolbar extends Block
      */
     public function setAlignAttribute(string $value)
     {
-        $alignments = ['left', 'right', 'center'];
+        $alignments = ['left', 'right', 'center', 'between'];
 
         if (!in_array($value, $alignments)) {
             $suggestion = Util::suggest($value, $alignments);

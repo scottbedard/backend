@@ -5,9 +5,9 @@ namespace Bedard\Backend;
 use App\Models\User;
 use Bedard\Backend\Actions\DeleteAction;
 use Bedard\Backend\Components\Block;
+use Bedard\Backend\Components\Form;
+use Bedard\Backend\Components\Table;
 use Bedard\Backend\Exceptions\ActionNotFoundException;
-use Bedard\Backend\Form;
-use Bedard\Backend\Table;
 
 class Resource
 {
@@ -145,7 +145,7 @@ class Resource
     /**
      * Query
      *
-     * @return \Illuminate
+     * @return \Illuminate\Database\Query\Builder
      */
     public function query()
     {

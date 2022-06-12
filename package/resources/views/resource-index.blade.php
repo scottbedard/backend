@@ -6,7 +6,9 @@
         </div> -->
 
         <div class="p-6">
-            {{ $toolbar()->render() }}
+            <x-backend::renderable
+                :content="$toolbar()->render()">
+            </x-backend::renderable>
         </div>
 
         <div>

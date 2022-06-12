@@ -48,4 +48,12 @@ class CheckTest extends TestCase
 
         $this->assertTrue(Backend::check($user, 'access posts'));
     }
+
+    public function test_falsey_values_return_true()
+    {
+        $user = User::factory()->create();
+
+        $this->assertTrue(Backend::check($user, ''));
+        $this->assertTrue(Backend::check($user, null));
+    }
 }

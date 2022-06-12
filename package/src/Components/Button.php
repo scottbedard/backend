@@ -20,6 +20,7 @@ class Button extends Block
         'text' => 'whoa',
         'theme' => null,
         'to' => null,
+        'type' => 'button',
     ];
 
     /**
@@ -35,7 +36,7 @@ class Button extends Block
             return null;
         }
     
-        return view('backend::renderables.button', [
+        return $this->view('backend::renderables.button', [
             'action' => $this->action,
             'confirm' => $this->confirm,
             'data' => $this->data,
@@ -45,6 +46,7 @@ class Button extends Block
             'text' => $this->text,
             'theme' => $this->theme,
             'to' => $this->to,
+            'type' => $this->type,
         ]);
     }
 }

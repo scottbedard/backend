@@ -70,7 +70,7 @@
                 '2xl:col-span-10' => $field->span['2xl'] === 10,
                 '2xl:col-span-11' => $field->span['2xl'] === 11,
                 '2xl:col-span-12' => $field->span['2xl'] === 12,
-            ])>              
+            ])>
                 <x-backend::renderable
                     :content="$field->render()"
                     :data="$model">

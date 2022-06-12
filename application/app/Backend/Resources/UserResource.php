@@ -2,6 +2,7 @@
 
 namespace App\Backend\Resources;
 
+use Bedard\Backend\Components\Link;
 use Bedard\Backend\Components\Block;
 use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Column;
@@ -81,44 +82,16 @@ class UserResource extends Resource
                 ->label('Last seen')
                 ->span(6),
 
-            Toolbar::align('right')->items([
-            //     Button::text('Hello'),
+            Toolbar::align('between')->items([
+                Link::text('Cancel')
+                    ->iconLeft('arrow-left')
+                    ->href(route('backend.resources.show', ['id' => 'users'])),
 
-            //     Button::text('World'),
+                Button::text('submit')
+                    ->theme('primary')
+                    ->text('Save user'),
             ]),
         ]);
-        // return Form::fields([
-        //     Field::input('id')
-        //         ->label('ID')
-        //         ->readonly(),
-                
-        //     Field::input('name')
-        //         ->label('Name')
-        //         ->autofocus()
-        //         ->span([
-        //             'lg' => 6,
-        //         ]),
-
-        //     Field::input('email')
-        //         ->label('Email address')
-        //         ->placeholder('Enter email address')
-        //         ->type('email')
-        //         ->span([
-        //             'lg' => 6,
-        //         ]),
-
-        //     Field::input('created_at')
-        //         ->label('Created')
-        //         ->span([
-        //             'lg' => 6,
-        //         ]),
-
-        //     Field::input('updated_at')
-        //         ->label('Last seen')
-        //         ->span([
-        //             'lg' => 6,
-        //         ]),
-        // ]);
     }
 
     /**

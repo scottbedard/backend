@@ -2,9 +2,9 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Components\Component;
+use Bedard\Backend\Components\Block;
 
-class Table extends Component
+class Table extends Block
 {
     /**
      * Attributes
@@ -57,7 +57,7 @@ class Table extends Component
      */
     public function render($arg = null)
     {
-        return view('backend::renderables.table', [
+        return $this->view('backend::renderables.table', [
             'columns' => $this->columns,
             'data' => $this->data,
             'pageSize' => $this->pageSize,

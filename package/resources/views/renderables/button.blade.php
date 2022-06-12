@@ -7,14 +7,14 @@
         :x-bind:disabled="$requireSelection ? '!checked.includes(true)' : null"
         :icon="$icon"
         :theme="$theme"
-        :to="$to">
+        :to="$to"
+        :type="$type">
         {{ $text }}
     </x-backend::button>
 
     @if ($confirm)
         <template x-if="modal">
             <x-backend::action-modal
-                button-type="submit"
                 :action="$action"
                 :button-icon="$confirm['buttonIcon']"
                 :button-text="$confirm['buttonText']"

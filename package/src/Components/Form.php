@@ -31,7 +31,7 @@ class Form extends Block
      */
     public function render()
     {
-        return view('backend::renderables.form', [
+        return $this->view('backend::renderables.form', [
             'fields' => $this->fields,
             'model' => $this->data['model'],
         ]);

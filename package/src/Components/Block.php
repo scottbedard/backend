@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Components;
 
+use Backend;
 use Bedard\Backend\Components\Component;
 use Bedard\Backend\Exceptions\InvalidFieldSpan;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +16,7 @@ class Block extends Component
     protected $attributes = [
         'class' => '',
         'items' => [],
-        'permission' => '',
+        'permission' => null,
         'span' => [
             'sm' => null,
             'md' => null,
@@ -84,10 +85,24 @@ class Block extends Component
      */
     public function render()
     {
-        return view('backend::components.block', [
+        return $this->view('backend::components.block', [
             'class' => $this->class,
             'items' => $this->items,
             'text' => $this->text,
         ]);
+    }
+
+    /**
+     * View
+     *
+     * @return \Illuminate\View\View|string
+     */
+    protected function view(string $name, array $data = [])
+    {
+        if (!$this->permission || Backend::check(auth()->user(), $this->permission)) {
+            return view($name, $data);
+        }
+
+        return '';
     }
 }
