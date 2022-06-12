@@ -10,6 +10,21 @@ use Illuminate\Support\Facades\Auth;
 class ResourcesController extends Controller
 {
     /**
+     * Action
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $id
+     */
+    public function action(Request $request, string $id)
+    {
+        $user = Auth::user();
+        
+        $resource = Backend::resource($id);
+
+        return $resource->action($user, $request->_action, $request->post());
+    }
+
+    /**
      * Create
      * 
      * @param \Illuminate\Http\Request $request
@@ -78,23 +93,17 @@ class ResourcesController extends Controller
 
         $rows = $resource->query()->get();
 
+        $data = [
+            'resource' => $resource,
+            'rows' => $rows,
+        ];
+
         return view('backend::resource-index', [
             'data' => $rows,
             'resource' => $resource,
-            'table' => fn () => $resource->table()->provide([
-                'resource' => $resource,
-                'rows' => $rows,
-            ]),
-            'toolbar' => fn () => $resource->toolbar()->provide($rows),
+            'table' => fn () => $resource->table()->provide($data),
+            'toolbar' => fn () => $resource->toolbar()->provide($data),
         ]);
-
-        // return view('backend::resources-show', [
-        //     'columns' => $table->columns,
-        //     'data' => $resource->data(),
-        //     'resource' => $resource,
-        //     'selectable' => $table->selectable,
-        //     'toolbar' => $toolbar,
-        // ]);
     }
 
     /**

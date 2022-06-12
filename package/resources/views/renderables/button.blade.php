@@ -14,25 +14,26 @@
     @if ($confirm)
         <template x-if="modal">
             <x-backend::action-modal
-                method="delete"
                 button-type="submit"
+                :action="$action"
                 :button-icon="$confirm['buttonIcon']"
                 :button-text="$confirm['buttonText']"
                 :button-theme="$confirm['buttonTheme']"
+                :resource="$data['resource']"
                 :secondary-icon="$confirm['secondaryIcon']"
                 :secondary-text="$confirm['secondaryText']"
                 :title="$confirm['title']">
 
-                @foreach ($data as $row)
+                @foreach ($data['rows'] as $row)
                     <input
                         class="hidden"
-                        name="resource[]"
+                        name="selected[]"
                         type="checkbox"
-                        value="{{ $row->id }}"
+                        value="{{ $row->{$resource::$modelKey} }}"
                         :checked="checked[{{ $loop->index }}]" />
                 @endforeach
                 
-                <div>{!! $confirm['text'] !!}</div>
+                <div>{{ $confirm['text'] }}</div>
             </x-backend::action-modal>
         </template>
     @endif

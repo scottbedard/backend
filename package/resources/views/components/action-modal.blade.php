@@ -5,31 +5,39 @@
     'buttonTheme' => null,
     'secondaryText' => null,
     'secondayIcon' => null,
-    'method' => 'post',
+    'resource' => null,
     'title' => '',
 ])
 
 <x-backend::modal padded>
-    <form
-        action="{{ $action }}"
-        class="grid gap-6"
-        method="POST">
-        @csrf
+    @if ($resource && $action)
+        <form
+            action="{{ route('backend.resources.action', ['id' => $resource::$id]) }}"
+            method="POST">
+            @csrf
 
-        <input type="hidden" name="_method" value="{{ $method }}" />
+            <input type="hidden" name="_action" value="{{ $action }}" />
+    @else
+        <div>
+    @endif
+        <div class="grid gap-6">
+            <div class="grid gap-6 mb-10">
+                <h3 class="font-bold text-2xl">{{ $title }}</h3>
 
-        <div class="grid gap-6 mb-10">
-            <h3 class="font-bold text-2xl">{{ $title }}</h3>
-
-            <div>{{ $slot }}</div>
+                <div>{{ $slot }}</div>
+            </div>
+            
+            <x-backend::action-bar
+                button-type="submit"
+                :button-icon="$buttonIcon"
+                :button-text="$buttonText"
+                :button-theme="$buttonTheme"
+                :secondary-icon="$secondaryIcon"
+                :secondary-text="$secondaryText" />
         </div>
-        
-        <x-backend::action-bar
-            button-type="submit"
-            :button-icon="$buttonIcon"
-            :button-text="$buttonText"
-            :button-theme="$buttonTheme"
-            :secondary-icon="$secondaryIcon"
-            :secondary-text="$secondaryText" />
-    </form>
+    @if ($action)
+        </form>
+    @else
+        </div>
+    @endif
 </x-backend::modal>

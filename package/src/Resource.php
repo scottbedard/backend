@@ -2,9 +2,12 @@
 
 namespace Bedard\Backend;
 
+use App\Models\User;
+use Bedard\Backend\Actions\DeleteAction;
+use Bedard\Backend\Components\Block;
+use Bedard\Backend\Exceptions\ActionNotFoundException;
 use Bedard\Backend\Form;
 use Bedard\Backend\Table;
-use Bedard\Backend\Components\Block;
 
 class Resource
 {
@@ -60,13 +63,33 @@ class Resource
     public static $title = null;
 
     /**
-     * Text for the create button
+     * Execute an action
      *
-     * @return string
+     * @param \App\Models\User $user
+     * @param string $action
+     * @param array $data
      */
-    public function createButtonText()
+    public function action(User $user, string $action, array $data = [])
     {
-        return 'Create ' . strtolower(static::$entity);
+        $instance = collect($this->actions())->firstOrFail(fn ($a) => $a->id === $action);
+
+        if ($instance) {
+            return $instance->run($this, $user, $data);
+        }
+    
+        throw new ActionNotFoundException("Action \"{$action}\" not found.");
+    }
+
+    /**
+     * Actions
+     *
+     * @return array
+     */
+    public function actions()
+    {
+        return [
+            DeleteAction::permission('delete users'),
+        ];
     }
 
     /**

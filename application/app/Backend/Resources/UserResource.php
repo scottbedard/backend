@@ -133,6 +133,7 @@ class UserResource extends Resource
                     ->to(route('backend.resources.create', ['id' => static::$id])),
 
                 Button::permissions('delete users')
+                    ->action('delete')
                     ->icon('trash')
                     ->text('Delete selected')
                     ->requireSelection()

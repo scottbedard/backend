@@ -10,10 +10,11 @@ class Button extends Block
      * @var array
      */
     protected $attributes = [
+        'action' => null,
         'confirm' => null,
         'icon' => null,
-        'method' => null,
         'requireSelection' => false,
+        'resource' => null,
         'text' => 'whoa',
         'theme' => null,
         'to' => null,
@@ -27,11 +28,12 @@ class Button extends Block
     public function render($arg = null)
     {
         return view('backend::renderables.button', [
+            'action' => $this->action,
             'confirm' => $this->confirm,
             'data' => $this->data,
             'icon' => $this->icon,
-            'method' => $this->method,
             'requireSelection' => $this->requireSelection,
+            'resource' => $this->data['resource'],
             'text' => $this->text,
             'theme' => $this->theme,
             'to' => $this->to,

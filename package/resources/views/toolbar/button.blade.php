@@ -14,8 +14,8 @@
     @if ($attrs['confirm'])
         <template x-if="modal">
             <x-backend::action-modal
-                method="delete"
                 button-type="submit"
+                :action="$attrs['action']"
                 :button-icon="$attrs['confirm']['buttonIcon']"
                 :button-text="$attrs['confirm']['buttonText']"
                 :button-theme="$attrs['confirm']['buttonTheme']"
