@@ -55,7 +55,9 @@
                             'text-center' => $column->align === 'center',
                             'text-right' => $column->align === 'right',
                         ])>
-                            <x-backend::renderable :content="$column" :data="$row" />
+                            <x-backend::renderable
+                                :content="$column"
+                                :data="$row" />
                         </div>
                     @endforeach
                 </a>

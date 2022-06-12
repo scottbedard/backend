@@ -24,14 +24,16 @@
                 :secondary-text="$confirm['secondaryText']"
                 :title="$confirm['title']">
 
-                @foreach ($data['rows'] as $row)
-                    <input
-                        class="hidden"
-                        name="selected[]"
-                        type="checkbox"
-                        value="{{ $row->{$resource::$modelKey} }}"
-                        :checked="checked[{{ $loop->index }}]" />
-                @endforeach
+                @if ($data['rows'])
+                    @foreach ($data['rows'] as $row)
+                        <input
+                            class="hidden"
+                            name="models[]"
+                            type="checkbox"
+                            value="{{ $row->{$resource::$modelKey} }}"
+                            :checked="checked[{{ $loop->index }}]" />
+                    @endforeach
+                @endif
                 
                 <div>{{ $confirm['text'] }}</div>
             </x-backend::action-modal>

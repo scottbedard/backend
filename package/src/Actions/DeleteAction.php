@@ -29,7 +29,7 @@ class DeleteAction extends Action
     {
         $resource
             ->query()
-            ->whereIn($resource::$modelKey, $data['selected'])
+            ->whereIn($resource::$modelKey, $data['models'])
             ->get()
             ->each(fn ($model) => $model->delete());
 

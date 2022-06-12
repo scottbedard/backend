@@ -40,8 +40,9 @@ class ResourcesTest extends TestCase
 
         $this
             ->actingAs($admin)
-            ->delete('/backend/resources/users', [
-                'resource' => [$bob->id],
+            ->post('/backend/resources/users/action', [
+                '_action' => 'delete',
+                'models' => [$bob->id],
             ])
             ->assertRedirect();
         
@@ -57,8 +58,9 @@ class ResourcesTest extends TestCase
 
         $this
             ->actingAs($hacker)
-            ->delete('/backend/resources/users', [
-                'resource' => [],
+            ->post('/backend/resources/users/action', [
+                '_action' => 'delete',
+                'models' => [],
             ])
             ->assertUnauthorized();
     }

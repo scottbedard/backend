@@ -2,10 +2,12 @@
 
 namespace App\Backend\Resources;
 
-use Bedard\Backend\Field;
+use Bedard\Backend\Components\Column;
+use Bedard\Backend\Components\Field;
+use Bedard\Backend\Components\Form;
+use Bedard\Backend\Components\Table;
+use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Resource;
-use Bedard\Backend\Table;
-use Bedard\Backend\Toolbar;
 
 class {{ class }} extends Resource
 {
@@ -49,31 +51,35 @@ class {{ class }} extends Resource
     /**
      * Form
      *
-     * @return array
+     * @return \Bedard\Backend\Components\
      */
-    public function form()
+    public function form(): Form
     {
-        return [
-            // ...
-        ];
+        return Form::fields([
+            Field::make('id')->header('ID')->readonly(),
+        ]);
     }
 
     /**
-     * Table definition.
+     * Table definition
      *
-     * @return \Bedard\Backend\Table
+     * @return \Bedard\Backend\Components\Table
      */
     public function table(): Table
     {
         return Table::columns([
-            // ...
+            Column::make('id')->header('ID'),
+
+            Column::date('created_at')->header('Created at'),
+
+            Column::date('updated_at')->header('Last updated')->diffForHumans(),
         ]);
     }
 
     /**
      * Toolbar
      *
-     * @return \Bedard\Backend\Toolbar
+     * @return \Bedard\Backend\Components\Toolbar
      */
     public function toolbar(): Toolbar
     {

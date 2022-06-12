@@ -3,6 +3,7 @@
         
         <x-backend::renderable
             class="p-6 empty:hidden"
+            el="div"
             :content="$toolbar()->render()" />
 
         <div>

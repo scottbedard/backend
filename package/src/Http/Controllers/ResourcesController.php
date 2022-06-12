@@ -95,7 +95,7 @@ class ResourcesController extends Controller
 
         $resource = Backend::resource($id);
 
-        if (!Backend::check($user, ...$resource->permissions())) {
+        if (!Backend::check($user, 'access ' . $resource::$id)) {
             return abort(401);
         }
 
