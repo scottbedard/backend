@@ -12,16 +12,10 @@
 ])->merge([]) }}>
     @if ($secondaryText)
         <div class="flex-1">
-            <a
-                class="inline-flex font-bold gap-x-2 items-center text-sm tracking-wide unstyled text-gray-700 hover:text-black"
-                href="#"
-                @click.prevent="$dispatch('secondary-click')">
-                @if ($secondaryIcon)
-                    <x-backend::icon :name="$secondaryIcon" size="16" />
-                @endif
-
-                {{ $secondaryText }}
-            </a>
+            <x-backend::link
+                :icon-left="$secondaryIcon"
+                :text="$secondaryText"
+                @click.prevent="$dispatch('secondary-click')" />
         </div>
     @endif
 
