@@ -2,9 +2,15 @@
 
 namespace App\Backend\Resources;
 
-use Bedard\Backend\Column;
+use Bedard\Backend\Components\Link;
+use Bedard\Backend\Components\Block;
+use Bedard\Backend\Components\Button;
+use Bedard\Backend\Components\Column;
+use Bedard\Backend\Components\Field;
+use Bedard\Backend\Components\Form;
+use Bedard\Backend\Components\Table;
+use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Resource;
-use Bedard\Backend\Table;
 
 class PostResource extends Resource
 {
@@ -50,11 +56,9 @@ class PostResource extends Resource
      *
      * @return array
      */
-    public function form()
+    public function form(): Form
     {
-        return [
-            // ...
-        ];
+        return Form::make();
     }
 
     /**
@@ -65,13 +69,13 @@ class PostResource extends Resource
     public function table(): Table
     {
         return Table::columns([
-                Column::number('id')->header('ID'),
+                Column::make('id')->header('ID'),
 
-                Column::text('title')->header('Title'),
+                Column::make('title')->header('Title'),
 
-                Column::carbon('created_at')->header('Created'),
+                Column::date('created_at')->header('Created'),
 
-                Column::carbon('updated_at')->header('Last Updated')->diffForHumans(),
+                Column::date('updated_at')->header('Last Updated')->diffForHumans(),
             ])
             ->selectable()
             ->pageSize(20);

@@ -3,8 +3,4 @@
     'data' => null,
 ])
 
-@if (is_callable($content))
-    {{ $content($data) }}
-@else
-    {{ $content }}
-@endif
+<div {{ $attributes->class([])->merge([]) }}>{{ is_callable($content) ? $content($data) : $content }}</div>

@@ -8,6 +8,7 @@ use Bedard\Backend\Actions\UpdateAction;
 use Bedard\Backend\Components\Block;
 use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Table;
+use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Exceptions\ActionNotFoundException;
 
 class Resource
@@ -121,7 +122,7 @@ class Resource
      *
      * @return array
      */
-    public function form()
+    public function form(): Form
     {
         return Form::make();
     }
@@ -159,7 +160,7 @@ class Resource
      *
      * @return \Bedard\Backend\Table
      */
-    public function table()
+    public function table(): Table
     {
         return Table::make();
     }
@@ -169,8 +170,8 @@ class Resource
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function toolbar()
+    public function toolbar(): Toolbar
     {
-        return Block::make();
+        return Toolbar::make();
     }
 }

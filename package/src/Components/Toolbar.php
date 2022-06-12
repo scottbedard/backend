@@ -21,14 +21,18 @@ class Toolbar extends Block
      * Render
      *
      * @return \Illuminate\View\View
-     */
+    */
     public function render()
     {
-        return fn () => $this->view('backend::renderables.toolbar', [
-            'align' => $this->align,
-            'data' => $this->data,
-            'items' => $this->items,
-        ]);
+        if (count($this->items)) {
+            return fn () => $this->view('backend::renderables.toolbar', [
+                'align' => $this->align,
+                'data' => $this->data,
+                'items' => $this->items,
+            ]);
+        }
+
+        return '';
     }
 
     /**

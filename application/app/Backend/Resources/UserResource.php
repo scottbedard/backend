@@ -56,7 +56,7 @@ class UserResource extends Resource
      *
      * @return array
      */
-    public function form()
+    public function form(): Form
     {
         return Form::fields([
             Field::input('id')
@@ -129,7 +129,7 @@ class UserResource extends Resource
      *
      * @return \Illuminate\View\View
      */
-    public function toolbar()
+    public function toolbar(): Toolbar
     {
         return Toolbar::items([
                 Button::permission('create users')

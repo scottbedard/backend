@@ -156,8 +156,6 @@ class BackendServiceProvider extends ServiceProvider
         }
 
         // register components
-        Blade::component('icon', \Bedard\Backend\Views\Components::class);
-
         Blade::componentNamespace('Bedard\\Backend\\Views\\Components', 'backend');
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
