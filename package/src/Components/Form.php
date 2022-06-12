@@ -12,6 +12,7 @@ class Form extends Block
      * @var array
      */
     protected $attributes = [
+        'action' => null,
         'fields' => [],
     ];
 
@@ -32,8 +33,10 @@ class Form extends Block
     public function render()
     {
         return $this->view('backend::renderables.form', [
+            'action' => $this->action ?: $this->data['action'],
             'fields' => $this->fields,
             'model' => $this->data['model'],
+            'resource' => $this->data['resource'],
         ]);
     }
 }

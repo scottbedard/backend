@@ -1,5 +1,11 @@
-<form>
+<form
+    action="{{ route('backend.resources.action', ['id' => $resource::$id]) }}"
+    method="POST">
     @csrf
+    
+    <input type="hidden" name="_action" value="{{ $action }}" />
+
+    <input type="hidden" name="_modelId" value="{{ $model->{$resource::$modelKey} }}" />
 
     <div class="gap-6 grid grid-cols-12">
         @foreach ($fields as $field)

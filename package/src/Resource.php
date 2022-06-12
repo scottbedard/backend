@@ -4,6 +4,7 @@ namespace Bedard\Backend;
 
 use App\Models\User;
 use Bedard\Backend\Actions\DeleteAction;
+use Bedard\Backend\Actions\UpdateAction;
 use Bedard\Backend\Components\Block;
 use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Table;
@@ -89,6 +90,7 @@ class Resource
     {
         return [
             DeleteAction::permission('delete users'),
+            UpdateAction::permission('update users'),
         ];
     }
 

@@ -139,6 +139,7 @@ class ResourcesController extends Controller
             ->firstOrFail();
 
         $data = [
+            'action' => 'update',
             'model' => $model,
             'resource' => $resource,
         ];

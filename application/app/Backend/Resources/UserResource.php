@@ -88,6 +88,7 @@ class UserResource extends Resource
                     ->href(route('backend.resources.show', ['id' => 'users'])),
 
                 Button::type('submit')
+                    ->icon('save')
                     ->theme('primary')
                     ->text('Save user'),
             ]),
@@ -102,9 +103,11 @@ class UserResource extends Resource
     public function table(): Table
     {
         $table = Table::columns([
-                Column::make('name')->header('Name'),
+                Column::make('name')
+                    ->header('Name'),
 
-                Column::make('email')->header('Email address'),
+                Column::make('email')
+                    ->header('Email address'),
 
                 Column::date('created_at')
                     ->align('right')

@@ -32,6 +32,7 @@ class InputField extends Field
             'disabled' => $this->disabled,
             'label' => $this->label,
             'model' => $model,
+            'id' => $this->id,
             'placeholder' => $this->placeholder,
             'readonly' => $this->readonly,
             'required' => $this->required,

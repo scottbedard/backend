@@ -1,6 +1,7 @@
 @props([
     'autofocus' => false,
     'disabled' => false,
+    'name' => '',
     'placeholder' => '',
     'readonly' => false,
     'required' => false,
@@ -14,6 +15,7 @@
         'hover:border-gray-400 dark:hover:bg-gray-500/70' => !$readonly,
         'cursor-not-allowed' => $readonly || $disabled,
     ])
+    name="{{ $name }}"
     placeholder="{{ $placeholder }}"
     type="{{ $type }}"
     value="{{ $value }}"

@@ -9,10 +9,11 @@
 @endif
 
 <x-backend::input
-    :type="$type"
-    :required="$required"
     :autofocus="$autofocus"
-    :readonly="$readonly"
     :disabled="$disabled"
+    :name="'form[' . $id . ']'"
+    :readonly="$readonly"
+    :required="$required"
+    :type="$type"
     :value="$value">
 </x-backend::input>
