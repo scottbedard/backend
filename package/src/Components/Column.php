@@ -60,9 +60,7 @@ class Column extends Component
      */
     public function render()
     {
-        return fn ($row) => $this->column([
-            'output' => $row->{$this->id},
-        ]);
+        return fn ($row) => $row->{$this->id};
     }
 
     /**

@@ -29,11 +29,9 @@ class DateColumn extends Column
         return function (Model $row) {
             $carbon = Carbon::createFromFormat($this->parse, $row->{$this->id});
 
-            return self::column([
-                'output' => $this->diffForHumans
-                    ? $carbon->diffForHumans()
-                    : $carbon->format($this->format),
-            ]);
+            return $this->diffForHumans
+                ? $carbon->diffForHumans()
+                : $carbon->format($this->format);
         };
     }
 }

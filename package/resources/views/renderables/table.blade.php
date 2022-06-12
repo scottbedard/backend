@@ -49,7 +49,12 @@
                     @endif
 
                     @foreach ($columns as $column)
-                        <div class="align-middle table-cell px-3 first:pl-6 last:pr-6">
+                        <div @class([
+                            'align-middle table-cell px-3 first:pl-6 last:pr-6' => true,
+                            'text-left' => $column->align === 'left',
+                            'text-center' => $column->align === 'center',
+                            'text-right' => $column->align === 'right',
+                        ])>
                             <x-backend::renderable :content="$column" :data="$row" />
                         </div>
                     @endforeach
