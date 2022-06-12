@@ -58,7 +58,34 @@ class UserResource extends Resource
     public function form()
     {
         return Form::fields([
-            // Field::make(),
+            Field::input('id')
+                ->label('ID')
+                ->readonly()
+                ->required(),
+
+            Field::input('name')
+                ->label('Name')
+                ->span(6)
+                ->required(),
+
+            Field::input('email')
+                ->label('Email address')
+                ->span(6)
+                ->required(),
+
+            Field::input('created_at')
+                ->label('Created at')
+                ->span(6),
+
+            Field::input('updated_at')
+                ->label('Last seen')
+                ->span(6),
+
+            Toolbar::align('right')->items([
+            //     Button::text('Hello'),
+
+            //     Button::text('World'),
+            ]),
         ]);
         // return Form::fields([
         //     Field::input('id')

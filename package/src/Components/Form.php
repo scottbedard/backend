@@ -2,9 +2,9 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Components\Component;
+use Bedard\Backend\Components\Block;
 
-class Form extends Component
+class Form extends Block
 {
     /**
      * Attributes
@@ -16,6 +16,15 @@ class Form extends Component
     ];
 
     /**
+     * Providable
+     *
+     * @var array
+     */
+    protected $providable = [
+        'fields',
+    ];
+
+    /**
      * Render
      *
      * @return \Illuminate\View\View|string
@@ -24,6 +33,7 @@ class Form extends Component
     {
         return view('backend::renderables.form', [
             'fields' => $this->fields,
+            'model' => $this->data['model'],
         ]);
     }
 }
