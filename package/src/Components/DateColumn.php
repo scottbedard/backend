@@ -27,6 +27,12 @@ class DateColumn extends Column
     public function render()
     {
         return function (Model $row) {
+            $value = $row->{$this->id};
+
+            if (!$value) {
+                return '';
+            }
+
             $carbon = Carbon::createFromFormat($this->parse, $row->{$this->id});
 
             return $this->diffForHumans

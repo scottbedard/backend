@@ -127,4 +127,13 @@ class FluentTest extends TestCase
             $this->assertArrayHasKey($attr, $child->attributes);
         }
     }
+
+    public function test_has_attribute()
+    {
+        $instance = Example::make();
+
+        $this->assertTrue($instance->hasAttribute('flagged'));
+
+        $this->assertFalse($instance->hasAttribute('never'));
+    }
 }

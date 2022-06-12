@@ -84,7 +84,7 @@ abstract class Fluent implements Arrayable
      *
      * @param string $key
      *
-     * @return void
+     * @return mixed
      */
     public function __get(string $key)
     {
@@ -102,9 +102,7 @@ abstract class Fluent implements Arrayable
             return $this->attributes[$key];
         }
         
-        else {
-            $this->throwUnknownPropertyException($key);
-        }
+        return null;
     }
 
     /**
@@ -143,6 +141,18 @@ abstract class Fluent implements Arrayable
         $instance->init(...$args);
 
         return $instance;
+    }
+
+    /**
+     * Test for attribute precense
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasAttribute(string $key): bool
+    {
+        return array_key_exists($key, $this->attributes);
     }
 
     /**

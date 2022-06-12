@@ -60,6 +60,7 @@ class UserResource extends Resource
     {
         return Form::fields([
             Field::input('id')
+                ->context('update')
                 ->label('ID')
                 ->readonly()
                 ->required(),
@@ -70,15 +71,25 @@ class UserResource extends Resource
                 ->required(),
 
             Field::input('email')
+                ->type('email')
                 ->label('Email address')
                 ->span(6)
                 ->required(),
 
+            Field::input('password')
+                ->context('create')
+                ->type('password')
+                ->label('Password')
+                ->span(6)
+                ->required(),
+
             Field::input('created_at')
+                ->context('update')
                 ->label('Created at')
                 ->span(6),
 
             Field::input('updated_at')
+                ->context('update')
                 ->label('Last seen')
                 ->span(6),
 

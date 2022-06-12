@@ -12,6 +12,7 @@ class Field extends Block
      * @var array
      */
     protected $attributes = [
+        'context' => null,
         'id' => '',
         'label' => '',
         'value' => null,

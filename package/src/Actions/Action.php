@@ -2,11 +2,7 @@
 
 namespace Bedard\Backend\Actions;
 
-use App\Models\User;
-use Backend;
 use Bedard\Backend\Classes\Fluent;
-use Bedard\Backend\Exceptions\UnauthorizedActionException;
-use Bedard\Backend\Resource;
 
 class Action extends Fluent
 {
@@ -16,8 +12,8 @@ class Action extends Fluent
      * @var array
      */
     protected $attributes = [
-        'resource' => null,
-        'permission' => '',
+        'id' => null,
+        'permission' => null,
     ];
 
     /**

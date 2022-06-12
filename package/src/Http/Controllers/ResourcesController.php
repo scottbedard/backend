@@ -25,8 +25,12 @@ class ResourcesController extends Controller
 
         $action = collect($resource->actions())->firstWhere(fn ($item) => $item->id === $id);
 
+        if (!$action) {
+            return abort(400); // bad request
+        }
+
         if (!Backend::check($user, $action->permission)) {
-            return abort(401);
+            return abort(403); // forbidden
         }
         
         return $action->handle($resource, $user, $request->post());
@@ -45,42 +49,23 @@ class ResourcesController extends Controller
         $resource = Backend::resource($id);
 
         if (!Backend::check($user, 'create ' . $resource::$id)) {
-            return abort(401);
+            return abort(403); // forbidden
         }
 
         $model = new $resource::$model;
 
-        $form = $resource->form();
+        $data = [
+            'action' => 'create',
+            'context' => 'create',
+            'model' => $model,
+            'resource' => $resource,
+        ];
 
-        return view('backend::resources-create', [
-            'fields' => $form->fields,
+        return view('backend::resources-show', [
+            'form' => fn () => $resource->form()->provide($data),
             'model' => $model,
             'resource' => $resource,
         ]);
-    }
-
-    /**
-     * Destroy
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return void
-     */
-    public function destroy(Request $request, string $id)
-    {
-        $user = Auth::user();
-
-        $resource = Backend::resource($id);
-
-        if (!Backend::check($user, 'delete ' . $resource::$id)) {
-            return abort(401);
-        }
-
-        $resource->delete($request->post('resource'));
-
-        return redirect(route('backend.resources.show', [
-            'id' => $id,
-        ]));
     }
 
     /**
@@ -96,7 +81,7 @@ class ResourcesController extends Controller
         $resource = Backend::resource($id);
 
         if (!Backend::check($user, 'access ' . $resource::$id)) {
-            return abort(401);
+            return abort(403); // forbidden
         }
 
         $rows = $resource->query()->get();
@@ -130,7 +115,7 @@ class ResourcesController extends Controller
         $resource = Backend::resource($id);
 
         if (!Backend::check($user, 'update ' . $resource::$id)) {
-            return abort(401);
+            return abort(403); // forbidden
         }
 
         $model = $resource
@@ -140,6 +125,7 @@ class ResourcesController extends Controller
 
         $data = [
             'action' => 'update',
+            'context' => 'update',
             'model' => $model,
             'resource' => $resource,
         ];

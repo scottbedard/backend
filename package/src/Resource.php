@@ -3,6 +3,7 @@
 namespace Bedard\Backend;
 
 use App\Models\User;
+use Bedard\Backend\Actions\CreateAction;
 use Bedard\Backend\Actions\DeleteAction;
 use Bedard\Backend\Actions\UpdateAction;
 use Bedard\Backend\Components\Block;
@@ -90,6 +91,7 @@ class Resource
     public function actions()
     {
         return [
+            CreateAction::permission('create users'),
             DeleteAction::permission('delete users'),
             UpdateAction::permission('update users'),
         ];

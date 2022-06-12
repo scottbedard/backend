@@ -34,6 +34,7 @@ class Form extends Block
     {
         return $this->view('backend::renderables.form', [
             'action' => $this->action ?: $this->data['action'],
+            'context' => $this->data['context'],
             'fields' => $this->fields,
             'model' => $this->data['model'],
             'resource' => $this->data['resource'],
