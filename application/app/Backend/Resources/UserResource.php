@@ -87,7 +87,7 @@ class UserResource extends Resource
                     ->iconLeft('arrow-left')
                     ->href(route('backend.resources.show', ['id' => 'users'])),
 
-                Button::text('submit')
+                Button::type('submit')
                     ->theme('primary')
                     ->text('Save user'),
             ]),
