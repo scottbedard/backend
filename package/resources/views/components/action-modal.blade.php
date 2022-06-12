@@ -12,8 +12,10 @@
 <x-backend::modal padded>
     @if ($resource && $action)
         <form
+            x-data="{ loading: true }"
             action="{{ route('backend.resources.action', ['id' => $resource::$id]) }}"
-            method="POST">
+            method="POST"
+            @submit="loading = true">
             @csrf
 
             <input type="hidden" name="_action" value="{{ $action }}" />

@@ -23,9 +23,9 @@ class DeleteAction extends Action
      * @param \App\Models\User $user
      * @param array $data
      *
-     * @return void
+     * @return mixed
      */
-    protected function handle($resource, $user, $data = [])
+    public function handle($resource, $user, $data = [])
     {
         $resource
             ->query()

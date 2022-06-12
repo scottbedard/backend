@@ -36,6 +36,6 @@ class UserSeeder extends Seeder
         Backend::authorize($users, 'manage users');
 
         // regular users
-        User::factory()->count(10)->create();
+        User::factory()->count(100)->create();
     }
 }

@@ -23,25 +23,14 @@ class Action extends Fluent
     /**
      * Handle
      *
-     * @return void
+     * @param Bedard\Backend\Resource $resource
+     * @param \App\Models\User $user
+     * @param array $data
+     *
+     * @return mixed
      */
-    protected function handle($resource, $user, $data = [])
+    public function handle($resource, $user, $data = [])
     {
         return [];
-    }
-
-    /**
-     * Run
-     *
-     * @return void
-     */
-    public function run(Resource $resource, User $user, $data = [])
-    {
-        if (Backend::check($user, $this->permission)) {
-            dd($this->permission);
-            return $this->handle($resource, $user, $data);
-        }
-
-        throw new UnauthorizedActionException("Unauthorized");
     }
 }

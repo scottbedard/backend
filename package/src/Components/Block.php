@@ -13,7 +13,7 @@ class Block extends Component
     protected $attributes = [
         'class' => '',
         'items' => [],
-        'permissions' => [],
+        'permission' => '',
         'text' => '',
     ];
 
@@ -31,7 +31,7 @@ class Block extends Component
      *
      * @return \Illuminate\View\View|string
      */
-    public function render($arg = null)
+    public function render()
     {
         return view('backend::components.block', [
             'class' => $this->class,

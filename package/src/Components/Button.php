@@ -2,6 +2,8 @@
 
 namespace Bedard\Backend\Components;
 
+use Backend;
+
 class Button extends Block
 {
     /**
@@ -25,8 +27,14 @@ class Button extends Block
      *
      * @return \Illuminate\View\View|string
      */
-    public function render($arg = null)
+    public function render()
     {
+        $user = auth()->user();
+        
+        if (!Backend::check($user, $this->permission)) {
+            return null;
+        }
+    
         return view('backend::renderables.button', [
             'action' => $this->action,
             'confirm' => $this->confirm,

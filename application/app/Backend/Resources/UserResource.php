@@ -124,15 +124,14 @@ class UserResource extends Resource
      */
     public function toolbar()
     {
-        return Toolbar::make()
-            ->items([
-                Button::permissions('create users')
+        return Toolbar::items([
+                Button::permission('create users')
                     ->theme('primary')
                     ->icon('plus')
                     ->text('Create user')
                     ->to(route('backend.resources.create', ['id' => static::$id])),
 
-                Button::permissions('delete users')
+                Button::permission('delete users')
                     ->action('delete')
                     ->icon('trash')
                     ->text('Delete selected')

@@ -21,7 +21,15 @@ class ResourcesController extends Controller
         
         $resource = Backend::resource($id);
 
-        return $resource->action($user, $request->_action, $request->post());
+        $id = $request->post('_action');
+
+        $action = collect($resource->actions())->firstWhere(fn ($item) => $item->id === $id);
+
+        if (!Backend::check($user, $action->permission)) {
+            return abort(401);
+        }
+        
+        return $action->handle($resource, $user, $request->post());
     }
 
     /**

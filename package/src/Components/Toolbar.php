@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Components;
 
+use Backend;
 use Bedard\Backend\Exceptions\InvalidAttributeException;
 use Bedard\Backend\Util;
 
@@ -24,10 +25,14 @@ class Toolbar extends Block
      */
     public function render($arg = null)
     {
+        $user = auth()->user();
+
+        $items = collect($this->items)->filter(fn ($item) => Backend::check($user, $item->permission));
+
         return view('backend::renderables.toolbar', [
             'align' => $this->align,
             'data' => $this->data,
-            'items' => $this->items,
+            'items' => $items,
         ]);
     }
 
