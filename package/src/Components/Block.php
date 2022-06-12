@@ -85,7 +85,7 @@ class Block extends Component
      */
     public function render()
     {
-        return $this->view('backend::components.block', [
+        return $this->view('backend::renderables.block', [
             'class' => $this->class,
             'items' => $this->items,
             'text' => $this->text,
