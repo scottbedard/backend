@@ -10,7 +10,7 @@
             <div class="h-12 table-row">
                 @if ($selectable)
                     <div
-                        class="align-middle cursor-pointer pl-6 pr-3 relative table-cell text-right w-px"
+                        class="align-middle border-y-2 border-gray-300 cursor-pointer pl-6 pr-3 relative table-cell text-right w-px dark:border-gray-800"
                         @click.stop.prevent="all = !all">
                         <div x-bind:class="all ? 'absolute bg-primary-400 left-0 top-0 h-full w-[3px] dark:bg-primary-600' : 'hidden'"></div>
 
@@ -20,7 +20,7 @@
 
                 @foreach ($columns as $column)
                     <div @class([
-                        'align-middle table-cell px-3 first:pl-6 last:pr-6' => true,
+                        'align-middle border-y-2 border-gray-300 table-cell px-3 first:pl-6 last:pr-6 dark:border-gray-800' => true,
                         'text-left' => $column->align === 'left',
                         'text-center' => $column->align === 'center',
                         'text-right' => $column->align === 'right',
