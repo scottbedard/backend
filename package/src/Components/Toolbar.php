@@ -5,7 +5,7 @@ namespace Bedard\Backend\Components;
 use Bedard\Backend\Exceptions\InvalidAttributeException;
 use Bedard\Backend\Util;
 
-class Toolbar extends Block
+class Toolbar extends Group
 {
     /**
      * Attributes

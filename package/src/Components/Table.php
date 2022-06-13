@@ -2,9 +2,7 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Components\Block;
-
-class Table extends Block
+class Table extends Component
 {
     /**
      * Attributes
