@@ -25,7 +25,7 @@ class ResourcesTest extends TestCase
         $this
             ->actingAs($user)
             ->get('/backend/resources/users')
-            ->assertUnauthorized();
+            ->assertForbidden();
     }
 
     public function test_deleting_records()
@@ -62,7 +62,7 @@ class ResourcesTest extends TestCase
                 '_action' => 'delete',
                 'models' => [],
             ])
-            ->assertUnauthorized();
+            ->assertForbidden();
     }
 
     // @todo: this should probably be tested using dusk

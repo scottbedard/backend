@@ -60,9 +60,9 @@ class UserResource extends Resource
     public function actions()
     {
         return [
-            Action::create(self::class),
-            Action::delete(self::class),
-            Action::update(self::class),
+            Action::create($this),
+            Action::delete($this),
+            Action::update($this),
         ];
     }
 

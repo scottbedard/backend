@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Actions;
 
 use Bedard\Backend\Actions\Action;
+use Bedard\Backend\Resource;
 
 class DeleteAction extends Action
 {
