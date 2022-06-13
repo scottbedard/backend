@@ -98,12 +98,12 @@ class UserResource extends Resource
                 ->span(6)
                 ->required(),
 
-            Field::input('created_at')
+            Field::date('created_at')
                 ->context('update')
                 ->label('Created at')
                 ->span(6),
 
-            Field::input('updated_at')
+            Field::date('updated_at')
                 ->context('update')
                 ->label('Last seen')
                 ->span(6),

@@ -1,6 +1,7 @@
 @props([
     'autofocus' => false,
     'disabled' => false,
+    'el' => 'input',
     'name' => '',
     'placeholder' => '',
     'readonly' => false,
@@ -9,17 +10,20 @@
     'value' => '',
 ])
 
-<input
+<{{ $el }}
     @class([
-        'border bg-gray-50 border-gray-300 h-12 outline-none px-3 rounded-md tracking-wide w-full text-sm focus:border-gray-400 dark:bg-gray-500 dark:border-none dark:focus:bg-gray-500/70 dark:placeholder:text-gray-200' => true,
+        'border bg-gray-50 border-gray-300 rounded-md tracking-wide w-full text-sm dark:bg-gray-500 dark:border-none' => true,
+        'h-12 outline-none px-3 focus:border-gray-400 dark:focus:bg-gray-500/70 dark:placeholder:text-gray-200' => $el === 'input',
         'hover:border-gray-400 dark:hover:bg-gray-500/70' => !$readonly,
         'cursor-not-allowed' => $readonly || $disabled,
     ])
-    name="{{ $name }}"
-    placeholder="{{ $placeholder }}"
-    type="{{ $type }}"
-    value="{{ $value }}"
+    {{ $name ? 'name="' . $name . '"' : '' }}
+    {{ $placeholder ? 'placeholder="' . $placeholder . '"' : '' }}
+    {{ $type ? 'type="' . $type . '"' : '' }}
+    {{ $value ? 'value="' . $value . '"' : '' }}
     {{ $autofocus ? 'autofocus' : '' }}
     {{ $disabled || $readonly ? 'disabled' : '' }}
     {{ $readonly ? 'readonly' : '' }}
-    {{ $required ? 'required' : '' }} />
+    {{ $required ? 'required' : '' }}>
+    {{ $slot }}
+</{{ $el }}>

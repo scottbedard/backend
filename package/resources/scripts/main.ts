@@ -5,10 +5,12 @@ import '../styles/main.scss'
 import './dark-mode'
 
 // components
+import datefield from './datefield'
 import table from './table'
 
 document.addEventListener('alpine:init', () => {
   const { Alpine }: any = window
 
-  Alpine.data('table', table);
-});
+  Alpine.data('datefield', datefield)
+  Alpine.data('table', table)
+})

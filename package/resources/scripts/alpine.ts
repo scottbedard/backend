@@ -7,6 +7,7 @@ type AlpineData<T extends Record<string, any>> = {
 }
 
 type AlpineContext<T extends Record<string, any>> = {
+  $refs: Record<string, HTMLElement>
   $nextTick: () => Promise<void>
   $watch: <U extends Properties<T>>(key: U, fn: (val: T[U], oldVal: T[U]) => void) => void
 }
