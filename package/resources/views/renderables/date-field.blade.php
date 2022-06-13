@@ -23,7 +23,7 @@
                     <a
                         class="aspect-square col-span-1 flex items-center justify-center rounded-sm hover:bg-gray-200/50 dark:hover:bg-gray-800/10"
                         href="#"
-                        @click.prevent>
+                        @click.prevent="prev">
                         <x-backend::icon name="chevron-left" size="16" />
                     </a>
 
@@ -35,7 +35,7 @@
                     <a
                         class="aspect-square col-span-1 flex items-center justify-center rounded-sm hover:bg-gray-200/50 dark:hover:bg-gray-800/10"
                         href="#"
-                        @click.prevent>
+                        @click.prevent="next">
                         <x-backend::icon name="chevron-right" size="16" />
                     </a>
                 </div>

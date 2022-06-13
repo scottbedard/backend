@@ -2,6 +2,7 @@ import alpine from './alpine'
 
 import {
   addDays,
+  addMonths,
   differenceInDays,
   endOfMonth,
   endOfWeek, 
@@ -10,6 +11,7 @@ import {
   parse, 
   startOfMonth, 
   startOfWeek,
+  subMonths,
 } from 'date-fns'
 
 /**
@@ -48,19 +50,27 @@ export default alpine((value: string, parseFormat: string) => {
       })
     },
 
+    next() {
+      this.value = format(addMonths(this.date, 1), this.parseFormat)
+    },
+
+    prev() {
+      this.value = format(subMonths(this.date, 1), this.parseFormat)
+    },
+
     get date() {
       return parse(this.value, this.parseFormat, new Date)
     },
 
     get days() {
-      const startDate = startOfWeek(startOfMonth(this.date))
+      const start = startOfWeek(startOfMonth(this.date))
 
-      const endDate = endOfWeek(endOfMonth(this.date))
+      const end = endOfWeek(endOfMonth(this.date))
 
       const month = [startOfMonth(this.date), endOfMonth(this.date)]
      
-      const days = new Array(differenceInDays(endDate, startDate) + 1).fill(null).map((x, i) => {
-        const date = addDays(startDate, i)
+      return new Array(differenceInDays(end, start) + 1).fill(null).map((x, i) => {
+        const date = addDays(start, i)
 
         return {
           lastMonth: date < month[0],
@@ -70,8 +80,6 @@ export default alpine((value: string, parseFormat: string) => {
           instance: date,
         }
       })
-
-      return days
     },
 
     get headers() {
@@ -89,7 +97,7 @@ export default alpine((value: string, parseFormat: string) => {
     },
 
     get month() {
-      return format(this.date, 'MMMM')
+      return format(this.date, 'MMMM y')
     }
   }
 })
