@@ -2,12 +2,13 @@
 
 namespace App\Backend\Resources;
 
-use Bedard\Backend\Components\Link;
-use Bedard\Backend\Components\Group;
+use Bedard\Backend\Actions\Action;
 use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Column;
 use Bedard\Backend\Components\Field;
 use Bedard\Backend\Components\Form;
+use Bedard\Backend\Components\Group;
+use Bedard\Backend\Components\Link;
 use Bedard\Backend\Components\Table;
 use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Resource;
@@ -50,6 +51,20 @@ class UserResource extends Resource
      * @var string
      */
     public static $title = 'Users';
+
+    /**
+     * Actions
+     *
+     * @return array
+     */
+    public function actions()
+    {
+        return [
+            Action::create(self::class),
+            Action::delete(self::class),
+            Action::update(self::class),
+        ];
+    }
 
     /**
      * Form

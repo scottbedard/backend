@@ -2,11 +2,7 @@
 
 namespace Bedard\Backend\Components;
 
-use Backend;
-
-use Bedard\Backend\Components\Block;
-
-class Link extends Block
+class Link extends Group
 {
     /**
      * Attributes
@@ -17,7 +13,6 @@ class Link extends Block
         'href' => '#',
         'iconLeft' => null,
         'iconRight' => null,
-        'text' => '',
     ];
 
     /**

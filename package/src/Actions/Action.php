@@ -15,6 +15,17 @@ class Action extends Fluent
         'id' => null,
         'permission' => null,
     ];
+    
+    /**
+     * Subclass constructor aliases
+     *
+     * @var array
+     */
+    public static $subclasses = [
+        'create' => CreateAction::class,
+        'delete' => DeleteAction::class,
+        'update' => UpdateAction::class,
+    ];
 
     /**
      * Handle

@@ -14,7 +14,7 @@ class UpdateAction extends Action
      */
     protected $attributes = [
         'id' => 'update',
-        'permission' => '',
+        'permission' => null,
     ];
 
     /**
@@ -42,5 +42,17 @@ class UpdateAction extends Action
         $model->save();
 
         return redirect(route('backend.resources.show', ['id' => $resource::$id]));
+    }
+
+    /**
+     * Init
+     *
+     * @param \Bedard\Backend\Resource|string $arg
+     *
+     * @return void
+     */
+    public function init($arg = null)
+    {
+        $this->attributes['permission'] = is_a($arg, Resource::class) ? "update {$arg::$id}" : $arg;
     }
 }

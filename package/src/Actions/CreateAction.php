@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Actions;
 
 use Bedard\Backend\Actions\Action;
+use Bedard\Backend\Resource;
 
 class CreateAction extends Action
 {
@@ -13,7 +14,7 @@ class CreateAction extends Action
      */
     protected $attributes = [
         'id' => 'create',
-        'permission' => '',
+        'permission' => null,
     ];
 
     /**
@@ -38,5 +39,17 @@ class CreateAction extends Action
         $model->save();
 
         return redirect(route('backend.resources.show', ['id' => $resource::$id]));
+    }
+
+    /**
+     * Init
+     *
+     * @param \Bedard\Backend\Resource|string $arg
+     *
+     * @return void
+     */
+    public function init($arg = null)
+    {
+        $this->attributes['permission'] = is_a($arg, Resource::class) ? "create {$arg::$id}" : $arg;
     }
 }

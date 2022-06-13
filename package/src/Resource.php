@@ -6,10 +6,9 @@ use App\Models\User;
 use Bedard\Backend\Actions\CreateAction;
 use Bedard\Backend\Actions\DeleteAction;
 use Bedard\Backend\Actions\UpdateAction;
-use Bedard\Backend\Components\Block;
+use Bedard\Backend\Components\Component;
 use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Table;
-use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Exceptions\ActionNotFoundException;
 
 class Resource
@@ -90,11 +89,12 @@ class Resource
      */
     public function actions()
     {
-        return [
-            CreateAction::permission('create users'),
-            DeleteAction::permission('delete users'),
-            UpdateAction::permission('update users'),
-        ];
+        return [];
+    }
+
+    public static function createAction(string $permission)
+    {
+        return CreateAction::permission($permission);
     }
 
     /**
@@ -105,6 +105,11 @@ class Resource
         $query = static::$model::query();
 
         return $query->get();
+    }
+
+    public static function deleteAction(string $permission)
+    {
+        return DeleteAction::permission($permission);
     }
 
     /**
@@ -126,7 +131,7 @@ class Resource
      */
     public function form(): Form
     {
-        return Form::make();
+        return Component::make();
     }
 
     /**
@@ -160,20 +165,20 @@ class Resource
     /**
      * Table
      *
-     * @return \Bedard\Backend\Table
+     * @return \Bedard\Backend\Component
      */
     public function table(): Table
     {
-        return Table::make();
+        return Component::make();
     }
 
     /**
      * Toolbar
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Contracts\Support\Component
      */
-    public function toolbar(): Toolbar
+    public function toolbar(): Component
     {
-        return Toolbar::make();
+        return Component::make();
     }
 }

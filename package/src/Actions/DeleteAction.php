@@ -13,7 +13,7 @@ class DeleteAction extends Action
      */
     protected $attributes = [
         'id' => 'delete',
-        'permission' => '',
+        'permission' => null,
     ];
 
     /**
@@ -34,5 +34,17 @@ class DeleteAction extends Action
             ->each(fn ($model) => $model->delete());
 
         return redirect(route('backend.resources.show', ['id' => $resource::$id]));
+    }
+
+    /**
+     * Init
+     *
+     * @param \Bedard\Backend\Resource|string $arg
+     *
+     * @return void
+     */
+    public function init($arg = null)
+    {
+        $this->attributes['permission'] = is_a($arg, Resource::class) ? "delete {$arg::$id}" : $arg;
     }
 }
