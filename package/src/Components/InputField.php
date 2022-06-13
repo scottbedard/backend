@@ -25,9 +25,9 @@ class InputField extends Field
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    protected function output()
     {
-        return fn ($model) => $this->view('backend::renderables.input-field', [
+        return fn ($model) => view('backend::renderables.input-field', [
             'autofocus' => $this->autofocus,
             'disabled' => $this->disabled,
             'label' => $this->label,

@@ -84,27 +84,13 @@ class Block extends Component
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    protected function output()
     {
-        return $this->view('backend::renderables.block', [
+        return view('backend::renderables.block', [
             'class' => $this->class,
             'items' => $this->items,
             'spaced' => $this->spaced,
             'text' => $this->text,
         ]);
-    }
-
-    /**
-     * View
-     *
-     * @return \Illuminate\View\View|string
-     */
-    protected function view(string $name, array $data = [])
-    {
-        if (!$this->permission || Backend::check(auth()->user(), $this->permission)) {
-            return view($name, $data);
-        }
-
-        return '';
     }
 }

@@ -25,9 +25,9 @@ class Link extends Block
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    protected function output()
     {
-        return $this->view('backend::renderables.link', [
+        return view('backend::renderables.link', [
             'href' => $this->href,
             'iconLeft' => $this->iconLeft,
             'iconRight' => $this->iconRight,

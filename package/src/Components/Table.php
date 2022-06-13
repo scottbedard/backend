@@ -55,9 +55,9 @@ class Table extends Block
      *
      * @return \Illuminate\View\View|string
      */
-    public function render($arg = null)
+    protected function output()
     {
-        return $this->view('backend::renderables.table', [
+        return view('backend::renderables.table', [
             'columns' => $this->columns,
             'data' => $this->data,
             'pageSize' => $this->pageSize,

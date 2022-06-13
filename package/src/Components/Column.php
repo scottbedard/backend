@@ -58,7 +58,7 @@ class Column extends Component
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    protected function output()
     {
         return fn ($row) => $row->{$this->id};
     }

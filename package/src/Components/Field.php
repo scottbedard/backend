@@ -39,14 +39,4 @@ class Field extends Block
         $this->attributes['id'] = $id;
         $this->attributes['label'] = $id;
     }
-
-    /**
-     * Render
-     *
-     * @return \Illuminate\View\View|string
-     */
-    public function render()
-    {
-        return '';
-    }
 }

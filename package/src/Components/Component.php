@@ -2,11 +2,23 @@
 
 namespace Bedard\Backend\Components;
 
+use Backend;
 use Bedard\Backend\Classes\Fluent;
 use Illuminate\Contracts\Support\Renderable;
 
 class Component extends Fluent implements Renderable
 {
+    /**
+     * Attributes
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'class' => '',
+        'items' => [],
+        'permission' => null,
+    ];
+
     /**
      * Data
      *
@@ -42,11 +54,26 @@ class Component extends Fluent implements Renderable
     }
 
     /**
+     * Output
+     *
+     * @return \Illuminate\View\View|string|callable
+     */
+    protected function output()
+    {
+        return '';
+    }
+
+    /**
      * Render
      *
      * @return \Illuminate\View\View|string|callable
      */
-    public function render()
+    final public function render()
     {
+        if (!$this->permission || Backend::check(auth()->user(), $this->permission)) {
+            return $this->output();
+        }
+
+        return '';
     }
 }

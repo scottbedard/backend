@@ -6,7 +6,7 @@ use Bedard\Backend\Components\Block;
 
 class ResourceIndex extends Block
 {
-    public function render()
+    protected function output()
     {
         return view('backend::components.resource-index');
     }

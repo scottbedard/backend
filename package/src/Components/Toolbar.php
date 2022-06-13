@@ -22,10 +22,10 @@ class Toolbar extends Block
      *
      * @return \Illuminate\View\View
     */
-    public function render()
+    protected function output()
     {
         if (count($this->items)) {
-            return fn () => $this->view('backend::renderables.toolbar', [
+            return fn () => view('backend::renderables.toolbar', [
                 'align' => $this->align,
                 'data' => $this->data,
                 'items' => $this->items,

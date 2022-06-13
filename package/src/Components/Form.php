@@ -30,9 +30,9 @@ class Form extends Block
      *
      * @return \Illuminate\View\View|string
      */
-    public function render()
+    protected function output()
     {
-        return $this->view('backend::renderables.form', [
+        return view('backend::renderables.form', [
             'action' => $this->action ?: $this->data['action'],
             'context' => $this->data['context'],
             'fields' => $this->fields,

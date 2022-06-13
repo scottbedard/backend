@@ -24,7 +24,7 @@ class DateColumn extends Column
      *
      * @return \Illuminate\View\View|string|callable
      */
-    public function render()
+    protected function output()
     {
         return function (Model $row) {
             $value = $row->{$this->id};
