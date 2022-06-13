@@ -8,6 +8,7 @@ import {
   endOfWeek, 
   format,
   getDay,
+  isSameDay,
   parse, 
   startOfMonth, 
   startOfWeek,
@@ -17,11 +18,15 @@ import {
 /**
  * Date field
  */
-export default alpine((value: string, parseFormat: string) => {
+export default alpine((value: string, parseStr: string, formatStr) => {
   return {
     expanded: false,
 
-    parseFormat: parseFormat,
+    formatStr,
+
+    parseStr,
+
+    pendingValue: value,
 
     value,
 
@@ -37,37 +42,61 @@ export default alpine((value: string, parseFormat: string) => {
         }
 
         this.expanded = false
+      }
 
-        this.value = value
+      const onKeydown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          this.expanded = false
+        }
       }
 
       this.$watch('expanded', (expanded) => {
         if (expanded) {
+          this.pendingValue = this.value
+          
           document.body.addEventListener('click', onBodyClick)
+          document.body.addEventListener('keydown', onKeydown)
         } else {
           document.body.removeEventListener('click', onBodyClick)
+          document.body.removeEventListener('keydown', onKeydown)
         }
       })
     },
 
     next() {
-      this.value = format(addMonths(this.date, 1), this.parseFormat)
+      this.pendingValue = format(addMonths(this.pendingDate, 1), this.parseStr)
     },
 
     prev() {
-      this.value = format(subMonths(this.date, 1), this.parseFormat)
+      this.pendingValue = format(subMonths(this.pendingDate, 1), this.parseStr)
     },
 
-    get date() {
-      return parse(this.value, this.parseFormat, new Date)
+    select(date: Date) {
+      this.value = format(date, this.parseStr)
+      
+      this.pendingValue = format(date, this.parseStr)
+
+      this.expanded = false
+    },
+
+    get currentDate() {
+      return parse(this.value, this.parseStr, new Date)
+    },
+
+    get pendingDate() {
+      return parse(this.pendingValue, this.parseStr, new Date)
     },
 
     get days() {
-      const start = startOfWeek(startOfMonth(this.date))
+      const current = new Date(this.currentDate)
 
-      const end = endOfWeek(endOfMonth(this.date))
+      const pending = new Date(this.pendingDate)
 
-      const month = [startOfMonth(this.date), endOfMonth(this.date)]
+      const start = startOfWeek(startOfMonth(pending))
+
+      const end = endOfWeek(endOfMonth(pending))
+
+      const month = [startOfMonth(pending), endOfMonth(pending)]
      
       return new Array(differenceInDays(end, start) + 1).fill(null).map((x, i) => {
         const date = addDays(start, i)
@@ -76,10 +105,15 @@ export default alpine((value: string, parseFormat: string) => {
           lastMonth: date < month[0],
           nextMonth: date > month[1],
           thisMonth: date >= month[0] && date <= month[1],
+          selected: isSameDay(date, current),
           date: date.getDate(),
           instance: date,
         }
       })
+    },
+
+    get formatted() {
+      return format(parse(this.value, this.parseStr, new Date), this.formatStr)
     },
 
     get headers() {
@@ -97,7 +131,7 @@ export default alpine((value: string, parseFormat: string) => {
     },
 
     get month() {
-      return format(this.date, 'MMMM y')
+      return format(this.pendingDate, 'MMMM y')
     }
   }
 })
