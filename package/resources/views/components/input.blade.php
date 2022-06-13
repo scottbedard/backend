@@ -17,13 +17,12 @@
         'hover:border-gray-400 dark:hover:bg-gray-600' => !$readonly,
         'cursor-not-allowed' => $readonly || $disabled,
     ])
-    {{ $name ? 'name="' . $name . '"' : '' }}
-    {{ $placeholder ? 'placeholder="' . $placeholder . '"' : '' }}
-    {{ $type ? 'type="' . $type . '"' : '' }}
-    {{ $value ? 'value="' . $value . '"' : '' }}
-    {{ $autofocus ? 'autofocus' : '' }}
+    {{ $autofocus ? "autofocus={$autofocus}" : '' }}
     {{ $disabled || $readonly ? 'disabled' : '' }}
+    {{ $name ? "name={$name}" : '' }}
+    {{ $placeholder ? "placeholder={$placeholder}" : '' }}
     {{ $readonly ? 'readonly' : '' }}
-    {{ $required ? 'required' : '' }}>
-    {{ $slot }}
-</{{ $el }}>
+    {{ $required ? 'required' : '' }}
+    {{ $type ? "type={$type}" : '' }}
+    {{ $value ? "value={$value}" : '' }}
+>{{ $slot }}</{{ $el }}>
