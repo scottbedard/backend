@@ -9,7 +9,9 @@ class DateField extends Field
      *
      * @var array
      */
-    protected $attributes = [];
+    protected $attributes = [
+        'parse' => 'yyyy-MM-dd HH:mm:ss',
+    ];
 
     /**
      * Output
@@ -19,7 +21,8 @@ class DateField extends Field
         return fn ($model) => view('backend::renderables.date-field', [
             'id' => $this->id,
             'model' => $model,
-            'date' => 'hello world',
+            'parse' => $this->parse,
+            'value' => $model->{$this->id},
         ]);   
     }
 }
