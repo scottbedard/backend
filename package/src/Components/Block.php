@@ -24,6 +24,7 @@ class Block extends Component
             'xl' => null,
             '2xl' => null,
         ],
+        'spaced' => false,
         'text' => '',
     ];
 
@@ -88,6 +89,7 @@ class Block extends Component
         return $this->view('backend::renderables.block', [
             'class' => $this->class,
             'items' => $this->items,
+            'spaced' => $this->spaced,
             'text' => $this->text,
         ]);
     }

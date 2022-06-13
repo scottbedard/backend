@@ -4,7 +4,7 @@
     @secondary-click="modal = false">
     <x-backend::button
         x-on:click="modal = true"
-        :x-bind:disabled="$requireSelection ? '!checked.includes(true)' : null"
+        :x-bind:disabled="is_bool($disabled) ? ($disabled ? 'true' : 'false') : $disabled"
         :icon="$icon"
         :theme="$theme"
         :to="$to"
@@ -23,16 +23,9 @@
                 :secondary-icon="$confirm['secondaryIcon']"
                 :secondary-text="$confirm['secondaryText']"
                 :title="$confirm['title']">
-
-                @if ($data['rows'])
-                    @foreach ($data['rows'] as $row)
-                        <input
-                            class="hidden"
-                            name="models[]"
-                            type="checkbox"
-                            value="{{ $row->{$resource::$modelKey} }}"
-                            :checked="checked[{{ $loop->index }}]" />
-                    @endforeach
+                
+                @if (array_key_exists('data', $confirm) && is_callable($confirm['data']))
+                    {{ $confirm['data']($data) }}
                 @endif
                 
                 <div>{{ $confirm['text'] }}</div>

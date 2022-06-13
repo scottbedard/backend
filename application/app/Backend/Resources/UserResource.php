@@ -98,10 +98,27 @@ class UserResource extends Resource
                     ->iconLeft('arrow-left')
                     ->href(route('backend.resources.show', ['id' => 'users'])),
 
-                Button::type('submit')
-                    ->icon('save')
-                    ->theme('primary')
-                    ->text('Save user'),
+                Block::spaced()->items([
+                    Button::permission('delete users')
+                        ->action('delete')
+                        ->icon('trash')
+                        ->text('Delete user')
+                        ->confirm([
+                            'buttonIcon' => 'trash',
+                            'buttonText' => 'Confirm delete',
+                            'buttonTheme' => 'danger',
+                            'data' => fn ($data) => view('backend::renderables.form-delete-data', $data),
+                            'secondaryIcon' => 'arrow-left',
+                            'secondaryText' => 'Cancel',
+                            'text' => 'Are you sure you want to permenantly delete this user?',
+                            'title' => 'Delete user',
+                        ]),
+
+                    Button::type('submit')
+                        ->icon('save')
+                        ->theme('primary')
+                        ->text('Save user'),
+                ]),
             ]),
         ]);
     }
@@ -151,13 +168,14 @@ class UserResource extends Resource
 
                 Button::permission('delete users')
                     ->action('delete')
+                    ->disabled('!checked.includes(true)')
                     ->icon('trash')
                     ->text('Delete selected')
-                    ->requireSelection()
                     ->confirm([
                         'buttonIcon' => 'trash',
                         'buttonText' => 'Confirm delete',
                         'buttonTheme' => 'danger',
+                        'data' => fn ($data) => view('backend::renderables.table-confirm-data', $data),
                         'secondaryIcon' => 'arrow-left',
                         'secondaryText' => 'Cancel',
                         'text' => 'Are you sure you want to permenantly delete these users?',

@@ -8,7 +8,7 @@
 <a
     {{ 
         $attributes->class([
-            'inline-flex font-bold gap-x-2 items-center text-sm tracking-wide unstyled hover:text-primary-500' => true
+            'inline-flex font-bold gap-x-2 items-center text-sm tracking-wide unstyled hover:text-primary-400' => true
         ])
         ->merge([
             'href' => $href,
