@@ -2,9 +2,9 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Components\Block;
+use Bedard\Backend\Components\Group;
 
-class Field extends Block
+class Field extends Group
 {
     /**
      * Attributes

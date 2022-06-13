@@ -15,7 +15,6 @@ class Component extends Fluent implements Renderable
      */
     protected $attributes = [
         'class' => '',
-        'items' => [],
         'permission' => null,
     ];
 
@@ -25,13 +24,6 @@ class Component extends Fluent implements Renderable
      * @var array
      */
     protected $data = null;
-
-    /**
-     * Providable
-     *
-     * @var array
-     */
-    protected $providable = [];
     
     /**
      * Provide data to child items
@@ -40,14 +32,18 @@ class Component extends Fluent implements Renderable
      *
      * @return \Bedard\Backend\Components\Block
      */
-    public function provide($data)
+    final public function provide($data)
     {
         $this->data = $data;
 
-        foreach ($this->providable as $providable) { 
-            foreach ($this->{$providable} as $child) {
-                $child->provide($data);
-            } 
+        foreach ($this->attributes as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $descendent) {
+                    if (is_a($descendent, self::class)) {
+                        $descendent->provide($data);
+                    }
+                }
+            }
         }
 
         return $this;

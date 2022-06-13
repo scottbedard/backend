@@ -29,15 +29,6 @@ class Table extends Block
     ];
 
     /**
-     * Providable
-     *
-     * @var array
-     */
-    protected $providable = [
-        'columns',
-    ];
-
-    /**
      * Initialize
      *
      * @return void

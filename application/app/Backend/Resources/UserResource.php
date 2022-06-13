@@ -3,7 +3,7 @@
 namespace App\Backend\Resources;
 
 use Bedard\Backend\Components\Link;
-use Bedard\Backend\Components\Block;
+use Bedard\Backend\Components\Group;
 use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Column;
 use Bedard\Backend\Components\Field;
@@ -98,7 +98,7 @@ class UserResource extends Resource
                     ->iconLeft('arrow-left')
                     ->href(route('backend.resources.show', ['id' => 'users'])),
 
-                Block::spaced()->items([
+                Group::gap()->items([
                     Button::permission('delete users')
                         ->action('delete')
                         ->icon('trash')

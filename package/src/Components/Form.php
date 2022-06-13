@@ -2,9 +2,7 @@
 
 namespace Bedard\Backend\Components;
 
-use Bedard\Backend\Components\Block;
-
-class Form extends Block
+class Form extends Group
 {
     /**
      * Attributes
@@ -14,15 +12,6 @@ class Form extends Block
     protected $attributes = [
         'action' => null,
         'fields' => [],
-    ];
-
-    /**
-     * Providable
-     *
-     * @var array
-     */
-    protected $providable = [
-        'fields',
     ];
 
     /**

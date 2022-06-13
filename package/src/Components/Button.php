@@ -2,9 +2,9 @@
 
 namespace Bedard\Backend\Components;
 
-use Backend;
+use Bedard\Backend\Components\Component;
 
-class Button extends Block
+class Button extends Component
 {
     /**
      * Attributes
@@ -17,7 +17,7 @@ class Button extends Block
         'disabled' => false,
         'icon' => null,
         'resource' => null,
-        'text' => 'whoa',
+        'text' => '',
         'theme' => null,
         'to' => null,
         'type' => 'button',
@@ -30,19 +30,12 @@ class Button extends Block
      */
     protected function output()
     {
-        $user = auth()->user();
-        
-        if (!Backend::check($user, $this->permission)) {
-            return null;
-        }
-    
         return view('backend::renderables.button', [
             'action' => $this->action,
             'confirm' => $this->confirm,
             'data' => $this->data,
             'disabled' => $this->disabled,
             'icon' => $this->icon,
-            'resource' => $this->data['resource'],
             'text' => $this->text,
             'theme' => $this->theme,
             'to' => $this->to,

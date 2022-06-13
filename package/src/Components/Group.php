@@ -2,11 +2,11 @@
 
 namespace Bedard\Backend\Components;
 
-use Backend;
 use Bedard\Backend\Components\Component;
-use Bedard\Backend\Exceptions\InvalidFieldSpan;
+use Bedard\Backend\Exceptions\InvalidGroupSpanException;
 use Illuminate\Support\Facades\Validator;
-class Block extends Component
+
+class Group extends Component
 {
     /**
      * Attributes
@@ -15,8 +15,10 @@ class Block extends Component
      */
     protected $attributes = [
         'class' => '',
-        'items' => [],
-        'permission' => null,
+        'el' => 'div',
+        'flex' => true,
+        'gap' => false,
+        'grid' => false,
         'span' => [
             'sm' => null,
             'md' => null,
@@ -24,9 +26,27 @@ class Block extends Component
             'xl' => null,
             '2xl' => null,
         ],
-        'spaced' => false,
+        'items' => [],
         'text' => '',
     ];
+
+    /**
+     * Output
+     */
+    protected function output()
+    {
+        return view('backend::renderables.group', [
+            'class' => $this->class,
+            'el' => $this->el,
+            'flex' => $this->flex,
+            'flex' => $this->flex,
+            'gap' => $this->gap,
+            'grid' => $this->grid,
+            'items' => $this->items,
+            'span' => $this->span,
+            'text' => $this->text,
+        ]);
+    }
 
     /**
      * Set span
@@ -63,25 +83,10 @@ class Block extends Component
             ]);
 
             if ($validator->fails()) {
-                throw new InvalidFieldSpan($validator->errors()->first());
+                throw new InvalidGroupSpanException($validator->errors()->first());
             }
 
             $this->attributes['span'] = array_merge($this->attributes['span'], $span);
         }
-    }
-
-    /**
-     * Render
-     *
-     * @return \Illuminate\View\View|string
-     */
-    protected function output()
-    {
-        return view('backend::renderables.block', [
-            'class' => $this->class,
-            'items' => $this->items,
-            'spaced' => $this->spaced,
-            'text' => $this->text,
-        ]);
     }
 }
