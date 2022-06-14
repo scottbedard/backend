@@ -33,7 +33,7 @@ jobs:
         run: cd ./application && php artisan serve --no-reload &
       - name: Run Dusk Tests
         env:
-          APP_URL: "http://127.0.0.1:8000"
+          APP_URL: "http://laravel.test:80"
         run: cd ./application && php artisan dusk
       - name: Upload Screenshots
         if: failure()
