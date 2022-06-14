@@ -11,7 +11,7 @@ jobs:
           MYSQL_DATABASE: testing
           MYSQL_ROOT_PASSWORD: password
         ports:
-          - 3306:3306
+          - 33306:3306
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -38,15 +38,15 @@ jobs:
         env:
           APP_ENV: testing
         run: cd ./application && php artisan dusk
-      - name: Upload Screenshots
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: tests/Browser/screenshots
-      - name: Upload Console Logs
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: console
-          path: tests/Browser/console
+      # - name: Upload Screenshots
+      #   if: failure()
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: screenshots
+      #     path: tests/Browser/screenshots
+      # - name: Upload Console Logs
+      #   if: failure()
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: console
+      #     path: tests/Browser/console
