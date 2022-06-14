@@ -8,7 +8,7 @@ jobs:
       mysql-service:
         image: mysql:8.0
         env:
-          MYSQL_DATABASE: laravel
+          MYSQL_DATABASE: testing
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 33306:3306
