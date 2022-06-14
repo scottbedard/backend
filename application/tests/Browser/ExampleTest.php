@@ -10,7 +10,7 @@ use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
-    use DatabaseMigrations;
+    // use DatabaseMigrations;
     
     /**
      * A basic browser test example.
@@ -19,11 +19,11 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        $user = User::factory()->create();
+        // $user = User::factory()->create();
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser
-                ->loginAs($user)
+                // ->loginAs($user)
                 ->visit('/')
                 ->assertSee('Laravel');
                 // ->assertAuthenticated();
