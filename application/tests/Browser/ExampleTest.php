@@ -10,7 +10,7 @@ use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
-    use DatabaseMigrations;
+    // use DatabaseMigrations;
     
     /**
      * A basic browser test example.
@@ -28,7 +28,7 @@ class ExampleTest extends DuskTestCase
             env('DB_PASSWORD'),
         );
 
-        $user = User::factory()->create();
+        // $user = User::factory()->create();
 
         $this->browse(function (Browser $browser) {
             $browser
