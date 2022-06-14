@@ -19,8 +19,6 @@ jobs:
     #       --health-retries=3
     steps:
       - uses: actions/checkout@v2
-      - name: Build docker images
-        run: cd ./application && docker-compose build
       - name: Prepare The Environment
         run: cd ./application && cp .env.example .env
       - name: Install Composer Dependencies
