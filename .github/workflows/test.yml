@@ -4,14 +4,23 @@ jobs:
  
   dusk-php:
     runs-on: ubuntu-latest
+    services:
+      mysql-service:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: application
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - name: Prepare The Environment
         run: cd ./application && cp .env.example .env
-      - name: Create Database
-        run: |
-          sudo systemctl start mysql
-          mysql --user="root" --password="root" -e "CREATE DATABASE `mydatabase`"
       - name: Install Composer Dependencies
         run: cd ./application && composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Generate Application Key
