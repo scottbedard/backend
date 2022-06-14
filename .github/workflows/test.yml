@@ -4,19 +4,19 @@ jobs:
  
   dusk-php:
     runs-on: ubuntu-latest
-    # services:
-    #   mysql-service:
-    #     image: mysql:8.0
-    #     env:
-    #       MYSQL_DATABASE: application
-    #       MYSQL_ROOT_PASSWORD: root
-    #     ports:
-    #       - 33306:3306
-    #     options: >-
-    #       --health-cmd="mysqladmin ping"
-    #       --health-interval=10s
-    #       --health-timeout=5s
-    #       --health-retries=3
+    services:
+      mysql-service:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - name: Prepare The Environment
