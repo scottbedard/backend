@@ -28,6 +28,8 @@ jobs:
           cd ./application
           chmod -R 777 ./storage ./bootstrap/cache
           php artisan key:generate
+          php artisan session:table
+          php artisan migrate
       - name: Upgrade Chrome Driver
         run: cd ./application && php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Start Chrome Driver
