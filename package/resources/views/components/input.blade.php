@@ -2,6 +2,7 @@
     'autofocus' => false,
     'disabled' => false,
     'el' => 'input',
+    'id' => null,
     'name' => '',
     'placeholder' => '',
     'readonly' => false,
@@ -19,6 +20,7 @@
     ])
     {{ $autofocus ? "autofocus={$autofocus}" : '' }}
     {{ $disabled || $readonly ? 'disabled' : '' }}
+    {{ $id ? "id={$id}" : '' }}
     {{ $name ? "name={$name}" : '' }}
     {{ $placeholder ? "placeholder={$placeholder}" : '' }}
     {{ $readonly ? 'readonly' : '' }}

@@ -29,6 +29,13 @@ class Field extends Group
     ];
 
     /**
+     * Unique field ID
+     *
+     * @var int
+     */
+    protected $uid = 0;
+
+    /**
      * Init
      *
      * @param string $key
@@ -38,6 +45,9 @@ class Field extends Group
     public function init(string $id = '')
     {
         $this->attributes['id'] = $id;
+
         $this->attributes['label'] = $id;
+
+        $this->uid = uniqid();
     }
 }

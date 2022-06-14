@@ -1,16 +1,14 @@
 @if ($label)
-    <div class="flex flex-nowrap gap-[3px] mb-1">
-        <div class="font-bold text-sm tracking-wide">{{ $label }}</div>
-
-        @if ($required)
-            <div class="bg-primary-400 h-[5px] rounded-full w-[5px] dark:bg-primary-500"></div>
-        @endif
-    </div>
+    <x-backend::label
+        :for="$uid"
+        :text="$label"
+        :required="$required" />
 @endif
 
 <x-backend::input
     :autofocus="$autofocus"
     :disabled="$disabled"
+    :id="$uid"
     :name="'form[' . $id . ']'"
     :readonly="$readonly"
     :required="$required"

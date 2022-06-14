@@ -30,14 +30,15 @@ class InputField extends Field
         return fn ($model) => view('backend::renderables.input-field', [
             'autofocus' => $this->autofocus,
             'disabled' => $this->disabled,
+            'id' => $this->id,
             'label' => $this->label,
             'model' => $model,
-            'id' => $this->id,
             'placeholder' => $this->placeholder,
             'readonly' => $this->readonly,
             'required' => $this->required,
             'required' => $this->required,
             'type' => $this->type,
+            'uid' => $this->uid,
             'value' => $model->{$this->id},
         ]);
 
