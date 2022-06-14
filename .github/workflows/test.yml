@@ -37,7 +37,10 @@ jobs:
       - name: Run Dusk Tests
         env:
           APP_ENV: testing
-        run: cd ./application && php artisan dusk
+        run: |
+          cd ./application
+          php artisan migrate
+          php artisan dusk
       # - name: Upload Screenshots
       #   if: failure()
       #   uses: actions/upload-artifact@v2
