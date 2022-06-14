@@ -6,44 +6,6 @@ jobs:
   test:
     name: PHPUnit
     runs-on: ubuntu-latest
-    services:
-      mysql-service:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: backend
-          MYSQL_ROOT_PASSWORD: password
-        ports:
-          - 33306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-      - name: Create symlink to local package
-        run: |
-          ln -s $(realpath package) $(realpath application/packages/bedard/backend)
-      - name: Install Composer dependencies
-        run: |
-          composer install -d application
-      - name: Configure application
-        run: |
-          cp ./application/.env.example ./application/.env
-          php ./application/artisan key:generate
-          chmod -R 777 ./application/storage ./application/bootstrap/cache
-      - name: PHPUnit
-        env:
-          DB_CONNECTION: mysql
-          DB_DATABASE: backend
-          DB_PORT: 33306
-          DB_USER: root
-          DB_PASSWORD: password
-        run: |
-          cd application
-          php artisan migrate
-          php artisan test
+      - name: Reboot
+        run: echo "Soon..."
