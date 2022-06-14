@@ -2,12 +2,16 @@
 
 namespace Tests\Browser;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+    
     /**
      * A basic browser test example.
      *
@@ -15,9 +19,14 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
+        $user = User::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser
+                ->loginAs($user)
+                ->visit('/')
+                ->assertSee('Laravel')
+                ->assertAuthenticated();
         });
     }
 }
