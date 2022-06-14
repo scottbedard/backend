@@ -22,6 +22,7 @@ class ExampleTest extends DuskTestCase
         dd(
             env('DB_CONNECTION'),
             env('DB_DATABASE'),
+            env('DB_HOST'),
             env('DB_PORT'),
             env('DB_USER'),
             env('DB_USERNAME'),
