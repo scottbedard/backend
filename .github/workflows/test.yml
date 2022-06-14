@@ -24,7 +24,10 @@ jobs:
       - name: Install Composer Dependencies
         run: cd ./application && composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Generate Application Key
-        run: cd ./application && php artisan key:generate
+        run: |
+          cd ./application
+          php artisan key:generate
+          chmod -R 777 ./application/storage ./application/bootstrap/cache
       - name: Upgrade Chrome Driver
         run: cd ./application && php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Start Chrome Driver
