@@ -4,21 +4,23 @@ jobs:
  
   dusk-php:
     runs-on: ubuntu-latest
-    services:
-      mysql-service:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: application
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 33306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+    # services:
+    #   mysql-service:
+    #     image: mysql:8.0
+    #     env:
+    #       MYSQL_DATABASE: application
+    #       MYSQL_ROOT_PASSWORD: root
+    #     ports:
+    #       - 33306:3306
+    #     options: >-
+    #       --health-cmd="mysqladmin ping"
+    #       --health-interval=10s
+    #       --health-timeout=5s
+    #       --health-retries=3
     steps:
       - uses: actions/checkout@v2
+      - name: Build docker images
+        run: cd ./application && docker-compose build
       - name: Prepare The Environment
         run: cd ./application && cp .env.example .env
       - name: Install Composer Dependencies
@@ -32,6 +34,8 @@ jobs:
       - name: Run Laravel Server
         run: cd ./application && php artisan serve --no-reload &
       - name: Run Dusk Tests
+        env:
+          APP_URL: "http://127.0.0.1:8000"
         run: cd ./application && php artisan dusk
       - name: Upload Screenshots
         if: failure()
