@@ -58,6 +58,11 @@ jobs:
           cd ./application
           php artisan migrate
 
+      - name: Run application tests
+        run: |
+          cd ./application
+          php artisan test
+
       - name: Install Chrome
         run: |
           cd ./application
