@@ -19,16 +19,16 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        // dd(
-        //     env('DB_CONNECTION'),
-        //     env('DB_DATABASE'),
-        //     env('DB_HOST'),
-        //     env('DB_PORT'),
-        //     env('DB_USER'),
-        //     env('DB_USERNAME'),
-        //     env('DB_PASSWORD'),
-        //     env('SESSION_DRIVER'),
-        // );
+        dd(
+            env('DB_CONNECTION'),
+            env('DB_DATABASE'),
+            env('DB_HOST'),
+            env('DB_PORT'),
+            env('DB_USER'),
+            env('DB_USERNAME'),
+            env('DB_PASSWORD'),
+            env('SESSION_DRIVER'),
+        );
 
         // $user = User::factory()->create();
 
