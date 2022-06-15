@@ -82,7 +82,7 @@ jobs:
         run: |
           cd ./application
           php artisan serve --no-reload &
-          php artisan dusk --quiet
+          php artisan dusk
 
       - name: Upload Screenshots
         if: failure()
