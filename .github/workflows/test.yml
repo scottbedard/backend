@@ -61,6 +61,11 @@ jobs:
           cd ./application
           php artisan serve --no-reload &
 
+      - name: Dusk
+        run: |
+          cd ./application
+          php artisan dusk
+
       # - name: Prepare The Environment
       #   run: cd ./application && cp .env.example .env
       # - name: Install Composer Dependencies
