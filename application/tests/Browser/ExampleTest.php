@@ -20,14 +20,13 @@ class ExampleTest extends DuskTestCase
     public function testBasicExample()
     {
 
-        // $user = User::factory()->create();
+        $user = User::factory()->create();
 
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser) use ($user) {
             $browser
-                // ->loginAs($user)
+                ->loginAs($user)
                 ->visit('/')
-                ->dump();
-                // ->assertAuthenticated();
+                ->assertAuthenticated();
         });
     }
 }
