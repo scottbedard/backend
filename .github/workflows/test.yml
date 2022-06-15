@@ -55,20 +55,17 @@ jobs:
       - name: Start Chrome
         run: |
           ./application/vendor/laravel/dusk/bin/chromedriver-linux &
-        
-      - name: Start Laravel server
-        run: |
-          cd ./application
-          php artisan serve --no-reload &
-
+      
       - name: Dusk
         env:
           DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
           DB_DATABASE: testing
           DB_PORT: 33306
           DB_USERNAME: root
           DB_PASSWORD: password
         run: |
+          php artisan serve --no-reload &
           cd ./application
           php artisan dusk
 
