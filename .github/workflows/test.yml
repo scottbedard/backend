@@ -43,9 +43,10 @@ jobs:
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: testing
+          DB_HOST: 127.0.0.1
+          DB_PASSWORD: password
           DB_PORT: 33306
           DB_USERNAME: root
-          DB_PASSWORD: password
         run: |
           cd ./application
           php artisan migrate
@@ -62,7 +63,7 @@ jobs:
           APP_URL: "http://127.0.0.1:8000"
           DB_CONNECTION: mysql
           DB_DATABASE: testing
-          DB_HOST: "127.0.0.1"
+          DB_HOST: 127.0.0.1
           DB_PASSWORD: password
           DB_PORT: 33306
           DB_USERNAME: root
