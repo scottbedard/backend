@@ -65,6 +65,7 @@ jobs:
           DB_PASSWORD: password
           DB_PORT: 33306
           DB_USERNAME: root
+          DUSK_DRIVER_URL: "http://selenium:4444"
         run: |
           cd ./application
           php artisan serve --no-reload &
