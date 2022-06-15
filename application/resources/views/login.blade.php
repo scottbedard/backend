@@ -12,10 +12,15 @@
         <link rel="icon" href="https://fav.farm/🔥" />
     </head>
     <body class="items-center justify-center">
-        <canvas class="fixed h-screen w-screen" id="bg"></canvas>
+        <canvas class="fixed h-screen w-screen pointer-events-none" id="bg"></canvas>
             
         <div class="fixed flex h-screen items-center justify-center left-0 p-6 top-0 w-screen">
-            <form class="bg-slate-50 drop-shadow-xl grid gap-6 p-6 rounded-md max-w-md w-full">
+            <form
+                action="/auth"
+                method="POST"
+                class="bg-white drop-shadow-xl grid gap-6 p-6 rounded-md max-w-md w-full">
+                @csrf
+
                 <label>
                     <div class="font-bold mb-1 text-sm tracking-wider">Email address</div>
 
