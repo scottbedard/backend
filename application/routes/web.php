@@ -15,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return 'Hello world';
+    $user = User::factory()->create();
+    
+    return json_encode($user->toArray());
 });

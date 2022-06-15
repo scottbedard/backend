@@ -26,7 +26,7 @@ class ExampleTest extends DuskTestCase
             $browser
                 // ->loginAs($user)
                 ->visit('/')
-                ->assertSee('Hello world');
+                ->dump();
                 // ->assertAuthenticated();
         });
     }
