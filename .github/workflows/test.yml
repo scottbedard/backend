@@ -65,8 +65,8 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: password
         run: |
-          php artisan serve --no-reload &
           cd ./application
+          php artisan serve --no-reload &
           php artisan dusk
 
       # - name: Prepare The Environment
