@@ -25,11 +25,18 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
-      - name: Configure application
+      - name: Configure environment
         run: |
           cd ./application
           cp ./.env.example ./.env
           chmod -R 777 ./storage ./bootstrap/cache
+      - name: Composer install
+        run: |
+          cd ./application
+          composer install
+      - name: Generate application key
+        run: |
+          cd ./application
           php artisan key:generate
       # - name: Prepare The Environment
       #   run: cd ./application && cp .env.example .env
