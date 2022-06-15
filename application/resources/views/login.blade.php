@@ -15,18 +15,45 @@
         <canvas class="fixed h-screen w-screen" id="bg"></canvas>
             
         <div class="fixed flex h-screen items-center justify-center left-0 p-6 top-0 w-screen">
-            <form class="bg-white drop-shadow-lg p-6 rounded-md max-w-xs w-full">
-                Hello world
+            <form class="bg-slate-50 drop-shadow-xl grid gap-6 p-6 rounded-md max-w-md w-full">
+                <label>
+                    <div class="font-bold mb-1 text-sm tracking-wider">Email address</div>
+
+                    <input
+                        autofocus
+                        class="border border-slate-300 h-12 px-3 rounded-md w-full hover:border-blue-500"
+                        name="email"
+                        required
+                        type="email"
+                        value="admin@example.com" />
+                </label>
+
+                <label>
+                    <div class="font-bold mb-1 text-sm tracking-wider">Password</div>
+
+                    <input
+                        class="border border-slate-300 h-12 px-3 rounded-md w-full hover:border-blue-500"
+                        name="password"
+                        required
+                        type="password"
+                        value="password" />
+                </label>
+
+                <div class="border-gray-500 flex justify-end">
+                    <button class="bg-blue-500 font-semibold h-12 px-6 rounded-md text-white text-sm tracking-wider hover:bg-blue-400">
+                        Log in
+                    </button>
+                </div>
             </form>
         </div>
 
         <script>
             new Gradient(document.getElementById('bg'), {
                 colors: [
-                    '#3b82f6',
-                    '#14b8a6',
-                    '#fb7185',
-                    '#f8fafc',
+                    'f1f5f9',
+                    'dbeafe',
+                    'e0e7ff',
+                    'ede9fe',
                 ],
                 seed: Math.random(),
             })
