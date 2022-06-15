@@ -62,7 +62,7 @@ jobs:
         run: |
           cd ./application
           php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
-          
+
       - name: Start Chrome
         run: |
           ./application/vendor/laravel/dusk/bin/chromedriver-linux &
@@ -73,37 +73,16 @@ jobs:
           php artisan serve --no-reload &
           php artisan dusk
 
-      # - name: Prepare The Environment
-      #   run: cd ./application && cp .env.example .env
-      # - name: Install Composer Dependencies
-      #   run: cd ./application && composer install --no-progress --prefer-dist --optimize-autoloader
-      # - name: Generate Application Key
-      #   run: |
-      #     cd ./application
-      #     chmod -R 777 ./storage ./bootstrap/cache
-      #     php artisan key:generate
-      # - name: Upgrade Chrome Driver
-      #   run: cd ./application && php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
-      # - name: Start Chrome Driver
-      #   run: cd ./application && ./vendor/laravel/dusk/bin/chromedriver-linux &
-      # - name: Run Laravel Server
-      #   run: cd ./application && php artisan serve --no-reload &
-      # - name: Run Dusk Tests
-      #   env:
-      #     APP_ENV: testing
-      #   run: |
-      #     cd ./application
-      #     php artisan migrate
-      #     php artisan dusk
-      # - name: Upload Screenshots
-      #   if: failure()
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: screenshots
-      #     path: tests/Browser/screenshots
-      # - name: Upload Console Logs
-      #   if: failure()
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: console
-      #     path: tests/Browser/console
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: tests/Browser/console
