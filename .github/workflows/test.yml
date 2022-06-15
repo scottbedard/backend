@@ -81,7 +81,7 @@ jobs:
       - name: Browser tests
         run: |
           cd ./application
-          php artisan serve --no-reload &
+          php artisan serve --no-reload --quiet &
           php artisan dusk
 
       - name: Upload Screenshots
