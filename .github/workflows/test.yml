@@ -38,6 +38,15 @@ jobs:
         run: |
           cd ./application
           php artisan key:generate
+      - name: Run migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing
+          DB_PORT: 33306
+          DB_USER: root
+          DB_PASSWORD: password
+        run: |
+          cd ./application
           php artisan migrate
       - name: Install Chrome driver
         run: |
