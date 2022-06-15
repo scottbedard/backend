@@ -29,6 +29,7 @@ jobs:
         run: |
           cd ./application
           cp ./.env.example ./.env
+          rm ./.env.dusk.local
           chmod -R 777 ./storage ./bootstrap/cache
       - name: Composer install
         run: |
