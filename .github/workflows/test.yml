@@ -19,7 +19,8 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -27,7 +28,7 @@ jobs:
       - name: Configure application
         run: |
           cd ./application
-          cp ./env.example ./env
+          cp ./.env.example ./.env
           chmod -R 777 ./storage ./bootstrap/cache
           php artisan key:generate
       # - name: Prepare The Environment
