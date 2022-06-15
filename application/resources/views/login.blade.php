@@ -9,7 +9,7 @@
 
         <title>Backend</title>
 
-        <link rel="icon" href="https://fav.farm/🔥" />
+        <link rel="icon" href="https://fav.farm/🚀" />
     </head>
     <body class="items-center justify-center">
         <canvas class="fixed h-screen w-screen pointer-events-none" id="bg"></canvas>
