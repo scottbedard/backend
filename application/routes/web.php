@@ -20,6 +20,16 @@ Route::get('/', function () {
     return view('login');
 });
 
+Route::get('/debug', function () {
+    return 'debug';
+});
+
+Route::any('/logout', function (Request $request) {
+    Auth::logout();
+
+    return redirect('/');
+});
+
 Route::post('/auth', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],
@@ -32,11 +42,5 @@ Route::post('/auth', function (Request $request) {
         return redirect('/debug');
     }
 
-    return view('login', [
-        'failed' => true,
-    ]);
-});
-
-Route::get('/debug', function () {
-    return 'debug';
+    return redirect()->back()->with('error', 'Invalid credentials, please try again.');
 });
