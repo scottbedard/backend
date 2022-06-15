@@ -43,6 +43,12 @@ jobs:
           rm ./.env.dusk.local
           chmod -R 777 ./storage ./bootstrap/cache
 
+      - name: Build frontend
+        run: |
+          cd ./package
+          npm install
+          npm run build
+
       - name: Composer install
         run: |
           cd ./application
@@ -58,7 +64,7 @@ jobs:
           cd ./application
           php artisan migrate
 
-      - name: Run application tests
+      - name: Application tests
         run: |
           cd ./application
           php artisan test
@@ -72,7 +78,7 @@ jobs:
         run: |
           ./application/vendor/laravel/dusk/bin/chromedriver-linux &
       
-      - name: Dusk
+      - name: Browser tests
         run: |
           cd ./application
           php artisan serve --no-reload &
