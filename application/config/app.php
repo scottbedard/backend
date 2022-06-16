@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -209,6 +210,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Backend' => Bedard\Backend\Backend::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
