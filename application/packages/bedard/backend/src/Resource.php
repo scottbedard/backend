@@ -129,7 +129,7 @@ class Resource
      *
      * @return array
      */
-    public function form(): Form
+    public function form(): Component
     {
         return Component::make();
     }
@@ -167,7 +167,7 @@ class Resource
      *
      * @return \Bedard\Backend\Component
      */
-    public function table(): Table
+    public function table(): Component
     {
         return Component::make();
     }

@@ -1,7 +1,9 @@
 <{{ $el }} @class([
     $class => true,
-    'flex' => $flex,
+    'block' => $block,
+    'flex' => !$block && !$grid,
     'gap-6' => $gap,    
+    'p-6' => $padded,
     'grid' => $grid,
     
     'col-span-12' => true,

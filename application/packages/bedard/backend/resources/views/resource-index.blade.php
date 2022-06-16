@@ -1,9 +1,8 @@
 <x-backend::layout.main>
     <div x-data="{ checked: [] }">
-        <x-backend::renderable
-            class="p-6 empty:hidden"
-            el="div"
-            :content="$toolbar()->render()" />
+        <div>
+            {{ $toolbar()->render() }}
+        </div>
 
         <div>
             {{ $table()->render() }}

@@ -14,11 +14,12 @@ class Group extends Component
      * @var array
      */
     protected $attributes = [
+        'block' => false,
         'class' => '',
         'el' => 'div',
-        'flex' => true,
         'gap' => false,
         'grid' => false,
+        'padded' => false,
         'span' => [
             'sm' => null,
             'md' => null,
@@ -35,17 +36,7 @@ class Group extends Component
      */
     protected function output()
     {
-        return view('backend::renderables.group', [
-            'class' => $this->class,
-            'el' => $this->el,
-            'flex' => $this->flex,
-            'flex' => $this->flex,
-            'gap' => $this->gap,
-            'grid' => $this->grid,
-            'items' => $this->items,
-            'span' => $this->span,
-            'text' => $this->text,
-        ]);
+        return view('backend::renderables.group', $this->attributes);
     }
 
     /**
