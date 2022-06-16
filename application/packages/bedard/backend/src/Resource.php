@@ -92,11 +92,6 @@ class Resource
         return [];
     }
 
-    public static function createAction(string $permission)
-    {
-        return CreateAction::permission($permission);
-    }
-
     /**
      * Table data
      */
@@ -107,23 +102,6 @@ class Resource
         return $query->get();
     }
 
-    public static function deleteAction(string $permission)
-    {
-        return DeleteAction::permission($permission);
-    }
-
-    /**
-     * Delete resources by ID
-     *
-     * @param array
-     *
-     * @return void
-     */
-    public function delete(array $ids)
-    {
-        static::$model::whereIn('id', $ids)->delete();
-    }
-
     /**
      * Form
      *
@@ -132,24 +110,6 @@ class Resource
     public function form(): Component
     {
         return Component::make();
-    }
-
-    /**
-     * Permissions that will allow a user to access this resource.
-     *
-     * @return array
-     */
-    public function permissions()
-    {
-        $id = static::$id;
-
-        return [
-            "create {$id}",
-            "delete {$id}",
-            "manage {$id}",
-            "read {$id}",
-            "update {$id}",
-        ];
     }
 
     /**
@@ -180,5 +140,23 @@ class Resource
     public function toolbar(): Component
     {
         return Component::make();
+    }
+
+    /**
+     * Default actions
+     */
+    public static function create()
+    {
+        return CreateAction::make(self::class);
+    }
+
+    public static function delete()
+    {
+        return DeleteAction::make(self::class);
+    }
+
+    public static function update()
+    {
+        return UpdateAction::make(self::class);
     }
 }

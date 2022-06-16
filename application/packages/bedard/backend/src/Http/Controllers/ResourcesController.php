@@ -3,6 +3,8 @@
 namespace Bedard\Backend\Http\Controllers;
 
 use Backend;
+use Bedard\Backend\Exceptions\ActionNotFoundException;
+use Bedard\Backend\Exceptions\UnauthorizedActionException;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,11 +28,11 @@ class ResourcesController extends Controller
         $action = collect($resource->actions())->firstWhere(fn ($item) => $item->id === $id);
 
         if (!$action) {
-            return abort(400); // bad request
+            throw new ActionNotFoundException($id);
         }
 
         if (!Backend::check($user, $action->permission)) {
-            return abort(403); // forbidden
+            throw new UnauthorizedActionException($id);
         }
         
         return $action->handle($resource, $user, $request->post());

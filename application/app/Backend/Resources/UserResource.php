@@ -9,7 +9,6 @@ use Bedard\Backend\Components\Field;
 use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Group;
 use Bedard\Backend\Components\Table;
-use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Resource;
 
 class UserResource extends Resource
@@ -50,6 +49,15 @@ class UserResource extends Resource
      * @var string
      */
     public static $title = 'Users';
+
+    public function actions()
+    {
+        return [
+            self::create(),
+            self::delete(),
+            self::update(),
+        ];
+    }
 
     /**
      * Form
