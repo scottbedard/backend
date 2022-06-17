@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
-class ExampleTest extends TestCase
+class ComponentTest extends TestCase
 {
     use RefreshDatabase;
     
