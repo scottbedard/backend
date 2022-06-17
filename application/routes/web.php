@@ -18,17 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
-});
+})->name('index');
 
 Route::get('/debug', function () {
     return 'debug';
-});
+})->name('debug');
 
 Route::any('/logout', function (Request $request) {
     Auth::logout();
 
     return redirect('/');
-});
+})->name('logout');
 
 Route::post('/auth', function (Request $request) {
     $credentials = $request->validate([
@@ -36,11 +36,11 @@ Route::post('/auth', function (Request $request) {
         'password' => ['required'],
     ]);
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-
-        return redirect('/debug');
+    if (!Auth::attempt($credentials)) {
+        return redirect()->back()->with('error', 'Invalid credentials, please try again.');
     }
 
-    return redirect()->back()->with('error', 'Invalid credentials, please try again.');
-});
+    $request->session()->regenerate();
+
+    return redirect()->route('backend.index');
+})->name('auth');

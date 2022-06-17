@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Models\User;
+use Backend;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,14 +26,17 @@ class AuthenticationTest extends DuskTestCase
             'password' => Hash::make('secret'),
         ]);
 
+        Backend::authorize($user, 'super admin');
+
         $this->browse(function (Browser $browser) use ($user) {
             $browser
-                ->visit('/')
+                ->visitRoute('index')
                 ->assertGuest()
                 ->type('email', 'admin@example.com')
                 ->type('password', 'secret')
                 ->press('Log in')
-                ->assertAuthenticatedAs($user);
+                ->assertAuthenticatedAs($user)
+                ->assertRouteIs('backend.index');
         });
     }
 
@@ -45,13 +49,13 @@ class AuthenticationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser
-                ->visit('/')
+                ->visitRoute('index')
                 ->assertGuest()
                 ->type('email', 'admin@example.com')
                 ->type('password', 'wrong password')
                 ->press('Log in')
                 ->assertGuest()
-                ->assertPathIs('/');
+                ->assertRouteIs('index');
         });
     }
 
@@ -66,9 +70,9 @@ class AuthenticationTest extends DuskTestCase
             $browser
                 ->loginAs($user)
                 ->assertAuthenticated()
-                ->visit('/logout')
+                ->visitRoute('logout')
                 ->assertGuest()
-                ->assertPathIs('/');
+                ->assertRouteIs('index');
         });
     }
 }

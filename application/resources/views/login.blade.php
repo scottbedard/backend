@@ -23,7 +23,7 @@
                 @endif
 
                 <form
-                    action="/auth"
+                    action="{{ route('auth') }}"
                     method="POST"
                     class="bg-white drop-shadow-xl grid gap-6 p-6 rounded-md">
                     @csrf
@@ -52,7 +52,9 @@
                     </label>
 
                     <div class="border-gray-500 flex justify-end">
-                        <button class="bg-blue-500 font-semibold h-12 px-6 rounded-md text-white text-sm tracking-wider hover:bg-blue-400">
+                        <button
+                            class="bg-blue-500 font-semibold h-12 px-6 rounded-md text-white text-sm tracking-wider hover:bg-blue-400"
+                            type="submit">
                             Log in
                         </button>
                     </div>
