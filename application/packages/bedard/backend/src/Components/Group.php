@@ -14,12 +14,14 @@ class Group extends Component
      * @var array
      */
     protected $attributes = [
+        'between' => false,
         'block' => false,
         'class' => '',
         'el' => 'div',
         'gap' => false,
         'grid' => false,
         'padded' => false,
+        'right' => false,
         'span' => [
             'sm' => null,
             'md' => null,
@@ -33,6 +35,8 @@ class Group extends Component
 
     /**
      * Output
+     *
+     * @return \Illuminate\View\View|string|callable
      */
     protected function output()
     {

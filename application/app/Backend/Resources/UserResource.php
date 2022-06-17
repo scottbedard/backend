@@ -8,6 +8,7 @@ use Bedard\Backend\Components\Component;
 use Bedard\Backend\Components\Field;
 use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Group;
+use Bedard\Backend\Components\Link;
 use Bedard\Backend\Components\Table;
 use Bedard\Backend\Resource;
 
@@ -67,7 +68,37 @@ class UserResource extends Resource
     public function form(): Form
     {
         return Form::fields([
-            Field::make('id')->header('ID')->readonly(),
+            Field::input('id')->label('ID')->readonly(),
+
+            Field::input('name')->label('Name')->span(6),
+
+            Field::input('email')->label('Email address')->span(6),
+
+            Group::between()->gap()->items([
+                Link::iconLeft('arrow-left')
+                    ->text('Cancel')
+                    ->href(route('backend.resources.show', ['id' => $this::$id])),
+
+                Group::gap()->right()->items([
+                    Button::text('Delete user')
+                        ->icon('trash')
+                        ->confirm([
+                            'buttonIcon' => 'trash',
+                            'buttonText' => 'Confirm delete',
+                            'buttonTheme' => 'danger',
+                            'data' => fn ($data) => view('backend::renderables.form-delete-data', $data),
+                            'secondaryIcon' => 'arrow-left',
+                            'secondaryText' => 'Cancel',
+                            'text' => 'Are you sure you want to permenantly delete this user?',
+                            'title' => 'Delete user',
+                        ]),
+
+                    Button::text('Save changes')
+                        ->primary()
+                        ->icon('save')
+                        ->submit(),
+                ]),
+            ]),
         ]);
     }
 
@@ -102,7 +133,7 @@ class UserResource extends Resource
     {
         return Group::gap()->padded()->items([
             Button::permission('create users')
-                ->theme('primary')
+                ->primary()
                 ->icon('plus')
                 ->text('Create user')
                 ->to(route('backend.resources.create', ['id' => static::$id])),

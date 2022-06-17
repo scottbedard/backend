@@ -24,6 +24,22 @@ class Component extends Fluent implements Renderable
      * @var array
      */
     protected $data = null;
+
+    /**
+     * Get html from render function
+     *
+     * @return string
+     */
+    final public function html($data = null)
+    {
+        $output = $this->render();
+
+        if (is_callable($output)) {
+            return $output($data);
+        }
+
+        return $output;
+    }
     
     /**
      * Provide data to child items

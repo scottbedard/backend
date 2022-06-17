@@ -3,8 +3,10 @@
     'block' => $block,
     'flex' => !$block && !$grid,
     'gap-6' => $gap,    
-    'p-6' => $padded,
     'grid' => $grid,
+    'justify-between' => $between,
+    'justify-end' => $right,
+    'p-6' => $padded,
     
     'col-span-12' => true,
                     
@@ -74,7 +76,7 @@
     '2xl:col-span-12' => $span['2xl'] === 12,
 ])>
     @foreach ($items as $item)
-        {{ $item->render() }}
+        {{ $item->html() }}
     @endforeach
 
     {{ $text }}

@@ -13,6 +13,7 @@ class Link extends Group
         'href' => '#',
         'iconLeft' => null,
         'iconRight' => null,
+        'toRoute' => null,
     ];
 
     /**
@@ -22,11 +23,6 @@ class Link extends Group
      */
     protected function output()
     {
-        return view('backend::renderables.link', [
-            'href' => $this->href,
-            'iconLeft' => $this->iconLeft,
-            'iconRight' => $this->iconRight,
-            'text' => $this->text,
-        ]);
+        return view('backend::renderables.link', $this->attributes);
     }
 }

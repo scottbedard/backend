@@ -54,9 +54,9 @@ class Column extends Component
     }
 
     /**
-     * Render
+     * Output
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|string|callable
      */
     protected function output()
     {

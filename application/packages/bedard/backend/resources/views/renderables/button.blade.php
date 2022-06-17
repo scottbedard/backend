@@ -6,9 +6,9 @@
         x-on:click="modal = true"
         :x-bind:disabled="is_bool($disabled) ? ($disabled ? 'true' : 'false') : $disabled"
         :icon="$icon"
-        :theme="$theme"
+        :theme="$primary ? 'primary' : 'default'"
         :to="$to"
-        :type="$type">
+        :type="$submit ? 'submit' : 'button'">
         {{ $text }}
     </x-backend::button>
 

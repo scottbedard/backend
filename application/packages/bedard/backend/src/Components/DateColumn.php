@@ -22,9 +22,9 @@ class DateColumn extends Column
     /**
      * Render
      *
-     * @return \Illuminate\View\View|string|callable
+     * @return callable
      */
-    protected function output()
+    protected function output(): callable
     {
         return function (Model $row) {
             $value = $row->{$this->id};

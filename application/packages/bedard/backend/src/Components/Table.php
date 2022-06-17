@@ -42,7 +42,7 @@ class Table extends Component
     /**
      * Render
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|string|callable
      */
     protected function output()
     {

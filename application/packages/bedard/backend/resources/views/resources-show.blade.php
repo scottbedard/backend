@@ -1,5 +1,5 @@
 <x-backend::layout.main>
     <div class="p-6">
-        {{ $form()->render() }}
+        {{ $form }}
     </div>
 </x-backend::layout.main>

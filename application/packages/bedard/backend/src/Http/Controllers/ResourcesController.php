@@ -64,7 +64,7 @@ class ResourcesController extends Controller
         ];
 
         return view('backend::resources-show', [
-            'form' => fn () => $resource->form()->provide($data),
+            'form' => $resource->form()->provide($data),
             'model' => $model,
             'resource' => $resource,
         ]);
@@ -96,8 +96,8 @@ class ResourcesController extends Controller
         return view('backend::resource-index', [
             'data' => $rows,
             'resource' => $resource,
-            'table' => fn () => $resource->table()->provide($data),
-            'toolbar' => fn () => $resource->toolbar()->provide($data),
+            'table' => $resource->table()->provide($data),
+            'toolbar' => $resource->toolbar()->provide($data),
         ]);
     }
 
@@ -133,7 +133,7 @@ class ResourcesController extends Controller
         ];
 
         return view('backend::resources-show', [
-            'form' => fn () => $resource->form()->provide($data),
+            'form' => $resource->form()->provide($data),
             'model' => $model,
             'resource' => $resource,
         ]);

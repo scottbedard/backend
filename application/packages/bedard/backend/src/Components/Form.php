@@ -17,7 +17,7 @@ class Form extends Group
     /**
      * Render
      *
-     * @return \Illuminate\View\View|string
+     * @return callable
      */
     protected function output()
     {

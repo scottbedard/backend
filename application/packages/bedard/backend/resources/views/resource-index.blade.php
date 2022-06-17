@@ -1,11 +1,11 @@
 <x-backend::layout.main>
     <div x-data="{ checked: [] }">
         <div>
-            {{ $toolbar()->render() }}
+            {{ $toolbar }}
         </div>
 
         <div>
-            {{ $table()->render() }}
+            {{ $table }}
         </div>
     </div>
 </x-backend::layout.main>

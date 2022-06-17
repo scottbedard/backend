@@ -16,30 +16,22 @@ class Button extends Component
         'confirm' => null,
         'disabled' => false,
         'icon' => null,
+        'primary' => false,
         'resource' => null,
+        'submit' => false,
         'text' => '',
-        'theme' => null,
         'to' => null,
-        'type' => 'button',
     ];
 
     /**
      * Render
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View|string|callable
      */
     protected function output()
     {
-        return view('backend::renderables.button', [
-            'action' => $this->action,
-            'confirm' => $this->confirm,
+        return view('backend::renderables.button', array_merge($this->attributes,[
             'data' => $this->data,
-            'disabled' => $this->disabled,
-            'icon' => $this->icon,
-            'text' => $this->text,
-            'theme' => $this->theme,
-            'to' => $this->to,
-            'type' => $this->type,
-        ]);
+        ]));
     }
 }
