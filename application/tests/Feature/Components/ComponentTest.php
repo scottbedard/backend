@@ -14,17 +14,11 @@ class ExampleTest extends TestCase
 {
     use RefreshDatabase;
     
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function test_only_renders_authorized_components()
     {
         $user = User::factory()->create();
 
         Auth::login($user);
-
         Backend::authorize($user, 'foo');
 
         $component = Group::text('outer')->items([
@@ -39,12 +33,36 @@ class ExampleTest extends TestCase
             Group::permission('bar')->text('bar'),
         ]);
 
-        $output = $component->html();
+        $output = (string) $component->html();
 
         $this->assertStringContainsString('outer', $output);
         $this->assertStringContainsString('foo', $output);
         $this->assertStringContainsString('one', $output);
         $this->assertStringNotContainsString('bar', $output);
         $this->assertStringNotContainsString('two', $output);
+    }
+
+    public function test_only_components_in_correct_context()
+    {
+        $user = User::factory()->create();
+
+        Auth::login($user);
+        Backend::authorize($user, 'super admin');
+
+        $component = Group::items([
+            Group::text('get'),
+
+            Group::context('create')->text('create'),
+
+            Group::context('update')->text('update'),
+        ]);
+
+        $component->provide(['context' => 'create']);
+
+        $output = (string) $component->html();
+        
+        $this->assertStringContainsString('get', $output);
+        $this->assertStringContainsString('create', $output);
+        $this->assertStringNotContainsString('update', $output);
     }
 }

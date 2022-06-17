@@ -52,8 +52,12 @@ class Backend
      *
      * @return bool
      */
-    public function check(User $user, ...$permissions): bool
+    public function check($user, ...$permissions): bool
     {
+        if (!$user) {
+            return false;
+        }
+
         $checks = array_filter($permissions, fn ($p) => $p);
 
         // check for super admin

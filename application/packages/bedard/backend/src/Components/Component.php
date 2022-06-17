@@ -14,6 +14,7 @@ class Component extends Fluent implements Renderable
      * @var array
      */
     protected $attributes = [
+        'context' => null,
         'permission' => null,
     ];
 
@@ -50,10 +51,14 @@ class Component extends Fluent implements Renderable
      */
     final public function render()
     {
-        if (!$this->permission || Backend::check(auth()->user(), $this->permission)) {
-            return $this->output();
+        if ($this->context && data_get($this->data, 'context') !== $this->context) {
+            return;
         }
 
-        return '';
+        if (!Backend::check(auth()->user(), $this->permission)) {
+            return;
+        }
+        
+        return $this->output();
     }
 }

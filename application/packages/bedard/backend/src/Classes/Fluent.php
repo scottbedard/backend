@@ -22,7 +22,7 @@ abstract class Fluent implements Arrayable
      *
      * @var array
      */
-    protected $data = null;
+    protected $data = [];
 
     /**
      * Subclass constructor aliases
