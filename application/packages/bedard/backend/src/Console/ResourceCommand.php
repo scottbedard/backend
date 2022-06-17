@@ -25,6 +25,13 @@ class ResourceCommand extends GeneratorCommand
     protected $description = 'Create a backend resource';
 
     /**
+     * The type of class being generated.
+     *
+     * @var string
+     */
+    protected $type = 'Resource';
+
+    /**
      * Build the class with the given name.
      *
      * @param  string  $name
