@@ -17,38 +17,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('backend');
-});
+    if (Auth::check()) {
+        return redirect()->route('backend.index');
+    }
 
-Route::get('/login', function () {
-    return view('login', [
-        'failed' => false,
-    ]);
-});
+    return view('login');
+})->name('index');
 
-Route::get('/unauthorized', function () {
-    return view('unauthorized');
-});
+Route::get('/debug', function () {
+    return 'debug';
+})->name('debug');
 
-Route::get('/logout', function () {
+Route::any('/logout', function (Request $request) {
     Auth::logout();
 
     return redirect('/');
-});
+})->name('logout');
 
-Route::post('/login', function (Request $request) {
+Route::post('/auth', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
     ]);
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-
-        return redirect()->intended(config('backend.path'));
+    if (!Auth::attempt($credentials)) {
+        return redirect()->back()->with('error', 'Invalid credentials, please try again.');
     }
 
-    return view('login', [
-        'failed' => true,
-    ]);
-});
+    $request->session()->regenerate();
+
+    return redirect()->route('backend.index');
+})->name('auth');

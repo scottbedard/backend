@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'guest_redirect' => env('BACKEND_GUEST_REDIRECT', '/login'),
+    'guest_redirect' => env('BACKEND_GUEST_REDIRECT', '/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ return [
     |
     */
 
-    'unauthorized_redirect' => env('BACKEND_UNAUTHORIZED_REDIRECT', '/unauthorized'),
+    'unauthorized_redirect' => env('BACKEND_UNAUTHORIZED_REDIRECT', '/'),
      
 
     /*

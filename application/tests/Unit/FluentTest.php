@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use Bedard\Backend\Exceptions\FluentException;
 use PHPUnit\Framework\TestCase;
-use Tests\Unit\FluentStubs\Child;
-use Tests\Unit\FluentStubs\Example;
+use Tests\Unit\Stubs\Child;
+use Tests\Unit\Stubs\Example;
 
 class FluentTest extends TestCase
 {
@@ -135,5 +135,20 @@ class FluentTest extends TestCase
         $this->assertTrue($instance->hasAttribute('flagged'));
 
         $this->assertFalse($instance->hasAttribute('never'));
+    }
+
+    public function test_providing_data_to_child_instances()
+    {
+        $grandchild = Example::make();
+
+        $child = Example::items([$grandchild]);
+
+        $parent = Example::items([$child]);
+
+        $parent->provide(['foo' => 'bar']);
+
+        $this->assertEquals('bar', $parent->data['foo']);
+        $this->assertEquals('bar', $child->data['foo']);
+        $this->assertEquals('bar', $grandchild->data['foo']);
     }
 }

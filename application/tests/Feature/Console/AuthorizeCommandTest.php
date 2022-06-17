@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use Bedard\Backend\Console\AuthorizeCommand;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
 class AuthorizeCommandTest extends TestCase

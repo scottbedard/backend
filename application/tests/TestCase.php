@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\File;
 
@@ -16,18 +15,6 @@ abstract class TestCase extends BaseTestCase
      * @var $array
      */
     public $testFiles = [];
-
-    public function createSuperAdmin($data = [])
-    {
-        $user = User::factory()->create($data);
-
-        $user->backendPermissions()->create([
-            'area' => 'all',
-            'code' => 'all',
-        ]);
-
-        return $user;
-    }
 
     /**
      * Delete test files.

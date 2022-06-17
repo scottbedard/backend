@@ -44,9 +44,9 @@ class CheckTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Backend::authorize($user, 'manage posts');
+        Backend::authorize($user, 'manage users');
 
-        $this->assertTrue(Backend::check($user, 'access posts'));
+        $this->assertTrue(Backend::check($user, 'access users'));
     }
 
     public function test_falsey_values_return_true()
