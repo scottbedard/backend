@@ -23,7 +23,7 @@ class {{ class }} extends Action
      * @param \App\Models\User $user
      * @param array $data
      *
-     * @return void
+     * @return mixed
      */
     public function handle($resource, $user, $data = [])
     {

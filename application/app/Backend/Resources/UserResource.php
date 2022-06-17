@@ -2,6 +2,7 @@
 
 namespace App\Backend\Resources;
 
+use App\Backend\Actions\CreateUserAction;
 use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Column;
 use Bedard\Backend\Components\Component;
@@ -54,7 +55,7 @@ class UserResource extends Resource
     public function actions()
     {
         return [
-            self::create(),
+            CreateUserAction::make(),
             self::delete(),
             self::update(),
         ];
@@ -68,16 +69,29 @@ class UserResource extends Resource
     public function form(): Form
     {
         return Form::fields([
-            Field::input('id')->context('update')->label('ID')->readonly(),
+            Field::input('id')->context('update')->label('ID')->required()->readonly(),
 
-            Field::input('name')->label('Name')->span(6),
+            Field::input('name')->label('Name')->autofocus()->required()->span(6),
 
-            Field::input('email')->label('Email address')->span(6),
+            Field::input('email')->label('Email address')->required()->span(6),
 
             Field::input('password')
                 ->context('create')
+                ->label('Password')
                 ->type('password')
-                ->label('Password'),
+                ->required()
+                ->span(6),
+
+            Field::input('confirm_password')
+                ->context('create')
+                ->label('Confirm password')
+                ->type('password')
+                ->required()
+                ->span(6),
+
+            Field::date('created_at')->context('update')->span(6),
+
+            Field::date('updated_at')->context('update')->span(6),
 
             Group::between()->gap()->items([
                 Link::iconLeft('arrow-left')
