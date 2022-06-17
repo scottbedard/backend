@@ -80,7 +80,9 @@ class UserResource extends Resource
                     ->href(route('backend.resources.show', ['id' => $this::$id])),
 
                 Group::gap()->right()->items([
-                    Button::text('Delete user')
+                    Button::action('delete')
+                        ->permission('delete users')
+                        ->text('Delete user')
                         ->icon('trash')
                         ->confirm([
                             'buttonIcon' => 'trash',
