@@ -14,7 +14,6 @@ class Component extends Fluent implements Renderable
      * @var array
      */
     protected $attributes = [
-        'class' => '',
         'permission' => null,
     ];
 
