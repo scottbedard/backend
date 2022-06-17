@@ -43,4 +43,33 @@ class UsersTest extends DuskTestCase
             $this->assertTrue(Hash::check('secret', $john->password));
         });
     }
+
+    public function test_deleting_a_user()
+    {
+        $admin = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        Backend::authorize($admin, 'super admin');
+
+        $this->browse(function (Browser $browser) use ($admin, $otherUser) {
+            $browser
+                ->loginAs($admin)
+                ->visitRoute('backend.resources.edit', ['id' => 'users', 'modelId' => $otherUser->id])
+                ->press('Delete user')
+                ->press('Confirm delete')
+                ->assertRouteIs('backend.resources.show', ['id' => 'users']);
+            
+            $this->assertFalse(User::where('id', $otherUser->id)->exists());
+        });
+    }
+
+    // @todo: test deleting multiple users
+
+    // @todo: test updating users
+
+    // @todo: test pagination
+
+    // @todo: test sorting
+
+    // @todo: test filtering
 }
