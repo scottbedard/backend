@@ -15,6 +15,7 @@ class Component extends Fluent implements Renderable
      */
     protected $attributes = [
         'context' => null,
+        'id' => null,
         'permission' => null,
     ];
 

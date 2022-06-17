@@ -1,8 +1,9 @@
 @props([
     'checked' => false,
+    'id' => null,
 ])
 
-<div
+<label
     x-bind:aria-checked="checked ? 'true' : 'false'"
     x-data="{ checked: {{ $checked ? 'true' : 'false' }} }"
     x-modelable="checked"
@@ -10,9 +11,10 @@
     {{
         $attributes->merge([
             'class' => 'x-checkbox cursor-pointer flex h-full items-center justify-center',
+            'id' => $id,
         ])
     }}>
-    <label
+    <div
         class="aspect-square bg-gray-50 border border-gray-300 cursor-pointer flex group items-center justify-center rounded-md transform translate-y-px hover:border-gray-400 dark:bg-gray-500 dark:border-none dark:focus:bg-gray-500/70 dark:hover:bg-gray-500/70"
         style="width: 1.35rem">
         <input
@@ -33,5 +35,5 @@
                 stroke-dashoffset="50"
                 stroke-width="3.5" />
         </svg>
-    </label>
-</div>
+    </div>
+</label>

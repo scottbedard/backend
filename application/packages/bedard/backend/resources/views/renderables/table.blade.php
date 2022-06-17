@@ -14,7 +14,9 @@
                         @click.stop.prevent="all = !all">
                         <div x-bind:class="all ? 'absolute bg-primary-400 left-0 top-0 h-full w-[3px] dark:bg-primary-600' : 'hidden'"></div>
 
-                        <x-backend::checkbox x-model="all" />
+                        <x-backend::checkbox
+                            x-model="all"
+                            id="table-checkbox-all" />
                     </div>
                 @endif
 

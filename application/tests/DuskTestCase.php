@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use App\Models\User;
+use Backend;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -23,6 +25,20 @@ abstract class DuskTestCase extends BaseTestCase
         foreach (static::$browsers as $browser) {
             $browser->driver->manage()->deleteAllCookies();
         }
+    }
+
+    /**
+     * Create a super admin
+     *
+     * @return \App\Models\User
+     */
+    public function superAdmin(array $params = [])
+    {
+        $user = User::factory()->create($params);
+
+        Backend::authorize($user, 'super admin');
+
+        return $user;
     }
 
     /**

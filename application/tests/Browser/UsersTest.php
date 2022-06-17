@@ -15,17 +15,15 @@ class UsersTest extends DuskTestCase
 
     public function test_creating_a_user()
     {
-        $user = User::factory()->create();
+        $admin = $this->superAdmin();
 
-        Backend::authorize($user, 'super admin');
-
-        $this->browse(function (Browser $browser) use ($user) {
+        $this->browse(function (Browser $browser) use ($admin) {
             $email = 'john@example.com';
 
             $this->assertFalse(User::where('email', $email)->exists());
 
             $browser
-                ->loginAs($user)
+                ->loginAs($admin)
                 ->visitRoute('backend.resources.show', ['id' => 'users'])
                 ->click('a[href="' . route('backend.resources.create', ['id' => 'users']) . '"]')
                 ->assertRouteIs('backend.resources.create', ['id' => 'users'])
@@ -46,20 +44,19 @@ class UsersTest extends DuskTestCase
 
     public function test_deleting_a_user()
     {
-        $admin = User::factory()->create();
-        $otherUser = User::factory()->create();
+        $admin = $this->superAdmin();
+        
+        $user = User::factory()->create();
 
-        Backend::authorize($admin, 'super admin');
-
-        $this->browse(function (Browser $browser) use ($admin, $otherUser) {
+        $this->browse(function (Browser $browser) use ($admin, $user) {
             $browser
                 ->loginAs($admin)
-                ->visitRoute('backend.resources.edit', ['id' => 'users', 'modelId' => $otherUser->id])
+                ->visitRoute('backend.resources.edit', ['id' => 'users', 'modelId' => $user->id])
                 ->press('Delete user')
                 ->press('Confirm delete')
                 ->assertRouteIs('backend.resources.show', ['id' => 'users']);
             
-            $this->assertFalse(User::where('id', $otherUser->id)->exists());
+            $this->assertFalse(User::where('id', $user->id)->exists());
         });
     }
 

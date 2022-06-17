@@ -11,5 +11,6 @@
 Homestead.json
 Homestead.yaml
 npm-debug.log
+phpunit.dusk.xml
 public/vendor/backend/dist
 yarn-error.log

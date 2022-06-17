@@ -1,5 +1,6 @@
 <div
     x-data="{ modal: false }"
+    id="{{ $id ?: '' }}"
     @dismiss="modal = false"
     @secondary-click="modal = false">
     <x-backend::button

@@ -173,6 +173,7 @@ class UserResource extends Resource
                 ->action('delete')
                 ->disabled('!checked.includes(true)')
                 ->icon('trash')
+                ->id('delete')
                 ->text('Delete selected')
                 ->confirm([
                     'buttonIcon' => 'trash',
