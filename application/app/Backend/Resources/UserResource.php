@@ -68,11 +68,16 @@ class UserResource extends Resource
     public function form(): Form
     {
         return Form::fields([
-            Field::input('id')->label('ID')->readonly(),
+            Field::input('id')->context('update')->label('ID')->readonly(),
 
             Field::input('name')->label('Name')->span(6),
 
             Field::input('email')->label('Email address')->span(6),
+
+            Field::input('password')
+                ->context('create')
+                ->type('password')
+                ->label('Password'),
 
             Group::between()->gap()->items([
                 Link::iconLeft('arrow-left')
@@ -80,8 +85,9 @@ class UserResource extends Resource
                     ->href(route('backend.resources.show', ['id' => $this::$id])),
 
                 Group::gap()->right()->items([
-                    Button::action('delete')
+                    Button::context('update')
                         ->permission('delete users')
+                        ->action('delete')
                         ->text('Delete user')
                         ->icon('trash')
                         ->confirm([
@@ -95,9 +101,18 @@ class UserResource extends Resource
                             'title' => 'Delete user',
                         ]),
 
-                    Button::text('Save changes')
+                    Button::context('create')
+                        ->permission('create users')
+                        ->text('Create user')
+                        ->icon('plus')
                         ->primary()
+                        ->submit(),
+
+                    Button::context('update')
+                        ->permission('update users')
+                        ->text('Save changes')
                         ->icon('save')
+                        ->primary()
                         ->submit(),
                 ]),
             ]),
