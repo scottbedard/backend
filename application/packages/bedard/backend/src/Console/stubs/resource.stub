@@ -3,10 +3,10 @@
 namespace App\Backend\Resources;
 
 use Bedard\Backend\Components\Column;
+use Bedard\Backend\Components\Component;
 use Bedard\Backend\Components\Field;
 use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Table;
-use Bedard\Backend\Components\Toolbar;
 use Bedard\Backend\Resource;
 
 class {{ class }} extends Resource
@@ -51,7 +51,7 @@ class {{ class }} extends Resource
     /**
      * Form
      *
-     * @return \Bedard\Backend\Components\
+     * @return \Bedard\Backend\Components\Form
      */
     public function form(): Form
     {
@@ -79,10 +79,10 @@ class {{ class }} extends Resource
     /**
      * Toolbar
      *
-     * @return \Bedard\Backend\Components\Toolbar
+     * @return \Bedard\Backend\Components\Component
      */
-    public function toolbar(): Toolbar
+    public function toolbar(): Component
     {
-        return Toolbar::make();
+        return Component::make();
     }
 }
