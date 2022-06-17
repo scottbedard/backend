@@ -19,13 +19,6 @@ class Component extends Fluent implements Renderable
     ];
 
     /**
-     * Data
-     *
-     * @var array
-     */
-    protected $data = null;
-
-    /**
      * Get html from render function
      *
      * @return string
@@ -39,30 +32,6 @@ class Component extends Fluent implements Renderable
         }
 
         return $output;
-    }
-    
-    /**
-     * Provide data to child items
-     *
-     * @param mixed $data
-     *
-     * @return \Bedard\Backend\Components\Block
-     */
-    final public function provide($data)
-    {
-        $this->data = $data;
-
-        foreach ($this->attributes as $key => $value) {
-            if (is_array($value)) {
-                foreach ($value as $descendent) {
-                    if (is_a($descendent, self::class)) {
-                        $descendent->provide($data);
-                    }
-                }
-            }
-        }
-
-        return $this;
     }
 
     /**

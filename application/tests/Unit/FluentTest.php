@@ -136,4 +136,19 @@ class FluentTest extends TestCase
 
         $this->assertFalse($instance->hasAttribute('never'));
     }
+
+    public function test_providing_data_to_child_instances()
+    {
+        $grandchild = Example::make();
+
+        $child = Example::items([$grandchild]);
+
+        $parent = Example::items([$child]);
+
+        $parent->provide(['foo' => 'bar']);
+
+        $this->assertEquals('bar', $parent->data['foo']);
+        $this->assertEquals('bar', $child->data['foo']);
+        $this->assertEquals('bar', $grandchild->data['foo']);
+    }
 }

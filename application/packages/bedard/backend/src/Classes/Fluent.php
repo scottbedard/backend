@@ -18,6 +18,13 @@ abstract class Fluent implements Arrayable
     protected $attributes = [];
 
     /**
+     * Data
+     *
+     * @var array
+     */
+    protected $data = null;
+
+    /**
      * Subclass constructor aliases
      *
      * @var array
@@ -119,6 +126,18 @@ abstract class Fluent implements Arrayable
     }
 
     /**
+     * Test for attribute precense
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasAttribute(string $key): bool
+    {
+        return array_key_exists($key, $this->attributes);
+    }
+    
+    /**
      * Initialize
      *
      * @return void
@@ -141,18 +160,6 @@ abstract class Fluent implements Arrayable
         $instance->init(...$args);
 
         return $instance;
-    }
-
-    /**
-     * Test for attribute precense
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function hasAttribute(string $key): bool
-    {
-        return array_key_exists($key, $this->attributes);
     }
 
     /**
@@ -192,6 +199,32 @@ abstract class Fluent implements Arrayable
         else {
             $this->throwUnknownPropertyException($key);
         }
+    }
+
+
+    
+    /**
+     * Provide data to child items
+     *
+     * @param mixed $data
+     *
+     * @return \Bedard\Backend\Components\Block
+     */
+    final public function provide($data)
+    {
+        $this->data = $data;
+
+        foreach ($this->attributes as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $descendent) {
+                    if (is_a($descendent, self::class)) {
+                        $descendent->provide($data);
+                    }
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**

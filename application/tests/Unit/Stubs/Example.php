@@ -10,6 +10,7 @@ class Example extends Fluent
         'computed' => null,
         'constructed' => null,
         'flagged' => false,
+        'items' => [],
         'plain' => null,
     ];
 
