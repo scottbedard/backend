@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('backend.index');
+    }
+
     return view('login');
 })->name('index');
 

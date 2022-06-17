@@ -13,12 +13,7 @@ use Tests\DuskTestCase;
 class AuthenticationTest extends DuskTestCase
 {
     use DatabaseMigrations;
-    
-    /**
-     * A basic browser test example.
-     *
-     * @return void
-     */
+
     public function test_logging_with_super_admin()
     {
         $user = User::factory()->create([
@@ -36,6 +31,10 @@ class AuthenticationTest extends DuskTestCase
                 ->type('password', 'secret')
                 ->press('Log in')
                 ->assertAuthenticatedAs($user)
+                ->assertRouteIs('backend.index');
+
+            $browser
+                ->visitRoute('index')
                 ->assertRouteIs('backend.index');
         });
     }
