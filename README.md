@@ -6,22 +6,11 @@ This is just an experiment, proceed with caution.
 
 # Installation
 
-If this package is ever released, a more thorough installation guide will be provided. For now, the package can be installed for local development by executing the following.
+If this package is ever released, a more thorough installation guide will be provided. Until then, follow these steps.
 
-```bash
-# clone repository and create symlink for local package
-$ git clone git@github.com:scottbedard/backend.git backend && cd "$_"
-
-$ ln -s $(realpath package) $(realpath application/packages/bedard/backend)
-
-# install dependencies and configuration application
-$ composer install -d application
-
-$ php application/artisan vendor:publish
-
-# run migrations
-$ php artisan migrate
-```
+1. Install [Laravel Sail](https://laravel.com/docs/9.x/sail#installation)
+2. Install [`spatie/laravel-permission`](https://spatie.be/docs/laravel-permission/v5/installation-laravel)
+3. Run migrations
 
 # Permissions
 
