@@ -45,7 +45,7 @@ jobs:
 
       - name: Build frontend
         run: |
-          cd ./package
+          cd ./application/packages/bedard/backend
           npm install
           npm run build
 
