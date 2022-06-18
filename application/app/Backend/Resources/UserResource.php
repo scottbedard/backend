@@ -89,9 +89,15 @@ class UserResource extends Resource
                 ->required()
                 ->span(6),
 
-            Field::date('created_at')->context('update')->span(6),
+            Field::date('created_at')
+                ->label('Created at')
+                ->context('update')
+                ->span(6),
 
-            Field::date('updated_at')->context('update')->span(6),
+            Field::date('updated_at')
+                ->label('Last seen')
+                ->context('update')
+                ->span(6),
 
             Group::between()->gap()->items([
                 Link::iconLeft('arrow-left')
