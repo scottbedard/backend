@@ -36,7 +36,7 @@ class UserResource extends Resource
      *
      * @var string
      */
-    public static $icon = 'smile';
+    public static $icon = 'users';
   
     /**
      * The model corresponding to this resource
