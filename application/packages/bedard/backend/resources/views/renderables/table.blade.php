@@ -32,7 +32,25 @@
                             href="{{ $column->href() }}"
                         @endif
                         >
-                        {{ $column->header }}
+                        <div class="flex items-center gap-1">
+                            <span>{{ $column->header }}</span>
+
+                            @php
+                                $order = $column->sortOrder()
+                            @endphp
+
+                            @if ($order === 1)
+                                <x-backend::icon
+                                    class="text-primary-500"
+                                    name="chevron-up" size="16"
+                                    stroke-width="3.5" />
+                            @elseif ($order === -1)
+                                <x-backend::icon
+                                    class="text-primary-500"
+                                    name="chevron-down" size="16"
+                                    stroke-width="3.5" />
+                            @endif
+                        </div>
                     </a>
                 @endforeach
             </div>

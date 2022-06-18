@@ -46,6 +46,8 @@ class Column extends Component
 
     /**
      * Get href for column header
+     *
+     * @return string
      */
     public function href()
     {
@@ -98,6 +100,18 @@ class Column extends Component
     protected function output()
     {
         return fn ($row) => $row->{$this->id};
+    }
+
+    /**
+     * Sort order
+     *
+     * @return int
+     */
+    public function sortOrder(): int
+    {
+        $order = data_get($this->data, 'order', null);
+        
+        return ($order && $order->property === $this->id) ? $order->direction : 0;
     }
 
     /**

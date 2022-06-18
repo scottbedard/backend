@@ -3,7 +3,9 @@
 namespace Bedard\Backend\Http\Controllers;
 
 use Backend;
+use Bedard\Backend\Classes\SortOrder;
 use Bedard\Backend\Exceptions\ActionNotFoundException;
+use Bedard\Backend\Exceptions\InvalidSortOrderException;
 use Bedard\Backend\Exceptions\UnauthorizedActionException;
 use Bedard\Backend\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -86,15 +88,30 @@ class ResourcesController extends Controller
             return abort(403); // forbidden
         }
 
-        $rows = $resource->query()->get();
+        $query = $resource->query();
+
+        $order = null;
+
+        try {
+            $order = SortOrder::from(request()->query('order'));
+
+            if ($order->direction === 1) {
+                $query->orderBy($order->property);
+            } elseif ($order->direction === -1) {
+                $query->orderByDesc($order->property);
+            }
+        } catch (InvalidSortOrderException $e) {}
+        
+        $results = $query->get();
 
         $data = [
+            'order' => $order,
             'resource' => $resource,
-            'rows' => $rows,
+            'rows' => $results,
         ];
 
         return view('backend::resource-index', [
-            'data' => $rows,
+            'data' => $results,
             'resource' => $resource,
             'table' => $resource->table()->provide($data),
             'toolbar' => $resource->toolbar()->provide($data),

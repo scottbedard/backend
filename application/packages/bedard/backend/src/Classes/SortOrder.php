@@ -27,11 +27,11 @@ class SortOrder
     /**
      * Constructor
      *
-     * @param string $order
+     * @param $order
      *
      * @return void
      */
-    public function __construct(string $order)
+    public function __construct($order)
     {
         $this->apply($order);
     }
@@ -39,12 +39,16 @@ class SortOrder
     /**
      * Apply an order
      *
-     * @param string $order
+     * @param $order
      *
      * @return void
      */
-    public function apply(string $order): void
+    public function apply($order): void
     {
+        if (!is_string($order)) {
+            throw new InvalidSortOrderException($order);
+        }
+        
         $match = preg_match('/^([a-zA-Z0-9_-]+),([aA][sS][cC]|[dD][eE][sS][cC])$/', trim($order), $matches);
 
         if (!$match) {
@@ -63,11 +67,11 @@ class SortOrder
     /**
      * Create sort order from string.
      *
-     * @param string $order
+     * @param $order
      *
      * @return \Bedard\Backend\Classes\SortOrder
      */
-    public static function from(string $order)
+    public static function from($order)
     {
         return new self($order);
     }
