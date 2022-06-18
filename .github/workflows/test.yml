@@ -115,6 +115,4 @@ jobs:
     # needs: [test]
     steps:
       - name: Deploy
-        run: |
-          echo "${{ secrets.ENVOYER }}"
-          ping "${{ secrets.ENVOYER }}"
+        run: curl ${{secrets.ENVOYER}}
