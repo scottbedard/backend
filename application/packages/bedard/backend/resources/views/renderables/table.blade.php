@@ -2,7 +2,7 @@
     x-data="table({{ count($data['rows']) }})"
     x-modelable="modelable"
     x-model="checked"
-    data-component="table">
+    data-table>
     <div class="table text-sm w-full">
         <div
             class="font-bold table-header-group tracking-wide"
@@ -31,7 +31,7 @@
                         @if ($column->sortable)
                             href="{{ $column->href() }}"
                         @endif
-                        >
+                        data-table-header="{{ $column->id }}">
                         <div class="flex items-center gap-1">
                             <span>{{ $column->header }}</span>
 
@@ -42,10 +42,12 @@
                             @if ($order === 1)
                                 <x-backend::icon
                                     class="text-primary-500"
+                                    data-order-asc
                                     name="chevron-up" size="16"
                                     stroke-width="3.5" />
                             @elseif ($order === -1)
                                 <x-backend::icon
+                                    data-order-desc
                                     class="text-primary-500"
                                     name="chevron-down" size="16"
                                     stroke-width="3.5" />

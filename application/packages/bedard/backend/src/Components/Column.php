@@ -57,11 +57,7 @@ class Column extends Component
 
         $req = request();
 
-        $order = null;
-
-        try {
-            $order = new SortOrder($req->query('order', "{$this->id},desc"));
-        } catch (InvalidSortOrderException $e) {}
+        $order = data_get($this->data, 'order', null);
 
         if ($order !== null) {
             if ($order->property !== $this->id || $order->direction === -1) {

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\Table;
 use Tests\DuskTestCase;
 
 class UsersTest extends DuskTestCase
@@ -70,8 +71,11 @@ class UsersTest extends DuskTestCase
             $browser
                 ->loginAs($admin)
                 ->visitRoute('backend.resources.show', ['id' => 'users'])
-                ->click('[data-table-row="1"] [data-checkbox]')
-                ->click('[data-table-row="2"] [data-checkbox]')
+                ->within(new Table, function ($table) {
+                    $table
+                        ->toggleRowCheckbox(1)
+                        ->toggleRowCheckbox(2);
+                })
                 ->press('Delete')
                 ->press('Confirm');
 
@@ -93,39 +97,53 @@ class UsersTest extends DuskTestCase
                 
                 // delete button should start disabled
                 // all checkboxes should start deselected
-                ->assertPresent('[data-table-body] [data-not-checked]')
-                ->assertNotPresent('[data-table-body] [data-checked]')
-                ->assertButtonDisabled('#delete button')
+                ->within(new Table, fn ($table) => $table->assertNoRowsSelected())
                 
                 // clicking header checkbox selects all body checkboxes
                 // and enables delete button
-                ->click('[data-table-header] [data-checkbox]')
-                ->assertPresent('[data-table-body] [data-checked]')
-                ->assertNotPresent('[data-table-body] [data-not-checked]')
+                ->within(new Table, function ($table) {
+                    $table
+                        ->toggleHeaderCheckbox()
+                        ->assertAllRowsSelected();
+                })
                 ->assertEnabled('#delete button')
                 
                 // clicking header again deselects body checkboxes
-                ->click('[data-table-header] [data-checkbox]')
-                ->assertNotPresent('[data-table-body] [data-checked]')
+                ->within(new Table, function ($table) {
+                    $table
+                        ->toggleHeaderCheckbox()
+                        ->assertNoRowsSelected();
+                })
                 ->assertButtonDisabled('#delete button')
                 
                 // selecting one row does not select header
-                ->click('[data-table-row="0"] [data-checkbox]')
-                ->assertNotPresent('data-table-header] [data-checked]')
+                ->with(new Table, function ($table) {
+                    $table
+                        ->toggleRowCheckbox(0)
+                        ->assertHeaderNotSelected();
+                })
                 ->assertButtonEnabled('#delete button')
 
                 // selecting the final row selects the header
-                ->click('[data-table-row="1"] [data-checkbox]')
-                ->assertPresent('[data-table-header] [data-checked]')
+                ->within(new Table, function ($table) {
+                    $table
+                        ->toggleRowCheckbox(1)
+                        ->assertHeaderSelected();
+                })
                 ->assertButtonEnabled('#delete button')
                 
                 // deselecting the final row deselects the header
-                ->click('[data-table-row="1"] [data-checkbox]')
-                ->assertNotPresent('[data-table-header] [data-checked]')
+                ->within(new Table, function ($table) {
+                    $table
+                        ->toggleRowCheckbox(1)
+                        ->assertHeaderNotSelected();
+                })
                 ->assertButtonEnabled('#delete button')
                 
-                // deselecting the first row disables the button;
-                ->click('[data-table-row="0"] [data-checkbox]')
+                // deselecting the first row disables the button
+                ->within(new Table, function ($table) {
+                    $table->toggleRowCheckbox(0);
+                })
                 ->assertButtonDisabled('#delete button');
         });
     }
@@ -140,7 +158,7 @@ class UsersTest extends DuskTestCase
             $browser
                 ->loginAs($admin)
                 ->visitRoute('backend.resources.show', ['id' => 'users'])
-                ->click('[data-table-row="1"]')
+                ->within(new Table, fn ($table) => $table->clickRow(1))
                 ->assertRouteIs('backend.resources.edit', ['id' => 'users', 'modelId' => $joe->id])
                 ->value('[name="form[name]"', 'Hello world')
                 ->value('[name="form[email]"', 'foo@bar.com')
@@ -220,9 +238,21 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    // @todo: test pagination
+    // public function test_sorting_users_by_name()
+    // {
+    //     $this->browse(function (Browser $browser) {
+    //         $a = $this->superAdmin(['name' => 'a']);
+    //         $b = User::factory()->create(['name' => 'b']);
+    //         $c = User::factory()->create(['name' => 'c']);
 
-    // @todo: test sorting
+    //         $browser
+    //             ->loginAs($a)
+    //             ->visitRoute('backend.resources.show', ['id' => 'users']);
+    //         ;
+    //     });
+    // }
+
+    // @todo: test pagination
 
     // @todo: test filtering
 }

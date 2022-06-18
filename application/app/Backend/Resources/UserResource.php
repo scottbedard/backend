@@ -147,6 +147,7 @@ class UserResource extends Resource
     public function table(): Table
     {
         return Table::make()
+            ->defaultOrder('id', 'asc')
             ->selectable()
             ->columns([
                 Column::make('id')
@@ -172,7 +173,7 @@ class UserResource extends Resource
                     ->sortable(),
 
                 Column::date('updated_at')
-                    ->header('Last updated')
+                    ->header('Last seen')
                     ->sortable()
                     ->diffForHumans(),
             ]);

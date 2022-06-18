@@ -88,9 +88,11 @@ class ResourcesController extends Controller
             return abort(403); // forbidden
         }
 
+        $table = $resource->table();
+        $toolbar = $resource->toolbar();
         $query = $resource->query();
 
-        $order = null;
+        $order = $table->defaultOrder;
 
         try {
             $order = SortOrder::from(request()->query('order'));
@@ -113,8 +115,8 @@ class ResourcesController extends Controller
         return view('backend::resource-index', [
             'data' => $results,
             'resource' => $resource,
-            'table' => $resource->table()->provide($data),
-            'toolbar' => $resource->toolbar()->provide($data),
+            'table' => $table->provide($data),
+            'toolbar' => $toolbar->provide($data),
         ]);
     }
 
