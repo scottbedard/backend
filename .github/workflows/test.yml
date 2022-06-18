@@ -102,5 +102,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: console
+          name: source
           path: application/tests/Browser/source
