@@ -64,11 +64,13 @@ class Column extends Component
                 return route('backend.resources.show', array_merge($req->query(), [
                     'id' => $req->id,
                     'order' => "{$this->id},asc",
+                    'page' => null,
                 ]));
             } elseif ($order->direction === 1) {
                 return route('backend.resources.show', array_merge($req->query(), [
                     'id' => $req->id,
                     'order' => "{$this->id},desc",
+                    'page' => null,
                 ]));
             }
         }

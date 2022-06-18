@@ -104,7 +104,7 @@ class ResourcesController extends Controller
             }
         } catch (InvalidSortOrderException $e) {}
         
-        $results = $query->get();
+        $results = $query->paginate($table->pageSize);
 
         $data = [
             'order' => $order,

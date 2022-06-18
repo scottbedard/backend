@@ -169,10 +169,12 @@ class UserResource extends Resource
                     ->success(fn ($model) => $model->email_verified_at),
 
                 Column::date('created_at')
+                    ->align('right')
                     ->header('Created at')
                     ->sortable(),
 
                 Column::date('updated_at')
+                    ->align('right')
                     ->header('Last seen')
                     ->sortable()
                     ->diffForHumans(),
