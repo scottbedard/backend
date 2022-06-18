@@ -89,18 +89,18 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: screenshots
-          path: tests/Browser/screenshots
+          path: application/tests/Browser/screenshots
 
       - name: Upload Console Logs
         if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: console
-          path: tests/Browser/console
+          path: application/tests/Browser/console
 
       - name: Upload Source Logs
         if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: console
-          path: tests/Browser/source
+          path: application/tests/Browser/source
