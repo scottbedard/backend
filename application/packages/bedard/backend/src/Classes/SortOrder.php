@@ -3,8 +3,9 @@
 namespace Bedard\Backend\Classes;
 
 use Bedard\Backend\Exceptions\InvalidSortOrderException;
+use Stringable;
 
-class SortOrder
+class SortOrder implements Stringable
 {
     /**
      * Sort direction
@@ -34,6 +35,16 @@ class SortOrder
     public function __construct($order)
     {
         $this->apply($order);
+    }
+
+    /**
+     * String
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 
     /**
@@ -71,8 +82,28 @@ class SortOrder
      *
      * @return \Bedard\Backend\Classes\SortOrder
      */
-    public static function from($order)
+    public static function from($order): self
     {
         return new self($order);
+    }
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function toString(): string
+    {
+        if ($this->direction < 0) {
+            return "{$this->property},desc";
+        }
+
+        if ($this->direction === 0) {
+            return $this->property;
+        }
+
+        if ($this->direction < 0) {
+            return "{$this->property},asc";
+        }
     }
 }
