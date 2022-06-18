@@ -65,6 +65,11 @@ jobs:
           cd ./application
           php artisan migrate
 
+      - name: Publish assets
+        run: |
+          cd ./application
+          php artisan vendor:publish --tag backend
+
       - name: Application tests
         run: |
           cd ./application
