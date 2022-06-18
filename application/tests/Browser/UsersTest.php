@@ -80,7 +80,8 @@ class UsersTest extends DuskTestCase
                 // clicking header checkbox selects all body checkboxes
                 // and enables delete button
                 ->click('[data-table-header] [data-checkbox]')
-                ->assertPresent('[data-table-body] [data-checked]');
+                ->assertPresent('[data-table-body] [data-checked]')
+                ->storeSource('debug');
                 // ->assertNotPresent('[data-table-body] [data-not-checked]')
                 // ->assertEnabled('#delete button')
                 

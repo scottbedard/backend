@@ -97,3 +97,10 @@ jobs:
         with:
           name: console
           path: tests/Browser/console
+
+      - name: Upload Source Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: tests/Browser/source
