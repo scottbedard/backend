@@ -3,116 +3,117 @@ name: CI
 on: [push]
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   services:
-  #     mysql-service:
-  #       image: mysql:8.0
-  #       env:
-  #         MYSQL_DATABASE: testing
-  #         MYSQL_ROOT_PASSWORD: password
-  #       ports:
-  #         - 33306:3306
-  #       options: >-
-  #         --health-cmd="mysqladmin ping"
-  #         --health-interval=10s
-  #         --health-timeout=5s
-  #         --health-retries=3
-  #   env:
-  #     APP_URL: "http://127.0.0.1:8000"
-  #     DB_CONNECTION: mysql
-  #     DB_DATABASE: testing
-  #     DB_HOST: 127.0.0.1
-  #     DB_PASSWORD: password
-  #     DB_PORT: 33306
-  #     DB_USERNAME: root
-  #     DUSK_DRIVER_URL: "http://selenium:4444"
-  #     LARAVEL_DUSK: true
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql-service:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    env:
+      APP_URL: "http://127.0.0.1:8000"
+      DB_CONNECTION: mysql
+      DB_DATABASE: testing
+      DB_HOST: 127.0.0.1
+      DB_PASSWORD: password
+      DB_PORT: 33306
+      DB_USERNAME: root
+      DUSK_DRIVER_URL: "http://selenium:4444"
+      LARAVEL_DUSK: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #     - name: Setup PHP
-  #       uses: shivammathur/setup-php@v2
-  #       with:
-  #         php-version: '8.1'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
 
-  #     - name: Configure environment
-  #       run: |
-  #         cd ./application
-  #         cp ./.env.example ./.env
-  #         rm ./.env.dusk.local
-  #         chmod -R 777 ./storage ./bootstrap/cache
+      - name: Configure environment
+        run: |
+          cd ./application
+          cp ./.env.example ./.env
+          rm ./.env.dusk.local
+          chmod -R 777 ./storage ./bootstrap/cache
 
-  #     - name: Build frontend
-  #       run: |
-  #         cd ./application/packages/bedard/backend
-  #         npm install
-  #         npm run build
+      - name: Build frontend
+        run: |
+          cd ./application/packages/bedard/backend
+          npm install
+          npm run build
 
-  #     - name: Composer install
-  #       run: |
-  #         cd ./application
-  #         composer install
+      - name: Composer install
+        run: |
+          cd ./application
+          composer install
 
-  #     - name: Generate application key
-  #       run: |
-  #         cd ./application
-  #         php artisan key:generate
+      - name: Generate application key
+        run: |
+          cd ./application
+          php artisan key:generate
 
-  #     - name: Run migrations
-  #       run: |
-  #         cd ./application
-  #         php artisan migrate
+      - name: Run migrations
+        run: |
+          cd ./application
+          php artisan migrate
 
-  #     - name: Publish assets
-  #       run: |
-  #         cd ./application
-  #         php artisan vendor:publish --tag backend
+      - name: Publish assets
+        run: |
+          cd ./application
+          php artisan vendor:publish --tag backend
 
-  #     - name: Application tests
-  #       run: |
-  #         cd ./application
-  #         php artisan test
+      - name: Application tests
+        run: |
+          cd ./application
+          php artisan test
 
-  #     - name: Install Chrome
-  #       run: |
-  #         cd ./application
-  #         php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+      - name: Install Chrome
+        run: |
+          cd ./application
+          php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
 
-  #     - name: Start Chrome
-  #       run: |
-  #         ./application/vendor/laravel/dusk/bin/chromedriver-linux &
+      - name: Start Chrome
+        run: |
+          ./application/vendor/laravel/dusk/bin/chromedriver-linux &
       
-  #     - name: Browser tests
-  #       run: |
-  #         cd ./application
-  #         php artisan serve --no-reload --quiet &
-  #         php artisan dusk
+      - name: Browser tests
+        run: |
+          cd ./application
+          php artisan serve --no-reload --quiet &
+          php artisan dusk
 
-  #     - name: Upload Screenshots
-  #       if: failure()
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: screenshots
-  #         path: application/tests/Browser/screenshots
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: application/tests/Browser/screenshots
 
-  #     - name: Upload Console Logs
-  #       if: failure()
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: console
-  #         path: application/tests/Browser/console
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: application/tests/Browser/console
 
-  #     - name: Upload Source Logs
-  #       if: failure()
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: source
-  #         path: application/tests/Browser/source
+      - name: Upload Source Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: source
+          path: application/tests/Browser/source
   deploy:
     runs-on: ubuntu-latest
-    # needs: [test]
+    needs: [test]
+    if: ${{github.ref}} == 'refs/heads/main'
     steps:
       - name: Deploy
         run: curl ${{secrets.ENVOYER}}
