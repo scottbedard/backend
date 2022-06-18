@@ -6,7 +6,7 @@
     <div class="table text-sm w-full">
         <div
             class="font-bold table-header-group"
-            data-table-group="header">
+            data-table-header>
             <div class="h-12 table-row">
                 @if ($selectable)
                     <div
@@ -14,9 +14,7 @@
                         @click.stop.prevent="all = !all">
                         <div x-bind:class="all ? 'absolute bg-primary-400 left-0 top-0 h-full w-[3px] dark:bg-primary-600' : 'hidden'"></div>
 
-                        <x-backend::checkbox
-                            x-model="all"
-                            id="table-checkbox-all" />
+                        <x-backend::checkbox x-model="all" />
                     </div>
                 @endif
 
@@ -35,11 +33,12 @@
 
         <div
             class="table-row-group"
-            data-table-group="body">
+            data-table-body>
             @foreach ($data['rows'] as $row)
                 <a
                     class="h-12 table-row unstyled odd:bg-gray-100 hover:bg-primary-100 dark:odd:bg-gray-500/30 dark:hover:bg-primary-500/20 dark:hover:bg-opacity-30"
-                    href="{{ $to($row) }}">
+                    href="{{ $to($row) }}"
+                    data-table-row="{{ $loop->index }}">
                     @if ($selectable)
                         <div
                             class="align-middle cursor-pointer table-cell text-right pl-6 pr-3 relative w-px"

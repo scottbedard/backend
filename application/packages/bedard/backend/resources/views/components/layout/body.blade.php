@@ -1,7 +1,7 @@
 <body {{ $attributes->class([]) }}>
     {{ $slot }}
 
-    @if (env('APP_ENV') === 'local')
+    @if (env('APP_ENV') === 'local' && !env('LARAVEL_DUSK'))
         <script type="module" src="http://localhost:3000/@vite/client"></script>
         <script type="module" src="http://localhost:3000/resources/scripts/main.ts"></script>
     @elseif ($manifest)

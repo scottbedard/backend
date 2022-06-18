@@ -4,9 +4,12 @@
 ])
 
 <label
-    x-bind:aria-checked="checked ? 'true' : 'false'"
+    x-bind:aria-checked="checked ? true : false"
+    x-bind:data-checked="checked ? true : null"
+    x-bind:data-not-checked="checked ? null : true"
     x-data="{ checked: {{ $checked ? 'true' : 'false' }} }"
     x-modelable="checked"
+    data-checkbox
     role="checkbox"
     {{
         $attributes->merge([
