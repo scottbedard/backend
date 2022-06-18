@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
@@ -151,6 +152,55 @@ class UsersTest extends DuskTestCase
             $this->assertEquals('Hello world', $joe->name);
 
             $this->assertEquals('foo@bar.com', $joe->email);
+        });
+    }
+
+    public function test_interacting_with_date_field()
+    {
+        $this->browse(function (Browser $browser) {
+            $admin = $this->superAdmin();
+
+            $currentDate = Carbon::now()->format('j');
+
+            $targetDate = $currentDate === '1'
+                ? Carbon::now()->addDay()->format('j')
+                : Carbon::now()->subDay()->format('j');
+
+            $lastMonth = Carbon::now()->subMonth()->format('F');
+
+            $currentMonth = Carbon::now()->format('F');
+
+            $nextMonth = Carbon::now()->addMonth()->format('F');
+
+            $value = $currentDate === '1'
+                ? Carbon::now()->addDay()->startOfDay()->toDateTimeString()
+                : Carbon::now()->subDay()->startOfDay()->toDateTimeString();
+
+            $browser
+                ->loginAs($admin)
+                ->visitRoute('backend.resources.edit', ['id' => 'users', 'modelId' => $admin->id])
+
+                // clicking the field should expand the calendar
+                ->assertNotPresent(('[data-calendar]'))
+                ->click('[data-date-field="created_at"]')
+                ->assertPresent(('[data-calendar]'))
+
+                // go to last month
+                ->click('[data-prev]')
+                ->assertSeeIn('[data-month]', $lastMonth)
+
+                // go to current month
+                ->click('[data-next]')
+                ->assertSeeIn('[data-month]', $currentMonth)
+                
+                // go to next month
+                ->click('[data-next]')
+                ->assertSeeIn('[data-month]', $nextMonth)
+                
+                // return to current month and click date
+                ->click('[data-prev]')
+                ->click('[data-date="' . $targetDate .'"]')
+                ->assertValue('[name="form[created_at]"]', $value);
         });
     }
 

@@ -2,13 +2,13 @@
     x-data="datefield('{{ $value }}', '{{ $parse }}', '{{ $format }}')"
     x-ref="datefield"
     class="relative"
+    data-date-field="{{ $id }}"
     @click="expanded = true">
     @if ($label)
         <x-backend::label
             :text="$label"
             :required="$required" />
     @endif
-
 
     <x-backend::input el="div">
         <div class="cursor-pointer flex group h-12 items-center justify-between px-3">
@@ -36,11 +36,14 @@
         type="text" />
 
     <template x-if="expanded">
-        <div class="absolute pt-6 right-0 top-full z-10">
+        <div
+            class="absolute pt-6 right-0 top-full z-10"
+            data-calendar>
             <div class="bg-gray-50 drop-shadow-lg font-bold grid group pt-3 rounded-md text-sm w-64 dark:bg-gray-600">
                 <div class="grid grid-cols-7 px-3">
                     <a
                         class="aspect-square col-span-1 flex items-center justify-center rounded-md hover:bg-gray-300/50 dark:hover:bg-gray-800/40"
+                        data-prev
                         href="#"
                         @click.prevent="prev">
                         <x-backend::icon name="chevron-left" size="16" stroke-width="3" />
@@ -49,10 +52,12 @@
                     <div
                         x-text="month"
                         class="col-span-5 flex items-center justify-center"
+                        data-month
                     ></div>
 
                     <a
                         class="aspect-square col-span-1 flex items-center justify-center rounded-md hover:bg-gray-300/50 dark:hover:bg-gray-800/40"
+                        data-next
                         href="#"
                         @click.prevent="next">
                         <x-backend::icon name="chevron-right" size="16" stroke-width="3" />
@@ -68,15 +73,16 @@
 
                     <template x-for="day in days">
                         <a
+                            x-text="day.date"
                             href="#"
                             :class="{
                                 'aspect-square col-span-1 flex items-center justify-center rounded-md text-sm tracking-wide hover:bg-gray-300/50 dark:hover:bg-gray-800/40': true,
                                 'text-gray-300 dark:text-gray-400': !day.thisMonth,
                                 'bg-gray-200/50 text-primary-500 dark:bg-gray-800/20': day.selected,
                             }"
-                            @click.prevent="select(day.instance)">
-                            <span x-text="day.date"></span>
-                        </a>
+                            :data-date="day.date"
+                            @click.prevent="select(day.instance)"
+                        ></a>
                     </template>
                 </div>
 
