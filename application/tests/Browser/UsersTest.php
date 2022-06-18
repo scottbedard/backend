@@ -75,12 +75,12 @@ class UsersTest extends DuskTestCase
                 // all checkboxes should start deselected
                 ->assertPresent('[data-table-body] [data-not-checked]')
                 ->assertNotPresent('[data-table-body] [data-checked]')
-                ->assertButtonDisabled('#delete button');
+                ->assertButtonDisabled('#delete button')
                 
-                // // clicking header checkbox selects all body checkboxes
-                // // and enables delete button
-                // ->click('[data-table-header] [data-checkbox]')
-                // ->assertPresent('[data-table-body] [data-checked]')
+                // clicking header checkbox selects all body checkboxes
+                // and enables delete button
+                ->click('[data-table-header] [data-checkbox]')
+                ->assertPresent('[data-table-body] [data-checked]');
                 // ->assertNotPresent('[data-table-body] [data-not-checked]')
                 // ->assertEnabled('#delete button')
                 
