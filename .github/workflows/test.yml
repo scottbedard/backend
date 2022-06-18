@@ -27,6 +27,7 @@ jobs:
       DB_PORT: 33306
       DB_USERNAME: root
       DUSK_DRIVER_URL: "http://selenium:4444"
+      LARAVEL_DUSK: true
     steps:
       - name: Checkout
         uses: actions/checkout@v2
