@@ -52,13 +52,15 @@
                             @if ($order === 1)
                                 <x-backend::icon
                                     class="text-primary-500"
-                                    name="chevron-up" size="16"
-                                    stroke-width="3.5" />
+                                    name="chevron-up"
+                                    size="16"
+                                    stroke-width="3" />
                             @elseif ($order === -1)
                                 <x-backend::icon
                                     class="text-primary-500"
-                                    name="chevron-down" size="16"
-                                    stroke-width="3.5" />
+                                    name="chevron-down"
+                                    size="16"
+                                    stroke-width="3" />
                             @endif
                         </div>
                     </a>
