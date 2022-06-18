@@ -107,42 +107,55 @@
         </div>
     </div>
 
-    <div class="flex flex-wrap gap-x-6 gap-y-1 items-center justify-center py-2 px-6 lg:justify-end">
-        <div class="text-gray-400">
+    <div class="flex flex-wrap gap-x-4 gap-y-2 items-center justify-center py-4 px-6 text-sm lg:justify-end">
+        <div class="tracking-wide">
             Displaying rows {{ $paginator->firstItem() }}&nbsp;-&nbsp;{{ $paginator->lastItem() }} of {{ $paginator->total() }}
         </div>
 
         <div class="flex justify-center w-full lg:w-auto">
-            <div class="flex gap-3 items-center">
+            <div class="flex gap-1 h-6 items-center">
                 <a
                     @class([
-                        'cursor-arrow text-gray-400 unstyled' => $currentPage < 2,    
+                        'aspect-square flex items-center h-full justify-center rounded' => true,
+                        'hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800' => $currentPage >= 2,
+                        'cursor-arrow text-gray-300 unstyled dark:text-gray-400' => $currentPage < 2, 
                     ])
-                    @if ($currentPage < 2)
+                    @if ($currentPage <= 1)
                         disabled
                     @else
                         href="{{ $firstPageHref }}"
+                        title="First page"
                     @endif
                     data-first-page>
-                        <x-backend::icon name="chevrons-left" size="16" />
+                        <x-backend::icon
+                            name="chevrons-left"
+                            size="16"
+                         />
                 </a>
 
                 <a
                     @class([
-                        'cursor-arrow text-gray-400 unstyled' => $currentPage < 2,    
+                        'aspect-square flex items-center h-full justify-center rounded' => true,
+                        'hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800' => $currentPage >= 2,
+                        'cursor-arrow text-gray-300 unstyled dark:text-gray-400' => $currentPage < 2,    
                     ])
-                    @if ($currentPage < 2)
+                    @if ($currentPage <= 1)
                         disabled
                     @else
                         href="{{ $prevPageHref }}"
+                        title="Previous page"
                     @endif
                     data-prev-page>
-                    <x-backend::icon name="chevron-left" size="16" />
+                    <x-backend::icon
+                        name="chevron-left"
+                        size="16"
+                     />
                 </a>
 
-                <div class="group relative">
+                <div class="flex items-center group h-full relative rounded hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800">
                     <select
-                        class="appearance-none bg-transparent cursor-pointer outline-none pr-4 hover:text-primary-500 dark:text-auto"
+                        class="appearance-none bg-transparent cursor-pointer font-bold outline-none text-center tracking-wide pl-2 pr-5 hover:text-primary-500 dark:text-auto"
+                        title="Select page"
                         @change="window.location = '{{ route('backend.resources.show', array_merge(request()->query(), ['id' => $data['resource']::$id, 'page' => '_page_'])) }}'.replace('_page_', $event.target.value)">
                         @for ($i = 1; $i <= $lastPage; $i++)
                             <option value="{{ $i }}" {{ $i === $currentPage ? 'selected' : '' }}>{{ $i }}</option>
@@ -150,19 +163,39 @@
                     </select>
 
                     <x-backend::icon
-                        class="absolute right-0 top-1/2 pointer-events-none transform -translate-y-1/2 group-hover:text-primary-500"
+                        class="absolute right-1 top-1/2 pointer-events-none transform -translate-y-1/2 group-hover:text-primary-500"
                         name="chevron-down"
-                        size="16" />
+                        size="14" />
                 </div>
 
                 <a
-                    href="{{ $nextPageHref }}"
+                @class([
+                        'aspect-square flex items-center h-full justify-center rounded' => true,
+                        'hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800' => $currentPage < $lastPage,
+                        'cursor-arrow text-gray-300 unstyled dark:text-gray-400' => $currentPage >= $lastPage,    
+                    ])
+                    @if ($currentPage >= $lastPage)
+                        disabled
+                    @else
+                        href="{{ $nextPageHref }}"
+                        title="Next page"
+                    @endif
                     data-next-page>
-                    <x-backend::icon name="chevron-right" size="14" />
+                    <x-backend::icon name="chevron-right" size="16" />
                 </a>
 
                 <a
-                    href="{{ $lastPageHref }}"
+                @class([
+                        'aspect-square flex items-center h-full justify-center rounded' => true,
+                        'hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-800' => $currentPage < $lastPage,
+                        'cursor-arrow text-gray-300 unstyled dark:text-gray-400' => $currentPage >= $lastPage,    
+                    ])
+                    @if ($currentPage >= $lastPage)
+                        disabled
+                    @else
+                        href="{{ $lastPageHref }}"
+                        title="Last page"
+                    @endif
                     data-last-page>
                     <x-backend::icon name="chevrons-right" size="16" />
                 </a>

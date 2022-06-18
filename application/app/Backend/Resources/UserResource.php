@@ -149,6 +149,7 @@ class UserResource extends Resource
         return Table::make()
             ->defaultOrder('id', 'asc')
             ->selectable()
+            ->pageSize(15)
             ->columns([
                 Column::make('id')
                     ->header('ID')
