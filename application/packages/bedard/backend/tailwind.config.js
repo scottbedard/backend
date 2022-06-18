@@ -14,6 +14,7 @@ module.exports = {
       danger: colors.rose,
       gray: colors.slate,
       primary: colors.blue,
+      success: colors.emerald,
       transparent: 'transparent',
       white: '#fff',
     },

@@ -3,7 +3,6 @@
 namespace Bedard\Backend\Components;
 
 use Bedard\Backend\Components\Component;
-use Bedard\Backend\Components\DateColumn;
 use Bedard\Backend\Exceptions\InvalidAttributeException;
 use Bedard\Backend\Util;
 
@@ -18,6 +17,7 @@ class Column extends Component
         'align' => 'left',
         'header' => '',
         'id' => '',
+        'sortable' => false,
     ];
 
     /**
@@ -27,6 +27,7 @@ class Column extends Component
      */
     public static $subclasses = [
         'date' => DateColumn::class,
+        'icon' => IconColumn::class,
     ];
 
     /**

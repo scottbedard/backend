@@ -143,15 +143,32 @@ class UserResource extends Resource
         return Table::make()
             ->selectable()
             ->columns([
-                Column::make('id')->header('ID'),
+                Column::make('id')
+                    ->header('ID')
+                    ->sortable(),
 
-                Column::make('name')->header('Name'),
+                Column::make('name')
+                    ->header('Name')
+                    ->sortable(),
 
-                Column::make('email')->header('Email address'),
+                Column::make('email')
+                    ->header('Email address')
+                    ->sortable(),
 
-                Column::date('created_at')->header('Created at'),
+                Column::icon('email_verified_at')
+                    ->header('Verified')
+                    ->icon(fn ($model) => $model->email_verified_at ? 'check' : 'x')
+                    ->danger(fn ($model) => !$model->email_verified_at)
+                    ->success(fn ($model) => $model->email_verified_at),
 
-                Column::date('updated_at')->header('Last updated')->diffForHumans(),
+                Column::date('created_at')
+                    ->header('Created at')
+                    ->sortable(),
+
+                Column::date('updated_at')
+                    ->header('Last updated')
+                    ->sortable()
+                    ->diffForHumans(),
             ]);
     }
 

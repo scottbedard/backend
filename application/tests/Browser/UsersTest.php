@@ -204,6 +204,22 @@ class UsersTest extends DuskTestCase
         });
     }
 
+    public function test_icon_column()
+    {
+        $this->browse(function (Browser $browser) {
+            $admin = $this->superAdmin();
+
+            User::factory()->create(['email_verified_at' => null]);
+
+            $browser
+                ->loginAs($admin)
+                ->visitRoute('backend.resources.show', ['id' => 'users'])
+                ->assertPresent('[data-table-row="0"] [data-icon-column="check"][data-icon-column-success]')
+                ->assertPresent('[data-table-row="1"] [data-icon-column="x"][data-icon-column-danger]');
+            ;
+        });
+    }
+
     // @todo: test pagination
 
     // @todo: test sorting

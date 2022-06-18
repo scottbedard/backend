@@ -32,7 +32,14 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        // Backend::authorize($users, 'manage users');
+        Backend::authorize($users, 'manage users');
+
+        // non-verified user
+        User::factory()->create([
+            'email_verified_at' => null,
+            'email' => 'unverified@example.com',
+            'name' => 'Unverified user',
+        ]);
 
         // regular users
         User::factory()->count(10)->create();
