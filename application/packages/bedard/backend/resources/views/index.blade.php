@@ -1,3 +1,5 @@
 <x-backend::layout.main>
-    Index
+    <div class="p-6">
+        Soon...
+    </div>
 </x-backend::layout.main>
