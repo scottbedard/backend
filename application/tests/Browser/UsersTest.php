@@ -129,7 +129,30 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    // @todo: test updating users
+    public function test_updating_a_user()
+    {
+        $this->browse(function (Browser $browser) {
+            $admin = $this->superAdmin();
+
+            $joe = User::factory()->create();
+
+            $browser
+                ->loginAs($admin)
+                ->visitRoute('backend.resources.show', ['id' => 'users'])
+                ->click('[data-table-row="1"]')
+                ->assertRouteIs('backend.resources.edit', ['id' => 'users', 'modelId' => $joe->id])
+                ->value('[name="form[name]"', 'Hello world')
+                ->value('[name="form[email]"', 'foo@bar.com')
+                ->press('Save')
+                ->assertRouteIs('backend.resources.show', ['id' => 'users']);
+            
+            $joe->refresh();
+
+            $this->assertEquals('Hello world', $joe->name);
+
+            $this->assertEquals('foo@bar.com', $joe->email);
+        });
+    }
 
     // @todo: test pagination
 
