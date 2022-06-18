@@ -238,19 +238,41 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    // public function test_sorting_users_by_name()
-    // {
-    //     $this->browse(function (Browser $browser) {
-    //         $a = $this->superAdmin(['name' => 'a']);
-    //         $b = User::factory()->create(['name' => 'b']);
-    //         $c = User::factory()->create(['name' => 'c']);
+    public function test_sorting_users_by_name()
+    {
+        $this->browse(function (Browser $browser) {
+            $admin = $this->superAdmin(['name' => 'alex']);
+            User::factory()->create(['name' => 'bob']);
+            User::factory()->create(['name' => 'cindy']);
 
-    //         $browser
-    //             ->loginAs($a)
-    //             ->visitRoute('backend.resources.show', ['id' => 'users']);
-    //         ;
-    //     });
-    // }
+            $browser
+                ->loginAs($admin)
+                ->visitRoute('backend.resources.show', ['id' => 'users'])
+                ->within(new Table, function ($table) {
+                    // default order is defined on the table instance
+                    $table->assertOrder('id', 'asc')
+
+                        // clicking a header sorts by that column
+                        ->clickHeader('name')
+                        ->assertOrder('name', 'asc')
+                        ->assertSeeInCell('name', 0, 'alex')
+                        ->assertSeeInCell('name', 1, 'bob')
+                        ->assertSeeInCell('name', 2, 'cindy')
+
+                        // clicking an ascending header switches to descending
+                        ->clickHeader('name')
+                        ->assertOrder('name', 'desc')
+                        ->assertSeeInCell('name', 0, 'cindy')
+                        ->assertSeeInCell('name', 1, 'bob')
+                        ->assertSeeInCell('name', 2, 'alex')
+                        
+                        // clicking a descending header switches to ascending
+                        ->clickHeader('name')
+                        ->assertOrder('name', 'asc');
+                })
+            ;
+        });
+    }
 
     // @todo: test pagination
 

@@ -19,6 +19,10 @@
                 @endif
 
                 @foreach ($columns as $column)
+                    @php
+                        $order = $column->sortOrder()
+                    @endphp
+                    
                     <a
                         @class([
                             'align-middle border-y border-gray-300 table-cell px-3 first:pl-6 last:pr-6 dark:border-gray-800' => true,
@@ -31,23 +35,20 @@
                         @if ($column->sortable)
                             href="{{ $column->href() }}"
                         @endif
+                        @if ($order === 1 || $order === -1)
+                            data-table-sorted="{{ $order }}"
+                        @endif
                         data-table-header="{{ $column->id }}">
                         <div class="flex items-center gap-1">
                             <span>{{ $column->header }}</span>
 
-                            @php
-                                $order = $column->sortOrder()
-                            @endphp
-
                             @if ($order === 1)
                                 <x-backend::icon
                                     class="text-primary-500"
-                                    data-order-asc
                                     name="chevron-up" size="16"
                                     stroke-width="3.5" />
                             @elseif ($order === -1)
                                 <x-backend::icon
-                                    data-order-desc
                                     class="text-primary-500"
                                     name="chevron-down" size="16"
                                     stroke-width="3.5" />
@@ -77,12 +78,14 @@
                     @endif
 
                     @foreach ($columns as $column)
-                        <div @class([
-                            'align-middle table-cell px-3 first:pl-6 last:pr-6' => true,
-                            'text-left' => $column->align === 'left',
-                            'text-center' => $column->align === 'center',
-                            'text-right' => $column->align === 'right',
-                        ])>
+                        <div
+                            @class([
+                                'align-middle table-cell px-3 first:pl-6 last:pr-6' => true,
+                                'text-left' => $column->align === 'left',
+                                'text-center' => $column->align === 'center',
+                                'text-right' => $column->align === 'right',
+                            ])
+                            data-table-column="{{ $column->id }}">
                             <x-backend::renderable
                                 :content="$column"
                                 :data="$row" />
