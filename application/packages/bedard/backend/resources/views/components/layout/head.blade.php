@@ -8,7 +8,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @if (env('APP_ENV') !== 'local' && $manifest)
+    @if (config('app.env') !== 'local' && $manifest)
         @foreach ($manifest['resources/scripts/main.ts']['css'] as $stylesheet)
             <link href="/vendor/backend/dist/{{ $stylesheet }}" rel="stylesheet">
         @endforeach
