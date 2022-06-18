@@ -2,8 +2,10 @@
 
 namespace Bedard\Backend\Components;
 
+use Bedard\Backend\Classes\SortOrder;
 use Bedard\Backend\Components\Component;
 use Bedard\Backend\Exceptions\InvalidAttributeException;
+use Bedard\Backend\Exceptions\InvalidSortOrderException;
 use Bedard\Backend\Util;
 
 class Column extends Component
@@ -40,6 +42,40 @@ class Column extends Component
     public function column(array $data = [])
     {
         return view('backend::partials.table.column', array_merge($this->attributes, $data));
+    }
+
+    /**
+     * Get href for column header
+     */
+    public function href()
+    {
+        if (!$this->sortable) {
+            return null;
+        }
+
+        $req = request();
+
+        $order = null;
+
+        try {
+            $order = new SortOrder($req->query('order', "{$this->id},desc"));
+        } catch (InvalidSortOrderException $e) {}
+
+        if ($order !== null) {
+            if ($order->property !== $this->id || $order->direction === -1) {
+                return route('backend.resources.show', array_merge($req->query(), [
+                    'id' => $req->id,
+                    'order' => "{$this->id},asc",
+                ]));
+            } elseif ($order->direction === 1) {
+                return route('backend.resources.show', array_merge($req->query(), [
+                    'id' => $req->id,
+                    'order' => "{$this->id},desc",
+                ]));
+            }
+        }
+
+        return '#';
     }
 
     /**

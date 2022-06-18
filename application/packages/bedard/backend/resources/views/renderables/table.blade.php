@@ -5,7 +5,7 @@
     data-component="table">
     <div class="table text-sm w-full">
         <div
-            class="font-bold table-header-group"
+            class="font-bold table-header-group tracking-wide"
             data-table-header>
             <div class="h-12 table-row">
                 @if ($selectable)
@@ -19,14 +19,21 @@
                 @endif
 
                 @foreach ($columns as $column)
-                    <div @class([
-                        'align-middle border-y border-gray-300 table-cell px-3 first:pl-6 last:pr-6 dark:border-gray-800' => true,
-                        'text-left' => $column->align === 'left',
-                        'text-center' => $column->align === 'center',
-                        'text-right' => $column->align === 'right',
-                    ])>
+                    <a
+                        @class([
+                            'align-middle border-y border-gray-300 table-cell px-3 first:pl-6 last:pr-6 dark:border-gray-800' => true,
+                            'cursor-pointer' => $column->sortable,
+                            'text-center' => $column->align === 'center',
+                            'text-left' => $column->align === 'left',
+                            'text-right' => $column->align === 'right',
+                            'unstyled' => !$column->sortable,
+                        ])
+                        @if ($column->sortable)
+                            href="{{ $column->href() }}"
+                        @endif
+                        >
                         {{ $column->header }}
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </div>

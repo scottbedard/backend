@@ -1,10 +1,10 @@
 @props([
     'content' => null,
     'data' => null,
-    'el' => 'null',
+    'el' => null,
 ])
 
-@if ($el)
+@if ($el !== null)
     <{{ $el }} {{ $attributes->class([])->merge([]) }}>{{--
         --}}{{ is_callable($content) ? $content($data) : $content }}{{--
     --}}</{{ $el }}>
