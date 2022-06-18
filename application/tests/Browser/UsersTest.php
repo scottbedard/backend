@@ -41,7 +41,7 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function test_deleting_a_user()
+    public function test_deleting_single_user()
     {
         $admin = $this->superAdmin();
         
@@ -59,7 +59,26 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    // @todo: test deleting multiple users
+    public function test_deleting_multiple_users()
+    {
+        $this->browse(function (Browser $browser) {
+            $admin = $this->superAdmin();
+            $joe = User::factory()->create();
+            $mary = User::factory()->create();
+
+            $browser
+                ->loginAs($admin)
+                ->visitRoute('backend.resources.show', ['id' => 'users'])
+                ->click('[data-table-row="1"] [data-checkbox]')
+                ->click('[data-table-row="2"] [data-checkbox]')
+                ->press('Delete')
+                ->press('Confirm');
+
+            $this->assertFalse(User::where('id', $joe->id)->exists());
+            $this->assertFalse(User::where('id', $mary->id)->exists());
+        });
+    }
+
     public function test_table_checkboxes()
     {
         $this->browse(function (Browser $browser) {
