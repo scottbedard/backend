@@ -55,7 +55,8 @@ class UsersTest extends DuskTestCase
                 ->visitRoute('backend.resources.edit', ['id' => 'users', 'modelId' => $user->id])
                 ->press('Delete user')
                 ->press('Confirm delete')
-                ->assertRouteIs('backend.resources.show', ['id' => 'users']);
+                ->assertRouteIs('backend.resources.show', ['id' => 'users'])
+                ->assertVisible('[data-alert="success"]');
             
             $this->assertFalse(User::where('id', $user->id)->exists());
         });
