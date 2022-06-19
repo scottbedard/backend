@@ -32,6 +32,15 @@
                 </template>
             </a>
 
+            @if (auth()->user()->can('super admin'))
+                <a
+                    data-manage-permissions-link
+                    href="{{ route('backend.manage.permissions') }}"
+                    title="Manage Admins">
+                    <x-backend::icon name="lock" size="20" />
+                </a>
+            @endif
+
             <a href="/logout" title="Log out">
                 <x-backend::icon name="log-out" size="20" />
             </a>
