@@ -2,7 +2,9 @@
 
 [![Test](https://github.com/scottbedard/backend/actions/workflows/test.yml/badge.svg)](https://github.com/scottbedard/backend/actions/workflows/test.yml)
 
-This is just an experiment, proceed with caution.
+This package provides a customizable backend for Laravel applications. Development is still in very early stages, and is not ready for use by anyone. In the meantime, you're welcome to explore the live sandbox. With that said, this database is refreshed every 30 minutes, please be respectful.
+
+[View live sandbox](https://backend.scottbedard.net)
 
 # Installation
 
