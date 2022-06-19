@@ -10,6 +10,9 @@ Route::prefix(config('backend.path'))
     ->middleware(['web', config('backend.middleware_alias')])
     ->group(function () {
 
+        //
+        // admin
+        //
         Route::get('/', [IndexController::class, 'index'])->name('backend.index');
 
         Route::get('/debug', [DebugController::class, 'index']);
@@ -22,9 +25,12 @@ Route::prefix(config('backend.path'))
 
         Route::post('/resources/{id}/action', [ResourcesController::class, 'action'])->name('backend.resources.action');
     
-        Route::prefix('manage')
-            ->middleware(['can:super admin'])
-            ->group(function () {
-                Route::get('/permissions', [AdminController::class, 'permissions'])->name('backend.manage.permissions');
-            });
+        //
+        // super admin only
+        //
+        Route::prefix('manage')->middleware(['can:super admin'])->group(function () {
+
+            Route::get('/permissions', [AdminController::class, 'permissions'])->name('backend.manage.permissions');
+
+        });
     });

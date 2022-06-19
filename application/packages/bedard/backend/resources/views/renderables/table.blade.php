@@ -8,10 +8,10 @@
     x-model="checked"
     class="text-sm"
     data-table>
-    @if (count($buttons))
+    @if (count($toolbar))
         <div class="flex flex-wrap gap-6 p-6">
-            @foreach ($buttons as $button)
-                {{ $button->render() }}
+            @foreach ($toolbar as $item)
+                {{ $item->render() }}
             @endforeach
         </div>
     @endif

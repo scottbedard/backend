@@ -89,19 +89,10 @@ class ResourcesController extends Controller
         }
 
         $table = $resource->table();
+        
         $query = $resource->query();
 
-        $order = $table->defaultOrder;
-
-        try {
-            $order = SortOrder::from(request()->query('order'));
-
-            if ($order->direction === 1) {
-                $query->orderBy($order->property);
-            } elseif ($order->direction === -1) {
-                $query->orderByDesc($order->property);
-            }
-        } catch (InvalidSortOrderException $e) {}
+        $order = $this->applySortOrderToQuery($query, 'id,asc');
         
         $results = $query->paginate($table->pageSize);
 

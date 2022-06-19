@@ -149,7 +149,7 @@ class UserResource extends Resource
         return Table::make()
             ->defaultOrder('id', 'asc')
             ->selectable()
-            ->withButtons([
+            ->toolbar([
                 self::createButton(),
 
                 self::deleteButton(),

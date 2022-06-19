@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Backend\Resources;
+namespace Bedard\Backend\Resources;
 
 use Bedard\Backend\Components\Column;
 use Bedard\Backend\Components\Component;
@@ -9,21 +9,21 @@ use Bedard\Backend\Components\Form;
 use Bedard\Backend\Components\Table;
 use Bedard\Backend\Resource;
 
-class {{ class }} extends Resource
+class AdminResource extends Resource
 {
     /**
      * Application entity
      *
      * @var string
      */
-    public static $entity = '{{ entity }}';
+    public static $entity = 'Admin';
 
     /**
      * Unique resource identifier
      *
      * @var string
      */
-    public static $id = '{{ id }}';
+    public static $id = 'admins';
 
     /**
      * Resource icon
@@ -39,14 +39,14 @@ class {{ class }} extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\{{ model }}::class;
+    public static $model = \App\Models\User::class;
 
     /**
      * Resource title
      *
      * @var string
      */
-    public static $title = '{{ title }}';
+    public static $title = 'Admins';
 
     /**
      * Form
@@ -67,12 +67,19 @@ class {{ class }} extends Resource
      */
     public function table(): Table
     {
-        return Table::columns([
-            Column::make('id')->header('ID'),
+        return Table::make()
+            ->toolbar([
+                self::createButton(),  
+            ])
+            ->selectable()
+            ->columns([
+                Column::make('id')->header('ID'),
 
-            Column::date('created_at')->header('Created at'),
+                Column::make('name')->header('Name'),
 
-            Column::date('updated_at')->header('Last updated')->diffForHumans(),
-        ]);
+                Column::date('created_at')->header('Created at'),
+
+                Column::date('updated_at')->header('Last updated')->diffForHumans(),
+            ]);
     }
 }

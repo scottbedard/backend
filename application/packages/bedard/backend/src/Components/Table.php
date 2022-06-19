@@ -13,12 +13,12 @@ class Table extends Component
      * @var array
      */
     protected $attributes = [
-        'buttons' => [],
         'columns' => [],
         'defaultOrder' => null,
         'pageSize' => 15,
         'selectable' => false,
         'to' => null,
+        'toolbar' => [],
     ];
 
     /**
@@ -108,7 +108,6 @@ class Table extends Component
         ]));
 
         return view('backend::renderables.table', [
-            'buttons' => $this->buttons,
             'columns' => $this->columns,
             'currentPage' => $paginator->currentPage(),
             'data' => $this->data,
@@ -120,24 +119,7 @@ class Table extends Component
             'prevPageHref' => $prevPageHref,
             'selectable' => $this->selectable,
             'to' => $this->to,
+            'toolbar' => $this->toolbar,
         ]);
-    }
-
-    /**
-     * With button
-     *
-     * @param string|array $buttons
-     *
-     * @return self
-     */
-    public function withButtons($buttons): self
-    {
-        $buttons = ! is_array($buttons) ? [$buttons] : $buttons;
-
-        foreach ($buttons as $button) {
-            array_push($this->attributes['buttons'], $button);
-        }
-
-        return $this;
     }
 }
