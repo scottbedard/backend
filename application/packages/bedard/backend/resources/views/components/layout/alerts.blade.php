@@ -14,7 +14,7 @@
     @endphp
 
     <div
-        x-data="alert({ message: '{{ $message }}', type: '{{ $type }}' })"
+        x-data="customAlert"
         class="fixed left-1/2 top-12 transform -translate-x-1/2"
         data-alert="{{ $type }}"
         @click="acknowledged = true"

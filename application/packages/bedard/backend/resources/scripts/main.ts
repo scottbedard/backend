@@ -5,14 +5,14 @@ import '../styles/main.scss'
 import './dark-mode'
 
 // components
-import alert from './alert'
+import customAlert from './custom-alert'
 import datefield from './datefield'
 import table from './table'
 
 document.addEventListener('alpine:init', () => {
   const { Alpine }: any = window
 
-  Alpine.data('alert', alert)
+  Alpine.data('customAlert', customAlert)
   Alpine.data('datefield', datefield)
   Alpine.data('table', table)
 })
