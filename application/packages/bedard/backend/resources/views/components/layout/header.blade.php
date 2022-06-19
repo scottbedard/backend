@@ -32,8 +32,8 @@
                 </template>
             </a>
 
-            <a href="/logout">
-                <x-backend::icon name="log-out" />
+            <a href="/logout" title="Log out">
+                <x-backend::icon name="log-out" size="20" />
             </a>
         </div>
     </x-backend::layout.margin>
