@@ -29,11 +29,18 @@ class EnvoyerCommand extends Command
      */
     public function handle()
     {
-        $minutes = Carbon::now()->addMinutes(intval($this->option('minutes')))->getTimestamp();
+        $minutes = intval($this->option('minutes'));
 
-        Redis::set('envoyer_status', $this->argument('status'));
-        Redis::set('envoyer_timeout', $minutes);
+        $timeout = $minutes ? Carbon::now()->addMinutes($minutes)->getTimestamp() : 0;
 
+        $status = $this->argument('status');
+
+        Redis::set('envoyer_status', $status);
+        Redis::set('envoyer_timeout', $timeout);
+
+        $this->line('Status:  ' . $status);
+        $this->line('Timeout: ' . $timeout);
+        $this->line('Now:     ' . Carbon::now()->getTimestamp());
         $this->info('Done.');
 
         return 0;
