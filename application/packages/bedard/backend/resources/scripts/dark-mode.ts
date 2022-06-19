@@ -1,11 +1,21 @@
-import { post } from './utils'
+import alpine from './alpine'
 
-const attr = 'data-toggle-dark-mode'
+export default alpine(() => {
+  return {
+    dark: window.localStorage.getItem('dark') === '1',
 
-document.querySelector(`[${attr}]`)?.addEventListener('click', async (e: Event) => {
-  const { setting } = await post((e.target as Element)
-    .closest(`[${attr}]`)!
-    .getAttribute(attr)!, { key: 'dark-mode' })
+    async toggle() {
+      this.dark = !this.dark
 
-  document.documentElement.classList[setting.value ? 'add' : 'remove']('dark')
+      if (this.dark) {
+        window.localStorage.setItem('dark', '1')
+
+        document.documentElement.classList.add('dark')
+      } else {
+        window.localStorage.removeItem('dark')
+
+        document.documentElement.classList.remove('dark')
+      }
+    }
+  }
 })

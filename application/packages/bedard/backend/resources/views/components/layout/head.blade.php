@@ -8,6 +8,12 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <script>
+        if (localStorage.getItem('dark')) {
+            document.documentElement.classList.add('dark')
+        }
+    </script>
+
     @if (config('app.env') !== 'local' && $manifest)
         @foreach ($manifest['resources/scripts/main.ts']['css'] as $stylesheet)
             <link href="/vendor/backend/dist/{{ $stylesheet }}" rel="stylesheet">

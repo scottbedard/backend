@@ -12,21 +12,29 @@
             </a>
         </div>
 
-        <div class="flex gap-6">
+        <div class="flex items-center gap-6 text-sm">
             <div>
                 {{ auth()->user()->email }}
             </div>
 
-            <a data-toggle-dark-mode="{{ route('backend.settings.toggle') }}" href="javascript:;">
-                <x-backend::icon class="dark:hidden" name="sun" />
+            <a
+                x-data="darkMode"
+                x-bind:title="`Toggle ${dark ? 'light' : 'dark'} mode`"
+                class="cursor-pointer"
+                data-endpoint="hello"
+                @click.prevent="toggle">
+                <template x-if="dark">
+                    <x-backend::icon name="moon" size="20" />
+                </template>
 
-                <x-backend::icon class="hidden dark:block" name="moon" />
+                <template x-if="!dark">
+                    <x-backend::icon name="sun" size="20" />
+                </template>
             </a>
 
             <a href="/logout">
                 <x-backend::icon name="log-out" />
             </a>
         </div>
-
     </x-backend::layout.margin>
 </header>
