@@ -4,7 +4,7 @@
 
 This package provides a customizable backend for Laravel applications. Development is still in very early stages, and is not ready for use by anyone. In the meantime, you're welcome to explore the live sandbox. With that said, this database is refreshed every 30 minutes, please be respectful.
 
-[View live sandbox](https://backend.scottbedard.net)
+[View live sandbox &rarr;](https://backend.scottbedard.net)
 
 # Installation
 
