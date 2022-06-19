@@ -3,7 +3,9 @@
 namespace Bedard\Backend\Actions;
 
 use Bedard\Backend\Actions\Action;
+use Bedard\Backend\Classes\Alert;
 use Bedard\Backend\Resource;
+use Illuminate\Support\Str;
 
 class DeleteAction extends Action
 {
@@ -28,11 +30,15 @@ class DeleteAction extends Action
      */
     public function handle($resource, $user, $data = [])
     {
+        $total = count($data['models']);
+
         $resource
             ->query()
             ->whereIn($resource::$modelKey, $data['models'])
             ->get()
             ->each(fn ($model) => $model->delete());
+        
+        Alert::success("Successfully deleted {$total} " . strtolower(Str::plural($resource::$entity, $total)));
 
         return redirect(route('backend.resources.show', ['id' => $resource::$id]));
     }

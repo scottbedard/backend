@@ -10,5 +10,7 @@
         <script>console.error('Manifest not found, please run the following:\n\nphp artisan vendor:publish --tag backend')</script>
     @endif
 
+    <x-backend::layout.alerts />
+
     <script src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
 </body>
