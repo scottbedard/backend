@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Actions;
 
 use Bedard\Backend\Actions\Action;
+use Bedard\Backend\Classes\Alert;
 use Bedard\Backend\Resource;
 
 class CreateAction extends Action
@@ -37,6 +38,8 @@ class CreateAction extends Action
         $model->timestamps = false;
         
         $model->save();
+
+        Alert::success("Successfully created " . strtolower($resource::$entity));
 
         return redirect(route('backend.resources.show', ['id' => $resource::$id]));
     }

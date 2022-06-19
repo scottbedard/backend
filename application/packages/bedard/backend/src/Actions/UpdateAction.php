@@ -3,7 +3,7 @@
 namespace Bedard\Backend\Actions;
 
 use Bedard\Backend\Actions\Action;
-use Illuminate\Support\Arr;
+use Bedard\Backend\Classes\Alert;
 
 class UpdateAction extends Action
 {
@@ -40,6 +40,8 @@ class UpdateAction extends Action
         $model->timestamps = false;
         
         $model->save();
+
+        Alert::success("Successfully updated " . strtolower($resource::$entity));
 
         return redirect(route('backend.resources.show', ['id' => $resource::$id]));
     }
