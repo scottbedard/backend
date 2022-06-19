@@ -41,7 +41,7 @@ class Icon extends Component
                     "width=\"{$this->size}\"",
                     "stroke-width=\"{$this->strokeWidth}\"",
                     "<svg data-icon {$data['attributes']->toHtml()}",
-                ], File::get($path));
+                ], File::get($path), 1);
 
                 return $svg;
             } catch (FileNotFoundException $e) {
