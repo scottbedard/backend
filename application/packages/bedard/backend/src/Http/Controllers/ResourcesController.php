@@ -89,7 +89,6 @@ class ResourcesController extends Controller
         }
 
         $table = $resource->table();
-        $toolbar = $resource->toolbar();
         $query = $resource->query();
 
         $order = $table->defaultOrder;
@@ -116,7 +115,6 @@ class ResourcesController extends Controller
             'data' => $results,
             'resource' => $resource,
             'table' => $table->provide($data),
-            'toolbar' => $toolbar->provide($data),
         ]);
     }
 

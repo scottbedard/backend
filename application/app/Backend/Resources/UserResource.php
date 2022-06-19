@@ -149,6 +149,30 @@ class UserResource extends Resource
         return Table::make()
             ->defaultOrder('id', 'asc')
             ->selectable()
+            ->withButton(
+                Button::permission('create users')
+                    ->primary()
+                    ->icon('plus')
+                    ->text('Create user')
+                    ->to(route('backend.resources.create', ['id' => static::$id])),
+                    
+                Button::permission('delete users')
+                    ->action('delete')
+                    ->disabled('!checked.includes(true)')
+                    ->icon('trash')
+                    ->id('delete')
+                    ->text('Delete selected')
+                    ->confirm([
+                        'buttonIcon' => 'trash',
+                        'buttonText' => 'Confirm delete',
+                        'buttonTheme' => 'danger',
+                        'data' => fn ($data) => view('backend::renderables.table-confirm-data', $data),
+                        'secondaryIcon' => 'arrow-left',
+                        'secondaryText' => 'Cancel',
+                        'text' => 'Are you sure you want to permenantly delete these users?',
+                        'title' => 'Delete users',
+                    ]),
+            )
             ->pageSize(15)
             ->columns([
                 Column::make('id')
@@ -180,38 +204,5 @@ class UserResource extends Resource
                     ->sortable()
                     ->diffForHumans(),
             ]);
-    }
-
-    /**
-     * Toolbar
-     *
-     * @return \Bedard\Backend\Components\Toolbar
-     */
-    public function toolbar(): Component
-    {
-        return Group::gap()->padded()->items([
-            Button::permission('create users')
-                ->primary()
-                ->icon('plus')
-                ->text('Create user')
-                ->to(route('backend.resources.create', ['id' => static::$id])),
-
-            Button::permission('delete users')
-                ->action('delete')
-                ->disabled('!checked.includes(true)')
-                ->icon('trash')
-                ->id('delete')
-                ->text('Delete selected')
-                ->confirm([
-                    'buttonIcon' => 'trash',
-                    'buttonText' => 'Confirm delete',
-                    'buttonTheme' => 'danger',
-                    'data' => fn ($data) => view('backend::renderables.table-confirm-data', $data),
-                    'secondaryIcon' => 'arrow-left',
-                    'secondaryText' => 'Cancel',
-                    'text' => 'Are you sure you want to permenantly delete these users?',
-                    'title' => 'Delete users',
-                ]),
-        ]);
     }
 }

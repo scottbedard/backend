@@ -8,6 +8,14 @@
     x-model="checked"
     class="text-sm"
     data-table>
+    @if (count($buttons))
+        <div class="flex flex-wrap gap-6 p-6">
+            @foreach ($buttons as $button)
+                {{ $button->render() }}
+            @endforeach
+        </div>
+    @endif
+
     <div class="table w-full">
         <div
             class="font-bold table-header-group tracking-wide"
