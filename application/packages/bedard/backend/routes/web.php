@@ -3,7 +3,6 @@
 use Bedard\Backend\Http\Controllers\DebugController;
 use Bedard\Backend\Http\Controllers\IndexController;
 use Bedard\Backend\Http\Controllers\ResourcesController;
-use Bedard\Backend\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix(config('backend.path'))
@@ -21,7 +20,5 @@ Route::prefix(config('backend.path'))
         Route::get('/resources/{id}/create', [ResourcesController::class, 'create'])->name('backend.resources.create');
 
         Route::post('/resources/{id}/action', [ResourcesController::class, 'action'])->name('backend.resources.action');
-        
-        Route::post('/settings/toggle', [SettingsController::class, 'toggle'])->name('backend.settings.toggle');
-
+    
     });

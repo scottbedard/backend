@@ -4,7 +4,6 @@ namespace Bedard\Backend;
 
 use Backend;
 use Bedard\Backend\Http\Middleware\BackendMiddleware;
-use Bedard\Backend\Models\BackendSetting;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
@@ -25,7 +24,6 @@ class BackendServiceProvider extends ServiceProvider
         $this->bootGates();
         $this->bootMiddleware();
         $this->bootMigrations();
-        $this->bootModels();
         $this->bootPublished();
         $this->bootRoutes();
         $this->bootViews();
@@ -97,24 +95,6 @@ class BackendServiceProvider extends ServiceProvider
     private function bootMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../src/Database/Migrations');
-    }
-
-    /**
-     * Boot models.
-     *
-     * @return void
-     */
-    private function bootModels()
-    {
-        $model = config('backend.user');
-
-        $model::resolveRelationUsing('backendSettings', function ($user) {
-            return $user->hasMany(BackendSetting::class, 'user_id');
-        });
-
-        BackendSetting::resolveRelationUsing('user', function ($permission) use ($model) {
-            return $permission->belongsTo($model, 'id');
-        });
     }
 
     /**

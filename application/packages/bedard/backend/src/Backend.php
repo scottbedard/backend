@@ -122,32 +122,6 @@ class Backend
     }
 
     /**
-     * Test if a user's backend setting is disabled
-     *
-     * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $key
-     * 
-     * @return boolean
-     */
-    public function disabled($user, string $key)
-    {
-        return ! $this->enabled($user, $key);
-    }
-
-    /**
-     * Test if a user's backend setting is enabled
-     *
-     * @param \Illuminate\Foundation\Auth\User $user
-     * @param string $key
-     *
-     * @return boolean
-     */
-    public function enabled(User $user, string $key)
-    {
-        return (bool) $user->backendSettings()->where('key', $key)->where('value', true)->count();
-    }
-
-    /**
      * Get a backend resource by ID
      *
      * @param string $id
