@@ -126,10 +126,14 @@ class Table extends Component
     /**
      * With button
      *
+     * @param string|array $buttons
+     *
      * @return self
      */
-    public function withButton(...$buttons): self
+    public function withButtons($buttons): self
     {
+        $buttons = ! is_array($buttons) ? [$buttons] : $buttons;
+
         foreach ($buttons as $button) {
             array_push($this->attributes['buttons'], $button);
         }

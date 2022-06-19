@@ -6,10 +6,10 @@ use App\Models\User;
 use Bedard\Backend\Actions\CreateAction;
 use Bedard\Backend\Actions\DeleteAction;
 use Bedard\Backend\Actions\UpdateAction;
+use Bedard\Backend\Components\Button;
 use Bedard\Backend\Components\Component;
-use Bedard\Backend\Components\Form;
-use Bedard\Backend\Components\Table;
 use Bedard\Backend\Exceptions\ActionNotFoundException;
+use Illuminate\Support\Str;
 
 class Resource
 {
@@ -176,5 +176,46 @@ class Resource
     public static function update()
     {
         return UpdateAction::make(self::class);
+    }
+
+    /**
+     * Default buttons
+     */
+    public static function createButton(array $options = [])
+    {
+        $icon = data_get($options, 'icon', 'plus');
+        $permission = data_get($options, 'permission', 'create' . self::$id);
+        $text = data_get($options, 'text', 'Create ' . Str::singular(self::$entity));
+
+        return Button::primary()
+            ->icon($icon)
+            ->permission($permission)            
+            ->text($text)
+            ->to(route('backend.resources.create', ['id' => static::$id]));
+    }
+
+    public static function deleteButton(array $options = [])
+    {
+        $permission = data_get($options, 'permission', 'delete' . self::$id);
+        $action = data_get($options, 'action', 'delete');
+        $icon = data_get($options, 'icon', 'trash');
+        $text = data_get($options, 'text', 'Delete selected');
+        
+        return Button::permission($permission)
+            ->action($action)
+            ->disabled('!checked.includes(true)')
+            ->icon($icon)
+            ->id('delete')
+            ->text($text)
+            ->confirm([
+                'buttonIcon' => 'trash',
+                'buttonText' => 'Confirm delete',
+                'buttonTheme' => 'danger',
+                'data' => fn ($data) => view('backend::renderables.table-confirm-data', $data),
+                'secondaryIcon' => 'arrow-left',
+                'secondaryText' => 'Cancel',
+                'text' => 'Are you sure you want to permenantly delete these ' . Str::plural(self::$entity) . '?',
+                'title' => 'Delete ' . Str::plural(self::$entity),
+            ]);
     }
 }
