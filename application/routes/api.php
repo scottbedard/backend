@@ -33,7 +33,7 @@ Route::get('/envoyer', function () {
 
     $now = Carbon::now()->getTimestamp();
 
-    if ($now > $timeout) {
+    if ($timeout > 0 && $now > $timeout) {
         $color = 'red';
         $message = 'failed';
     }
