@@ -102,7 +102,7 @@ class SortOrder implements Stringable
             return $this->property;
         }
 
-        if ($this->direction < 0) {
+        if ($this->direction > 0) {
             return "{$this->property},asc";
         }
     }

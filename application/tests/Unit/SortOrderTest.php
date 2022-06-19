@@ -36,7 +36,16 @@ class SortOrderTest extends TestCase
         SortOrder::from('malformed string');
     }
 
-    public function test_sort_order_to_string()
+    public function test_sort_order_to_string_ascending()
+    {
+        $order = SortOrder::from('foo,asc');
+
+        $this->assertEquals('foo,asc', (string) $order);
+
+        $this->assertEquals('foo,asc', $order->toString());
+    }
+
+    public function test_sort_order_to_string_descending()
     {
         $order = SortOrder::from('foo,desc');
 
