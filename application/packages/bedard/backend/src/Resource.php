@@ -214,8 +214,8 @@ class Resource
                 'data' => fn ($data) => view('backend::renderables.table-confirm-data', $data),
                 'secondaryIcon' => 'arrow-left',
                 'secondaryText' => 'Cancel',
-                'text' => 'Are you sure you want to permenantly delete these ' . Str::plural(self::$entity) . '?',
-                'title' => 'Delete ' . Str::plural(self::$entity),
+                'text' => 'Are you sure you want to permenantly delete these ' . strtolower(Str::plural(static::$entity)) . '?',
+                'title' => 'Delete ' . Str::plural(static::$entity),
             ]);
     }
 }
