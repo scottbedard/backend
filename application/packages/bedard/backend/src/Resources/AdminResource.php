@@ -51,12 +51,14 @@ class AdminResource extends Resource
     /**
      * Form
      *
-     * @return \Bedard\Backend\Components\Form
+     * @return \Bedard\Backend\Components\
      */
     public function form(): Form
     {
         return Form::fields([
-            Field::make('id')->header('ID')->readonly(),
+            Field::input('id')->label('ID')->required()->readonly(),
+
+            Field::input('name')->label('Name')->autofocus()->required()->span(6),
         ]);
     }
 

@@ -16,9 +16,26 @@ class AdminsController extends Controller
      */
     public function create()
     {
-        return [
-            'foo' => 'bar',
+        $user = Auth::user();
+
+        $resource = new AdminResource();
+
+        $model = new $resource::$model;
+
+        $form = $resource->form();
+
+        $data = [
+            'action' => 'create',
+            'context' => 'create',
+            'model' => $model,
+            'resource' => $resource,
         ];
+
+        return view('backend::admins-show', [
+            'form' => $form->provide($data),
+            'model' => $model,
+            'resource' => $resource,
+        ]);
     }
 
     /**
@@ -49,7 +66,7 @@ class AdminsController extends Controller
             'rows' => $results,
         ];
 
-        return view('backend::admin', [
+        return view('backend::admins-index', [
             'data' => $results,
             'resource' => $resource,
             'table' => $table->provide($data),
