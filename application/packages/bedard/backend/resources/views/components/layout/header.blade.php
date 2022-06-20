@@ -34,9 +34,9 @@
 
             @if (auth()->user()->can('super admin'))
                 <a
-                    data-manage-permissions-link
-                    href="{{ route('backend.manage.permissions') }}"
-                    title="Manage Admins">
+                    data-admins-link
+                    href="{{ route('backend.admins.index') }}"
+                    title="Manage Administrators">
                     <x-backend::icon name="lock" size="20" />
                 </a>
             @endif

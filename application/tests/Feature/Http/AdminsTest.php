@@ -7,11 +7,11 @@ use Backend;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ManagePermissionsTest extends TestCase
+class AdminsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_super_admins_can_access_manage_permissions()
+    public function test_super_admins_can_access_admins()
     {
         $admin = User::factory()->create();
 
@@ -19,11 +19,11 @@ class ManagePermissionsTest extends TestCase
 
         $this
             ->actingAs($admin)
-            ->get(route('backend.manage.permissions'))
+            ->get(route('backend.admins.index'))
             ->assertSuccessful();
     }
 
-    public function test_lesser_admins_cannot_access_manage_permissions()
+    public function test_lesser_admins_cannot_access_admins()
     {
         $admin = User::factory()->create();
 
@@ -31,7 +31,7 @@ class ManagePermissionsTest extends TestCase
 
         $this
             ->actingAs($admin)
-            ->get(route('backend.manage.permissions'))
+            ->get(route('backend.admins.index'))
             ->assertForbidden();
     }
 }

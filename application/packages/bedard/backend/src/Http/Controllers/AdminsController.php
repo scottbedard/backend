@@ -6,14 +6,15 @@ use Backend;
 use Bedard\Backend\Http\Controllers\Controller;
 use Bedard\Backend\Resources\AdminResource;
 use Illuminate\Support\Facades\Auth;
-class AdminController extends Controller
+
+class AdminsController extends Controller
 {
     /**
-     * Manage roles and permissions
+     * Index
      *
      * @param \Illuminate\Http\Request $request
      */
-    public function permissions()
+    public function index()
     {
         $user = Auth::user();
         

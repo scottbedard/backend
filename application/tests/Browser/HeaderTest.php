@@ -8,11 +8,11 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class ManagePermissionsTest extends DuskTestCase
+class HeaderTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    public function test_super_admins_have_link_to_manage_permissions()
+    public function test_super_admins_see_admins_link()
     {
         $admin = $this->superAdmin();
 
@@ -20,12 +20,12 @@ class ManagePermissionsTest extends DuskTestCase
             $browser
                 ->loginAs($admin)
                 ->visitRoute('backend.index')
-                ->click('a[data-manage-permissions-link]')
-                ->assertRouteIs('backend.manage.permissions');
+                ->click('a[data-admins-link]')
+                ->assertRouteIs('backend.admins.index');
         });
     }
 
-    public function test_lesser_admins_do_not_see_manage_permissions_link()
+    public function test_lesser_admins_do_not_see_admins_link()
     {
         $admin = User::factory()->create();
 
@@ -35,7 +35,7 @@ class ManagePermissionsTest extends DuskTestCase
             $browser
                 ->loginAs($admin)
                 ->visitRoute('backend.index')
-                ->assertNotPresent('a[data-manage-permissions-link]');
+                ->assertNotPresent('a[data-admins-link]');
         });
     }
 }

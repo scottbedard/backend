@@ -1,6 +1,6 @@
 <?php
 
-use Bedard\Backend\Http\Controllers\AdminController;
+use Bedard\Backend\Http\Controllers\AdminsController;
 use Bedard\Backend\Http\Controllers\DebugController;
 use Bedard\Backend\Http\Controllers\IndexController;
 use Bedard\Backend\Http\Controllers\ResourcesController;
@@ -28,9 +28,9 @@ Route::prefix(config('backend.path'))
         //
         // super admin only
         //
-        Route::prefix('manage')->middleware(['can:super admin'])->group(function () {
+        Route::prefix('admin')->middleware(['can:super admin'])->group(function () {
 
-            Route::get('/permissions', [AdminController::class, 'permissions'])->name('backend.manage.permissions');
+            Route::get('/', [AdminsController::class, 'index'])->name('backend.admins.index');
 
         });
     });

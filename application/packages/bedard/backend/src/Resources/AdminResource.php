@@ -32,7 +32,7 @@ class AdminResource extends Resource
      *
      * @var string
      */
-    public static $icon = 'smile';
+    public static $icon = 'lock';
   
     /**
      * The model corresponding to this resource
@@ -73,13 +73,22 @@ class AdminResource extends Resource
             ])
             ->selectable()
             ->columns([
-                Column::make('id')->header('ID'),
+                Column::make('id')
+                    ->header('ID')
+                    ->sortable(),
 
-                Column::make('name')->header('Name'),
+                Column::make('name')
+                    ->header('Name')
+                    ->sortable(),
 
-                Column::date('created_at')->header('Created at'),
+                Column::date('created_at')
+                    ->header('Created at')
+                    ->sortable(),
 
-                Column::date('updated_at')->header('Last updated')->diffForHumans(),
+                Column::date('updated_at')
+                    ->header('Last updated')
+                    ->sortable()
+                    ->diffForHumans(),
             ]);
     }
 }

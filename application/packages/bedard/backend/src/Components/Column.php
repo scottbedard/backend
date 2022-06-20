@@ -7,6 +7,7 @@ use Bedard\Backend\Components\Component;
 use Bedard\Backend\Exceptions\InvalidAttributeException;
 use Bedard\Backend\Exceptions\InvalidSortOrderException;
 use Bedard\Backend\Util;
+use Illuminate\Support\Facades\Route;
 
 class Column extends Component
 {
@@ -59,15 +60,17 @@ class Column extends Component
 
         $order = data_get($this->data, 'order', null);
 
+        $route = Route::getCurrentRoute()->getName();
+
         if ($order !== null) {
             if ($order->property !== $this->id || $order->direction === -1) {
-                return route('backend.resources.show', array_merge($req->query(), [
+                return route($route, array_merge($req->query(), [
                     'id' => $req->id,
                     'order' => "{$this->id},asc",
                     'page' => null,
                 ]));
             } elseif ($order->direction === 1) {
-                return route('backend.resources.show', array_merge($req->query(), [
+                return route($route, array_merge($req->query(), [
                     'id' => $req->id,
                     'order' => "{$this->id},desc",
                     'page' => null,
