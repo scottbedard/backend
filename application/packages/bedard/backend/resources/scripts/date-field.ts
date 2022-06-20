@@ -31,7 +31,7 @@ export default alpine((value: string, parseStr: string, formatStr) => {
     value,
 
     init() {
-      const component = this.$refs.datefield
+      const component = this.$refs.dateField
 
       const onBodyClick = (e: MouseEvent) => {
         let el: HTMLElement | null = e.target as HTMLElement

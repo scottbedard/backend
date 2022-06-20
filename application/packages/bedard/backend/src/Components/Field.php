@@ -26,6 +26,7 @@ class Field extends Group
     public static $subclasses = [
         'date' => \Bedard\Backend\Components\DateField::class,
         'input' => \Bedard\Backend\Components\InputField::class,
+        'select' => \Bedard\Backend\Components\SelectField::class,
     ];
 
     /**

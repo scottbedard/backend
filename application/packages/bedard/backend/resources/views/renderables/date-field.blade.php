@@ -1,6 +1,6 @@
 <div
-    x-data="datefield('{{ $value }}', '{{ $parse }}', '{{ $format }}')"
-    x-ref="datefield"
+    x-data="dateField('{{ $value }}', '{{ $parse }}', '{{ $format }}')"
+    x-ref="dateField"
     class="relative"
     data-date-field="{{ $id }}"
     @click="expanded = true">

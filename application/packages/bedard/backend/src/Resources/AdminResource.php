@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Resources;
 
+use App\Models\User;
 use Bedard\Backend\Components\Column;
 use Bedard\Backend\Components\Component;
 use Bedard\Backend\Components\Field;
@@ -57,6 +58,13 @@ class AdminResource extends Resource
     {
         return Form::fields([
             Field::input('id')->label('ID')->required()->readonly(),
+
+            Field::select('id')
+                ->label('Select user')
+                ->options(User::has('permissions')->orHas('roles')->get())
+                ->display('name')
+                ->required()
+                ->span(6),
 
             Field::input('name')->label('Name')->autofocus()->required()->span(6),
         ]);
