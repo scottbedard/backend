@@ -69,7 +69,7 @@ class AdminResource extends Resource
     {
         return Table::make()
             ->toolbar([
-                self::createButton(),  
+                self::createButton(['route' => route('backend.admins.create')]),  
             ])
             ->selectable()
             ->columns([

@@ -10,6 +10,18 @@ use Illuminate\Support\Facades\Auth;
 class AdminsController extends Controller
 {
     /**
+     * Create
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function create()
+    {
+        return [
+            'foo' => 'bar',
+        ];
+    }
+
+    /**
      * Index
      *
      * @param \Illuminate\Http\Request $request

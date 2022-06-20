@@ -184,19 +184,20 @@ class Resource
     public static function createButton(array $options = [])
     {
         $icon = data_get($options, 'icon', 'plus');
-        $permission = data_get($options, 'permission', 'create' . self::$id);
-        $text = data_get($options, 'text', 'Create ' . Str::singular(self::$entity));
+        $permission = data_get($options, 'permission', 'create' . static::$id);
+        $text = data_get($options, 'text', 'Create ' . Str::singular(static::$entity));
+        $route = data_get($options, 'route', route('backend.resources.create', ['id' => static::$id]));
 
         return Button::primary()
             ->icon($icon)
             ->permission($permission)            
             ->text($text)
-            ->to(route('backend.resources.create', ['id' => static::$id]));
+            ->to($route);
     }
 
     public static function deleteButton(array $options = [])
     {
-        $permission = data_get($options, 'permission', 'delete' . self::$id);
+        $permission = data_get($options, 'permission', 'delete' . static::$id);
         $action = data_get($options, 'action', 'delete');
         $icon = data_get($options, 'icon', 'trash');
         $text = data_get($options, 'text', 'Delete selected');
