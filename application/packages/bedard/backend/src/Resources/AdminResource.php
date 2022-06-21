@@ -59,7 +59,7 @@ class AdminResource extends Resource
         return Form::fields([
             Field::select('id')
                 ->label('Administrator')
-                ->options(User::has('permissions')->orHas('roles')->get())
+                ->options(fn ($search) => User::limit(10)->get())
                 ->display('name')
                 ->required()
                 ->span(6),

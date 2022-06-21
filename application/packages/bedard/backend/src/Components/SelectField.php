@@ -27,7 +27,12 @@ class SelectField extends Field
      */
     protected function output()
     {
+        $options = is_callable($this->attributes['options'])
+            ? $this->attributes['options'](null)
+            : $this->attributes['options'];
+        
         return view('backend::renderables.select-field', array_merge($this->attributes, [
+            'options' => $options,
             'data' => $this->data,
         ]));
     }

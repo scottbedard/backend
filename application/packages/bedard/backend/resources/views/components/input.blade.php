@@ -13,10 +13,7 @@
 
 <{{ $el }}
     @class([
-        'be-input w-full' => true,
-        'be-input-h be-input-px outline-none focus:border-gray-400 dark:focus:bg-gray-500/70 dark:placeholder:text-gray-200' => $el === 'input',
-        'hover:border-gray-400 dark:hover:bg-gray-600' => !$readonly,
-        'cursor-not-allowed' => $readonly || $disabled,
+        'be-input be-input-h be-input-px outline-none w-full' => true,
     ])
     {{ $autofocus ? "autofocus={$autofocus}" : '' }}
     {{ $disabled || $readonly ? 'disabled' : '' }}

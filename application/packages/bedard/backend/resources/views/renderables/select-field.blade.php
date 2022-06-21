@@ -37,7 +37,7 @@
 
     <template x-if="expanded">
         <div
-            class="absolute be-popover left-0 mt-3 p-3 right-0 top-full">
+            class="absolute be-popover left-0 max-h-64 mt-3 overflow-y-scroll p-3 right-0 top-full">
             <template x-for="model in data">
                 <div
                     x-text="model[display]"

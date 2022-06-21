@@ -1,13 +1,16 @@
+//
+// input
+//
 .be-input {
-  @apply border bg-gray-50 border-gray-300 rounded-md text-sm dark:bg-gray-500 dark:border-none;
+  @apply border bg-gray-50 border-gray-300 rounded-md text-sm placeholder:text-gray-400 dark:bg-gray-600 dark:border-gray-500 dark:placeholder:text-gray-200 dark:text-white;
 
   &:focus, &.be-input-focus {
     @apply border-gray-400;
   }
 }
 
-.be-input::placeholder, .be-input-placeholder {
-  @apply text-gray-400;
+.be-input-placeholder {
+  @apply text-gray-400 dark:text-gray-200;
 }
 
 .be-input-h {
@@ -18,18 +21,9 @@
   @apply px-3;
 }
 
-.be-input-rounded-top {
-  @apply rounded-md;
-}
-
-.be-input-rounded-top {
-  @apply rounded-md;
-}
-
-.be-input-rounded-bottom {
-  @apply rounded-b-md;
-}
-
+//
+// popover
+//
 .be-popover {
-  @apply bg-gray-50 border border-gray-300 p-3 rounded-md drop-shadow-md;
+  @apply bg-gray-50 border border-gray-300 drop-shadow-md p-3 rounded-md dark:bg-gray-600 dark:border-gray-500 dark:text-white;
 }
