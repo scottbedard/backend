@@ -38,6 +38,20 @@
     <template x-if="expanded">
         <div
             class="absolute be-popover left-0 max-h-64 mt-3 overflow-y-scroll p-3 right-0 top-full">
+            @if ($searchable)
+                <div class="mb-2 relative">
+                    <input
+                        autofocus
+                        class="bg-white border border-gray-200 h-10 outline-none px-3 rounded text-sm w-full dark:bg-gray-500/50 dark:border-gray-500 dark:placeholder-gray-400"
+                        placeholder="{{ $searchPlaceholder }}" />
+
+                    <x-backend::icon
+                        class="absolute pointer-events-none right-3 text-gray-300 top-1/2 transform -translate-y-1/2 dark:text-gray-400"
+                        name="search"
+                        size="16" />
+                </div>
+            @endif
+
             <template x-for="model in data">
                 <div
                     x-text="model[display]"

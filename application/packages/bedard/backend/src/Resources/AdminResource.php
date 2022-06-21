@@ -58,10 +58,11 @@ class AdminResource extends Resource
     {
         return Form::fields([
             Field::select('id')
+                ->display('name')
                 ->label('Administrator')
                 ->options(fn ($search) => User::limit(10)->get())
-                ->display('name')
                 ->required()
+                ->searchable()
                 ->span(6),
 
             Field::input('name')

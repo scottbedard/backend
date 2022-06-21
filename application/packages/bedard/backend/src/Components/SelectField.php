@@ -18,6 +18,8 @@ class SelectField extends Field
         'placeholder' => 'Select...',
         'readonly' => false,
         'required' => false,
+        'searchable' => false,
+        'searchPlaceholder' => 'Search',
     ];
 
     /**
