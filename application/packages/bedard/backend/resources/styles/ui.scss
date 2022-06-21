@@ -1,0 +1,35 @@
+.be-input {
+  @apply border bg-gray-50 border-gray-300 rounded-md text-sm dark:bg-gray-500 dark:border-none;
+
+  &:focus, &.be-input-focus {
+    @apply border-gray-400;
+  }
+}
+
+.be-input::placeholder, .be-input-placeholder {
+  @apply text-gray-400;
+}
+
+.be-input-h {
+  @apply h-12;
+}
+
+.be-input-px {
+  @apply px-3;
+}
+
+.be-input-rounded-top {
+  @apply rounded-md;
+}
+
+.be-input-rounded-top {
+  @apply rounded-md;
+}
+
+.be-input-rounded-bottom {
+  @apply rounded-b-md;
+}
+
+.be-popover {
+  @apply bg-gray-50 border border-gray-300 p-3 rounded-md drop-shadow-md;
+}

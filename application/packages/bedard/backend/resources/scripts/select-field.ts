@@ -1,15 +1,35 @@
 import alpine from './alpine'
 
-export default alpine(() => {
+type Options = {
+  data: Record<string, any>[]
+  display: string
+  key: string
+  placeholder: string
+  value: any
+}
+
+export default alpine((options: Options) => {
   return {
+    data: options.data,
+
+    display: options.display,
+
     expanded: false,
 
-    collapse() {
+    key: options.key,
+
+    placeholder: options.placeholder,
+
+    value: options.value,
+
+    close() {
       this.expanded = false
     },
 
-    expand() {
-      this.expanded = true
+    get displayValue() {
+      const selected = this.data.find(obj => obj[this.key] === this.value) ?? null;
+
+      return selected?.[this.display] ?? this.placeholder ?? ''
     },
 
     init() {
@@ -23,11 +43,11 @@ export default alpine(() => {
           el = el.parentElement
         }
 
-        this.collapse()
+        this.close()
       }
 
       const onKeydown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') this.collapse()
+        if (e.key === 'Escape') this.close()
       }
 
       this.$watch('expanded', (expanded) => {
@@ -41,8 +61,14 @@ export default alpine(() => {
       })
     },
 
-    select(i: number) {
-      console.log('selecting', i);
+    open() {
+      this.expanded = true
+    },
+
+    select(value: number) {
+      this.value = value
+
+      this.close();
     },
   }
 })

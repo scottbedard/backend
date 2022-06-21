@@ -13,8 +13,8 @@
 
 <{{ $el }}
     @class([
-        'border bg-gray-50 border-gray-300 rounded-md tracking-wide w-full text-sm dark:bg-gray-500 dark:border-none' => true,
-        'h-12 outline-none px-3 focus:border-gray-400 dark:focus:bg-gray-500/70 dark:placeholder:text-gray-200' => $el === 'input',
+        'be-input w-full' => true,
+        'be-input-h be-input-px outline-none focus:border-gray-400 dark:focus:bg-gray-500/70 dark:placeholder:text-gray-200' => $el === 'input',
         'hover:border-gray-400 dark:hover:bg-gray-600' => !$readonly,
         'cursor-not-allowed' => $readonly || $disabled,
     ])

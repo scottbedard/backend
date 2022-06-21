@@ -57,16 +57,18 @@ class AdminResource extends Resource
     public function form(): Form
     {
         return Form::fields([
-            Field::input('id')->label('ID')->required()->readonly(),
-
             Field::select('id')
-                ->label('Select user')
+                ->label('Administrator')
                 ->options(User::has('permissions')->orHas('roles')->get())
                 ->display('name')
                 ->required()
                 ->span(6),
 
-            Field::input('name')->label('Name')->autofocus()->required()->span(6),
+            Field::input('name')
+                ->label('Name')
+                ->placeholder('Hello world')
+                ->required()
+                ->span(6),
         ]);
     }
 

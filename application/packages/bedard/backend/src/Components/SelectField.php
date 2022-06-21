@@ -15,6 +15,7 @@ class SelectField extends Field
         'disabled' => false,
         'display' => 'id',
         'options' => [],
+        'placeholder' => 'Select...',
         'readonly' => false,
         'required' => false,
     ];

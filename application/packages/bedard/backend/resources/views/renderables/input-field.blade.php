@@ -10,6 +10,7 @@
     :disabled="$disabled"
     :id="$uid"
     :name="'form[' . $id . ']'"
+    :placeholder="$placeholder"
     :readonly="$readonly"
     :required="$required"
     :type="$type"
