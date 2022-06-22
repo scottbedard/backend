@@ -21,7 +21,7 @@ class HeaderTest extends DuskTestCase
                 ->loginAs($admin)
                 ->visitRoute('backend.index')
                 ->click('a[data-admins-link]')
-                ->assertRouteIs('backend.admins.index');
+                ->assertRouteIs('backend.admin.index');
         });
     }
 
