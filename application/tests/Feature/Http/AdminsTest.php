@@ -19,7 +19,7 @@ class AdminsTest extends TestCase
 
         $this
             ->actingAs($admin)
-            ->get(route('backend.admins.index'))
+            ->get(route('backend.admin.index'))
             ->assertSuccessful();
     }
 
@@ -31,7 +31,7 @@ class AdminsTest extends TestCase
 
         $this
             ->actingAs($admin)
-            ->get(route('backend.admins.index'))
+            ->get(route('backend.admin.index'))
             ->assertForbidden();
     }
 }
