@@ -4,9 +4,10 @@ namespace Bedard\Backend\Components;
 
 use Backend;
 use Bedard\Backend\Classes\Fluent;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 
-class Component extends Fluent implements Renderable
+class Component extends Fluent implements Renderable, Arrayable
 {
     /**
      * Attributes
@@ -18,6 +19,28 @@ class Component extends Fluent implements Renderable
         'id' => null,
         'permission' => null,
     ];
+
+    /**
+     * Flatten component into an array with descendent components
+     *
+     * @return array
+     */
+    final public function flatten()
+    {
+        $tree = [$this];
+
+        foreach ($this->attributes as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $descendent) {
+                    if (is_a($descendent, self::class)) {
+                        array_push($tree, ...$descendent->flatten());
+                    }
+                }
+            }
+        }
+
+        return $tree;
+    }
 
     /**
      * Get html from render function
@@ -43,6 +66,30 @@ class Component extends Fluent implements Renderable
     protected function output()
     {
         return '';
+    }
+
+    /**
+     * Provide data to child items
+     *
+     * @param mixed $data
+     *
+     * @return \Bedard\Backend\Components\Block
+     */
+    final public function provide($data)
+    {
+        $this->data = $data;
+
+        foreach ($this->attributes as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $descendent) {
+                    if (is_a($descendent, self::class)) {
+                        $descendent->provide($data);
+                    }
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**

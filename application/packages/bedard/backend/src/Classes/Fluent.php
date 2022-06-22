@@ -201,32 +201,6 @@ abstract class Fluent implements Arrayable
         }
     }
 
-
-    
-    /**
-     * Provide data to child items
-     *
-     * @param mixed $data
-     *
-     * @return \Bedard\Backend\Components\Block
-     */
-    final public function provide($data)
-    {
-        $this->data = $data;
-
-        foreach ($this->attributes as $key => $value) {
-            if (is_array($value)) {
-                foreach ($value as $descendent) {
-                    if (is_a($descendent, self::class)) {
-                        $descendent->provide($data);
-                    }
-                }
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * Throw unknown property acception.
      *

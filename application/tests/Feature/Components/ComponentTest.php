@@ -19,6 +19,7 @@ class ComponentTest extends TestCase
         $user = User::factory()->create();
 
         Auth::login($user);
+
         Backend::authorize($user, 'foo');
 
         $component = Group::text('outer')->items([
@@ -47,6 +48,7 @@ class ComponentTest extends TestCase
         $user = User::factory()->create();
 
         Auth::login($user);
+
         Backend::authorize($user, 'super admin');
 
         $component = Group::items([
@@ -64,5 +66,54 @@ class ComponentTest extends TestCase
         $this->assertStringContainsString('get', $output);
         $this->assertStringContainsString('create', $output);
         $this->assertStringNotContainsString('update', $output);
+    }
+
+    public function test_flattening_component_tree_to_array()
+    {
+        $grandchild = Group::make();
+
+        $child1 = Group::items([
+            $grandchild,
+        ]);
+
+        $child2 = Group::make();
+
+        $parent = Group::items([
+            $child1,
+            $child2,
+        ]);
+        
+        $tree = $parent->flatten();
+        
+        $this->assertEquals($parent, $tree[0]);
+        $this->assertEquals($child1, $tree[1]);
+        $this->assertEquals($grandchild, $tree[2]);
+        $this->assertEquals($child2, $tree[3]);
+    }
+
+
+    public function test_providing_data_to_child_components()
+    {
+        $grandchild = Group::make();
+
+        $child1 = Group::items([
+            $grandchild,
+        ]);
+
+        $child2 = Group::make();
+
+        $parent = Group::items([
+            $child1,
+            $child2,
+        ]);
+
+        $data = ['foo' => 'bar'];
+
+        $parent->provide($data);
+
+        $this->assertEquals($data, $parent->data);
+        $this->assertEquals($data, $child1->data);
+        $this->assertEquals($data, $child2->data);
+        $this->assertEquals($data, $grandchild->data);
     }
 }
