@@ -27,3 +27,20 @@
 .be-popover {
   @apply bg-gray-50 border border-gray-300 drop-shadow-md p-3 rounded-md dark:bg-gray-600 dark:border-gray-500 dark:text-white;
 }
+
+//
+// scrollbar
+//
+.be-scrollbar {
+  &::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply bg-gray-200 rounded-md dark:bg-gray-500;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-gray-400/50 rounded-md dark:bg-gray-800/80;
+  }
+}

@@ -5,15 +5,3 @@ body {
 a:not(.unstyled) {
   @apply hover:text-primary-500;
 }
-
-::-webkit-scrollbar {
-  @apply w-2;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-gray-200 rounded-md dark:bg-gray-500;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-400/50 rounded-md dark:bg-gray-800/80;
-}
