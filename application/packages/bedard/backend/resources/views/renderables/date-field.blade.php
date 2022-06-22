@@ -33,7 +33,8 @@
         x-model="value"
         class="hidden"
         name="{{ 'form[' . $id . ']' }}"
-        type="text" />
+        type="text"
+        value="{{ $value }}" />
 
     <template x-if="expanded">
         <div
