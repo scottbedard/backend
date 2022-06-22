@@ -28,11 +28,13 @@ Route::prefix(config('backend.path'))
         //
         // super admin only
         //
-        Route::prefix('admins')->middleware(['can:super admin'])->group(function () {
+        Route::middleware(['can:super admin'])->group(function () {
 
-            Route::get('/', [AdminsController::class, 'index'])->name('backend.admins.index');
+            Route::get('/admin', [AdminsController::class, 'index'])->name('backend.admin.index');
 
-            Route::get('/create', [AdminsController::class, 'create'])->name('backend.admins.create');
+            Route::get('/admin/create', [AdminsController::class, 'create'])->name('backend.admin.create');
+
+            Route::get('/admin/edit/{modelId}', [AdminsController::class, 'edit'])->name('backend.admin.edit');
 
         });
     });

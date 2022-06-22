@@ -82,7 +82,7 @@ class AdminResource extends Resource
     {
         return Table::make()
             ->toolbar([
-                self::createButton(['route' => route('backend.admins.create')]),  
+                self::createButton(['route' => route('backend.admin.create')]),  
             ])
             ->selectable()
             ->columns([
@@ -102,6 +102,7 @@ class AdminResource extends Resource
                     ->header('Last updated')
                     ->sortable()
                     ->diffForHumans(),
-            ]);
+            ])
+            ->to(fn ($row) => route('backend.admin.edit', ['modelId' => $row->id]));
     }
 }

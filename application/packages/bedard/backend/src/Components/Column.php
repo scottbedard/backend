@@ -64,14 +64,12 @@ class Column extends Component
 
         if ($order !== null) {
             if ($order->property !== $this->id || $order->direction === -1) {
-                return route($route, array_merge($req->query(), [
-                    'id' => $req->id,
+                return route($route, array_merge($req->query(), $req->route()->parameters(), [
                     'order' => "{$this->id},asc",
                     'page' => null,
                 ]));
             } elseif ($order->direction === 1) {
-                return route($route, array_merge($req->query(), [
-                    'id' => $req->id,
+                return route($route, array_merge($req->query(), $req->route()->parameters(), [
                     'order' => "{$this->id},desc",
                     'page' => null,
                 ]));
