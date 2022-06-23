@@ -63,8 +63,6 @@ export default alpine((options: Options) => {
         }
       })
 
-      console.log('watch it!');
-
       this.$watch('search', debounce(val => {
         console.log('search', val)
       }, 150))
