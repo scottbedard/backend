@@ -116,4 +116,19 @@ class ComponentTest extends TestCase
         $this->assertEquals($data, $child2->data);
         $this->assertEquals($data, $grandchild->data);
     }
+
+    public function test_walking_over_component_tree()
+    {
+        $x = 0;
+
+        Group::items([
+            Group::items([
+                Group::make(),
+            ]),
+        ])->walk(function () use (&$x) {
+            $x += 1;
+        });
+        
+        $this->assertEquals(3, $x);
+    }
 }

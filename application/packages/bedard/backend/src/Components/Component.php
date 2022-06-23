@@ -109,4 +109,16 @@ class Component extends Fluent implements Renderable, Arrayable
         
         return $this->output();
     }
+
+    /**
+     * Walk across a components descendent tree.
+     */
+    public function walk(callable $fn)
+    {
+        $family = $this->flatten();
+        
+        foreach ($family as $node) {
+            $fn($node);
+        }
+    }
 }
