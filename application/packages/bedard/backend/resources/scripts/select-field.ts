@@ -1,3 +1,4 @@
+import { debounce } from 'lodash-es'
 import alpine from './alpine'
 
 type Options = {
@@ -19,6 +20,8 @@ export default alpine((options: Options) => {
     key: options.key,
 
     placeholder: options.placeholder,
+
+    search: '',
 
     value: options.value,
 
@@ -59,6 +62,12 @@ export default alpine((options: Options) => {
           document.body.removeEventListener('keydown', onKeydown)
         }
       })
+
+      console.log('watch it!');
+
+      this.$watch('search', debounce(val => {
+        console.log('search', val)
+      }, 150))
     },
 
     open() {

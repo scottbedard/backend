@@ -41,6 +41,7 @@
             @if ($searchable)
                 <div class="mb-2 relative">
                     <input
+                        x-model="search"
                         autofocus
                         class="bg-white border border-gray-200 h-10 outline-none px-3 rounded text-sm w-full dark:bg-gray-500/50 dark:border-gray-500 dark:placeholder-gray-400"
                         placeholder="{{ $searchPlaceholder }}" />
