@@ -1,9 +1,11 @@
 import { debounce } from 'lodash-es'
 import alpine from './alpine'
+import axios from 'axios';
 
 type Options = {
   data: Record<string, any>[]
   display: string
+  handler: string
   key: string
   placeholder: string
   value: any
@@ -63,9 +65,16 @@ export default alpine((options: Options) => {
         }
       })
 
-      this.$watch('search', debounce(val => {
-        console.log('search', val)
-      }, 150))
+      this.$watch('search', debounce(async (val) => {
+        const { data } = await axios.get(options.handler, {
+          params: {
+            id: this.key,
+            search: this.search,
+          },
+        })
+
+        this.data = data
+      }, 200))
     },
 
     open() {

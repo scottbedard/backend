@@ -6,6 +6,7 @@ use Backend;
 use Bedard\Backend\Classes\Fluent;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
 
 class Component extends Fluent implements Renderable, Arrayable
 {
@@ -19,6 +20,13 @@ class Component extends Fluent implements Renderable, Arrayable
         'id' => null,
         'permission' => null,
     ];
+
+    /**
+     * Handler ID
+     *
+     * @var string
+     */
+    protected $handlerId = null;
 
     /**
      * Flatten component into an array with descendent components
@@ -40,6 +48,15 @@ class Component extends Fluent implements Renderable, Arrayable
         }
 
         return $tree;
+    }
+
+    /**
+     * Component handler.
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function handle(Request $request)
+    {
     }
 
     /**

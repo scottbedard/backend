@@ -8,6 +8,7 @@
     x-data="selectField({
         data: {{ json_encode($options) }},
         display: '{{ $display }}',
+        handler: '{{ $handler }}',
         key: '{{ $id }}',
         placeholder: '{{ $placeholder }}',
         value: null,
@@ -37,6 +38,7 @@
 
     <template x-if="expanded">
         <div
+            x-trap="expanded"
             class="absolute be-popover be-popover-mt be-scrollbar left-0 max-h-64 overflow-y-scroll p-3 right-0 top-full">
             @if ($searchable)
                 <div class="mb-2 relative">
@@ -54,11 +56,12 @@
             @endif
 
             <template x-for="model in data">
-                <div
+                <a
                     x-text="model[display]"
                     class="cursor-pointer flex h-10 items-center px-3 rounded hover:bg-primary-500 hover:text-white "
-                    @click="select(model[key])">
-                </div>
+                    href="#"
+                    @click.prevent="select(model[key])">
+                </a>
             </template>
         </div>
     </template>

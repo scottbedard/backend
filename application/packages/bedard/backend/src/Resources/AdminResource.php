@@ -60,7 +60,7 @@ class AdminResource extends Resource
             Field::select('id')
                 ->display('name')
                 ->label('Administrator')
-                ->options(fn ($search) => User::limit(10)->get())
+                ->options(fn ($search) => User::where('name', 'LIKE', '%' . $search . '%')->orderBy('name', 'asc')->get())
                 ->required()
                 ->searchable()
                 ->span(6),

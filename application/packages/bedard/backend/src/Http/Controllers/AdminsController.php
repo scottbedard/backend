@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Http\Controllers;
 
+use Bedard\Backend\Exceptions\ComponentHandlerNotFoundException;
 use Bedard\Backend\Http\Controllers\Controller;
 use Bedard\Backend\Resources\AdminResource;
 use Illuminate\Http\Request;
@@ -36,6 +37,40 @@ class AdminsController extends Controller
             'model' => $model,
             'resource' => $resource,
         ]);
+    }
+
+    /**
+     * Component handlers
+     *
+     * @param \Illuminate\Http\Request $request
+     */
+    public function handlers(Request $request, string $handlerId)
+    {
+        $id = $request->id;
+
+        $resource = new AdminResource();
+
+        $data = [
+            'resource' => $resource,
+        ];
+
+        $table = $resource->table()->provide($data);
+
+        $form = $resource->form()->provide($data);
+
+        $components = array_merge($table->flatten(), $form->flatten());
+
+        foreach ($components as $component) {
+            if ($component->handlerId === $handlerId) {
+                $response = $component->handle($request);
+                
+                if ($response) {
+                    return $response;
+                }
+            }
+        }
+
+        throw new ComponentHandlerNotFoundException($handlerId);
     }
 
     /**

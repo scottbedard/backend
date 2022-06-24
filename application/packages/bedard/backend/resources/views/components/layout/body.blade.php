@@ -12,5 +12,6 @@
 
     <x-backend::layout.alerts />
 
-    <script src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
+    <script defer src="https://unpkg.com/@alpinejs/focus@3.10.2/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
 </body>

@@ -36,5 +36,7 @@ Route::prefix(config('backend.path'))
 
             Route::get('/admin/edit/{modelId}', [AdminsController::class, 'edit'])->name('backend.admin.edit');
 
+            Route::get('/admin/handlers/{id}', [AdminsController::class, 'handlers'])->name('backend.admin.handlers');
+
         });
     });
