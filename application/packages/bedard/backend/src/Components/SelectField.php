@@ -15,6 +15,7 @@ class SelectField extends Field
     protected $attributes = [
         'disabled' => false,
         'display' => 'id',
+        'emptyMessage' => 'No results',
         'options' => [],
         'placeholder' => 'Select...',
         'readonly' => false,

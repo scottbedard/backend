@@ -37,6 +37,10 @@ export default alpine((options: Options) => {
       return selected?.[this.display] ?? this.placeholder ?? ''
     },
 
+    get empty() {
+      return this.data.length === 0
+    },
+
     init() {
       const component = this.$refs.selectField
 
@@ -74,7 +78,7 @@ export default alpine((options: Options) => {
         })
 
         this.data = data
-      }, 200))
+      }, 100))
     },
 
     open() {

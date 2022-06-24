@@ -39,9 +39,9 @@
     <template x-if="expanded">
         <div
             x-trap="expanded"
-            class="absolute be-popover be-popover-mt be-scrollbar left-0 max-h-64 overflow-y-scroll p-3 right-0 top-full">
+            class="absolute be-popover be-popover-mt be-scrollbar grid gap-3 left-0 max-h-64 overflow-y-scroll p-3 right-0 top-full">
             @if ($searchable)
-                <div class="mb-2 relative">
+                <div class="relative">
                     <input
                         x-model="search"
                         autofocus
@@ -55,14 +55,20 @@
                 </div>
             @endif
 
-            <template x-for="model in data">
-                <a
-                    x-text="model[display]"
-                    class="cursor-pointer flex h-10 items-center px-3 rounded hover:bg-primary-500 hover:text-white "
-                    href="#"
-                    @click.prevent="select(model[key])">
-                </a>
-            </template>
+            <div>
+                <template x-if="empty">
+                    <div class="py-3 text-center text-gray-500 tracking-wide">{{ $emptyMessage }}</div>
+                </template>
+
+                <template x-for="model in data">
+                    <a
+                        x-text="model[display]"
+                        class="cursor-pointer flex h-10 items-center outline-none px-3 rounded unstyled hover:bg-primary-500 hover:text-white"
+                        href="#"
+                        @click.prevent="select(model[key])">
+                    </a>
+                </template>
+            </div>
         </div>
     </template>
 </div>
