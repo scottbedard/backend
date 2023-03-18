@@ -84,7 +84,7 @@ jobs:
           echo "-------"
           ls -a
           echo "-------"
-          composer config repositories.bedard/backend path ./packages/bedard/backend
+          composer config repositories.bedard/backend path /home/runner/work/backend/backend/packages/bedard/backend
           cat composer.json
           echo "-------"
           composer install
