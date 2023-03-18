@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Bedard\Backend\BackendServiceProvider::class,
 
         /*
          * Application Service Providers...
