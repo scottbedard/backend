@@ -36,7 +36,6 @@ jobs:
 
       - name: Configure directories
         run: |
-          echo "$PWD"
           mv sandbox/.env.example .env
           mv sandbox/* .
           mkdir packages
@@ -44,9 +43,6 @@ jobs:
           mkdir packages/bedard/backend
           mv package/* packages/bedard/backend
           chmod -R 777 ./storage ./bootstrap/cache
-          cat composer.json
-          echo "-----"
-          ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
         
       - name: Install Node
