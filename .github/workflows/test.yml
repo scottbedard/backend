@@ -19,7 +19,6 @@ jobs:
         name: Install pnpm
         id: pnpm-install
         with:
-          run_install: false
           version: 7
 
       - name: Install Node dependencies
