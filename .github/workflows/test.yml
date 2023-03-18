@@ -81,9 +81,7 @@ jobs:
       - name: Composer install
         run: |
           composer config repositories.bedard/backend path /home/runner/work/backend/backend/packages/bedard/backend
-          cat composer.json
-          echo "-------"
-          sleep 1
+          touch composer.json
           composer install
 
       - name: Generate application key
