@@ -1,5 +1,8 @@
 {
   "[php]": {
     "editor.tabSize": 4
+  },
+  "[blade.php]": {
+    "editor.tabSize": 2
   }
 }
