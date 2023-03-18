@@ -42,7 +42,10 @@ jobs:
       - name: Configure environment
         run: |
           cp ./sandbox ./.
-          cp ./package ./packages/bedard/backend -r
+          mkdir ./packages
+          mkdir ./packages/bedard
+          mkdir ./packages/bedard/backend
+          cp ./package ./packages/bedard/backend
           cp ./.env.example ./.env
           sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./.env
           chmod -R 777 ./sandbox/storage ./bootstrap/cache
