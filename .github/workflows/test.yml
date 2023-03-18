@@ -82,7 +82,7 @@ jobs:
         run: |
           ls -a packages
           echo "-----"
-          ls -a packages/bedard/backend
+          ls -a packages/bedard
           echo "-----"
           ls -a packages/bedard/backend
           echo "-----"
