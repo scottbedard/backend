@@ -25,8 +25,10 @@ export default defineConfig({
     {
       name: 'backend',
       buildEnd() {
-        fs.cpSync(envBackupPath, envPath)
-        fs.rmSync(envBackupPath)
+        if (fs.existsSync(envBackupPath)) {
+          fs.cpSync(envBackupPath, envPath)
+          fs.rmSync(envBackupPath)
+        }
       },
       buildStart() {
         fs.cpSync(envPath, envBackupPath)
