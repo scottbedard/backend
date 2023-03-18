@@ -85,6 +85,8 @@ jobs:
           ls -a
           echo "-------"
           composer config repositories.bedard/backend path ./packages/bedard/backend
+          cat composer.json
+          echo "-------"
           composer install
 
       - name: Generate application key
