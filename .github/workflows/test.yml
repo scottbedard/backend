@@ -87,6 +87,7 @@ jobs:
           composer config repositories.bedard/backend path /home/runner/work/backend/backend/packages/bedard/backend
           cat composer.json
           echo "-------"
+          composer clear-cache
           composer install
 
       - name: Generate application key
