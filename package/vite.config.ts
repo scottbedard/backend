@@ -3,9 +3,15 @@ import fs from 'fs'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 
-const envPath = path.resolve(__dirname, '../sandbox/.env')
-const envBackupPath = path.resolve(__dirname, '../sandbox/.env.backup')
-const backendPath = path.resolve(__dirname, '../sandbox/public/vendor/backend')
+const resolve = (p: string) => {
+  return process.env.GITHUB_ACTION
+    ? path.resolve(__dirname, '..', p)
+    : path.resolve(__dirname, '../sandbox', p)
+}
+
+const envPath = resolve('.env')
+const envBackupPath = resolve('.env.backup')
+const backendPath = resolve('public/vendor/backend')
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,9 +19,7 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     manifest: true,
-    outDir: process.env.GITHUB_ACTION
-      ? path.resolve(__dirname, '../public/vendor/backend')
-      : path.resolve(__dirname, '../sandbox/public/vendor/backend'),
+    outDir: resolve('public/vendor/backend'),
     rollupOptions: {
       input: [
         'client/main.ts',
