@@ -28,7 +28,6 @@ jobs:
       DB_PASSWORD: password
       DB_PORT: 33306
       DB_USERNAME: root
-      LARAVEL_DUSK: true
 
     steps:
       - name: Checkout
@@ -41,7 +40,7 @@ jobs:
 
       - name: Configure environment
         run: |
-          cp ./sandbox ./.
+          cp ./sandbox ./
           mkdir ./packages
           mkdir ./packages/bedard
           mkdir ./packages/bedard/backend
