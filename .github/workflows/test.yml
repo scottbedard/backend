@@ -35,14 +35,13 @@ jobs:
 
       - name: Configure directories
         run: |
-          mv sandbox/{.,}* .
+          rsync --dry-run ./sandbox/ ./
           mkdir packages
           mkdir packages/bedard
           mkdir packages/bedard/backend
-          mv package/{.,}* packages/bedard/backend
+          rsync --dry-run ./package/ ./packages/bedard/backend/
           ls -a
           cp .env.example .env
-          sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./.env
           chmod -R 777 ./storage ./bootstrap/cache
         
       - name: Install Node
