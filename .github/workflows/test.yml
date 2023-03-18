@@ -3,18 +3,24 @@ name: test
 on: [push]
 
 jobs:
-
-  type-check:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Setup Node
+      - name: Install Node
         uses: actions/setup-node@v3
         with:
           node-version: 16
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          run_install: false
+          version: 7
 
       - name: Install Node dependencies
         run: pnpm install
