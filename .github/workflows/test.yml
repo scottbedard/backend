@@ -84,6 +84,8 @@ jobs:
           echo "-----"
           ls -a packages/bedard
           echo "-----"
+          ls -a packages/bedard/public
+          echo "-----"
           ls -a packages/bedard/backend
           echo "-----"
           composer install
