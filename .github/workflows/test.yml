@@ -15,6 +15,12 @@ jobs:
         with:
           node-version: 16
 
+      - name: Configure environment
+        run: |
+          cp ./sandbox/.env.example ./sandbox/.env
+          sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' .env
+          chmod -R 777 ./sandbox/storage ./sandbox/bootstrap/cache
+
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         id: pnpm-install
