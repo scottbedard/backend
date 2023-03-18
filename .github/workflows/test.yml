@@ -35,13 +35,13 @@ jobs:
 
       - name: Configure directories
         run: |
+          mv sandbox/.env.example .env
           mv sandbox/* .
           mkdir packages
           mkdir packages/bedard
           mkdir packages/bedard/backend
           mv package/* packages/bedard/backend
           ls -a
-          cp ./sandbox/.env.example .env
           chmod -R 777 ./storage ./bootstrap/cache
         
       - name: Install Node
