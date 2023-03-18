@@ -80,7 +80,12 @@ jobs:
 
       - name: Composer install
         run: |
-          ls -a packages/bedard
+          ls -a packages
+          echo "-----"
+          ls -a packages/bedard/backend
+          echo "-----"
+          ls -a packages/bedard/backend
+          echo "-----"
           composer install
 
       - name: Generate application key
