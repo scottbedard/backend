@@ -6,29 +6,29 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # services:
-    #   mysql-service:
-    #     image: mysql:8.0
-    #     env:
-    #       MYSQL_DATABASE: testing
-    #       MYSQL_ROOT_PASSWORD: password
-    #     ports:
-    #       - 33306:3306
-    #     options: >-
-    #       --health-cmd="mysqladmin ping"
-    #       --health-interval=10s
-    #       --health-timeout=5s
-    #       --health-retries=3
+    services:
+      mysql-service:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
-    # env:
-    #   APP_URL: "http://127.0.0.1:8000"
-    #   DB_CONNECTION: mysql
-    #   DB_DATABASE: testing
-    #   DB_HOST: 127.0.0.1
-    #   DB_PASSWORD: password
-    #   DB_PORT: 33306
-    #   DB_USERNAME: root
-    #   GITHUB_ACTION: true
+    env:
+      APP_URL: "http://127.0.0.1:8000"
+      DB_CONNECTION: mysql
+      DB_DATABASE: testing
+      DB_HOST: 127.0.0.1
+      DB_PASSWORD: password
+      DB_PORT: 33306
+      DB_USERNAME: root
+      GITHUB_ACTION: true
 
     steps:
       - name: Checkout
@@ -54,34 +54,34 @@ jobs:
         with:
           node-version: 16
 
-      # - uses: pnpm/action-setup@v2
-      #   name: Install pnpm
-      #   id: pnpm-install
-      #   with:
-      #     version: 7
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
 
-      # - name: Get pnpm store directory
-      #   id: pnpm-cache
-      #   shell: bash
-      #   run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      # - uses: actions/cache@v3
-      #   name: Setup pnpm cache
-      #   with:
-      #     path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pnpm-store-
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
-      # - name: Install Node dependencies
-      #   run: |
-      #     cd ./packages/bedard/backend
-      #     pnpm install
+      - name: Install Node dependencies
+        run: |
+          cd ./packages/bedard/backend
+          pnpm install
 
-      # - name: Build client
-      #   run: |
-      #     cd ./packages/bedard/backend
-      #     pnpm run build
+      - name: Build client
+        run: |
+          cd ./packages/bedard/backend
+          pnpm run build
 
       - name: Composer install
         run: |
