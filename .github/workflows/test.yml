@@ -80,16 +80,7 @@ jobs:
 
       - name: Composer install
         run: |
-          echo "$PWD"
-          echo "-----"
-          ls -a packages
-          echo "-----"
-          ls -a packages/bedard
-          echo "-----"
-          ls -a packages/bedard/public
-          echo "-----"
-          ls -a packages/bedard/backend
-          echo "-----"
+          composer config repositories.bedard/backend path ./packages/bedard/backend
           composer install
 
       - name: Generate application key
