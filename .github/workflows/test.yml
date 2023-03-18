@@ -43,7 +43,7 @@ jobs:
           mkdir packages/bedard/backend
           mv package/* packages/bedard/backend
           chmod -R 777 ./storage ./bootstrap/cache
-          sed -i -e 's+/var/www/html+.+g' composer.json
+          sed -i -e 's+/var/www/html+/home/runner/work/bedard/backend+g' composer.json
           cat composer.json
         
       - name: Install Node
