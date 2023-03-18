@@ -6,6 +6,30 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql-service:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    env:
+      APP_URL: "http://127.0.0.1:8000"
+      DB_CONNECTION: mysql
+      DB_DATABASE: testing
+      DB_HOST: 127.0.0.1
+      DB_PASSWORD: password
+      DB_PORT: 33306
+      DB_USERNAME: root
+      LARAVEL_DUSK: true
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -41,9 +65,29 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install Node dependencies
+        working-directory: package
         run: pnpm install
-        working-directory: package/client
 
       - name: Build client
+        working-directory: package
         run: pnpm run build
-        working-directory: package/client
+
+      - name: Composer install
+        working-directory: sandbox
+        run: composer install
+
+      - name: Generate application key
+        working-directory: sandbox
+        run: php artisan key:generate
+
+      - name: Run migrations
+        working-directory: sandbox
+        run: php artisan migrate
+
+      - name: Publish assets
+        working-directory: sandbox
+        run: php artisan vendor:publish --tag backend
+
+      - name: PHPUnit
+        working-directory: sandbox
+        run: php artisan test
