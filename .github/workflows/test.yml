@@ -42,6 +42,7 @@ jobs:
       - name: Configure environment
         run: |
           cp ./sandbox/.env.example ./sandbox/.env
+          cp ./package ./sandbox/packages/bedard/backend
           sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./sandbox/.env
           chmod -R 777 ./sandbox/storage ./sandbox/bootstrap/cache
 
@@ -65,29 +66,36 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install Node dependencies
-        working-directory: package
-        run: pnpm install
+        run: |
+          cd ./sandbox/packages/bedard/backend
+          pnpm install
 
       - name: Build client
-        working-directory: package
-        run: pnpm run build
+        run: |
+          cd ./sandbox/packages/bedard/backend
+          pnpm run build
 
       - name: Composer install
-        working-directory: sandbox
-        run: composer install
+        run: |
+          cd ./sandbox
+          composer install
 
       - name: Generate application key
-        working-directory: sandbox
-        run: php artisan key:generate
+        run: |
+          cd ./sandbox
+          php artisan key:generate
 
       - name: Run migrations
-        working-directory: sandbox
-        run: php artisan migrate
+        run: |
+          cd ./sandbox
+          php artisan migrate
 
       - name: Publish assets
-        working-directory: sandbox
-        run: php artisan vendor:publish --tag backend
+        run: |
+          cd ./sandbox
+          php artisan vendor:publish --tag backend
 
       - name: PHPUnit
-        working-directory: sandbox
-        run: php artisan test
+        run: |
+          cd ./sandbox
+          php artisan test
