@@ -4,8 +4,42 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa68fb2473488322fc16c7315ac3f0d6",
+    "content-hash": "21616dfd2fbae315c35db7907926a6a9",
     "packages": [
+        {
+            "name": "bedard/backend",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "/var/www/html/packages/bedard/backend",
+                "reference": "048c1d413abcb69a08ce9313f7c96ca68ba4197f"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Bedard\\Backend\\BackendServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bedard\\Backend\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "transport-options": {
+                "relative": false
+            }
+        },
         {
             "name": "brick/math",
             "version": "0.10.2",
@@ -7815,7 +7849,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "bedard/backend": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
