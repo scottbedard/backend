@@ -14,7 +14,10 @@
   <body>
     <div id="app"></div>
 
-    @if ($manifest)
+    @if (env('BACKEND_DEV'))
+      <script type="module" src="http://localhost:3000/@@vite/client"></script>
+      <script type="module" src="http://localhost:3000/client/main.ts"></script>
+    @elseif ($manifest)
       <script type="module" src="/vendor/backend/dist/{{ $manifest['client/main.ts']['file'] }}"></script>
     @endif
   </body>

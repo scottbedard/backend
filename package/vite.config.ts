@@ -8,7 +8,7 @@ const envBackupPath = path.resolve(__dirname, '../sandbox/.env.backup')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/dist/',
+  base: '/',
   build: {
     emptyOutDir: true,
     manifest: true,
@@ -37,5 +37,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'client'),
     },
+  },
+  server: {
+    host: 'localhost',
+    port: 3000,
   },
 })
