@@ -79,7 +79,9 @@ jobs:
           pnpm run build
 
       - name: Composer install
-        run: composer install
+        run: |
+          ls -a
+          composer install
 
       - name: Generate application key
         run: php artisan key:generate
