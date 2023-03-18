@@ -87,6 +87,7 @@ jobs:
       - name: Composer install
         run: |
           cat composer.json
+          rm -rf composer.lock
           composer install
 
       - name: Generate application key
