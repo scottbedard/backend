@@ -44,7 +44,6 @@ jobs:
           mkdir packages/bedard/backend
           mv package/* packages/bedard/backend
           chmod -R 777 ./storage ./bootstrap/cache
-          sed -i -e 's_/var/www/html/packages/bedard/backend_/home/runner/work/backend/backend/packages/bedard/backend_g' composer.json
           cat composer.json
           echo "-----"
           ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
@@ -86,8 +85,8 @@ jobs:
 
       - name: Composer install
         run: |
-          cat composer.json
-          rm -rf composer.lock
+          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
+          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
           composer install
 
       - name: Generate application key
