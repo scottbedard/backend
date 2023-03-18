@@ -44,7 +44,7 @@ jobs:
           mkdir ./packages
           mkdir ./packages/bedard
           mkdir ./packages/bedard/backend
-          cp ./package ./packages/bedard/backend
+          mv ./package/* ./packages/bedard/backend
           cp ./.env.example ./.env
           sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./.env
           chmod -R 777 ./storage ./bootstrap/cache
