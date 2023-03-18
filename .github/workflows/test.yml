@@ -18,7 +18,7 @@ jobs:
       - name: Configure environment
         run: |
           cp ./sandbox/.env.example ./sandbox/.env
-          sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' .env
+          sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./sandbox/.env
           chmod -R 777 ./sandbox/storage ./sandbox/bootstrap/cache
 
       - uses: pnpm/action-setup@v2
