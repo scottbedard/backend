@@ -43,6 +43,8 @@ jobs:
           mkdir packages/bedard/backend
           mv package/* packages/bedard/backend
           chmod -R 777 ./storage ./bootstrap/cache
+          sed -i -e 's+/var/www/html+.+g' composer.json
+          cat composer.json
         
       - name: Install Node
         uses: actions/setup-node@v3
@@ -79,10 +81,7 @@ jobs:
       #     pnpm run build
 
       - name: Composer install
-        run: |
-          composer config repositories.bedard/backend path /home/runner/work/backend/backend/packages/bedard/backend
-          touch composer.json
-          composer install
+        run: composer install
 
       - name: Generate application key
         run: php artisan key:generate
