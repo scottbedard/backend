@@ -21,6 +21,8 @@ class BackendServiceProvider extends ServiceProvider
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
             __DIR__ . '/../public' => public_path('vendor/backend'),
         ], 'backend');
+
+        $this->app->make('router')->aliasMiddleware('backend', \Bedard\Backend\Http\Middleware\Backend::class);
     }
 
     /**
