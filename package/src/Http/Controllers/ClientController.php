@@ -15,10 +15,10 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $manifest = json_decode(File::get(public_path('vendor/backend/dist/manifest.json')), true);
+        $manifest = public_path('vendor/backend/dist/manifest.json');
 
         return view('backend::index', [
-            'manifest' => $manifest,
+            'manifest' => File::exists($manifest) ? json_decode(File::get($manifest), true) : null,
         ]);
     }
 }
