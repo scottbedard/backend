@@ -32,23 +32,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Configure directories
+        run: |
+          mv sandbox/{.,}* .
+          mkdir packages
+          mkdir packages/bedard
+          mkdir packages/bedard/backend
+          mv package/{.,}* packages/bedard/backend
+          ls -a
+          cp .env.example .env
+          sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./.env
+          chmod -R 777 ./storage ./bootstrap/cache
         
       - name: Install Node
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
-      - name: Configure environment
-        run: |
-          mv sandbox/* .
-          mkdir packages
-          mkdir packages/bedard
-          mkdir packages/bedard/backend
-          mv package/* packages/bedard/backend
-          ls -a
-          cp .env.example .env
-          sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' ./.env
-          chmod -R 777 ./storage ./bootstrap/cache
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
