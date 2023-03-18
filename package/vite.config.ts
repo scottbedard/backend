@@ -13,7 +13,9 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     manifest: true,
-    outDir: path.resolve(__dirname, '../sandbox/public/vendor/backend'),
+    outDir: process.env.GITHUB_ACTION
+      ? path.resolve(__dirname, '../public/vendor/backend')
+      : path.resolve(__dirname, '../sandbox/public/vendor/backend'),
     rollupOptions: {
       input: [
         'client/main.ts',
@@ -31,8 +33,10 @@ export default defineConfig({
         }
       },
       buildStart() {
-        fs.cpSync(envPath, envBackupPath)
-        fs.writeFileSync(envPath, `BACKEND_DEV=true\n${fs.readFileSync(envPath, 'utf-8')}`)
+        if (fs.existsSync(envPath)) {
+          fs.cpSync(envPath, envBackupPath)
+          fs.writeFileSync(envPath, `BACKEND_DEV=true\n${fs.readFileSync(envPath, 'utf-8')}`)
+        }
       },
     },
   ],

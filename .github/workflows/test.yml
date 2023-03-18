@@ -28,6 +28,7 @@ jobs:
       DB_PASSWORD: password
       DB_PORT: 33306
       DB_USERNAME: root
+      GITHUB_ACTION: true
 
     steps:
       - name: Checkout
