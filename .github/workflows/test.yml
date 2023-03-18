@@ -35,13 +35,13 @@ jobs:
 
       - name: Configure directories
         run: |
-          rsync --dry-run ./sandbox/ ./
+          mv sandbox/* .
           mkdir packages
           mkdir packages/bedard
           mkdir packages/bedard/backend
-          rsync --dry-run ./package/ ./packages/bedard/backend/
+          mv package/* packages/bedard/backend
           ls -a
-          cp .env.example .env
+          cp ./sandbox/.env.example .env
           chmod -R 777 ./storage ./bootstrap/cache
         
       - name: Install Node
