@@ -6,7 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
+    # services:
     #   mysql-service:
     #     image: mysql:8.0
     #     env:
