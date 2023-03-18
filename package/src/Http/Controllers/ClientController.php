@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 
 class ClientController extends Controller
@@ -14,6 +15,10 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return view('backend::index');
+        $manifest = json_decode(File::get(public_path('vendor/backend/dist/manifest.json')), true);
+
+        return view('backend::index', [
+            'manifest' => $manifest,
+        ]);
     }
 }

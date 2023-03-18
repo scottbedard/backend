@@ -1,5 +1,7 @@
 {
   "recommendations": [
-    "onecentlin.laravel-blade"
+    "onecentlin.laravel-blade",
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin"
   ]
 }
