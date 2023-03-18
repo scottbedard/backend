@@ -1,0 +1,29 @@
+name: test
+
+on: [push]
+
+jobs:
+
+  type-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Node dependencies
+        run: pnpm install
+        working-directory: client
+
+      - name: Type check frontend
+        run: pnpm run tsc
+        working-directory: client
+
+      - name: Build client
+        run: pnpm run build
+        working-directory: client
