@@ -86,7 +86,7 @@ jobs:
 
       - name: Composer install
         run: |
-          composer clear-cache
+          cat composer.json
           composer install
 
       - name: Generate application key
