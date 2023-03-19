@@ -188,6 +188,7 @@ return [
          * Package Service Providers...
          */
         Bedard\Backend\BackendServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...

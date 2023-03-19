@@ -17,8 +17,11 @@ class ClientController extends Controller
     {
         $manifest = public_path('vendor/backend/dist/manifest.json');
 
+        $spatie = in_array(\Spatie\Permission\PermissionServiceProvider::class, config('app.providers'));
+
         return view('backend::index', [
             'manifest' => File::exists($manifest) ? json_decode(File::get($manifest), true) : null,
+            'spatie' => $spatie,
         ]);
     }
 }
