@@ -20,6 +20,7 @@ class ClientController extends Controller
         $spatie = in_array(\Spatie\Permission\PermissionServiceProvider::class, config('app.providers'));
 
         return view('backend::index', [
+            'dev' => env('BACKEND_DEV'),
             'manifest' => File::exists($manifest) ? json_decode(File::get($manifest), true) : null,
             'spatie' => $spatie,
         ]);
