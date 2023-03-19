@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import autoImport from 'unplugin-auto-import/vite'
 import fs from 'fs'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
@@ -27,6 +28,19 @@ export default defineConfig({
     },
   },
   plugins: [
+    autoImport({
+      dirs: [
+        './layouts',
+      ],
+      dts: './auto-imports.d.ts',
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/, /\.vue\?vue/, // .vue
+      ],
+      imports: [
+        'vue',
+      ],
+    }),
     vue(),
     {
       name: 'backend',
