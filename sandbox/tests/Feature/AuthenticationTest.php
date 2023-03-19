@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,13 +14,12 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => 'password',
-        ]);
+        ])->assertRedirect(route('backend.index'));
 
         $this->assertAuthenticated();
-        $response->assertNoContent();
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
