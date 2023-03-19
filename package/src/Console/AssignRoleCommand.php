@@ -49,7 +49,7 @@ class AssignRoleCommand extends Command
         }
 
         // confirm super admin
-        if ($role === 'backend.super-admin' && !$this->option('force')) {
+        if ($role === config('backend.super_admin_role') && !$this->option('force')) {
             $this->warn(' ' . trans('backend::console.authorize.super_admin_info'));
             
             if (!$this->confirm(trans('backend::console.authorize.super_admin_confirm'))) {
