@@ -1,33 +1,48 @@
 <x-layout>
   <div class="gap-6 grid max-w-md w-full">
     <h1 class="flex font-bold gap-3 items-center justify-center text-center text-xl">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
       
-      <span>Welcome back</span>
+      <span>Log in</span>
     </h1>
 
     <x-card>
       <form
-        action="{{ route('logout') }}"
+        action="{{ route('login') }}"
         class="gap-6 grid"
         method="post">
         @csrf
 
-        <div>You're logged in as {{ $user->email }}</div>
+        <div>
+          <x-label for="email">
+            Email address
+          </x-label>
 
-        <div class="flex flex-wrap gap-6 justify-between">
-          <a
-            class="bg-gray-300 flex font-bold h-12 items-center justify-center px-3 rounded-md text-gray-600 transition-colors tracking-wide whitespace-nowrap w-full hover:bg-gray-200 hover:text-black sm:flex-1"
-            href="{{ route('backend.index') }}">
-            &larr; Backend
-          </a>
-
-          <a
-            class="bg-red-500 flex font-bold h-12 items-center justify-center px-3 rounded-md text-white transition-colors tracking-wide whitespace-nowrap w-full hover:bg-red-400 sm:flex-1"
-            href="{{ route('logout') }}">
-            Log out &rarr;
-          </a>
+          <x-input
+            autofocus
+            id="email"
+            name="email"
+            placeholder="admin@example.com"
+            type="email"
+            value="admin@example.com" />
         </div>
+
+        <div>
+          <x-label for="password">
+            Password
+          </x-label>
+
+          <x-input
+            id="password"
+            name="password"
+            placeholder="secret"
+            type="password"
+            value="secret" />
+        </div>
+        
+        <x-button>
+          Log in
+        </x-button>
       </form>
     </x-card>
 

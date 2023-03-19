@@ -16,7 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $user = auth()->user();
 
+    if (!$user) {
+        return redirect('/login');
+    }
+
     return view('index', [
+        'user' => $user,
+    ]);
+});
+
+Route::get('/login', function () {
+    $user = auth()->user();
+
+    return view('login', [
         'user' => $user,
     ]);
 });
