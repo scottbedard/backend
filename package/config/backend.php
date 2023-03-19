@@ -59,7 +59,7 @@ return [
     |
     */
 
-    'super_admin_role' => env('BACKEND_SUPER_ADMIN', 'super admin'),
+    'super_admin_role' => env('BACKEND_SUPER_ADMIN_ROLE', 'super admin'),
 
     /*
     |--------------------------------------------------------------------------
