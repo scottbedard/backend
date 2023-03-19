@@ -17,20 +17,24 @@ Route::get('/', function () {
     $user = auth()->user();
 
     if (!$user) {
-        return redirect('/login');
+        return redirect()->route('login');
     }
 
     return view('index', [
         'user' => $user,
     ]);
-});
+})->name('index');
 
 Route::get('/login', function () {
     $user = auth()->user();
 
+    if ($user) {
+        return redirect()->route('index');
+    }
+
     return view('login', [
         'user' => $user,
     ]);
-});
+})->name('login');
 
 require __DIR__.'/auth.php';
