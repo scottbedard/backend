@@ -23,48 +23,65 @@
         <span>Log in</span>
       </h1>
 
-      <form
-        action="{{ route('login') }}"
-        class="bg-white gap-6 grid p-6 rounded-md drop-shadow-2xl"
-        method="post">
-        @csrf
+      @if ($user)
+        <form
+          action="{{ route('logout') }}"
+          class="bg-white gap-6 grid p-6 rounded-md drop-shadow-2xl"
+          method="post">
+          @csrf
 
-        <div>
-          <label class="font-bold text-gray-700 tracking-wide" for="email">
-            Email address
-          </label>
+          <p>You're logged in as {{ $user->email }}.</p>
 
-          <input
-            autofocus
-            class="border border-gray-400 h-12 px-3 rounded-md w-full"
-            id="email"
-            name="email"
-            placeholder="admin@example.com"
-            type="email"
-            value="admin@example.com" />
-        </div>
+          <button
+            class="bg-red-500 font-bold h-12 px-3 rounded-md text-white transition-colors tracking-wide w-full hover:bg-red-400"
+            type="submit">
+            Log out
+          </button>
+        </form>
+      @else
+        <form
+          action="{{ route('login') }}"
+          class="bg-white gap-6 grid p-6 rounded-md drop-shadow-2xl"
+          method="post">
+          @csrf
 
-        <div>
-          <label class="font-bold text-gray-700 tracking-wide" for="password">
-            Password
-          </label>
+          <div>
+            <label class="font-bold text-gray-700 tracking-wide" for="email">
+              Email address
+            </label>
 
-          <input
-            autofocus
-            class="border border-gray-400 h-12 px-3 rounded-md w-full"
-            id="password"
-            name="password"
-            placeholder="secret"
-            type="password"
-            value="secret" />
-        </div>
+            <input
+              autofocus
+              class="border border-gray-400 h-12 px-3 rounded-md w-full"
+              id="email"
+              name="email"
+              placeholder="admin@example.com"
+              type="email"
+              value="admin@example.com" />
+          </div>
 
-        <button
-          class="bg-red-500 font-bold h-12 px-3 rounded-md text-white transition-colors tracking-wide w-full hover:bg-red-400"
-          type="submit">
-          Log in
-        </button>
-      </form>
+          <div>
+            <label class="font-bold text-gray-700 tracking-wide" for="password">
+              Password
+            </label>
+
+            <input
+              autofocus
+              class="border border-gray-400 h-12 px-3 rounded-md w-full"
+              id="password"
+              name="password"
+              placeholder="secret"
+              type="password"
+              value="secret" />
+          </div>
+
+          <button
+            class="bg-red-500 font-bold h-12 px-3 rounded-md text-white transition-colors tracking-wide w-full hover:bg-red-400"
+            type="submit">
+            Log in
+          </button>
+        </form>
+      @endif
 
       <div class="flex flex-wrap gap-x-12 gap-y-2 justify-between gap-3 text-xs text-gray-600">
         <a

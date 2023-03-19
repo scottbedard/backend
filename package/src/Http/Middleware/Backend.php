@@ -15,10 +15,11 @@ class Backend
      */
     public function handle(Request $request, Closure $next): Response
     {
+        dd('hello');
+    
         $user = auth()->user();
 
         if (!$user) {
-            return redirect(config('backend.guest_redirect'));
         }
 
         return $next($request);

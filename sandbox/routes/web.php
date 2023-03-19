@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    $user = auth()->user();
+
+    return view('index', [
+        'user' => $user,
+    ]);
 });
 
 require __DIR__.'/auth.php';
