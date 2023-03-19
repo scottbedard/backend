@@ -14,6 +14,8 @@ class BackendServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'backend');
         
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
 
@@ -21,6 +23,12 @@ class BackendServiceProvider extends ServiceProvider
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
             __DIR__ . '/../public' => public_path('vendor/backend'),
         ], 'backend');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Bedard\Backend\Console\AssignRoleCommand::class,
+            ]);
+        }
     }
 
     /**
