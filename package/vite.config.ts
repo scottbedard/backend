@@ -28,20 +28,17 @@ export default defineConfig({
     },
   },
   plugins: [
+    vue(),
     autoImport({
-      dirs: [
-        './layouts',
-      ],
-      dts: './auto-imports.d.ts',
+      cache: true,
+      dts: true,
       include: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
         /\.vue$/, /\.vue\?vue/, // .vue
       ],
-      imports: [
-        'vue',
-      ],
+      imports: ['vue'],
+      vueTemplate: true,
     }),
-    vue(),
     {
       name: 'backend',
       buildEnd() {

@@ -16,6 +16,12 @@
     "target": "ESNext",
     "useDefineForClassFields": true
   },
-  "include": ["auto-imports.d.ts", "client/**/*.ts", "client/**/*.d.ts", "client/**/*.tsx", "client/**/*.vue"],
+  "include": [
+    "**/*.d.ts",
+    "client/**/*.d.ts",
+    "client/**/*.ts",
+    "client/**/*.tsx",
+    "client/**/*.vue"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

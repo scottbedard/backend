@@ -13,7 +13,9 @@
         method="post">
         @csrf
 
-        <div>You're logged in as {{ $user->email }}</div>
+        <div class="text-center">
+          You're logged in as {{ $user->email }}
+        </div>
 
         <div class="flex flex-wrap gap-6 justify-between">
           <a
