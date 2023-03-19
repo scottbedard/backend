@@ -7,15 +7,15 @@ This project is in early development, things will likely change. Proceed with ca
 
 [View live sandbox →](https://backend.scottbedard.net)
 
-# Installation
+## Installation
 
 There are been no releases yet, check back later.
 
-# Basic usage
+## Basic usage
 
 This package works using the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package. More documentation to come.
 
-# Super admins
+## Super admins
 
 The `super admin` role enables all other roles and permissions, <ins>including the ability to create other super admins</ins>. If needed, this role can be renamed using the `BACKEND_SUPER_ADMIN_ROLE` environment variable. Execute the following to create a super admin.
 
@@ -23,7 +23,7 @@ The `super admin` role enables all other roles and permissions, <ins>including t
 php artisan backend:assign-role {id} 'super user'
 ```
 
-# License
+## License
 
 [MIT](https://github.com/scottbedard/backend/blob/master/LICENSE)
 
