@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'guest_redirect' => env('BACKEND_GUEST_REDIRECT', '/login'),
+    'guest_redirect' => env('BACKEND_GUEST_REDIRECT', '/'),
 
     /*
     |--------------------------------------------------------------------------

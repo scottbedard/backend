@@ -20,10 +20,15 @@
       <h1 class="flex font-bold gap-3 items-center justify-center text-center text-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
         
-        <span>Log in to see the backend</span>
+        <span>Log in</span>
       </h1>
 
-      <div class="bg-white gap-6 grid p-6 rounded-md drop-shadow-2xl">
+      <form
+        action="{{ route('login') }}"
+        class="bg-white gap-6 grid p-6 rounded-md drop-shadow-2xl"
+        method="post">
+        @csrf
+
         <div>
           <label class="font-bold text-gray-700 tracking-wide" for="email">
             Email address
@@ -35,7 +40,8 @@
             id="email"
             name="email"
             placeholder="admin@example.com"
-            type="email" />
+            type="email"
+            value="admin@example.com" />
         </div>
 
         <div>
@@ -49,7 +55,8 @@
             id="password"
             name="password"
             placeholder="secret"
-            type="password" />
+            type="password"
+            value="secret" />
         </div>
 
         <button
@@ -57,7 +64,7 @@
           type="submit">
           Log in
         </button>
-      </div>
+      </form>
 
       <div class="flex flex-wrap gap-x-12 gap-y-2 justify-between gap-3 text-xs text-gray-600">
         <a
