@@ -1,6 +1,6 @@
 <template>
-  <DefaultLayout>
-    Hello
+  <DefaultLayout padded>
+    Not available yet, check back later.
   </DefaultLayout>
 </template>
 
