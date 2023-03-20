@@ -9,7 +9,7 @@
 
     @if (!$dev && $manifest && $spatie)
       @foreach ($manifest['client/main.ts']['css'] as $stylesheet)
-        <link href="/vendor/backend/dist/{{ $stylesheet }}" rel="stylesheet">
+        <link href="{{ asset('vendor/backend/' . $stylesheet) }}" rel="stylesheet">
       @endforeach
     @endif
   </head>
@@ -21,7 +21,7 @@
         <script type="module" src="http://localhost:3000/@@vite/client"></script>
         <script type="module" src="http://localhost:3000/client/main.ts"></script>
       @elseif ($manifest)
-        <script type="module" src="/vendor/backend/dist/{{ $manifest['client/main.ts']['file'] }}"></script>
+        <script type="module" src="{{ asset('vendor/backend/' . $manifest['client/main.ts']['file']) }}"></script>
       @else
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
