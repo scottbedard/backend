@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen">
-    <header class="border-4 border-red-500 flex justify-between p-6">
+    <header class="bg-gray-900 flex justify-between p-6 text-white">
       <div>Header</div>
 
       <div>
@@ -9,8 +9,8 @@
     </header>
 
     <div class="flex flex-1">
-      <aside class="border-4 border-blue-500 w-20">
-        Hey
+      <aside class="bg-gray-200 w-20">
+        
       </aside>
 
       <main class="border-4 border-green-500 flex-1">
