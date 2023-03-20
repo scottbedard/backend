@@ -20,7 +20,7 @@ This package works using the excellent [Laravel Permission](https://spatie.be/do
 The `super admin` role enables all other roles and permissions, <ins>including the ability to create other super admins</ins>. If needed, this role can be renamed using the `BACKEND_SUPER_ADMIN_ROLE` environment variable. Execute the following to create a super admin.
 
 ```sh
-php artisan backend:assign-role {id} 'super user'
+php artisan backend:assign-role {id} 'super admin'
 ```
 
 ## License
