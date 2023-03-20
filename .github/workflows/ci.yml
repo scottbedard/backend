@@ -96,3 +96,12 @@ jobs:
 
       - name: PHPUnit
         run: php artisan test
+
+  deploy:
+    name: deploy
+    needs: [test, type-check]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy
+        run: curl ${{secrets.DEPLOY_URL}}
