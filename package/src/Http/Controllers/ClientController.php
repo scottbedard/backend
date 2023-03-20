@@ -15,7 +15,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $manifest = public_path('vendor/backend/dist/manifest.json');
+        $manifest = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/dist/manifest.json'));
 
         $spatie = in_array(\Spatie\Permission\PermissionServiceProvider::class, config('app.providers'));
 
