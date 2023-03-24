@@ -213,7 +213,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Backend' => \Bedard\Backend\Classes\Backend::class
+        // ...
     ])->toArray(),
 
 ];

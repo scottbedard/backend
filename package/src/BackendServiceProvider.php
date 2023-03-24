@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Facades\Backend;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,7 +31,7 @@ class BackendServiceProvider extends ServiceProvider
             ]);
         }
 
-        Gate::before(fn ($user) => $user->hasRole(config('backend.super_admin')) ? true : null);
+        Gate::before(fn ($user) => $user->hasRole(config('backend.super_admin_role')) ? true : null);
     }
 
     /**
@@ -42,6 +41,6 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('backend', fn () => new Backend);
+        $this->app->bind('backend', fn () => new \Bedard\Backend\Classes\Backend);
     }
 }
