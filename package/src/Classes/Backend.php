@@ -2,6 +2,9 @@
 
 namespace Bedard\Backend\Classes;
 
+use Bedard\Backend\Classes\YamlRouter;
+use Illuminate\Support\Facades\File;
+
 class Backend
 {
     /**
@@ -27,5 +30,15 @@ class Backend
         }
     
         return $user->hasPermissionTo($permission);
+    }
+
+    /**
+     * Return controllers in the current project
+     */
+    public function controllers(): array
+    {
+        $backend = YamlRouter::controllers();
+
+        return [];
     }
 }

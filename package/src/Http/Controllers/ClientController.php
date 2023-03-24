@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Http\Controllers;
 
+use Bedard\Backend\Facades\Backend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
@@ -15,6 +16,8 @@ class ClientController extends Controller
      */
     public function index()
     {
+        $controllers = Backend::controllers();
+
         $manifest = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json'));
 
         $spatie = in_array(\Spatie\Permission\PermissionServiceProvider::class, config('app.providers'));
