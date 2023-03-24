@@ -14,14 +14,18 @@ return new class extends Migration
     public function up(): void
     {
         // admin - all permissions
-        User::factory()->create([
+        $admin = User::factory()->create([
             'email' => 'admin@example.com',
+            'name' => 'Admin',
             'password' => Hash::make('secret'),
         ]);
+
+        $admin->assignRole('super admin');
 
         // bob - no permissions
         User::factory()->create([
             'email' => 'bob@example.com',
+            'name' => 'Bob',
             'password' => Hash::make('secret'),
         ]);
     }
