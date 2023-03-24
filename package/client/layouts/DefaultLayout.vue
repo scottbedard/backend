@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <header class="bg-gray-900 flex justify-between p-6 text-gray-100">
-      <div class="flex gap-2 items-center">
+      <RouterLink class="flex gap-2 items-center" :to="{ name: 'index' }">
         <ShieldCheckIcon stroke-width="2.1" /> <span class="font-bold tracking-wider">bedard/backend</span>
-      </div>
+      </RouterLink>
 
       <div>
         <a href="/logout">Log out</a>

@@ -7,6 +7,11 @@ export const router = createRouter({
       component: () => import('../pages/Index.vue'),
       name: 'index',
       path: '/backend',
-    }
+    },
+    {
+      component: () => import('../pages/404.vue'),
+      name: '404',
+      path: '/:pathMatch(.*)*',
+    },
   ],
 })
