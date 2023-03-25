@@ -12,7 +12,14 @@ class UrlPath
      *
      * @var string
      */
-    protected string $originalPath;
+    public string $original;
+
+    /**
+     * Segments
+     *
+     * @var array
+     */
+    public array $segments;
 
     /**
      * Create url path
@@ -21,7 +28,30 @@ class UrlPath
      */
     public function __construct(string $path)
     {
-        $this->originalPath = $path;
+        if (!self::validate($path)) {
+            throw new Exception('Invalid url path: ' . $path);
+        }
+
+        $this->original = $path;
+
+        $this->segments = Str::of($path)
+            ->trim()
+            ->ltrim('/')
+            ->explode('/')
+            ->map(function ($segment) {
+                $name = Str::of($segment)->ltrim('{')->rtrim('}')->rtrim('?')->toString();
+
+                $optional = Str::contains($segment, '?');
+                
+                $param = Str::startsWith($segment, '{') && Str::endsWith($segment, '}');
+
+                return [
+                    'name' => $name,
+                    'optional' => $optional,
+                    'param' => $param,
+                ];
+            })
+            ->toArray();
     }
 
     /**
@@ -37,7 +67,9 @@ class UrlPath
             return true;
         }
 
-        $str = Str::of($path)->trim()->ltrim('/');
+        $str = Str::of($path)
+            ->trim()
+            ->ltrim('/');
 
         if (!$str->length()) {
             return false;

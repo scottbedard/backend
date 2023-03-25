@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class UrlPathTest extends TestCase
 {
-    public function test_parsing_valid_url_paths(): void
+    public function test_valid_url_paths(): void
     {
         $paths = [
             '/',
@@ -43,7 +43,7 @@ class UrlPathTest extends TestCase
         }
     }
 
-    public function test_parsing_invalid_url_paths()
+    public function test_invalid_url_paths()
     {
         $paths = [
             '',
@@ -68,5 +68,28 @@ class UrlPathTest extends TestCase
 
             $this->assertFalse($valid);
         }
+    }
+
+    public function test_parsing_segments()
+    {
+        $up = new UrlPath('foo/{bar}/{baz?}');
+
+        $this->assertEquals($up->segments, [
+            [
+                'name' => 'foo',
+                'optional' => false,
+                'param' => false,
+            ],
+            [
+                'name' => 'bar',
+                'optional' => false,
+                'param' => true,
+            ],
+            [
+                'name' => 'baz',
+                'optional' => true,
+                'param' => true,
+            ],
+        ]);
     }
 }
