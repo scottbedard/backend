@@ -6,6 +6,8 @@ use Bedard\Backend\BackendController;
 use Bedard\Backend\Classes\UrlPath;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Symfony\Component\Yaml\Yaml;
 
 class Backend
 {
@@ -45,7 +47,16 @@ class Backend
     {
         $path = new UrlPath($request->path());
 
-        // ...
+        $dir = config('backend.backend_directory');
+
+        if (file_exists($dir)) {
+            $files = collect(scandir($dir))
+                ->filter(fn ($file) => Str::of($file)->endsWith('.yaml'))
+                ->map(fn ($file) => Yaml::parseFile($dir . '/' . $file))
+                ->toArray();
+
+            // ...
+        }
 
         return new BackendController;
     }

@@ -1,7 +1,2 @@
-index:
-    path: /
-    title: Hello from the backend
-
-foo:
-    path: /foo
-    title: foo
+routes:
+    

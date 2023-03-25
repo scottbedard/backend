@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Http\Controllers;
 
 use Bedard\Backend\Facades\Backend;
+use Bedard\Backend\Classes\UrlPath;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
