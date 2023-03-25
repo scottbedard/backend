@@ -4,7 +4,7 @@ use Bedard\Backend\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => \Bedard\Backend\Http\Middleware\Backend::class,
+    'middleware' => ['web', \Bedard\Backend\Http\Middleware\Backend::class],
     'prefix' => config('backend.path'),
 ], function () {
 
