@@ -28,6 +28,7 @@ class YamlRouter
 
         self::validate('Core controller', $core);
         
+        dd($core);
 
 
         return [];

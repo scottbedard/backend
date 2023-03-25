@@ -25,7 +25,7 @@ class BackendFacadeTest extends TestCase
 
     public function test_backend_check_super_admin()
     {
-        $role = Role::create(['name' => config('backend.super_admin_role')]);
+        $role = Role::firstOrCreate(['name' => config('backend.super_admin_role')]);
         
         $user = User::factory()->create();
 

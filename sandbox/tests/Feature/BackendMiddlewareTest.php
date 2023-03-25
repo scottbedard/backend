@@ -10,7 +10,7 @@ class BackendMiddlewareTest extends TestCase
     public function test_guests_are_redirected(): void
     {
         $this
-            ->get('/backend')
-            ->assertRedirect(config('bedard.guest_redirect'));
+            ->get(config('backend.path'))
+            ->assertRedirect(config('backend.guest_redirect'));
     }
 }
