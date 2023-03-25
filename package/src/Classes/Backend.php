@@ -2,7 +2,9 @@
 
 namespace Bedard\Backend\Classes;
 
-use Bedard\Backend\Classes\YamlRouter;
+use Bedard\Backend\BackendController;
+use Bedard\Backend\Classes\UrlPath;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class Backend
@@ -33,12 +35,18 @@ class Backend
     }
 
     /**
-     * Return controllers in the current project
+     * Return the controller for a request
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Bedard\Backend\BackendController
      */
-    public function controllers(): array
+    public function controller(Request $request): BackendController
     {
-        $backend = YamlRouter::controllers();
+        $path = new UrlPath($request->path());
 
-        return [];
+        // ...
+
+        return new BackendController;
     }
 }

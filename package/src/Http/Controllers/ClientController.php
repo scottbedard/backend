@@ -14,8 +14,10 @@ class ClientController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $controller = Backend::controller($request);
+
         $manifest = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json'));
 
         $spatie = in_array(\Spatie\Permission\PermissionServiceProvider::class, config('app.providers'));
