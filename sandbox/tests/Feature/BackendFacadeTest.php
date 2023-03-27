@@ -66,4 +66,11 @@ class BackendFacadeTest extends TestCase
 
         $this->assertTrue(Backend::check($user, 'edit articles'));
     }
+
+    public function test_loading_backend_controllers()
+    {
+        $roles = Backend::controllers()['roles'];
+
+        $this->assertInstanceOf(\Bedard\Backend\Backend\Controllers\RolesController::class, $roles);
+    }
 }

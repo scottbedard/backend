@@ -5,6 +5,7 @@ namespace Bedard\Backend\Classes;
 use Bedard\Backend\BackendController;
 use Bedard\Backend\Classes\UrlPath;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -42,14 +43,11 @@ class Backend
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Bedard\Backend\BackendController
+     * @return \Illuminate\Support\Collection
      */
-    public function controller(Request $request): BackendController
+    public function controllers(): Collection
     {
-        // parse url path
-        $path = new UrlPath($request->path());
-
-        // load backend core
+        // core backend
         $backend = [];
 
         collect(scandir(__DIR__ . '/../Backend'))
@@ -59,7 +57,7 @@ class Backend
                 $backend[$name] = Yaml::parseFile(__DIR__ . '/../Backend/' . $file);
             });
 
-        // load app backend
+        // app backend
         $dir = config('backend.backend_directory');
 
         if (file_exists($dir)) {
@@ -71,10 +69,11 @@ class Backend
                 });
         }
 
-        dd($backend);
+        // @todo: fill default values
 
-        // validate backend
-        $validator = Validator::make($files, [
+        // run validation and display errors
+        $validator = Validator::make($backend, [
+            '*.class' => 'required',
             '*.name' => 'required',
         ]);
         
@@ -82,6 +81,6 @@ class Backend
             throw new \Exception('Invalid backend config: ' . $validator->errors()->first());
         }
 
-        return new BackendController;
+        return collect($backend)->map(fn ($ctrl) => new $ctrl['class']($ctrl));
     }
 }

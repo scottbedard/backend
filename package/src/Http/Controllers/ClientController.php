@@ -17,9 +17,9 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $controller = Backend::controller($request);
+        $controllers = Backend::controllers();
 
-        dd($controller);
+        dd($controllers);
 
         $manifest = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json'));
 

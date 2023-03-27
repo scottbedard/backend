@@ -1,6 +1,6 @@
 # controller class
 # in you're making something custom, extend this base class
-controller: \Bedard\Backend\BackendController
+class: \Bedard\Backend\BackendController
 
 # name
 # set this for default page titles, button text, etc...

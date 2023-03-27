@@ -1,4 +1,4 @@
-controller: \Bedard\Backend\BackendController
+class: \Bedard\Backend\BackendController
 
 name: post
 
