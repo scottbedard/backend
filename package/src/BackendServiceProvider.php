@@ -14,25 +14,27 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        
+        // load backend files
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'backend');
-        
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
 
+        // public assets
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
             __DIR__ . '/../public' => public_path('vendor/backend'),
         ], 'backend');
 
+        // register backend commands in console
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \Bedard\Backend\Console\AssignRoleCommand::class,
+                \Bedard\Backend\Console\ControllerCommand::class,
             ]);
         }
 
+        // configure super-admin role
         Gate::before(fn ($user) => $user->hasRole(config('backend.super_admin_role')) ? true : null);
     }
 
@@ -43,6 +45,7 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // register backend facade
         $this->app->bind('backend', fn () => new \Bedard\Backend\Classes\Backend);
     }
 }

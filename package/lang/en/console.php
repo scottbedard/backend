@@ -10,4 +10,13 @@ return [
         'super_admin_info' => 'You\'re about to create a super admin. This grants all roles and permissions, including the ability to create other super admins.',
         'user_not_found' => 'User not found.',
     ],
+
+    'controller' => [
+        'docs' => 'Add basic documentation comments',
+        'description' => 'Create a backend controller',
+        'force' => 'Skip safety checks',
+        'model' => 'Set default names and permissions for model',
+        'success' => 'Successfully created controller.',
+        'terse' => 'Create minimal output',
+    ],
 ];
