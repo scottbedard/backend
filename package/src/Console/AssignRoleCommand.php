@@ -29,6 +29,13 @@ class AssignRoleCommand extends Command
     ';
 
     /**
+     * Confirmation message.
+     *
+     * @static string
+     */
+    public static string $confirm = 'Are you sure you wish to continue?';
+
+    /**
      * Execute the console command.
      *
      * @return int
