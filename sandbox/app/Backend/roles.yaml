@@ -1,0 +1,46 @@
+controller: \Bedard\Backend\BackendController
+
+name: role
+
+permissions:
+    - read roles
+
+routes:
+    index:
+        path: /
+        type: list
+        options:
+            checkboxes: true
+            schema:
+                id:
+                    disabled: true
+                created_at:
+                    format: YYYY-mm-DD
+                    type: date
+                updated_at:
+                    format: YYYY-mm-DD
+                    type: date
+
+    create:
+        path: /create
+        permissions:
+            - create role
+        type: form
+        options:
+            context: create
+            fields:
+                id:
+                    disabled: false
+
+    edit:
+        path: /{id}/edit
+        permissions:
+            - edit role
+        type: form
+        options:
+            context: edit
+            extends: create
+            fields:
+                created_at:
+                    disabled: true
+

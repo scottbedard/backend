@@ -4,18 +4,16 @@ controller: \Bedard\Backend\BackendController
 
 # name
 # set this for default page titles, button text, etc...
-name: :entity
+name: :singular
 
 # base permissions
 # users must have ALL of the following permissions
 permissions:
-    - read :entities
+    - read :plural
 
-# routes allow different pages to be registered
+# routes map to controller methods. in most situations you
+# only need yaml to define pages, but you can customize the response
 routes:
-
-    # route names map to controller methods. in most situations you
-    # only need yaml to define pages, here is an index list for example
     index:
         path: /
         type: list
@@ -23,34 +21,35 @@ routes:
             checkboxes: true
             schema:
                 id:
-                    sortable: true
-                    type: number
+                    disabled: true
                 created_at:
                     format: YYYY-mm-DD
                     type: date
+                updated_at:
+                    format: YYYY-mm-DD
+                    type: date
 
-    # pages may also require permissions. the default form page can
-    # define a base schema for editing, that is overwritten by edit
+    # permissions can be assigned to pages,
+    # and forms can serve as the base for other forms
     create:
         path: /create
         permissions:
-            - create :entity
+            - create :singular
         type: form
         options:
             context: create
             fields:
                 id:
-                    type: number
                     disabled: true
-                created_at:
-                    type: date
-8
+
     edit:
         path: /{id}/edit
         permissions:
-            - edit :entity
+            - edit :singular
         type: form
         options:
+            context: edit
+            extends: create
             fields:
-                created_at:
-                    disabled: true
+                id:
+                    disabled: false
