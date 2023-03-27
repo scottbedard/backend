@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 
-class ControllerCommand extends Command
+class MakeControllerCommand extends Command
 {
     /**
      * The console command description.
@@ -24,7 +24,7 @@ class ControllerCommand extends Command
     public function __construct()
     {
         $this->signature = '
-            backend:controller {name}
+            backend:make-controller {name}
             {--f|force : Overwrite existing files}
             {--d|docs : Add documentation comments}
         ';

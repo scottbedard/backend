@@ -12,21 +12,21 @@ use Spatie\Permission\Models\Role;
 class AssignRoleCommand extends Command
 {
     /**
-     * Construct.
+     * The console command description.
      *
      * @var string
      */
-    public function __construct()
-    {
-        $this->description = trans('backend::console.authorize.description');
+    protected $description = 'Grant user a role';
 
-        $this->signature = '
-            backend:assign-role {userId} {role}
-                {--force : ' . trans('backend::console.authorize.force') . '}
-        ';
-
-        parent::__construct();
-    }
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = '
+        backend:assign-role {userId} {role}
+            {--force : Skip safety checks}
+    ';
 
     /**
      * Execute the console command.
@@ -43,17 +43,17 @@ class AssignRoleCommand extends Command
         try {
             $user = config('backend.user')::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            $this->error(trans('backend::console.authorize.user_not_found'));
+            $this->error('User not found.');
 
             return 1;
         }
 
         // confirm super admin
         if ($role === config('backend.super_admin_role') && !$this->option('force')) {
-            $this->warn(' ' . trans('backend::console.authorize.super_admin_info'));
+            $this->warn(' You\'re about to create a super admin. This grants all roles and permissions, including the ability to create other super admins.');
             
-            if (!$this->confirm(trans('backend::console.authorize.super_admin_confirm'))) {
-                $this->error(trans('backend::console.authorize.abort'));
+            if (!$this->confirm('Are you sure you wish to continue?')) {
+                $this->error('Action aborted, no roles were granted.');
 
                 return 1;
             }
@@ -66,7 +66,7 @@ class AssignRoleCommand extends Command
             $user->assignRole($role);
         });
 
-        $this->info(trans('backend::console.authorize.success'));
+        $this->info('Successfully assigned role to user.');
 
         return 0;
     }

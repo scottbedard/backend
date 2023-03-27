@@ -30,7 +30,7 @@ class BackendServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \Bedard\Backend\Console\AssignRoleCommand::class,
-                \Bedard\Backend\Console\ControllerCommand::class,
+                \Bedard\Backend\Console\MakeControllerCommand::class,
             ]);
         }
 
