@@ -1,4 +1,7 @@
 {
+  "files.associations": {
+    "*.yaml.stub": "yaml"
+  },
   "[php]": {
     "editor.tabSize": 4
   },
