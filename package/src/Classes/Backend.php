@@ -6,6 +6,7 @@ use Bedard\Backend\BackendController;
 use Bedard\Backend\Classes\UrlPath;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 
@@ -55,7 +56,13 @@ class Backend
                 ->map(fn ($file) => Yaml::parseFile($dir . '/' . $file))
                 ->toArray();
 
-            // ...
+            $validator = Validator::make($files, [
+                '*.name' => 'required',
+            ]);
+            
+            if ($validator->fails()) {
+                throw new \Exception('Invalid backend config: ' . $validator->errors()->first());
+            }
         }
 
         return new BackendController;

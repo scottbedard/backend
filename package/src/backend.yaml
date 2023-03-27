@@ -1,2 +1,14 @@
+controller: \\Bedard\\Backend\\Classes\\CoreController
+
+name: core
+
+permissions:
+    - create roles
+    - delete roles
+    - edit roles
+    - view roles
+
 routes:
-    
+    index:
+        foo: bar
+        
