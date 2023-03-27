@@ -15,6 +15,14 @@ A backend for Laravel applications. More documentation to come.
 
 Controllers manage the backend areas of your application. They are defined using `yaml` files, and can make protected pages with using the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package.
 
+To create a controller, execute the following
+
+```bash
+php artisan backend:controller user -d
+```
+
+You'll notice a file created at `app/Backend/users.yaml`. This is your controller's configuration file, it configures most things about a controller's pages. In most cases, you'll find you may not even need a `BackendController` class.
+
 ## Super admins
 
 The `super admin` role enables all other roles and permissions, <ins>including the ability to create other super admins</ins>. If needed, this role can be renamed using the `BACKEND_SUPER_ADMIN_ROLE` environment variable. Execute the following to create a super admin.
