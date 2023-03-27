@@ -1,6 +1,6 @@
 controller: \Bedard\Backend\BackendController
 
-name: role
+name: roles
 
 permissions:
     - read roles
