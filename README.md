@@ -9,11 +9,11 @@ This project is in early development, things will likely change. Proceed with ca
 
 ## Installation
 
-There are been no releases yet, check back later.
+A backend for Laravel applications. More documentation to come.
 
-## Basic usage
+## Controllers
 
-This package works using the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package. More documentation to come.
+Controllers manage the backend areas of your application. They are defined using `yaml` files, and can make protected pages with using the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package.
 
 ## Super admins
 
