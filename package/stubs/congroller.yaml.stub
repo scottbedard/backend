@@ -29,8 +29,8 @@ routes:
                     format: YYYY-mm-DD
                     type: date
 
-    # pages may also require permissions. the default form plugin can
-    # handle most use cases. custom field types can also be created
+    # pages may also require permissions. the default form page can
+    # define a base schema for editing, that is overwritten by edit
     create:
         path: /create
         permissions:
@@ -40,7 +40,17 @@ routes:
             context: create
             fields:
                 id:
-                    type: text
+                    type: number
                     disabled: true
                 created_at:
                     type: date
+8
+    edit:
+        path: /{id}/edit
+        permissions:
+            - edit :entity
+        type: form
+        options:
+            fields:
+                created_at:
+                    disabled: true
