@@ -78,28 +78,65 @@ class Router
 
         
         // find routes for the controller
-        $controller = $segments->first();
+        $controllerName = $segments->first();
+        $controllerRoutes = data_get($this->config, $controllerName . '.routes', []);
 
-        $routes = data_get($this->config, $controller . '.routes', []);
-
-        if (empty($routes)) {
+        // if there are no routes, return null
+        if (empty($controllerRoutes)) {
             return null;
         }
 
-        // match an index path
-        $fullPath = new UrlPath(data_get($url, 'path'));
-
-        $currentRoute = $fullPath->segments->slice(1);
+        // match the index path of "/"
+        $currentRoute = (new UrlPath(data_get($url, 'path')))->segments->slice(1);
 
         if ($currentRoute->isEmpty()) {
-            foreach ($routes as $method => $config) {
+            foreach ($controllerRoutes as $method => $config) {
                 if (data_get($config, 'path') === '/') {
-                    return $controller . '.routes.' . $method;
+                    return [$controllerName, $method];
                 }
             }
-            
+
             return null;
+
+            dd([
+                'rawPath' => $rawPath,
+                'currentRoute' => $currentRoute,
+                'segments' => $segments,
+                'controllerName' => $controllerName,
+                'controllerRoutes' => $controllerRoutes,
+            ]);
         }
+
+
+        // $routes = data_get($this->config, $controller . '.routes', []);
+
+        // if (empty($routes)) {
+        //     return null;
+        // }
+
+        // match an index path
+        // $fullPath = new UrlPath(data_get($url, 'path'));
+
+        // $currentRoute = $fullPath->segments->slice(1);
+
+        // if ($currentRoute->isEmpty()) {
+        //     foreach ($routes as $method => $config) {
+        //         if (data_get($config, 'path') === '/') {
+        //             return $controller . '.routes.' . $method;
+        //         }
+        //     }
+            
+        //     return null;
+        // }
+
+        // // route to a method
+        // foreach ($routes as $method => $config) {
+        //     if (data_get($config, 'path') === '/') {
+        //         continue;
+        //     }
+            
+
+        // }
         
         return [];
     }

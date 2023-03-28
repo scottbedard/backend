@@ -25,23 +25,47 @@ class RouterTest extends TestCase
         ]);
     }
 
-    public function test_routing_to_an_index_method(): void
+    public function test_routing_to_an_index_method()
     {
         $router = new Router([
-            'things' => [
+            'posts' => [
                 'routes' => [
                     'index' => ['path' => '/'],
                     'create' => ['path' => 'create'],
+                    'edit' => ['path' => '{id}/edit'],
                 ], 
             ],
             'users' => [
                 'routes' => [
                     'index' => ['path' => '/'],
                     'create' => ['path' => 'create'],
+                    'edit' => ['path' => '{id}/edit'],
                 ], 
             ],
         ]);
 
-        $this->assertEquals('users.routes.index', $router->resolve('/backend/users'));
+        $this->assertEquals(['users', 'index'], $router->resolve('/backend/users'));
+    }
+
+    public function test_routing_to_a_method()
+    {
+        $router = new Router([
+            'posts' => [
+                'routes' => [
+                    'index' => ['path' => '/'],
+                    'create' => ['path' => 'create'],
+                    'edit' => ['path' => '{id}/edit'],
+                ], 
+            ],
+            'users' => [
+                'routes' => [
+                    'index' => ['path' => '/'],
+                    'create' => ['path' => 'create/foo/bar'],
+                    'edit' => ['path' => '{id}/edit'],
+                ], 
+            ],
+        ]);
+
+        dd($router->resolve('/backend/users/create/foo/bar'));
     }
 }
