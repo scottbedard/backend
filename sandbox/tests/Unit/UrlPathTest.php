@@ -72,9 +72,9 @@ class UrlPathTest extends TestCase
 
     public function test_parsing_segments()
     {
-        $up = new UrlPath('foo/{bar}/{baz?}');
+        $path = new UrlPath('foo/{bar}/{baz?}');
 
-        $this->assertEquals($up->segments, [
+        $this->assertEquals($path->segments, [
             [
                 'name' => 'foo',
                 'optional' => false,

@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Classes;
 
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class UrlPath
@@ -17,9 +18,9 @@ class UrlPath
     /**
      * Segments
      *
-     * @var array
+     * @var \Illuminate\Support\Collection
      */
-    public array $segments;
+    public Collection $segments;
 
     /**
      * Create url path
@@ -50,8 +51,17 @@ class UrlPath
                     'optional' => $optional,
                     'param' => $param,
                 ];
-            })
-            ->toArray();
+            });
+    }
+
+    /**
+     * Test if the url path is empty
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->segments);
     }
 
     /**
