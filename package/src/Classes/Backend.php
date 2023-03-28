@@ -82,16 +82,27 @@ class Backend
         data_fill($backend, '*.class', \Bedard\Backend\BackendController::class);
         data_fill($backend, '*.permissions', []);
         data_fill($backend, '*.routes.*.permissions', []);
+
+        $pages = config('backend.pages', []);
         
         foreach ($backend as $controller => $config) {
+            // default id to file name
             data_fill($backend, "{$controller}.id", $controller);
+            
+            // apply page type aliases
+            foreach ($config['routes'] as $route => $routeConfig) {
+                if (isset($routeConfig['page']) && isset($pages[$routeConfig['page']])) {
+                    $backend[$controller]['routes'][$route]['page'] = $pages[$routeConfig['page']];
+                }
+            }
         }
 
         // run validation and display errors
         $validator = Validator::make($backend, [
             '*.class' => ['required'],
-            '*.id' => ['required', 'distinct'],
-            '*.permissions' => ['required', 'array']
+            '*.id' => ['required', 'alpha_num:ascii', 'distinct'],
+            '*.permissions' => ['required', 'array'],
+            '*.routes.*.page' => ['required', 'string'],
         ]);
         
         if ($validator->fails()) {

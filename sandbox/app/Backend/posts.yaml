@@ -4,7 +4,7 @@ permissions:
 routes:
     index:
         path: /
-        type: list
+        page: list
         options:
             checkboxes: true
             schema:
@@ -21,7 +21,7 @@ routes:
         path: /create
         permissions:
             - create post
-        type: form
+        page: form
         options:
             context: create
             fields:
@@ -32,7 +32,7 @@ routes:
         path: /{id}/edit
         permissions:
             - edit post
-        type: form
+        page: form
         options:
             context: edit
             extends: create

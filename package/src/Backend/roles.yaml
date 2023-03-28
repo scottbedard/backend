@@ -5,8 +5,8 @@ permissions:
 
 routes:
     index:
+        page: list
         path: /
-        type: list
         options:
             checkboxes: true
             schema:
@@ -20,10 +20,10 @@ routes:
                     type: date
 
     create:
+        page: form
         path: /create
         permissions:
             - create role
-        type: form
         options:
             context: create
             fields:
@@ -31,10 +31,10 @@ routes:
                     disabled: false
 
     edit:
+        page: form
         path: /{id}/edit
         permissions:
             - edit role
-        type: form
         options:
             context: edit
             extends: create

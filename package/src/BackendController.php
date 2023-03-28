@@ -19,6 +19,8 @@ class BackendController extends BaseController
     {
         $routeName = request()->route()->getName();
 
+        $controllers = Backend::controllers();
+
         $config = Backend::config($routeName);
         
         return Backend::view([

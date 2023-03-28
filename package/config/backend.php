@@ -75,6 +75,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Page types
+    |--------------------------------------------------------------------------
+    |
+    | This registers a unique alias to be used in yaml configs. The form and
+    | list are built in, but you can add your own.
+    |
+    */
+
+    'pages' => [
+        'form' => \Bedard\Backend\Pages\FormPage::class,
+        'list' => \Bedard\Backend\Pages\ListPage::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | User
     |--------------------------------------------------------------------------
     |
