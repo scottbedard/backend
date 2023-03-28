@@ -41,14 +41,16 @@ routes:
 
 - **`id`** A unique identifier to namespace the controller routes. If none is defined, the file name will be used.
 - **`model`** The model associated with this controller's resource.
-- **`permissions`** The permissions required to view any routes associated with this controller.
+- **`permissions`** The permissions required to view routes associated with this controller.
 - **`routes`**
   - **`edit`** A unique name that maps to a controller method.
     - **`page`** The page ro render for our route. We'll discuss these more later.
     - **`path`** URL path to our route, defined using [Laravel's normal routing syntax](https://laravel.com/docs/routing#route-parameters)
     - **`permissions`** Additional permissions required to access this route.
     - **`options`** Any additional data needed for the page.
-    
+
+For full control of the request, you can extend a `Bedard\Backend\BackendController` and assign it to the `class` property of this file.
+
 ## Pages
 
 No documentation yet, check back later.
