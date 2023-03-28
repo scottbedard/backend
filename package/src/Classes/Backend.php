@@ -39,13 +39,25 @@ class Backend
     }
 
     /**
-     * Return the controller for a request
+     * Get backend config for route
      *
-     * @param \Illuminate\Http\Request $request
+     * @param string $routeName
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
-    public function controllers(): Collection
+    public function config(string $routeName): array
+    {
+        list($controller, $route) = Str::of($routeName)->ltrim('backend.')->explode('.');
+        
+        return data_get($this->controllers(), "{$controller}.routes.{$route}");
+    }
+
+    /**
+     * Return backend controller data
+     *
+     * @return array
+     */
+    public function controllers(): array
     {
         // core backend
         $backend = [];
@@ -69,7 +81,9 @@ class Backend
                 });
         }
 
-        // @todo: fill default values
+        // fill default values
+        data_fill($backend, '*.class', BackendController::class);
+        data_fill($backend, '*.permissions', []);
 
         // run validation and display errors
         $validator = Validator::make($backend, [
@@ -81,6 +95,6 @@ class Backend
             throw new \Exception('Invalid backend config: ' . $validator->errors()->first());
         }
 
-        return collect($backend)->map(fn ($ctrl) => new $ctrl['class']($ctrl));
+        return $backend;
     }
 }

@@ -73,4 +73,11 @@ class BackendFacadeTest extends TestCase
 
         $this->assertInstanceOf(\Bedard\Backend\Backend\Controllers\RolesController::class, $roles);
     }
+
+    public function test_getting_config_from_route_name()
+    {
+        $config = Backend::config('roles.index');
+
+        $this->assertEquals(data_get(Backend::controllers(), 'roles.routes.index'), $config);
+    }
 }

@@ -1,5 +1,3 @@
-class: \Bedard\Backend\Backend\Controllers\RolesController
-
 name: roles
 
 permissions:

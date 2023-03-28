@@ -2,22 +2,25 @@
 
 namespace Bedard\Backend;
 
-class BackendController
+use Bedard\Backend\Facades\Backend;
+use Illuminate\Routing\Controller as BaseController;
+
+class BackendController extends BaseController
 {
     /**
-     * Raw controller options
+     * Load a backend route
      *
-     * @var array
-     */
-    protected array $options;
-
-    /**
-     * Create a new controller
+     * @param string $name
+     * @param array $args
      *
-     * @param array $options
+     * @return mixed
      */
-    public function __construct(array $options)
+    public function __call($name, $args)
     {
-        $this->options = $options;
+        $routeName = request()->route()->getName();
+
+        $config = Backend::config($routeName);
+        
+        return $config;
     }
 }
