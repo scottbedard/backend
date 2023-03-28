@@ -20,11 +20,19 @@ class BackendController extends BaseController
         $routeName = request()->route()->getName();
 
         $controllers = Backend::controllers();
-
+        
         $config = Backend::config($routeName);
         
+        $page = Backend::page($config, [
+            'route' => $routeName,
+            'config' => $config,
+            'controllers' => $controllers,
+        ]);
+
+        dd($page);
+
         return Backend::view([
-            
+
         ]);
     }
 }

@@ -2,9 +2,15 @@
 
 namespace Bedard\Backend\Pages;
 
-use Bedard\Backend\Classes\Page;
-
-class FormPage extends Page
+class FormPage
 {
-    // ...
+    /**
+     * Fetch data for a page
+     *
+     * @return array
+     */
+    public function data(): array
+    {
+        return [];
+    }
 }

@@ -113,6 +113,18 @@ class Backend
     }
 
     /**
+     * Create page data
+     *
+     * @return array
+     */
+    public function page(array $pageClass, array $data = []): array
+    {
+        $page = new $pageClass['page']($data);
+
+        return $page->data($data);
+    }
+
+    /**
      * Return a backend view
      *
      * @param array $data
