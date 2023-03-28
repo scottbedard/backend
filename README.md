@@ -13,15 +13,45 @@ A backend for Laravel applications. More documentation to come.
 
 ## Controllers
 
-Controllers manage the backend areas of your application. They are defined using `yaml` files, and can make protected pages with using the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package.
-
-To create a controller, execute the following
+Controllers manage the backend areas of your application. They are defined using `yaml` files, and use the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package to create protected routes and APIs. In most situations, you'll find this file is all you need to create standard lists and forms. As an example, let's make a controller to manage our application's users. We can scaffold our controller files with the following command.
 
 ```bash
-php artisan backend:controller user -d
+php artisan backend:controller users
 ```
 
-You'll notice a file created at `app/Backend/users.yaml`. This is your controller's configuration file, it configures most things about a controller's pages. In most cases, you'll find you may not even need a `BackendController` class.
+A new controller file should now exist at `app/Backend/users.yaml`. Here we can define permissions, routes, and other settings for this backend area. To understand how these work, let's look at our new `edit` route, and some of the other config options.
+
+```yaml
+id: users
+
+model: App\Models\User
+
+permissions:
+    - view users
+    
+routes:
+    edit:
+        page: form
+        path: /{id}/edit
+        permissions:
+            - create users
+        options:
+            # ...
+```
+
+- **`id`** A unique identifier to namespace the controller routes. If none is defined, the file name will be used.
+- **`model`** The model associated with this controller's resource.
+- **`permissions`** The permissions required to view any routes associated with this controller.
+- **`routes`**
+  - **`edit`** A unique name that maps to a controller method.
+    - **`page`** The page ro render for our route. We'll discuss these more later.
+    - **`path`** URL path to our route, defined using [Laravel's normal routing syntax](https://laravel.com/docs/routing#route-parameters)
+    - **`permissions`** Additional permissions required to access this route.
+    - **`options`** Any additional data needed for the page.
+    
+## Pages
+
+No documentation yet, check back later.
 
 ## Super admins
 
