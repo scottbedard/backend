@@ -2,13 +2,10 @@
 
 namespace Bedard\Backend\Classes;
 
-use Bedard\Backend\BackendController;
-use Bedard\Backend\Classes\UrlPath;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Symfony\Component\Yaml\Yaml;
 
 class Backend
@@ -82,7 +79,7 @@ class Backend
         }
 
         // fill default values
-        data_fill($backend, '*.class', BackendController::class);
+        data_fill($backend, '*.class', \Bedard\Backend\BackendController::class);
         data_fill($backend, '*.permissions', []);
         data_fill($backend, '*.routes.*.permissions', []);
         
@@ -102,5 +99,29 @@ class Backend
         }
 
         return $backend;
+    }
+
+    /**
+     * Return a backend view
+     *
+     * @param array $data
+     *
+     * @return \Illuminate\View\View
+     */
+    public function view(array $data = []): View
+    {
+        $dev = env('BACKEND_DEV');
+
+        $manifestPath = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json'));
+
+        $manifest = File::exists($manifestPath)
+            ? json_decode(File::get($manifestPath), true)
+            : null;
+
+        return view('backend::index', [
+            'data' => $data,
+            'dev' => $dev,
+            'manifest' => $manifest,
+        ]);
     }
 }

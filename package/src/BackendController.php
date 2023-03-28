@@ -21,6 +21,8 @@ class BackendController extends BaseController
 
         $config = Backend::config($routeName);
         
-        return $config;
+        return Backend::view([
+            
+        ]);
     }
 }
