@@ -84,11 +84,17 @@ class Backend
         // fill default values
         data_fill($backend, '*.class', BackendController::class);
         data_fill($backend, '*.permissions', []);
+        data_fill($backend, '*.routes.*.permissions', []);
+        
+        foreach ($backend as $controller => $config) {
+            data_fill($backend, "{$controller}.id", $controller);
+        }
 
         // run validation and display errors
         $validator = Validator::make($backend, [
-            '*.class' => 'required',
-            '*.name' => 'required',
+            '*.class' => ['required'],
+            '*.id' => ['required', 'distinct'],
+            '*.permissions' => ['required', 'array']
         ]);
         
         if ($validator->fails()) {

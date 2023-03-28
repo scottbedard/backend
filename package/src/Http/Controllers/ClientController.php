@@ -2,8 +2,6 @@
 
 namespace Bedard\Backend\Http\Controllers;
 
-use Bedard\Backend\Classes\Router;
-use Bedard\Backend\Classes\UrlPath;
 use Bedard\Backend\Facades\Backend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -18,9 +16,6 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        // find backend controller
-        $router = new Router(Backend::controllers());
-
         // load backend client
         $manifest = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json'));
 

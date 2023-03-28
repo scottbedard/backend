@@ -1,7 +1,3 @@
-class: \Bedard\Backend\BackendController
-
-name: post
-
 permissions:
     - read posts
 

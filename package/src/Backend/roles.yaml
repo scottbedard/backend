@@ -1,4 +1,4 @@
-name: roles
+id: roles
 
 permissions:
     - read roles

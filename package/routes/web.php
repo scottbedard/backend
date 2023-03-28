@@ -17,7 +17,9 @@ Route::group([
             'middleware' => array_map(fn ($permission) => PermissionMiddleware::class . ":{$permission}", $config['permissions']),
         ], function () use ($controller, $config) {
             foreach ($config['routes'] as $method => $route) {
-                Route::get($route['path'], [$config['class'], $method])->name("backend.{$controller}.{$method}");
+                Route::get($route['path'], [$config['class'], $method])
+                    ->name("backend.{$controller}.{$method}")
+                    ->middleware(array_map(fn ($p) => PermissionMiddleware::class . ":{$p}", $route['permissions']));
             }
         });
     }

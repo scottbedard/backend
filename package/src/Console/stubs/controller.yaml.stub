@@ -2,9 +2,8 @@
 # in you're making something custom, extend this base class
 class: \Bedard\Backend\BackendController
 
-# name
-# set this for default page titles, button text, etc...
-name: :singular
+# unique identifier
+id: :plural
 
 # base permissions
 # users must have ALL of the following permissions
