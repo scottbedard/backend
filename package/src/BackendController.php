@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 class BackendController extends BaseController
 {
     /**
-     * Load a backend route
+     * Render backend route
      *
      * @param string $name
      * @param array $args
