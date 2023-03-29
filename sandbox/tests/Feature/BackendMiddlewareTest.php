@@ -55,7 +55,7 @@ class BackendMiddlewareTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_permission_access_via_role()
+    public function test_role_access()
     {
         $user = User::factory()->create();
         $create = Permission::create(['name' => 'create roles']);
