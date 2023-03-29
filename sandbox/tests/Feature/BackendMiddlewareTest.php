@@ -38,20 +38,42 @@ class BackendMiddlewareTest extends TestCase
 
     public function test_permission_access()
     {
-        $read = Permission::create(['name' => 'read roles']);
+        $view = Permission::create(['name' => 'read roles']);
 
         $user = User::factory()->create();
-
-        $req = $this
-            ->actingAs($user)
-            ->get(config('backend.path') . '/roles')
-            ->assertStatus(302);
-
-        $user->givePermissionTo($read);
 
         $this
             ->actingAs($user)
             ->get(config('backend.path') . '/roles')
+            ->assertStatus(302);
+
+        $user->givePermissionTo($view);
+
+        $this
+            ->actingAs($user)
+            ->get(config('backend.path') . '/roles')
+            ->assertStatus(200);
+    }
+
+    public function test_permission_access_via_role()
+    {
+        $user = User::factory()->create();
+        $create = Permission::create(['name' => 'create roles']);
+        $read = Permission::create(['name' => 'read roles']);
+        $manager = Role::create(['name' => 'manager']);
+        $manager->givePermissionTo($create);
+        $manager->givePermissionTo($read);
+
+        $this
+            ->actingAs($user)
+            ->get(config('backend.path') . '/roles/create')
+            ->assertStatus(302);
+
+        $user->assignRole($manager);
+
+        $this
+            ->actingAs($user)
+            ->get(config('backend.path') . '/roles/create')
             ->assertStatus(200);
     }
 }

@@ -23,7 +23,7 @@ routes:
         page: form
         path: /create
         permissions:
-            - create role
+            - create roles
         options:
             context: create
             fields:
