@@ -34,7 +34,9 @@ class BackendController extends BaseController
         ]);
 
         return Backend::view([
+            'config' => $config,
             'page' => $page,
+            'route' => $routeName,
         ]);
     }
 }
