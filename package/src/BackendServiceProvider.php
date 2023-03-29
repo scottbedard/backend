@@ -35,7 +35,9 @@ class BackendServiceProvider extends ServiceProvider
         }
 
         // configure super-admin role
-        Gate::before(fn ($user) => $user->hasRole(config('backend.super_admin_role')) ? true : null);
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole(config('backend.super_admin_role')) ? true : null;
+        });
     }
 
     /**
@@ -46,6 +48,8 @@ class BackendServiceProvider extends ServiceProvider
     public function register(): void
     {
         // register backend facade
-        $this->app->bind('backend', fn () => new \Bedard\Backend\Classes\Backend);
+        $this->app->bind('backend', function () {
+            return new \Bedard\Backend\Classes\Backend();
+        });
     }
 }

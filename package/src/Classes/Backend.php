@@ -2,10 +2,12 @@
 
 namespace Bedard\Backend\Classes;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Symfony\Component\Yaml\Yaml;
 
 class Backend
@@ -18,21 +20,19 @@ class Backend
      * @param ?string $permission
      * @return bool
      */
-    public function check(mixed $user, ?string $permission = null): bool
+    public function check(mixed $user, ...$permissions): bool
     {
         if (!$user || !is_a($user, config('backend.user'))) {
             return false;
         }
 
-        if ($user->hasRole(config('backend.super_admin_role'))) {
-            return true;
+        $super = config('backend.super_admin_role');
+
+        if (count($permissions) === 0) {
+            return $user->getAllPermissions()->count() > 0 || $user->hasRole($super);
         }
 
-        if ($permission === null) {
-            return $user->permissions()->count() > 0;
-        }
-    
-        return $user->hasPermissionTo($permission);
+        return $user->hasAllPermissions(...Arr::flatten($permissions)) || $user->hasRole($super);
     }
 
     /**

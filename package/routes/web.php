@@ -13,14 +13,16 @@ Route::group([
 
     foreach (Backend::controllers() as $controller => $config) {
         Route::group([
-            'prefix' => $controller,
-            'middleware' => array_map(fn ($permission) => PermissionMiddleware::class . ":{$permission}", $config['permissions']),
+            'prefix' => $config['id'],
         ], function () use ($controller, $config) {
+
             foreach ($config['routes'] as $method => $route) {
+
                 Route::get($route['path'], [$config['class'], $method])
-                    ->name("backend.{$controller}.{$method}")
-                    ->middleware(array_map(fn ($p) => PermissionMiddleware::class . ":{$p}", $route['permissions']));
+                    ->name("backend.{$controller}.{$method}");
+
             }
+
         });
     }
 

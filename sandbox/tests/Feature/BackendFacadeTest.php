@@ -26,13 +26,11 @@ class BackendFacadeTest extends TestCase
     public function test_backend_check_super_admin()
     {
         $role = Role::firstOrCreate(['name' => config('backend.super_admin_role')]);
-        
         $user = User::factory()->create();
 
         $this->assertFalse(Backend::check($user));
 
         $user->assignRole(config('backend.super_admin_role'));
-
         $this->assertTrue(Backend::check($user));
         $this->assertTrue(Backend::check($user, 'some permission nobody has'));
     }
@@ -48,6 +46,22 @@ class BackendFacadeTest extends TestCase
         $user->givePermissionTo($permission);
 
         $this->assertTrue(Backend::check($user, 'edit articles'));
+    }
+
+    public function test_backend_check_with_array_of_permissions()
+    {
+        $edit = Permission::create(['name' => 'edit articles']);
+        $delete = Permission::create(['name' => 'delete articles']);
+        
+        $alice = User::factory()->create();
+        $alice->givePermissionTo($edit);
+        $alice->givePermissionTo($delete);
+
+        $bob = User::factory()->create();
+        $bob->givePermissionTo($edit);
+        
+        $this->assertTrue(Backend::check($alice, ['edit articles', 'delete articles']));
+        $this->assertFalse(Backend::check($bob, ['edit articles', 'delete articles']));
     }
 
     public function test_backend_check_for_permission_via_role()

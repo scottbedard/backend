@@ -29,8 +29,6 @@ class BackendController extends BaseController
             'controllers' => $controllers,
         ]);
 
-        dd($page);
-
         return Backend::view([
 
         ]);
