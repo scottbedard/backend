@@ -9,9 +9,14 @@ export const router = createRouter({
       path: '/backend',
     },
     {
+      component: () => import('../pages/Page.vue'),
+      name: 'page',
+      path: '/backend/:pathMatch(.*)*',
+    },
+    {
       component: () => import('../pages/404.vue'),
       name: '404',
-      path: '/:pathMatch(.*)*',
+      path: '/404',
     },
   ],
 })
