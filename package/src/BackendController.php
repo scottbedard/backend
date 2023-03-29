@@ -4,6 +4,7 @@ namespace Bedard\Backend;
 
 use Bedard\Backend\Facades\Backend;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 
 class BackendController extends BaseController
 {
@@ -20,17 +21,20 @@ class BackendController extends BaseController
         $routeName = request()->route()->getName();
 
         $controllers = Backend::controllers();
+
+        $controller = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
         
         $config = Backend::config($routeName);
         
         $page = Backend::page($config, [
-            'route' => $routeName,
             'config' => $config,
+            'controller' => $controller,
             'controllers' => $controllers,
+            'route' => $routeName,
         ]);
 
         return Backend::view([
-
+            'page' => $page,
         ]);
     }
 }

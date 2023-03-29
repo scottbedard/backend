@@ -1,5 +1,7 @@
 id: roles
 
+model: Spatie\Permission\Models\Role
+
 permissions:
     - read roles
 

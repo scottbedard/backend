@@ -80,6 +80,7 @@ class Backend
 
         // fill default values
         data_fill($backend, '*.class', \Bedard\Backend\BackendController::class);
+        data_fill($backend, '*.model', null);
         data_fill($backend, '*.permissions', []);
         data_fill($backend, '*.routes.*.permissions', []);
 
@@ -99,8 +100,9 @@ class Backend
 
         // run validation and display errors
         $validator = Validator::make($backend, [
-            '*.class' => ['required'],
+            '*.class' => ['required', 'string'],
             '*.id' => ['required', 'alpha_num:ascii', 'distinct'],
+            '*.model' => ['nullable', 'string'],
             '*.permissions' => ['required', 'array'],
             '*.routes.*.page' => ['required', 'string'],
         ]);
