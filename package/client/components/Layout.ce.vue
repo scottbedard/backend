@@ -32,3 +32,8 @@ defineProps<{
   padded?: boolean
 }>()
 </script>
+
+<style>
+@tailwind base;
+@tailwind utilities;
+</style>

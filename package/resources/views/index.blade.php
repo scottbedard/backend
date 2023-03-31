@@ -7,14 +7,16 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=quicksand:400" rel="stylesheet" />
 
-    @if (!$dev && $manifest)
+    {{-- @if (!$dev && $manifest)
       @foreach ($manifest['client/main.ts']['css'] as $stylesheet)
         <link href="{{ asset('vendor/backend/' . $stylesheet) }}" rel="stylesheet">
       @endforeach
-    @endif
+    @endif --}}
   </head>
   <body>
-    <div id="app"></div>
+    <backend-layout>
+      omg amazing
+    </backend-layout>
 
     <script>window.backend = @json($data)</script>
 
@@ -22,7 +24,9 @@
       <script type="module" src="http://localhost:3000/@@vite/client"></script>
       <script type="module" src="http://localhost:3000/client/main.ts"></script>
     @elseif ($manifest)
-      <script type="module" src="{{ asset('vendor/backend/' . $manifest['client/main.ts']['file']) }}"></script>
+      @foreach ($manifest as $key => $data)
+        <script type="module" src="{{ asset('vendor/backend/' . $data['file']) }}"></script>
+      @endforeach
     @else
       <script src="https://cdn.tailwindcss.com"></script>
       <script>

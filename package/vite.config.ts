@@ -12,7 +12,6 @@ const resolve = (p: string) => {
 
 const envPath = resolve('.env')
 const envBackupPath = resolve('.env.backup')
-const backendPath = resolve('public/vendor/backend')
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,9 +21,12 @@ export default defineConfig({
     manifest: true,
     outDir: resolve('public/vendor/backend'),
     rollupOptions: {
-      input: [
-        'client/main.ts',
-      ],
+      input: {
+        // form: 'client/form.ts',
+        // list: 'client/list.ts',
+        layout: 'client/components/Layout.ts',
+        main: 'client/main.ts',
+      },
     },
   },
   plugins: [
