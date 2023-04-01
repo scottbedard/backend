@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Classes;
 
+use Bedard\Backend\Classes\ViteManifest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -137,16 +138,13 @@ class Backend
     {
         $dev = env('BACKEND_DEV');
 
-        $manifestPath = env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json'));
-
-        $manifest = File::exists($manifestPath)
-            ? json_decode(File::get($manifestPath), true)
-            : null;
+        $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
 
         return view('backend::index', [
             'data' => $data,
             'dev' => $dev,
-            'manifest' => $manifest,
+            'scripts' => $manifest->scripts(),
+            'styles' => $manifest->styles(),
         ]);
     }
 }

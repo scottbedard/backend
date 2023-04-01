@@ -1,0 +1,19 @@
+{
+  "client/components/Layout.ts": {
+    "file": "assets/layout-cc8e5c74.js",
+    "isEntry": true,
+    "src": "client/components/Layout.ts"
+  },
+  "client/main.css": {
+    "file": "assets/main-3872e0b7.css",
+    "src": "client/main.css"
+  },
+  "client/main.ts": {
+    "css": [
+      "assets/main-3872e0b7.css"
+    ],
+    "file": "assets/main-5e5fd67a.js",
+    "isEntry": true,
+    "src": "client/main.ts"
+  }
+}
