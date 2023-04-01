@@ -2,15 +2,26 @@
 
 namespace Bedard\Backend\Classes;
 
+use Illuminate\Support\Facades\Validator;
+
 class Plugin
 {
     /**
-     * Fetch data for a page
+     * Create a new plugin
      *
-     * @return array
+     * @param array $params
      */
-    public function data(): array
+    public function __construct(array $params)
     {
-        return [];
+        $validator = Validator::make($params, [
+            'config' => 'required|array',
+            'controllers' => 'required|array',
+            'name' => 'required|string',
+            'route' => 'required|string',
+        ]);
+        
+        if ($validator->fails()) {
+            throw new \Exception('Invalid plugin config: ' . $validator->errors()->first());
+        }
     }
 }
