@@ -15,7 +15,6 @@ Route::group([
     'prefix' => config('backend.path'),
 ], function () {
 
-
     foreach (Backend::controllers() as $controller => $config) {
         Route::group([
             'prefix' => $config['id'],

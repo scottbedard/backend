@@ -2,7 +2,7 @@
 
 namespace Bedard\Backend\Classes;
 
-class Page
+class Plugin
 {
     /**
      * Fetch data for a page
