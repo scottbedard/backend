@@ -14,7 +14,7 @@
     @endif
   </head>
   <body>
-    hey...
+    <div id="app"></div>
 
     @if ($dev)
       <script type="module" src="http://localhost:3000/@@vite/client"></script>

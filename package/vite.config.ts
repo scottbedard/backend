@@ -22,9 +22,6 @@ export default defineConfig({
     outDir: resolve('public/vendor/backend'),
     rollupOptions: {
       input: {
-        // form: 'client/form.ts',
-        // list: 'client/list.ts',
-        layout: 'client/components/Layout.ts',
         main: 'client/main.ts',
       },
     },
