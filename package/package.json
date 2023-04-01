@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@bedard/vue-lucide": "^0.1.2",
+    "axios": "^1.3.4",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },

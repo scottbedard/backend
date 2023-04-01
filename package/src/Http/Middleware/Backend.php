@@ -25,13 +25,15 @@ class Backend
         
         $controllers = BackendFacade::controllers();
 
-        $routeName = Str::of($request->route()->getName())->ltrim('backend.')->toString();
+        $routeName = $request->route()->getName();
 
-        if ($routeName === 'index' && !BackendFacade::check($user)) {
+        $backendRouteName = Str::of($request->route()->getName())->ltrim('backend.')->toString();
+
+        if ($backendRouteName === 'index' && !BackendFacade::check($user)) {
             return redirect(config('backend.unauthorized_redirect'));
         }
 
-        if ($routeName === 'index') {
+        if ($backendRouteName === 'index') {
             if (!BackendFacade::check($user)) {
                 return redirect(config('backend.unauthorized_redirect'));
             }
@@ -39,9 +41,9 @@ class Backend
             return $next($request);
         }
         
-        list($namespace, $method) = explode('.', $routeName);
+        list($namespace, $method) = explode('.', $backendRouteName);
 
-        $config = BackendFacade::config($routeName);
+        $config = BackendFacade::config($backendRouteName);
 
         $permissions = array_merge($config['permissions'], data_get($controllers, "{$namespace}.permissions", []));
 
