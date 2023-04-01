@@ -1,6 +1,8 @@
 <template>
   <Layout>
-    <div ref="containerEl" />
+    <div class="border-4 border-danger-500 border-dashed m-6 p-6">
+      <div ref="containerEl" />
+    </div>
   </Layout>
 </template>
 
