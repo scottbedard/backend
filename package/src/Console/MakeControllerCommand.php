@@ -65,6 +65,7 @@ class MakeControllerCommand extends Command
         // replace entities
         $output = str_replace(':singular', $singular, $output);
         $output = str_replace(':plural', $plural, $output);
+        $output = str_replace(':model', ucfirst($singular), $output);
 
         // output the file
         $path = $dir . '/' . $plural . '.yaml';

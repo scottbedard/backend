@@ -20,29 +20,28 @@ class BackendController extends BaseController
     public function __call($name, $args)
     {
         $routeName = request()->route()->getName();
-        $config = Backend::config($routeName);
-        $controllers = Backend::controllers();
-        $controllerName = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
-        
-        $plugin = new Plugin();
-        
-        // dd([
-        //     'config' => $config,
-        //     'controller' => $controller,
-        //     'controllers' => $controllers,
-        //     'routeName' => $routeName,
-        // ]);
-        // $page = Backend::page($config, [
-        //     'config' => $config,
-        //     'controller' => $controller,
-        //     'controllers' => $controllers,
-        //     'route' => $routeName,
-        // ]);
 
-        // return Backend::view([
-        //     'config' => $config,
-        //     'page' => $page,
-        //     'route' => $routeName,
-        // ]);
+        $config = Backend::config($routeName);
+
+        $controllers = Backend::controllers();
+
+        $id = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
+
+        $aliases = config('backend.plugins');
+
+        dd('hello', $aliases);
+
+        $plugin = Plugin::create(
+            config: $config,
+            controllers: $controllers,
+            id: $id,
+            route: $routeName,
+        );
+
+        return Backend::view([
+            'config' => $config,
+            'plugin' => $plugin,
+            'route' => $routeName,
+        ]);
     }
 }

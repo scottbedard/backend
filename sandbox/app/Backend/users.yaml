@@ -1,10 +1,14 @@
+id: user
+
+model: \App\Models\User
+
 permissions:
-    - read posts
+    - read user
 
 routes:
     index:
         path: /
-        page: list
+        plugin: list
         options:
             checkboxes: true
             schema:
@@ -20,23 +24,24 @@ routes:
     create:
         path: /create
         permissions:
-            - create post
-        page: form
+            - create roles
+        plugin: form
         options:
             context: create
             fields:
                 id:
-                    disabled: true
+                    disabled: false
 
     edit:
         path: /{id}/edit
         permissions:
-            - edit post
-        page: form
+            - edit role
+        plugin: form
         options:
             context: edit
             extends: create
             fields:
-                id:
-                    disabled: false
+                created_at:
+                    disabled: true
+
 

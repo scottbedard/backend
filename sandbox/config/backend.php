@@ -75,17 +75,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Page types
+    | Plugin aliases
     |--------------------------------------------------------------------------
     |
-    | This registers a unique alias to be used in yaml configs. The form and
-    | list are built in, but you can add your own.
+    | These are unique aliases to be referenced from yaml files. The form
+    | and list are built in, but you can add your own.
     |
     */
 
-    'pages' => [
-        'form' => \Bedard\Backend\Pages\FormPage::class,
-        'list' => \Bedard\Backend\Pages\ListPage::class,
+    'plugins' => [
+        'form' => \Bedard\Backend\Plugins\FormPlugin::class,
+        'list' => \Bedard\Backend\Plugins\ListPlugin::class,
     ],
 
     /*

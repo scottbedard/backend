@@ -1,21 +1,14 @@
-# controller class
-# in you're making something custom, extend this base class
-class: \Bedard\Backend\BackendController
+id: :singular
 
-# unique identifier
-id: :plural
+model: \App\Models\:model
 
-# base permissions
-# users must have ALL of the following permissions
 permissions:
-    - read :plural
+    - read :singular
 
-# routes map to controller methods. in most situations you
-# only need yaml to define pages, but you can customize the response
 routes:
     index:
         path: /
-        type: list
+        plugin: list
         options:
             checkboxes: true
             schema:
@@ -28,27 +21,26 @@ routes:
                     format: YYYY-mm-DD
                     type: date
 
-    # permissions can be assigned to pages,
-    # and forms can serve as the base for other forms
     create:
         path: /create
         permissions:
-            - create :singular
-        type: form
+            - create roles
+        plugin: form
         options:
             context: create
             fields:
                 id:
-                    disabled: true
+                    disabled: false
 
     edit:
         path: /{id}/edit
         permissions:
-            - edit :singular
-        type: form
+            - edit role
+        plugin: form
         options:
             context: edit
             extends: create
             fields:
-                id:
-                    disabled: false
+                created_at:
+                    disabled: true
+

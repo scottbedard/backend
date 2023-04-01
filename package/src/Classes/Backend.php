@@ -105,7 +105,7 @@ class Backend
             '*.id' => ['required', 'alpha_num:ascii', 'distinct'],
             '*.model' => ['nullable', 'string'],
             '*.permissions' => ['required', 'array'],
-            '*.routes.*.page' => ['required', 'string'],
+            '*.routes.*.plugin' => ['required', 'string'],
         ]);
         
         if ($validator->fails()) {
@@ -113,18 +113,6 @@ class Backend
         }
 
         return $backend;
-    }
-
-    /**
-     * Create page data
-     *
-     * @return array
-     */
-    public function page(array $pageClass, array $data = []): array
-    {
-        $page = new $pageClass['page']($data);
-
-        return $page->data($data);
     }
 
     /**

@@ -1,14 +1,14 @@
-id: roles
+id: role
 
-model: Spatie\Permission\Models\Role
+model: \App\Models\Role
 
 permissions:
-    - read roles
+    - read role
 
 routes:
     index:
-        page: list
         path: /
+        plugin: list
         options:
             checkboxes: true
             schema:
@@ -22,10 +22,10 @@ routes:
                     type: date
 
     create:
-        page: form
         path: /create
         permissions:
             - create roles
+        plugin: form
         options:
             context: create
             fields:
@@ -33,14 +33,13 @@ routes:
                     disabled: false
 
     edit:
-        page: form
         path: /{id}/edit
         permissions:
             - edit role
+        plugin: form
         options:
             context: edit
             extends: create
             fields:
                 created_at:
                     disabled: true
-
