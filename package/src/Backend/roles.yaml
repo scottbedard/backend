@@ -1,6 +1,6 @@
 id: roles
 
-model: \App\Models\Role
+model: \Spatie\Permission\Models\Role
 
 permissions:
     - read role

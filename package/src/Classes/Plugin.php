@@ -15,6 +15,13 @@ abstract class Plugin
     protected array $config;
 
     /**
+     * The current controller
+     *
+     * @var array
+     */
+    protected array $controller;
+
+    /**
      * Complete set of data for all controllers
      *
      * @var array
@@ -39,17 +46,20 @@ abstract class Plugin
      * Construct
      *
      * @param array $config
+     * @param array $controller
      * @param array $controllers
      * @param string $id
      * @param string $route
      */
     public function __construct(
         array $config,
+        array $controller,
         array $controllers,
         string $id,
         string $route,
     ) {
         $this->config = $config;
+        $this->controller = $controller;
         $this->controllers = $controllers;
         $this->id = $id;
         $this->route = $route;

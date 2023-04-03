@@ -8,10 +8,19 @@ use Illuminate\View\View;
 
 class ListPlugin extends Plugin
 {
+    /**
+     * Plugin data
+     *
+     * @return array
+     */
     public function data(): array
     {
+        $model = $this->controller['model'];
+
+        $items = $model::query()->paginate(20);
+
         return [
-            'hello' => 'world again',
+            'data' => $items
         ];
     }
 

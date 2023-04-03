@@ -13,4 +13,4 @@ if (appEl) {
   app.mount(appEl)
 }
 
-console.log('Hello from the application')
+console.log('Ready:', window.context)

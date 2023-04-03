@@ -6,7 +6,6 @@
 
 <script lang="ts" setup>
 import { appElKey, setInnerHTML } from '@/utils'
-import { inject, ref } from 'vue'
 import Layout from '@/components/Layout.vue'
 
 const appEl = inject(appElKey, null as any as HTMLElement)
