@@ -17,6 +17,8 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
+        // dd($request);
+
         return Backend::view([
             // ...
         ]);

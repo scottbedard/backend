@@ -17,7 +17,7 @@ Route::group([
         ], function () use ($controller, $config) {
 
             foreach ($config['routes'] as $method => $route) {
-
+                
                 Route::get($route['path'], [$config['class'], $method])
                     ->name("backend.{$controller}.{$method}");
 
@@ -26,8 +26,8 @@ Route::group([
         });
     }
 
-    Route::get('/{path?}', [ClientController::class, 'index'])
-        ->where('path', '.*')
-        ->name('backend.index');
+    // Route::get('/{path?}', [ClientController::class, 'index'])
+    //     ->where('path', '.*')
+    //     ->name('backend.index');
         
 });

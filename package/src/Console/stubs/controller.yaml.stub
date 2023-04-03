@@ -1,4 +1,4 @@
-id: :singular
+id: :plural
 
 model: \App\Models\:model
 

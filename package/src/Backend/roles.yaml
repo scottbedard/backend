@@ -1,4 +1,4 @@
-id: role
+id: roles
 
 model: \App\Models\Role
 

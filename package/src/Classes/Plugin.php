@@ -3,8 +3,9 @@
 namespace Bedard\Backend\Classes;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
-class Plugin
+abstract class Plugin
 {
     /**
      * Yaml configuration for the current controller
@@ -33,16 +34,6 @@ class Plugin
      * @var string
      */
     protected string $route;
-    
-    /**
-     * Create a plugin
-     *
-     * @return self
-     */
-    public static function create(...$args): self
-    {
-        return new self(...$args);
-    }
 
     /**
      * Construct
@@ -65,10 +56,9 @@ class Plugin
     }
 
     /**
-     * ...
+     * Render the plugin
+     *
+     * @return Illuminate\View\View
      */
-    public function getIndex(): string
-    {
-        return 'hello dsfsdf';
-    }
+    abstract public function render(): View;
 }

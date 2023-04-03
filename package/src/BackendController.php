@@ -19,7 +19,9 @@ class BackendController extends BaseController
      */
     public function __call($name, $args)
     {
-        $routeName = request()->route()->getName();
+        $req = request();
+
+        $routeName = $req->route()->getName();
 
         $config = Backend::config($routeName);
 
@@ -27,20 +29,24 @@ class BackendController extends BaseController
 
         $id = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
 
-        $aliases = config('backend.plugins');
+        // render plugin
+        if ($req->header('X-Backend') && array_key_exists('plugin', $config)) {
+            $aliases = config('backend.plugins');
+            $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
 
-        dd('hello', $aliases);
+            $plugin = new $constructor(
+                config: $config,
+                controllers: $controllers,
+                id: $id,
+                route: $routeName,
+            );
 
-        $plugin = Plugin::create(
-            config: $config,
-            controllers: $controllers,
-            id: $id,
-            route: $routeName,
-        );
+            return $plugin->render();
+        }
 
+        // render client app
         return Backend::view([
             'config' => $config,
-            'plugin' => $plugin,
             'route' => $routeName,
         ]);
     }
