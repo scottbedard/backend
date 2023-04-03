@@ -5,16 +5,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { appElKey, setInnerHTML } from '@/utils'
+import { inject, ref } from 'vue'
 import Layout from '@/components/Layout.vue'
+
+const appEl = inject(appElKey, null as any as HTMLElement)
 
 const contentEl = ref<HTMLElement>()
 
-onMounted(async () => {
-  const view = document.getElementById('app')?.dataset.view
-  
+/**
+ * Initialize
+ */
+onMounted(() => {
+  if (!appEl) {
+    return
+  }
+
+  const view = appEl.dataset.view
+
   if (contentEl.value && view) {
-    contentEl.value.innerHTML = view
+    setInnerHTML(contentEl.value, view)
+
+    delete appEl.dataset.view
   }
 })
 </script>
