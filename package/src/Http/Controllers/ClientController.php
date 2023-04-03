@@ -17,10 +17,11 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request);
-
-        return Backend::view([
-            // ...
-        ]);
+        return Backend::view(
+            data: [
+                'hello' => 'world',
+            ],
+            view: view('backend::index'),
+        );
     }
 }

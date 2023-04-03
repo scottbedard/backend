@@ -27,21 +27,23 @@ class BackendController extends BaseController
 
         $controllers = Backend::controllers();
 
-        $id = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
+        if (array_key_exists('plugin', $config) && str_starts_with($routeName, 'backend.')) {
+            $id = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
+            
+            // render output from plugin
+            if ($req->header('X-Backend') && array_key_exists('plugin', $config)) {
+                $aliases = config('backend.plugins');
+                $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
 
-        // render plugin
-        if ($req->header('X-Backend') && array_key_exists('plugin', $config)) {
-            $aliases = config('backend.plugins');
-            $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
+                $plugin = new $constructor(
+                    config: $config,
+                    controllers: $controllers,
+                    id: $id,
+                    route: $routeName,
+                );
 
-            $plugin = new $constructor(
-                config: $config,
-                controllers: $controllers,
-                id: $id,
-                route: $routeName,
-            );
-
-            return $plugin->render();
+                return $plugin->render();
+            }
         }
 
         // render client app

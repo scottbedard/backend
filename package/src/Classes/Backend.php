@@ -45,6 +45,10 @@ class Backend
      */
     public function config(string $routeName): array
     {
+        if (!str_starts_with('backend.', $routeName)) {
+            return [];
+        }
+
         list($controller, $route) = Str::of($routeName)->ltrim('backend.')->explode('.');
         
         return data_get($this->controllers(), "{$controller}.routes.{$route}");
@@ -119,20 +123,22 @@ class Backend
      * Return a backend view
      *
      * @param array $data
+     * @param string $view
      *
      * @return \Illuminate\View\View
      */
-    public function view(array $data = []): View
+    public function view(array $data = [], string $view = ''): View
     {
         $dev = env('BACKEND_DEV');
 
         $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
 
-        return view('backend::index', [
+        return view('backend::client', [
             'data' => $data,
             'dev' => $dev,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
+            'view' => $view,
         ]);
     }
 }

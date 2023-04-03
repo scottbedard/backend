@@ -5,17 +5,16 @@
 </template>
 
 <script lang="ts" setup>
-import { http } from '@/utils'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import Layout from '@/components/Layout.vue'
 
 const contentEl = ref<HTMLElement>()
 
 onMounted(async () => {
-  const view = await http.get('/backend/roles')
+  const view = document.getElementById('app')?.dataset.view
   
-  if (contentEl.value) {
-    contentEl.value.innerHTML = <any> view.data
+  if (contentEl.value && view) {
+    contentEl.value.innerHTML = view
   }
 })
 </script>
