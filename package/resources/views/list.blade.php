@@ -1,7 +1,5 @@
-<div class="border-4 border-danger-500 border-dashed p-6">
-  Hello from a list!
-</div>
+<div id="list-plugin"></div>
 
 @if (env('BACKEND_DEV'))
-  <script type="module" src="http://localhost:3000/client/plugins/list.ts"></script>
+<script type="module" src="http://localhost:3000/client/plugins/list/index.ts"></script>
 @endenv

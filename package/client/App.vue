@@ -24,8 +24,6 @@ onMounted(() => {
 
   if (contentEl.value && view) {
     setInnerHTML(contentEl.value, view)
-
-    // delete appEl.dataset.view
   }
 })
 </script>

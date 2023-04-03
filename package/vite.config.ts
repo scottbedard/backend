@@ -22,8 +22,8 @@ export default defineConfig({
     outDir: resolve('public/vendor/backend'),
     rollupOptions: {
       input: {
-        list: 'client/plugins/list.ts',
         main: 'client/main.ts',
+        plugins: 'client/plugins/index.ts',
       },
     },
   },

@@ -1,7 +1,7 @@
-import './style.scss'
-import { appElKey } from './utils'
+import '@/style.scss'
+import { appElKey } from '@/utils'
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from '@/App.vue'
 
 const appEl = document.getElementById('app')
 
