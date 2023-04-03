@@ -45,7 +45,7 @@ class Backend
      */
     public function config(string $routeName): array
     {
-        if (!str_starts_with('backend.', $routeName)) {
+        if (!str_starts_with($routeName, 'backend.')) {
             return [];
         }
 

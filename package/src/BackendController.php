@@ -4,6 +4,7 @@ namespace Bedard\Backend;
 
 use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
+use Exception;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Str;
 
@@ -27,29 +28,22 @@ class BackendController extends BaseController
 
         $controllers = Backend::controllers();
 
-        if (array_key_exists('plugin', $config) && str_starts_with($routeName, 'backend.')) {
-            $id = Str::of($routeName)->ltrim('backend.')->explode('.')->first();
-            
-            // render output from plugin
-            if ($req->header('X-Backend') && array_key_exists('plugin', $config)) {
-                $aliases = config('backend.plugins');
-                $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
+        $id = str_starts_with($routeName, 'backend.')
+            ? Str::of($routeName)->ltrim('backend.')->explode('.')->first()
+            : null;
 
-                $plugin = new $constructor(
-                    config: $config,
-                    controllers: $controllers,
-                    id: $id,
-                    route: $routeName,
-                );
+        // render plugin data
+        $aliases = config('backend.plugins');
 
-                return $plugin->render();
-            }
-        }
+        $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
 
-        // render client app
-        return Backend::view([
-            'config' => $config,
-            'route' => $routeName,
-        ]);
+        $plugin = new $constructor(
+            config: $config,
+            controllers: $controllers,
+            id: $id,
+            route: $routeName,
+        );
+
+        return $plugin->render();
     }
 }

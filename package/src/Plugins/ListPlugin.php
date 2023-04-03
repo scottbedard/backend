@@ -3,10 +3,18 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Plugin;
+use Bedard\Backend\Facades\Backend;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
 {
+    public function data(): array
+    {
+        return [
+            'hello' => 'world again',
+        ];
+    }
+
     /**
      * Render the plugin
      *
@@ -14,6 +22,11 @@ class ListPlugin extends Plugin
      */
     public function render(): View
     {
-        return view('backend::list');
+        $data = $this->data();
+
+        return Backend::view(
+            data: $data,
+            view: view('backend::list'),
+        );
     }
 }

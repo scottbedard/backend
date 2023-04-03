@@ -19,6 +19,11 @@
       id="app"
     ></div>
 
+    <script>
+      window.context = {};
+      window.context.data = @json($data);
+    </script>
+
     @if ($dev)
       <script type="module" src="http://localhost:3000/@@vite/client"></script>
       <script type="module" src="http://localhost:3000/client/main.ts"></script>

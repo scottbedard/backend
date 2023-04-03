@@ -43,9 +43,9 @@ class Backend
         
         list($namespace, $method) = explode('.', $backendRouteName);
 
-        $config = BackendFacade::config($backendRouteName);
+        $config = BackendFacade::config($routeName);
 
-        $permissions = array_merge($config['permissions'], data_get($controllers, "{$namespace}.permissions", []));
+        $permissions = array_merge(data_get($config, 'permissions', []), data_get($controllers, "{$namespace}.permissions", []));
 
         if (!BackendFacade::check($user, $permissions)) {
             return redirect(config('backend.unauthorized_redirect'));
