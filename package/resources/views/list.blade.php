@@ -2,7 +2,6 @@
   Hello from a list!
 </div>
 
-
-<script>
-console.log('Hello from the list')
-</script>
+@if (env('BACKEND_DEV'))
+  <script type="module" src="http://localhost:3000/client/plugins/list.ts"></script>
+@endenv
