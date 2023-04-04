@@ -1,7 +1,8 @@
 import { appElKey } from '@/utils'
-import { createApp } from 'vue'
+import { createApp, h } from 'vue'
+import { router } from '@/router'
 import { state } from './state'
-import List from '@/plugins/list/List.vue'
+import Index from '@/plugins/list/Index.vue'
 
 const appEl = document.getElementById('app')
 
@@ -10,9 +11,8 @@ const pluginEl = document.getElementById('list-plugin')
 state.value = window.context.data
 
 if (pluginEl) {
-  const app = createApp(List)
-
-  app.provide(appElKey, appEl)
-  
-  app.mount(pluginEl)
+ createApp(Index)
+    .use(router)
+    .provide(appElKey, appEl)
+    .mount(pluginEl)
 }

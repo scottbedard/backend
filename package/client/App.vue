@@ -1,12 +1,12 @@
 <template>
   <Layout>
-    <div ref="contentEl" />
+    <div class="h-full" ref="contentEl" />
   </Layout>
 </template>
 
 <script lang="ts" setup>
 import { appElKey, setInnerHTML } from '@/utils'
-import Layout from '@/components/Layout.vue'
+import { Layout } from '@/components'
 
 const appEl = inject(appElKey, null as any as HTMLElement)
 

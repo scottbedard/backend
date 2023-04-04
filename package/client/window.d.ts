@@ -1,7 +1,10 @@
+import type { Router } from 'vue-router'
+
 declare global {
   interface Window {
-    createPlugin: () => void
     context: any
+    createPlugin: () => void
+    router: Router
   }
 }
 

@@ -20,6 +20,7 @@ class ListPlugin extends Plugin
         $items = $model::query()->paginate(20);
 
         return [
+            'config' => $this->config,
             'data' => $items
         ];
     }

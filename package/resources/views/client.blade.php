@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ config('app.name', '') }} backend</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=quicksand:400" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=quicksand:400,600" rel="stylesheet" />
 
     @if (!$dev && $styles)
       @foreach ($styles as $file)

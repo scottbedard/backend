@@ -6,7 +6,7 @@ export function setInnerHTML(el: HTMLElement, html: string) {
   
   Array.from(el.querySelectorAll('script'))
     .forEach(oldScriptEl => {
-      const newScriptEl = document.createElement("script");
+      const newScriptEl = document.createElement('script');
       
       Array.from(oldScriptEl.attributes).forEach(attr => {
         newScriptEl.setAttribute(attr.name, attr.value) 

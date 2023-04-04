@@ -15,10 +15,7 @@
         ...
       </aside>
 
-      <main
-        :class="['flex-1', {
-          'p-6': padded,
-        }]">
+      <main class="flex-1">
         <slot />
       </main>
     </div>
@@ -27,10 +24,6 @@
 
 <script lang="ts" setup>
 import { ShieldCheckIcon } from '@bedard/vue-lucide'
-
-defineProps<{
-  padded?: boolean
-}>()
 </script>
 
 <style>
