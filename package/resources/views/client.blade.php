@@ -28,9 +28,7 @@
       <script type="module" src="http://localhost:3000/@@vite/client"></script>
       <script type="module" src="http://localhost:3000/client/main.ts"></script>
     @elseif ($scripts)
-      @foreach ($scripts as $file)
-        <script type="module" src="{{ asset('vendor/backend/' . $file) }}"></script>
-      @endforeach
+      <script type="module" src="{{ asset('vendor/backend/' . $manifest->script('client/main.ts')) }}"></script>
     @else
       <script src="https://cdn.tailwindcss.com"></script>
       <script>

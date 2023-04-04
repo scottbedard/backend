@@ -23,7 +23,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'client/main.ts',
-        plugins: 'client/plugins/index.ts',
+        list: 'client/plugins/list/index.ts',
       },
     },
   },

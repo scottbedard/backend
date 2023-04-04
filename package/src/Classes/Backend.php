@@ -136,9 +136,12 @@ class Backend
         return view('backend::client', [
             'data' => $data,
             'dev' => $dev,
+            'manifest' => $manifest,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
-            'view' => $view,
+            'view' => view($view, [
+                'manifest' => $manifest,
+            ]),
         ]);
     }
 }

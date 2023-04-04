@@ -12,5 +12,3 @@ if (appEl) {
   
   app.mount(appEl)
 }
-
-console.log('Ready:', window.context)

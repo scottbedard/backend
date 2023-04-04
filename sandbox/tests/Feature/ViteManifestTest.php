@@ -21,5 +21,7 @@ class ViteManifestTest extends TestCase
         $this->assertEquals([
             'assets/main-3872e0b7.css',
         ], $styles);
+
+        $this->assertEquals('assets/main-5e5fd67a.js', $manifest->script('client/main.ts'));
     }
 }

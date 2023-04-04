@@ -18,10 +18,7 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         return Backend::view(
-            data: [
-                'hello' => 'world',
-            ],
-            view: view('backend::index'),
+            view: 'backend::index', 
         );
     }
 }

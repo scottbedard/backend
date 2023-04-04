@@ -35,7 +35,7 @@ class ListPlugin extends Plugin
 
         return Backend::view(
             data: $data,
-            view: view('backend::list'),
+            view: 'backend::list', 
         );
     }
 }

@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["./client/*"],
     },
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true
   },

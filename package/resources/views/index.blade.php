@@ -1,7 +1,7 @@
-<div class="text-xl p-6 tracking-wide">
-  Soon...
+<div class="p-6">
+  Hello from the index
 </div>
 
 <script>
-  console.log('Hello from the view')
+console.log('Hello from the index')
 </script>
