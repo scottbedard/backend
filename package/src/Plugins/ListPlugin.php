@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Plugins;
 
+use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
 use Illuminate\View\View;
@@ -17,11 +18,11 @@ class ListPlugin extends Plugin
     {
         $model = $this->controller['model'];
 
-        $items = $model::query()->paginate(20);
+        $paginator = new Paginator($model::query()->paginate(20));
 
         return [
             'config' => $this->config,
-            'data' => $items
+            'data' => $paginator->data(),
         ];
     }
 

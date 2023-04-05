@@ -7,15 +7,7 @@
     </header>
 
     <div class="flex-1 p-6">
-      Table
-
-      <div class="border-4 border-dashed border-danger-500 p-6 block">
-        <Checkbox v-model="foo">
-          Want to do something?
-        </Checkbox>
-      </div>
-      
-      <pre class="text-sm">{{ { foo } }}</pre>
+      <pre class="text-sm">{{ state }}</pre>
     </div>
   </section>
 </template>
