@@ -2,10 +2,11 @@
 
 namespace Bedard\Backend\Classes;
 
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
-abstract class Plugin
+class Plugin
 {
     /**
      * Yaml configuration for the current controller
@@ -63,12 +64,33 @@ abstract class Plugin
         $this->controllers = $controllers;
         $this->id = $id;
         $this->route = $route;
+
+        $this->validate();
     }
 
     /**
      * Render the plugin
      *
-     * @return Illuminate\View\View
+     * @return Illuminate\View\View|string
      */
-    abstract public function render(): View;
+    public function render(): View|string
+    {
+        return '';
+    }
+
+    /**
+     * Validate config
+     *
+     * @throws Exception
+     */
+    public function validate(): void
+    {
+        // $validator = Validator::make($this->config, [
+        //     // ...
+        // ]);
+        
+        // if ($validator->fails()) {
+        //     throw new \Exception('Invalid plugin config: ' . $validator->errors()->first());
+        // }
+    }
 }

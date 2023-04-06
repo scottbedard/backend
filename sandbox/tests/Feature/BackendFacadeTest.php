@@ -83,7 +83,7 @@ class BackendFacadeTest extends TestCase
 
     public function test_getting_config_from_route_name()
     {
-        $config = Backend::config('roles.index');
+        $config = Backend::config('backend.roles.index');
 
         $this->assertEquals(data_get(Backend::controllers(), 'roles.routes.index'), $config);
     }

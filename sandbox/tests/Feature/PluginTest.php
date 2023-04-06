@@ -9,8 +9,9 @@ class PluginTest extends TestCase
 {
     public function test_creating_a_plugin(): void
     {
-        $plugin = Plugin::create(
+        $plugin = new Plugin(
             config: [],
+            controller: [],
             controllers: [],
             id: 'test',
             route: 'backend.test.index',

@@ -6,16 +6,14 @@
       </Button>
     </header>
 
-    <div class="flex-1 p-6">
-      <pre class="text-sm">{{ state }}</pre>
-    </div>
+    <Table
+      :options="state.config.options"
+      :data="state.data" />
   </section>
 </template>
 
 <script lang="ts" setup>
-import { Button, Checkbox } from '@/components'
+import { Button, Table } from '@/components'
 import { PlusIcon } from '@bedard/vue-lucide'
 import { state } from '@/plugins/list/state'
-
-const foo = ref(false)
 </script>

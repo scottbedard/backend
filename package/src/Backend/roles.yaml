@@ -3,7 +3,7 @@ id: roles
 model: \Spatie\Permission\Models\Role
 
 permissions:
-    - read role
+    - read roles
 
 routes:
     index:

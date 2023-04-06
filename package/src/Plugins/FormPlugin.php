@@ -7,25 +7,8 @@ use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
 use Illuminate\View\View;
 
-class ListPlugin extends Plugin
+class FormPlugin extends Plugin
 {
-    /**
-     * Create a list plugin
-     */
-    public function __construct(
-        array $config,
-        array $controller,
-        array $controllers,
-        string $id,
-        string $route,
-    ) {
-        $this->config = $config;
-        $this->controller = $controller;
-        $this->controllers = $controllers;
-        $this->id = $id;
-        $this->route = $route;
-    }
-
     /**
      * Plugin data
      *
@@ -33,14 +16,7 @@ class ListPlugin extends Plugin
      */
     public function data(): array
     {
-        $model = $this->controller['model'];
-
-        $paginator = new Paginator($model::query()->paginate(20));
-
-        return [
-            'config' => $this->config,
-            'data' => $paginator->data(),
-        ];
+        return [];
     }
 
     /**
@@ -54,7 +30,7 @@ class ListPlugin extends Plugin
 
         return Backend::view(
             data: $data,
-            view: 'backend::list', 
+            view: 'backend::form', 
         );
     }
 
