@@ -13,7 +13,7 @@ routes:
             checkboxes: true
             schema:
                 id:
-                    disabled: true
+                    type: number
                 created_at:
                     format: YYYY-mm-DD
                     type: date

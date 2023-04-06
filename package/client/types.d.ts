@@ -5,6 +5,7 @@ type PluginConfig<T = Record<string, any>> = {
 }
 
 type TableCell = {
+  label: string
   type: string
 }
 

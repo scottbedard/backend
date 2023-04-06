@@ -1,6 +1,6 @@
 <template>
   <section class="flex flex-col h-full">
-    <header class="border-2 border-dashed border-gray-500 p-6">
+    <header class="p-6">
       <Button :icon="PlusIcon" theme="primary">
         Create role
       </Button>

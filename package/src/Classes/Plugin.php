@@ -2,7 +2,7 @@
 
 namespace Bedard\Backend\Classes;
 
-use Exception;
+use Bedard\Backend\Exceptions\PluginValidationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -57,13 +57,25 @@ abstract class Plugin
         string $id,
         string $route,
     ) {
-        $this->config = $config;
+        $this->config = $this->normalize($config);
         $this->controller = data_get($controllers, $id, []);
         $this->controllers = $controllers;
         $this->id = $id;
         $this->route = $route;
 
         $this->validate();
+    }
+
+    /**
+     * Normalize plugin config
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function normalize(array $config): array
+    {
+        return $config;
     }
 
     /**
@@ -76,7 +88,7 @@ abstract class Plugin
     /**
      * Validate config
      *
-     * @throws Exception
+     * @throws \Bedard\Backend\Exceptions\PluginValidationException
      */
     public function validate(): void
     {
@@ -85,7 +97,7 @@ abstract class Plugin
         // ]);
         
         // if ($validator->fails()) {
-        //     throw new \Exception('Invalid plugin config: ' . $validator->errors()->first());
+        //     throw new PluginValidationException('Invalid plugin config: ' . $validator->errors()->first());
         // }
     }
 }
