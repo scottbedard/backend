@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
-class Plugin
+abstract class Plugin
 {
     /**
      * Yaml configuration for the current controller
@@ -47,20 +47,18 @@ class Plugin
      * Construct
      *
      * @param array $config
-     * @param array $controller
      * @param array $controllers
      * @param string $id
      * @param string $route
      */
     public function __construct(
         array $config,
-        array $controller,
         array $controllers,
         string $id,
         string $route,
     ) {
         $this->config = $config;
-        $this->controller = $controller;
+        $this->controller = data_get($controllers, $id, []);
         $this->controllers = $controllers;
         $this->id = $id;
         $this->route = $route;
@@ -71,12 +69,9 @@ class Plugin
     /**
      * Render the plugin
      *
-     * @return Illuminate\View\View|string
+     * @return Illuminate\View\View
      */
-    public function render(): View|string
-    {
-        return '';
-    }
+    abstract public function render(): View;
 
     /**
      * Validate config

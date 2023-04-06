@@ -10,23 +10,6 @@ use Illuminate\View\View;
 class ListPlugin extends Plugin
 {
     /**
-     * Create a list plugin
-     */
-    public function __construct(
-        array $config,
-        array $controller,
-        array $controllers,
-        string $id,
-        string $route,
-    ) {
-        $this->config = $config;
-        $this->controller = $controller;
-        $this->controllers = $controllers;
-        $this->id = $id;
-        $this->route = $route;
-    }
-
-    /**
      * Plugin data
      *
      * @return array

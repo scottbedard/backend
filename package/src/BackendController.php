@@ -37,11 +37,8 @@ class BackendController extends BaseController
 
         $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
 
-        $controller = data_get($controllers, $id);
-
         $plugin = new $constructor(
             config: $config,
-            controller: $controller,
             controllers: $controllers,
             id: $id,
             route: $routeName,
