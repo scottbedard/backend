@@ -6,9 +6,11 @@
       </Button>
     </header>
 
-    <Table
-      :options="state.config.options"
-      :data="state.data" />
+    <div class="border-t border-gray-300">
+      <Table
+        :options="state.config.options"
+        :data="state.data" />
+    </div>
   </section>
 </template>
 
