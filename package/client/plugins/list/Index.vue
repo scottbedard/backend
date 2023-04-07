@@ -11,6 +11,8 @@
         :options="state.config.options"
         :data="state.data" />
     </div>
+
+    <pre class="p-6 text-sm">{{ state }}</pre>
   </section>
 </template>
 

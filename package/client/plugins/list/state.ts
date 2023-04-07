@@ -1,9 +1,9 @@
-import { createTableData, createTableOptions } from '@/utils'
+import { createPluginConfig, createTableData, createTableOptions } from '@/utils'
 
 /**
  * Plugin data
  */
 export const state = ref({
-  config: createTableOptions(),
+  config: createPluginConfig(createTableOptions()),
   data: createTableData(),
 })

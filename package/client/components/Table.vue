@@ -44,8 +44,6 @@
         </div>
       </div>
     </div>
-
-    <pre class="p-6 text-sm">{{ data }}</pre>
   </div>
 </template>
 

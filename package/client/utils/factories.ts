@@ -1,4 +1,15 @@
-import { TableData, TableOptions } from '@/types'
+import { PluginConfig, TableData, TableOptions } from '@/types'
+
+/**
+ * Create plugin config
+ */
+export function createPluginConfig<T>(options: T): PluginConfig<T> {
+  return {
+    options,
+    path: '',
+    plugin: '',
+  }
+}
 
 /**
  * Create table config
