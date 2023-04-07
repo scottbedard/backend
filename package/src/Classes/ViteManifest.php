@@ -56,6 +56,8 @@ class ViteManifest
             }
         }
 
+        dd($this->data);
+
         throw new Exception('Vite script not found: ' . $name);
     }
 
