@@ -15,10 +15,8 @@
 
         <div
           v-for="col in options.schema"
-          class="align-middle h-12 table-cell">
-          <div class="px-3">
-            <span v-text="col.label" class="font-bold" />
-          </div>
+          class="align-middle h-12 px-3 table-cell whitespace-nowrap first:pl-6 last:pr-6">
+          <span v-text="col.label" class="font-bold" />
         </div>
       </div>
 
@@ -36,11 +34,9 @@
 
         <div
           v-for="col, id in options.schema"
-          class="align-middle border-t border-gray-300 h-12 table-cell"
+          class="align-middle border-t border-gray-300 h-12 px-3 table-cell first:pl-6 last:pr-6"
           :key="id">
-          <div class="px-3">
-            {{ item[id] }}
-          </div>
+          {{ item[id] }}
         </div>
       </div>
     </div>
