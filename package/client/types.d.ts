@@ -1,10 +1,10 @@
-type PluginConfig<T = Record<string, any>> = {
+export type PluginConfig<T = Record<string, any>> = {
   options: T
   path: string
   plugin: string
 }
 
-type TableCell = {
+export type TableCell = {
   label: string
   type: string
 }

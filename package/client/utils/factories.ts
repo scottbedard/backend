@@ -1,9 +1,9 @@
-import { TableData, TableConfig } from '@/types'
+import { TableData, TableOptions } from '@/types'
 
 /**
  * Create table config
  */
-export function createTableConfig(): TableConfig {
+export function createTableOptions(): TableOptions {
   return {
     checkboxes: false,
     schema: [],
