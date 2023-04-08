@@ -28,7 +28,6 @@ jobs:
       DB_PASSWORD: password
       DB_PORT: 33306
       DB_USERNAME: root
-      GITHUB_ACTION: true
 
     steps:
       - name: Checkout
@@ -45,7 +44,6 @@ jobs:
           npm install
           npm run build
 
-
       - name: Configure directories
         run: |
           mv sandbox/.env.example .env
@@ -57,7 +55,10 @@ jobs:
           chmod -R 777 ./storage ./bootstrap/cache
 
       - name: Composer install
-        run: composer install
+        run: |
+          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
+          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
+          composer install
 
       - name: Generate application key
         run: php artisan key:generate

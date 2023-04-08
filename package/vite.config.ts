@@ -14,7 +14,7 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     manifest: true,
-    outDir: resolve('../sandbox/public/vendor/backend'),
+    outDir: resolve('public/vendor/backend'),
     rollupOptions: {
       input: {
         main: 'client/main.ts',
