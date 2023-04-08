@@ -11,6 +11,11 @@ routes:
         plugin: list
         options:
             checkboxes: true
+            actions:
+                -   icon: plus
+                    label: Create role
+                    to: /create
+                    theme: primary
             schema:
                 id:
                     type: number

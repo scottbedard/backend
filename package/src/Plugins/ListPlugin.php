@@ -44,10 +44,8 @@ class ListPlugin extends Plugin
         }
 
         data_fill($config, 'options.checkboxes', false);
-
-        if (!is_array(data_get($config, 'options.schema'))) {
-            data_set($config, 'options.schema', []);
-        }
+        data_fill($config, 'options.schema', []);
+        data_fill($config, 'options.toolbar', []);
 
         if (Arr::isAssoc($config['options']['schema'])) {
             $cols = [];
@@ -57,7 +55,11 @@ class ListPlugin extends Plugin
             }
 
             data_set($config, 'options.schema', $cols);
-        }    
+        }
+
+        foreach ($config['options']['actions'] as $key => $action) {
+            data_fill($config, "options.actions.{$key}.theme", 'default');
+        }
 
         foreach ($config['options']['schema'] as $key => $col) {
             data_fill($config, "options.schema.{$key}.type", 'text');
@@ -90,7 +92,16 @@ class ListPlugin extends Plugin
     public function validate(): void
     {
         $validator = Validator::make($this->config, [
+            // actions
+            'options.actions' => ['required', 'array'],
+            'options.actions.*.icon' => ['string'],
+            'options.actions.*.label' => ['required', 'string'],
+            'options.actions.*.to' => ['string'],
+
+            // checkboxes
             'options.checkboxes' => ['required', 'boolean'],
+
+            // schema
             'options.schema' => ['required', 'array'],
             'options.schema.*.type' => ['required', 'string'],
         ]);

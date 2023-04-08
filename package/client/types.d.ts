@@ -1,3 +1,5 @@
+export type ButtonTheme = 'primary' | 'danger' | 'default'
+
 export type PluginConfig<T = Record<string, any>> = {
   options: T
   path: string
@@ -19,6 +21,14 @@ type TableData<T = Record<string, any>> = {
 }
 
 export type TableOptions = {
+  actions: ToolbarAction[]
   checkboxes: boolean
   schema: TableCell[]
+}
+
+export type ToolbarAction = {
+  icon: string
+  label: string
+  theme: ButtonTheme
+  to: string
 }
