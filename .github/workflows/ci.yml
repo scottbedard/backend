@@ -46,42 +46,24 @@ jobs:
           npm run build
 
 
-      # - name: Configure directories
-      #   run: |
-      #     mv sandbox/.env.example .env
-      #     mv sandbox/* .
-      #     mkdir packages
-      #     mkdir packages/bedard
-      #     mkdir packages/bedard/backend
-      #     mv package/* packages/bedard/backend
-      #     chmod -R 777 ./storage ./bootstrap/cache
+      - name: Configure directories
+        run: |
+          mv sandbox/.env.example .env
+          mv sandbox/* .
+          mkdir packages
+          mkdir packages/bedard
+          mkdir packages/bedard/backend
+          mv package/* packages/bedard/backend
+          chmod -R 777 ./storage ./bootstrap/cache
 
-      # - name: Install Node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16
+      - name: Composer install
+        run: composer install
 
-      # - name: Install Node dependencies
-      #   run: |
-      #     cd ./packages/bedard/backend
-      #     npm install
+      - name: Generate application key
+        run: php artisan key:generate
 
-      # - name: Build client
-      #   run: |
-      #     cd ./packages/bedard/backend
-      #     npm run build
-
-      # - name: Composer install
-      #   run: |
-      #     sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
-      #     sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
-      #     composer install
-
-      # - name: Generate application key
-      #   run: php artisan key:generate
-
-      # - name: Run migrations
-      #   run: php artisan migrate
+      - name: Run migrations
+        run: php artisan migrate
 
       # - name: Publish assets
       #   run: |
