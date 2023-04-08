@@ -28,6 +28,11 @@ class ViteManifest
      */
     public function __construct(string $path)
     {
+        dd([
+            'path' => $path,
+            'exists' => File::exists($path),
+        ]);
+
         $this->json = File::exists($path) ? File::get($path) : '{}';
 
         $this->data = json_decode($this->json, true);
