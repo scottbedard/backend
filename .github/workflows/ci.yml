@@ -69,13 +69,13 @@ jobs:
         run: php artisan vendor:publish --tag backend
 
       - name: PHPUnit
-        run: php artisan test --filter=test_permission_access
+        run: php artisan test
 
-  # deploy:
-  #   name: deploy
-  #   needs: [test]
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: Deploy
-  #       run: curl ${{secrets.DEPLOY_URL}}
+  deploy:
+    name: deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy
+        run: curl ${{secrets.DEPLOY_URL}}
