@@ -3,7 +3,9 @@
 namespace Bedard\Backend\Classes;
 
 use Bedard\Backend\Exceptions\PluginValidationException;
+use Bedard\Backend\Facades\Backend;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 abstract class Plugin
@@ -13,54 +15,56 @@ abstract class Plugin
      *
      * @var array
      */
-    protected array $config;
+    public readonly array $config;
 
     /**
      * The current controller
      *
      * @var array
      */
-    protected array $controller;
+    public readonly array $controller;
 
     /**
-     * Complete set of data for all controllers
+     * Complete config data for all controllers
      *
      * @var array
      */
-    protected array $controllers;
+    public readonly array $controllers;
 
     /**
-     * The current controller's id
+     * The current controller id
      *
      * @var array
      */
-    protected string $id;
+    public readonly string $id;
 
     /**
      * The current route name
      * 
      * @var string
      */
-    protected string $route;
+    public readonly string $route;
 
     /**
-     * Construct
+     * Create a plugin
      *
-     * @param array $config
-     * @param array $controllers
-     * @param string $id
      * @param string $route
      */
-    public function __construct(
-        array $config,
-        array $controllers,
-        string $id,
-        string $route,
-    ) {
-        $this->config = $this->normalize($config);
+    public function __construct(string $route) {
+        $controllers = Backend::controllers();
+
+        $id = str_starts_with($route, 'backend.')
+            ? Str::of($route)->ltrim('backend.')->explode('.')->first()
+            : null;
+
+        $this->config = $this->normalize(Backend::config($route));
+
         $this->controller = data_get($controllers, $id, []);
+
         $this->controllers = $controllers;
+
         $this->id = $id;
+
         $this->route = $route;
 
         $this->validate();

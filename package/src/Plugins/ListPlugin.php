@@ -6,6 +6,7 @@ use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Exceptions\PluginValidationException;
 use Bedard\Backend\Facades\Backend;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -48,9 +49,19 @@ class ListPlugin extends Plugin
             data_set($config, 'options.schema', []);
         }
 
+        if (Arr::isAssoc($config['options']['schema'])) {
+            $cols = [];
+
+            foreach ($config['options']['schema'] as $id => $col) {
+                $cols[] = array_merge(['id' => $id], $col);
+            }
+
+            data_set($config, 'options.schema', $cols);
+        }    
+
         foreach ($config['options']['schema'] as $key => $col) {
             data_fill($config, "options.schema.{$key}.type", 'text');
-            data_fill($config, "options.schema.{$key}.label", Str::headline($key));
+            data_fill($config, "options.schema.{$key}.label", Str::headline($col['id']));
         }
 
         return $config;
