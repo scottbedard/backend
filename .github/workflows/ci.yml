@@ -76,7 +76,7 @@ jobs:
           php artisan vendor:publish --tag backend
           ls -a
           echo ":::::::::::::"
-          ls -a package/public
+          ls -a package
           echo "============="
           ls -a public/vendor/backend
 
