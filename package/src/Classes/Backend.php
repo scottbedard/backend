@@ -37,21 +37,75 @@ class Backend
     }
 
     /**
-     * Get backend config for route
-     *
-     * @param string $routeName
+     * Generate backend config
      *
      * @return array
      */
-    public function config(string $routeName): array
+    public function config(): array
     {
-        if (!str_starts_with($routeName, 'backend.')) {
-            return [];
+        $config = [
+            'controllers' => [],
+        ];
+
+        // first-party backend
+        collect(scandir(__DIR__ . '/../Backend'))
+            ->filter(fn ($file) => str_ends_with($file, '.yaml'))
+            ->each(function ($file) use (&$config) {
+                $name = strtolower(substr($file, 0, -5));
+
+                data_set($config, "controllers.{$name}", Yaml::parseFile(__DIR__ . '/../Backend/' . $file));
+            });
+
+        // app backend
+        $dir = config('backend.backend_directory');
+
+        if (file_exists($dir)) {
+            collect(scandir($dir))
+                ->filter(fn ($file) => str_ends_with($file, '.yaml'))
+                ->each(function ($file) use (&$config, $dir) {
+                    $name = strtolower(substr($file, 0, -5));
+
+                    data_set($config, "controllers.{$name}", Yaml::parseFile($dir . '/' . $file));
+                });
         }
 
-        list($controller, $route) = Str::of($routeName)->ltrim('backend.')->explode('.');
+        // fill default values
+        data_fill($config, 'controllers.*.model', null);
+        data_fill($config, 'controllers.*.permissions', []);
+        data_fill($config, 'controllers.*.routes', []);
+        data_fill($config, 'controllers.*.routes.*.options', []);
+        data_fill($config, 'controllers.*.routes.*.permissions', []);
+
+        foreach ($config['controllers'] as $id => $controller) {
+            data_fill($config, "controllers.{$id}.id", $id);
+        }
+
+        // apply plugin aliases
+        $plugins = config('backend.plugins', []);
+
+        foreach ($config['controllers'] as $controllerName => $controller) {
+            foreach ($controller['routes'] as $routeName => $route) {
+                $pluginName = data_get($route, 'plugin');
+
+                if (array_key_exists($pluginName, $plugins)) {
+                    data_set($config, "controllers.{$controllerName}.routes.{$routeName}.plugin", $plugins[$pluginName]);
+                }
+            }
+        }
+
+        dd($config);
+
+        return $config;
+
+        // application backend
+
+        // if (!str_starts_with($routeName, 'backend.')) {
+        //     return [];
+        // }
+
+        // list($controller, $route) = Str::of($routeName)->ltrim('backend.')->explode('.');
         
-        return data_get($this->controllers(), "{$controller}.routes.{$route}");
+        // return data_get($this->controllers(), "{$controller}.routes.{$route}");
     }
 
     /**

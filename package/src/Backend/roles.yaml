@@ -1,5 +1,3 @@
-id: roles
-
 model: \Spatie\Permission\Models\Role
 
 permissions:
@@ -46,9 +44,3 @@ routes:
         permissions:
             - edit role
         plugin: form
-        options:
-            context: edit
-            extends: create
-            fields:
-                created_at:
-                    disabled: true
