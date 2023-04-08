@@ -53,12 +53,11 @@ jobs:
           mkdir packages/bedard/backend
           mv package/* packages/bedard/backend
           chmod -R 777 ./storage ./bootstrap/cache
-
-      - name: Composer install
-        run: |
           sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
           sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
-          composer install
+
+      - name: Composer install
+        run: composer install
 
       - name: Generate application key
         run: php artisan key:generate
@@ -66,19 +65,11 @@ jobs:
       - name: Run migrations
         run: php artisan migrate
 
-      # - name: Publish assets
-      #   run: |
-      #     php artisan vendor:publish --tag backend
-      #     ls -a
-      #     echo ":::::::::::::"
-      #     ls -a package
-      #     echo "_____________"
-      #     ls -a packages/bedard/backend
-      #     echo "============="
-      #     ls -a public/vendor/backend
+      - name: Publish assets
+        run: php artisan vendor:publish --tag backend
 
-      # - name: PHPUnit
-      #   run: php artisan test --filter=test_permission_access
+      - name: PHPUnit
+        run: php artisan test --filter=test_permission_access
 
   # deploy:
   #   name: deploy
