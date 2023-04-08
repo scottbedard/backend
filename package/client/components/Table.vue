@@ -21,7 +21,7 @@
       </div>
 
       <div
-        v-for="item in data.items"
+        v-for="row in data.items"
         class="table-row">
         <div
           v-if="options.checkboxes"
@@ -33,10 +33,10 @@
         </div>
 
         <div
-          v-for="col, id in options.schema"
+          v-for="col in options.schema"
           class="align-middle border-t border-gray-300 h-12 px-3 table-cell first:pl-6 last:pr-6"
-          :key="id">
-          {{ item[id] }}
+          :key="col.id">
+          {{ row[col.id] }}
         </div>
       </div>
     </div>

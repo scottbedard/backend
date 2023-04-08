@@ -5,6 +5,7 @@ export type PluginConfig<T = Record<string, any>> = {
 }
 
 export type TableCell = {
+  id: string
   label: string
   type: string
 }

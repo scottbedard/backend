@@ -20,29 +20,18 @@ class BackendController extends BaseController
      */
     public function __call($name, $args)
     {
-        $req = request();
 
-        $routeName = $req->route()->getName();
+        // find constructor from alias, or use explicit class name
+        $route = request()->route()->getName();
 
-        $config = Backend::config($routeName);
+        $config = Backend::config($route);
+        
+        $name = data_get($config, 'plugin');
 
-        $controllers = Backend::controllers();
+        $constructor = data_get(config('backend.plugins'), $name, $name);
 
-        $id = str_starts_with($routeName, 'backend.')
-            ? Str::of($routeName)->ltrim('backend.')->explode('.')->first()
-            : null;
-
-        // render plugin data
-        $aliases = config('backend.plugins');
-
-        $constructor = data_get($aliases, $config['plugin'], $config['plugin']);
-
-        $plugin = new $constructor(
-            config: $config,
-            controllers: $controllers,
-            id: $id,
-            route: $routeName,
-        );
+        // create plugin to handle the request
+        $plugin = new $constructor($route);
 
         return $plugin->render();
     }
