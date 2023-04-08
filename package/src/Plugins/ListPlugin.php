@@ -24,10 +24,7 @@ class ListPlugin extends Plugin
 
         $paginator = new Paginator($model::query()->paginate(20));
 
-        return [
-            'config' => $this->config,
-            'data' => $paginator->data(),
-        ];
+        return $paginator->data();
     }
 
     /**
@@ -70,21 +67,6 @@ class ListPlugin extends Plugin
     }
 
     /**
-     * Render the plugin
-     *
-     * @return Illuminate\View\View
-     */
-    public function render(): View
-    {
-        $data = $this->data();
-
-        return Backend::view(
-            data: $data,
-            view: 'backend::list', 
-        );
-    }
-
-    /**
      * Validate config
      *
      * @throws \Bedard\Backend\Exceptions\PluginValidationException
@@ -109,5 +91,25 @@ class ListPlugin extends Plugin
         if ($validator->fails()) {
             throw new PluginValidationException('Invalid list config: ' . $validator->errors()->first());
         }
+    }
+
+    /**
+     * Plugin view
+     *
+     * @return \Illuminate\View\View
+     */
+    public function view(): View
+    {
+        $model = $this->controller['model'];
+
+        $paginator = new Paginator($model::query()->paginate(20));
+        
+        return Backend::view(
+            data: [
+                'config' => $this->config,
+                'list' => $paginator->data(),
+            ],
+            view: 'backend::list',
+        );
     }
 }

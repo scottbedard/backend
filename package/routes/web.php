@@ -24,6 +24,6 @@ Route::group([
         });
     }
 
-    Route::get('/', [ClientController::class, 'index'])->name('backend.index');
+    Route::get('/', [BackendController::class, 'index'])->name('backend.index');
 
 });

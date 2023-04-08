@@ -1,28 +1,32 @@
 <template>
-  <button
+  <Component
     :class="['be-btn', {
       'be-btn-danger': theme === 'danger',
       'be-btn-default': theme === 'default',
       'be-btn-primary': theme === 'primary',
-    }]">
+    }]"
+    :is="to ? RouterLink : 'button'"
+    :to="to">
     <Component v-if="icon" :is="icon" :size="18" />
 
     <slot />
-  </button>
+  </Component>
 </template>
 
 <script lang="ts" setup>
 import { ButtonTheme } from '@/types'
+import { RouterLink, RouteLocationRaw } from 'vue-router';
 
 defineProps<{
   icon?: ReturnType<typeof defineComponent>
   theme?: ButtonTheme
+  to?: RouteLocationRaw
 }>()
 </script>
 
 <style lang="scss">
 .be-btn {
-  @apply flex font-bold gap-x-2 h-11 items-center rounded-md text-sm text-gray-100 tracking-wide px-4;
+  @apply inline-flex font-bold gap-x-2 h-11 items-center rounded-md text-sm text-gray-100 tracking-wide px-4;
 
   > svg {
     @apply w-5;

@@ -17,13 +17,11 @@
         :data="data" />
     </div>
 
-    <pre class="p-6 text-sm">{{ { data, options } }}</pre>
+    <pre class="p-6 text-sm">{{ { options } }}</pre>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { Icon, Button, Table } from '@/components'
 import { data, options } from '@/plugins/list/state'
-
-console.log(Icon)
+import { Icon, Button, Table } from '@/components'
 </script>

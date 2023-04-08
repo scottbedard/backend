@@ -20,21 +20,6 @@ class FormPlugin extends Plugin
     }
 
     /**
-     * Render the plugin
-     *
-     * @return Illuminate\View\View
-     */
-    public function render(): View
-    {
-        $data = $this->data();
-
-        return Backend::view(
-            data: $data,
-            view: 'backend::form', 
-        );
-    }
-
-    /**
      * Validate config
      *
      * @throws Exception
@@ -48,5 +33,15 @@ class FormPlugin extends Plugin
         // if ($validator->fails()) {
         //     throw new \Exception('Invalid plugin config: ' . $validator->errors()->first());
         // }
+    }
+
+    /**
+     * Plugin view
+     *
+     * @return string
+     */
+    public function view(): string
+    {
+        return 'backend::form';
     }
 }

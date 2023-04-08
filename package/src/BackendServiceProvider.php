@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,9 @@ class BackendServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'backend');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
+
+        // register components
+        Blade::componentNamespace('Bedard\\Backend\\Views\\Components', 'backend');
 
         // public assets
         $this->publishes([

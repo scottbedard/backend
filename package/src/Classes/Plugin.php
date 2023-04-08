@@ -83,13 +83,6 @@ abstract class Plugin
     }
 
     /**
-     * Render the plugin
-     *
-     * @return Illuminate\View\View
-     */
-    abstract public function render(): View;
-
-    /**
      * Validate config
      *
      * @throws \Bedard\Backend\Exceptions\PluginValidationException
@@ -104,4 +97,11 @@ abstract class Plugin
         //     throw new PluginValidationException('Invalid plugin config: ' . $validator->errors()->first());
         // }
     }
+
+    /**
+     * Plugin view
+     *
+     * @return \Illuminate\View\View
+     */
+    abstract public function view(): View;
 }
