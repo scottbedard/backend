@@ -75,6 +75,8 @@ jobs:
         run: |
           php artisan vendor:publish --tag backend
           ls -a
+          echo ":::::::::::::"
+          ls -a package/public
           echo "============="
           ls -a public/vendor/backend
 
