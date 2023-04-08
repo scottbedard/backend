@@ -4,11 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 
-const resolve = (p: string) => {
-  return process.env.GITHUB_ACTION
-    ? path.resolve(__dirname, '..', p)
-    : path.resolve(__dirname, '../sandbox', p)
-}
+const resolve = (p: string) => path.resolve(__dirname, '../sandbox', p)
 
 const envPath = resolve('.env')
 const envBackupPath = resolve('.env.backup')
