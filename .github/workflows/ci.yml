@@ -72,7 +72,9 @@ jobs:
         run: php artisan migrate
 
       - name: Publish assets
-        run: php artisan vendor:publish --tag backend
+        run: |
+          php artisan vendor:publish --tag backend
+          ls -a
 
       - name: PHPUnit
         run: php artisan test --filter=test_permission_access
