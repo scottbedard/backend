@@ -77,6 +77,8 @@ jobs:
           ls -a
           echo ":::::::::::::"
           ls -a package
+          echo "_____________"
+          ls -a packages/bedard/backend
           echo "============="
           ls -a public/vendor/backend
 
