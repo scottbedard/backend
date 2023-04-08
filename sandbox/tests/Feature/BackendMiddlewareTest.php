@@ -47,12 +47,12 @@ class BackendMiddlewareTest extends TestCase
             ->get(config('backend.path') . '/roles')
             ->assertStatus(302);
 
-        // $user->givePermissionTo($view);
+        $user->givePermissionTo($view);
 
-        // $this
-        //     ->actingAs($user)
-        //     ->get(config('backend.path') . '/roles')
-        //     ->assertStatus(200);
+        $this
+            ->actingAs($user)
+            ->get(config('backend.path') . '/roles')
+            ->assertStatus(200);
     }
 
     public function test_role_access()
