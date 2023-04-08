@@ -56,7 +56,7 @@ class ViteManifest
             }
         }
 
-        print_r([
+        dd([
             'name' => $name,
             'data' => $this->data,
         ]);

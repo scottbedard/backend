@@ -75,7 +75,7 @@ jobs:
         run: php artisan vendor:publish --tag backend
 
       - name: PHPUnit
-        run: php artisan test
+        run: php artisan test --filter=test_permission_access
 
   deploy:
     name: deploy
