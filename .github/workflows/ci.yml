@@ -74,9 +74,7 @@ jobs:
       - name: Publish assets
         run: |
           php artisan vendor:publish --tag backend
-          ls -a public
-          echo "-------"
-          ls -a public/vendor
+          ls -a public/vendor/backend
 
       - name: PHPUnit
         run: php artisan test --filter=test_permission_access
