@@ -13,7 +13,7 @@
       @endforeach
     @endif
   </head>
-  <body>
+  <body class="min-h-screen flex flex-col">
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <a class="flex gap-2 items-center text-gray-100/80 hover:text-white" href="{{ route('backend.index') }}">
         <x-backend::icon name="shield-check" />
@@ -38,7 +38,15 @@
       </div>
     </header>
 
-    {{ $slot }}
+    <div class="flex flex-1">
+      <aside class="bg-primary-50 flex flex-col items-center p-6 w-20">
+        ...
+      </aside>
+
+      <main>
+        {{ $slot }}
+      </main>
+    </div>
 
     @if ($dev)
       <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>

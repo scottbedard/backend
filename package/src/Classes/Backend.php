@@ -7,7 +7,6 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Symfony\Component\Yaml\Yaml;
@@ -34,7 +33,7 @@ class Backend
         $read = fn ($dir) => collect(scandir($dir))
             ->filter(fn ($file) => str_ends_with($file, '.yaml'))
             ->each(function ($file) use ($dir) {
-                $key = Str::of($file)->lower()->rtrim('.yaml')->kebab()->toString();
+                $key = str($file)->lower()->rtrim('.yaml')->kebab()->toString();
 
                 $this->config['controllers'][$key] = Yaml::parseFile($dir . '/' . $file);
             });
@@ -106,7 +105,11 @@ class Backend
      */
     public function controller(string $route): array
     {
-        [, $controllerId] = Str::of($route)->explode('.');
+        if (!str($route)->is('backend.*.*')) {
+            dd('not a backend route', $route);
+        }
+
+        [, $controllerId] = str($route)->explode('.');
 
         return data_get($this->config, "controllers.{$controllerId}");
     }
@@ -118,7 +121,11 @@ class Backend
      */
     public function route(string $route): array
     {
-        [, $controllerId, $routeId] = Str::of($route)->explode('.');
+        if (!str($route)->is('backend.*.*')) {
+            dd('not a backend route', $route);
+        }
+
+        [, $controllerId, $routeId] = str($route)->explode('.');
         
         return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
     }
