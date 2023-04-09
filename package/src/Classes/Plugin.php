@@ -2,106 +2,74 @@
 
 namespace Bedard\Backend\Classes;
 
-use Bedard\Backend\Exceptions\PluginValidationException;
 use Bedard\Backend\Facades\Backend;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
-abstract class Plugin
+class Plugin
 {
     /**
-     * Yaml configuration for the current controller
+     * Controller definition
      *
      * @var array
      */
-    public readonly array $config;
+    protected array $controller;
 
     /**
-     * The current controller
+     * Route definition
      *
      * @var array
      */
-    public readonly array $controller;
+    protected array $route;
 
     /**
-     * Complete config data for all controllers
+     * Validation rules
      *
      * @var array
      */
-    public readonly array $controllers;
-
-    /**
-     * The current controller id
-     *
-     * @var array
-     */
-    public readonly string $id;
-
-    /**
-     * The current route name
-     * 
-     * @var string
-     */
-    public readonly string $route;
+    protected array $rules = [];
 
     /**
      * Create a plugin
      *
-     * @param string $route
+     * @param string $routeName
+     *
+     * @return void
      */
-    public function __construct(string $route) {
-        $controllers = Backend::controllers();
+    public function __construct(string $routeName)
+    {
+        $this->controller = Backend::controller($routeName);
 
-        $id = str_starts_with($route, 'backend.')
-            ? Str::of($route)->ltrim('backend.')->explode('.')->first()
-            : null;
+        $this->route = Backend::route($routeName);
 
-        $this->config = $this->normalize(Backend::config($route));
-
-        $this->controller = data_get($controllers, $id, []);
-
-        $this->controllers = $controllers;
-
-        $this->id = $id;
-
-        $this->route = $route;
+        $this->normalize();
 
         $this->validate();
     }
 
     /**
-     * Normalize plugin config
+     * Normalize route config
      *
-     * @param array $config
-     *
-     * @return array
+     * @return void
      */
-    protected function normalize(array $config): array
+    public function normalize(): void
     {
-        return $config;
     }
 
     /**
      * Validate config
      *
-     * @throws \Bedard\Backend\Exceptions\PluginValidationException
+     * @throws \Exception
+     *
+     * @return void
      */
     public function validate(): void
     {
-        // $validator = Validator::make($this->config, [
-        //     // ...
-        // ]);
+        $validator = Validator::make($this->route, $this->rules);
         
-        // if ($validator->fails()) {
-        //     throw new PluginValidationException('Invalid plugin config: ' . $validator->errors()->first());
-        // }
+        if ($validator->fails()) {
+            throw new Exception('Invalid plugin config: ' . $validator->errors()->first());
+        }
     }
-
-    /**
-     * Plugin view
-     *
-     * @return \Illuminate\View\View
-     */
-    abstract public function view(): View;
 }

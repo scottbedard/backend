@@ -20,17 +20,13 @@ class BackendController extends BaseController
      */
     public function __call($name, $args)
     {
-        // get backend config
-        $config = Backend::config();
-        
-        return view('backend::backend', [
+        $routeName = request()->route()->getName();
 
-        ]);
-        // // find constructor from alias, or use explicit class name
-        // $route = request()->route()->getName();
+        $route = Backend::route($routeName);
 
-        // $config = Backend::config($route);
-        
+        $plugin = new $route['plugin']($routeName);
+
+        dd($plugin);
         // $name = data_get($config, 'plugin');
 
         // $constructor = data_get(config('backend.plugins'), $name, $name);

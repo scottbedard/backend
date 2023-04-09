@@ -38,10 +38,12 @@ class BackendServiceProvider extends ServiceProvider
             ]);
         }
 
-        // configure super-admin role
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(config('backend.super_admin_role')) ? true : null;
-        });
+        // register super admin gate
+        $super = config('backend.super_admin_role');
+
+        if ($super) {
+            Gate::before(fn ($user, $ability) => $user->hasRole($super) ? true : null);
+        }
     }
 
     /**
