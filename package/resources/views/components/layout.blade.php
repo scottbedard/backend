@@ -14,12 +14,28 @@
     @endif
   </head>
   <body>
-    <header class="bg-gray-900 flex justify-between p-6 text-gray-100">
-      <a class="flex gap-2 items-center" href="{{ route('backend.index') }}">
+    <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
+      <a class="flex gap-2 items-center text-gray-100/80 hover:text-white" href="{{ route('backend.index') }}">
         <x-backend::icon name="shield-check" />
         
         <span class="font-bold tracking-wider">bedard/backend</span>
       </a>
+
+      <nav class="flex-1 flex justify-center items-center">
+        @foreach ($nav as $button)
+          <a class="flex font-bold gap-x-3 items-center tracking-wide text-gray-100/80 hover:text-white" href="{{ $button['href'] }}">
+            <x-backend::icon :name="$button['icon']" size="20" />
+
+            <span>{{ $button['label'] }}</span>
+          </a>
+        @endforeach
+      </nav>
+
+      <div>
+        <a class="text-gray-100/80 hover:text-white" href="/">
+          <x-backend::icon name="log-out" size="20" />
+        </a>
+      </div>
     </header>
 
     {{ $slot }}

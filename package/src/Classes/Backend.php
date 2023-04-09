@@ -45,6 +45,7 @@ class Backend
         
         // fill defaults
         data_fill($this->config, 'controllers.*.model', null);
+        data_fill($this->config, 'controllers.*.nav', null);
         data_fill($this->config, 'controllers.*.permissions', []);
         data_fill($this->config, 'controllers.*.routes', []);
         data_fill($this->config, 'controllers.*.routes.*.options', []);
@@ -52,6 +53,10 @@ class Backend
 
         foreach ($this->config['controllers'] as $controller => $c) {
             data_fill($this->config, "controllers.{$controller}.id", $controller);
+
+            if (data_get($this->config, "controllers.{$controller}.nav")) {
+                data_fill($this->config, "controllers.{$controller}.nav.href", '/' . trim(config('backend.path'), '/') . '/' . $controller);
+            }
         }
 
         // apply aliases

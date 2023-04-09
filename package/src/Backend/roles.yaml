@@ -1,5 +1,9 @@
 model: \Spatie\Permission\Models\Role
 
+nav:
+    icon: air-vent
+    label: Roles
+
 permissions:
     - read roles
 

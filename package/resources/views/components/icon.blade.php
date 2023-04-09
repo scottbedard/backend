@@ -1,1 +1,6 @@
-<i icon-name="{{ $name }}"></i>
+<i
+  height="{{ $size }}"
+  icon-name="{{ $name }}"
+  width="{{ $size }}"
+  {{ $attributes }}
+></i>
