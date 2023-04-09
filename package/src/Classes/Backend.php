@@ -105,13 +105,19 @@ class Backend
      */
     public function controller(string $route): array
     {
-        if (!str($route)->is('backend.*.*')) {
-            dd('not a backend route', $route);
+        if (str($route)->is('backend.*.*')) {
+            [, $controllerId] = str($route)->explode('.');
+            
+            return data_get($this->config, "controllers.{$controllerId}");
         }
 
-        [, $controllerId] = str($route)->explode('.');
-
-        return data_get($this->config, "controllers.{$controllerId}");
+        if (str($route)->is('backend.*')) {
+            $controllerId = '_root';
+            
+            return data_get($this->config, "controllers.{$controllerId}");
+        }
+        
+        throw new Exception('Backend controller not found: ' . $controllerId);
     }
 
     /**
@@ -121,12 +127,19 @@ class Backend
      */
     public function route(string $route): array
     {
-        if (!str($route)->is('backend.*.*')) {
-            dd('not a backend route', $route);
+        if (str($route)->is('backend.*.*')) {
+            [, $controllerId, $routeId] = str($route)->explode('.');
+
+            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
         }
 
-        [, $controllerId, $routeId] = str($route)->explode('.');
+        if (str($route)->is('backend.*')) {
+            $controllerId = '_root';
+            $routeId = str($route)->explode('.')->last();
+
+            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+        }
         
-        return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+        throw new Exception('Backend route not found: ' . $route);
     }
 }

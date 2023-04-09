@@ -1,0 +1,8 @@
+nav:
+    icon: shield-check
+    label: bedard/backend
+
+routes:
+    index:
+        path: /
+        plugin: Bedard\Backend\Plugins\IndexPlugin

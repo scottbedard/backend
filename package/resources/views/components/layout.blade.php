@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ config('app.name', '') }} backend</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=quicksand:400,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=source-code-pro:400|quicksand:400,600" rel="stylesheet" />
 
     @if (!$dev && $styles)
       @foreach ($styles as $file)
@@ -26,7 +26,7 @@
           <a class="flex font-bold gap-x-3 items-center tracking-wide text-gray-100/80 hover:text-white" href="{{ $button['href'] }}">
             <x-backend::icon :name="$button['icon']" size="20" />
 
-            <span>{{ $button['label'] }}</span>
+            {{ $button['label'] }}
           </a>
         @endforeach
       </nav>
@@ -43,7 +43,7 @@
         ...
       </aside>
 
-      <main>
+      <main class="flex-1">
         {{ $slot }}
       </main>
     </div>
