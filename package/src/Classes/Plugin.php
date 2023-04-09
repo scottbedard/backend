@@ -24,6 +24,13 @@ class Plugin
     protected array $route;
 
     /**
+     * Route name
+     *
+     * @var string
+     */
+    protected string $routeName;
+
+    /**
      * Validation rules
      *
      * @var array
@@ -42,6 +49,8 @@ class Plugin
         $this->controller = Backend::controller($routeName);
 
         $this->route = Backend::route($routeName);
+
+        $this->routeName = $routeName;
 
         $this->normalize();
 
@@ -71,5 +80,15 @@ class Plugin
         if ($validator->fails()) {
             throw new Exception('Invalid plugin config: ' . $validator->errors()->first());
         }
+    }
+
+    /**
+     * Render the plugin
+     *
+     * @return \Illuminate\View\View
+     */
+    public function view(): View
+    {
+        return view('backend::plugin_no_view');
     }
 }

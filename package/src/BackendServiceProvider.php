@@ -22,7 +22,7 @@ class BackendServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
 
         // register components
-        Blade::componentNamespace('Bedard\\Backend\\Views\\Components', 'backend');
+        Blade::componentNamespace('Bedard\\Backend\\View\\Components', 'backend');
 
         // public assets
         $this->publishes([

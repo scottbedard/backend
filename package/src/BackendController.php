@@ -26,14 +26,6 @@ class BackendController extends BaseController
 
         $plugin = new $route['plugin']($routeName);
 
-        dd($plugin);
-        // $name = data_get($config, 'plugin');
-
-        // $constructor = data_get(config('backend.plugins'), $name, $name);
-
-        // // create plugin and return view
-        // $plugin = new $constructor($route);
-
-        // return $plugin->view();
+        return $plugin->view();
     }
 }
