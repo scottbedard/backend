@@ -64,6 +64,7 @@ class Backend
 
         foreach ($this->config['controllers'] as $controller => $c) {
             data_fill($this->config, "controllers.{$controller}.id", $controller);
+            data_fill($this->config, "controllers.{$controller}.routes.*.model", $c['model']);
 
             if (data_get($this->config, "controllers.{$controller}.nav")) {
                 $namespace = $controller === '_root' ? '' : $controller;
@@ -97,6 +98,7 @@ class Backend
             'controllers.*.permissions' => ['present', 'array'],
             'controllers.*.permissions.*' => ['string'],
             'controllers.*.routes' => ['present', 'array'],
+            'controllers.*.routes.*.model' => ['present', 'nullable', 'string'],
             'controllers.*.routes.*.options' => ['present', 'array'],
             'controllers.*.routes.*.permissions' => ['present', 'array'],
             'controllers.*.routes.*.permissions.*' => ['string'],
