@@ -6,6 +6,7 @@ use Bedard\Backend\Classes\ViteManifest;
 use Bedard\Backend\Facades\Backend;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\View\Component;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
@@ -46,10 +47,12 @@ class Layout extends Component
             array_push($nav, $controllerNav);
         }
 
+        $orderedNav = array_values(Arr::sort($nav, fn ($arr) => $arr['order']));
+
         return view('backend::components.layout', [
             'dev' => $dev,
             'manifest' => $manifest,
-            'nav' => $nav,
+            'nav' => $orderedNav,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
         ]);

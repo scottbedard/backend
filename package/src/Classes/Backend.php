@@ -56,6 +56,7 @@ class Backend
         // fill defaults
         data_fill($this->config, 'controllers.*.model', null);
         data_fill($this->config, 'controllers.*.nav', null);
+        data_fill($this->config, 'controllers.*.nav.order', 0);
         data_fill($this->config, 'controllers.*.permissions', []);
         data_fill($this->config, 'controllers.*.routes', []);
         data_fill($this->config, 'controllers.*.routes.*.options', []);
@@ -88,6 +89,11 @@ class Backend
         $validator = Validator::make($this->config, [
             'controllers.*.id' => ['present', 'string'],
             'controllers.*.model' => ['present', 'nullable', 'string'],
+            'controllers.*.nav' => ['present', 'nullable'],
+            'controllers.*.nav.href' => ['string'],
+            'controllers.*.nav.icon' => ['string'],
+            'controllers.*.nav.label' => ['string'],
+            'controllers.*.nav.order' => ['integer'],
             'controllers.*.permissions' => ['present', 'array'],
             'controllers.*.permissions.*' => ['string'],
             'controllers.*.routes' => ['present', 'array'],
