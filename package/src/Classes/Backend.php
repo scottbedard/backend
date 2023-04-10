@@ -27,11 +27,11 @@ class Backend
      */
     public function __construct()
     {
-        // collect yaml data
+        // collect namespaced data
         $this->config = ['controllers' => []];
 
         $read = fn ($dir) => collect(scandir($dir))
-            ->filter(fn ($file) => str_ends_with($file, '.yaml'))
+            ->filter(fn ($file) => !str_starts_with($file, '_') && str_ends_with($file, '.yaml'))
             ->each(function ($file) use ($dir) {
                 $key = str($file)->lower()->rtrim('.yaml')->kebab()->toString();
 
@@ -40,7 +40,18 @@ class Backend
 
         $read(__DIR__ . '/../Backend');
 
-        $read(config('backend.backend_directory'));
+        $dir = config('backend.backend_directory');
+
+        if ($dir) {
+            $read($dir);
+        }
+
+        // collect root data, use default if none is present
+        $root = File::exists("{$dir}/_root.yaml")
+            ? "{$dir}/_root.yaml"
+            : __DIR__ . '/../Backend/_root.yaml';
+
+        $this->config['controllers']['_root'] = Yaml::parseFile($root);
         
         // fill defaults
         data_fill($this->config, 'controllers.*.model', null);
@@ -54,7 +65,11 @@ class Backend
             data_fill($this->config, "controllers.{$controller}.id", $controller);
 
             if (data_get($this->config, "controllers.{$controller}.nav")) {
-                data_fill($this->config, "controllers.{$controller}.nav.href", '/' . trim(config('backend.path'), '/') . '/' . $controller);
+                $namespace = $controller === '_root' ? '' : $controller;
+                $backend = str(config('backend.path', ''))->trim('/');
+                $href = rtrim("/{$backend}/{$namespace}", '/');
+
+                data_fill($this->config, "controllers.{$controller}.nav.href", $href);
             }
         }
 
@@ -66,10 +81,6 @@ class Backend
                 if ($plugin) {
                     data_set($this->config, "controllers.{$controller}.routes.{$route}.plugin", $plugin);
                 }
-            }
-
-            if ($controller === '_root') {
-                data_set($this->config, 'controllers._root.nav.href', str(data_get($c, 'nav.href'))->replace('/_root', ''));
             }
         }
         

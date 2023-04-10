@@ -3,8 +3,8 @@ nav:
     label: bedard/backend
 
 routes:
-    foo:
-        path: foo
-        plugin: Bedard\Backend\Plugins\BladePlugin
+    index:
+        path: /
+        plugin: blade
         options:
-            view: test
+            view: backend::index

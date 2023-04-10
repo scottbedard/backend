@@ -1,3 +1,3 @@
 import '@/style.scss'
 
-console.log('hello world')
+console.log('Hello from the backend')

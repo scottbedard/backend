@@ -18,9 +18,11 @@
       <nav class="flex-1 flex gap-x-10 items-center">
         @foreach ($nav as $button)
           <a class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white" href="{{ $button['href'] }}">
-            <x-backend::icon :name="$button['icon']" size="20" />
+            @if (array_key_exists('icon', $button))
+              <x-backend::icon :name="$button['icon']" size="20" />
+            @endif
 
-            {{ $button['label'] }}
+            {{ data_get($button, 'label', 'label') }}
           </a>
         @endforeach
       </nav>
