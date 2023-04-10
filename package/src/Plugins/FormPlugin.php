@@ -3,8 +3,8 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
+use Bedard\Backend\Plugin;
 use Illuminate\View\View;
 
 class FormPlugin extends Plugin

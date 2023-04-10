@@ -2,7 +2,7 @@
   @isset ($header)
     <h1 class="flex font-bold gap-x-2 items-center tracking-wide">
       @isset ($icon)
-        <x-backend::icon name="alert-triangle" size="24" />
+        <x-backend::icon :name="$icon" size="24" />
       @endisset
 
       {{ $header }}

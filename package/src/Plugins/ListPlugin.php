@@ -3,8 +3,8 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
+use Bedard\Backend\Plugin;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -66,5 +66,15 @@ class ListPlugin extends Plugin
             data_fill($this->route, "options.schema.{$key}.type", 'text');
             data_fill($this->route, "options.schema.{$key}.label", Str::headline($col['id']));
         }
+    }
+
+    /**
+     * Render the plugin
+     *
+     * @return \Illuminate\View\View
+     */
+    public function view(): View
+    {
+        return view('backend::list');
     }
 }

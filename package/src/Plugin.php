@@ -1,13 +1,12 @@
 <?php
 
-namespace Bedard\Backend\Classes;
+namespace Bedard\Backend;
 
 use Bedard\Backend\Facades\Backend;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
-class Plugin
+abstract class Plugin
 {
     /**
      * Controller definition
@@ -87,8 +86,5 @@ class Plugin
      *
      * @return \Illuminate\View\View
      */
-    public function view(): View
-    {
-        return view('backend::plugin_no_view');
-    }
+    abstract public function view(): View;
 }
