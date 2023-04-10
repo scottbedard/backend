@@ -11,7 +11,7 @@
       </Button>
     </div>
 
-    <div>
+    <div class="border-t border-gray-300">
       <Table
         v-model="checked"
         :data="data"
