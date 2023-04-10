@@ -1,6 +1,16 @@
 <template>
-  <div>
-    
+  <div
+    v-if="!options.schema.length"
+    class="px-6">
+    <Banner
+      header="Schema not found"
+      icon="sheet">
+      Define a <pre class="value">schema</pre> property for this table
+      to express how it should render
+    </Banner>
+  </div>
+
+  <div v-else>
     <!-- desktop -->
     <div class="table w-full">
       <div class="table-row">
@@ -44,8 +54,9 @@
 </template>
 
 <script lang="ts" setup>
-import { Checkbox } from '@/components'
 import { TableData, TableOptions } from '@/types'
+import Banner from './Banner.vue'
+import Checkbox from './Checkbox.vue'
 
 defineProps<{
   data: TableData

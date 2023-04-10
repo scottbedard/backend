@@ -1,5 +1,6 @@
 <x-backend::layout>
-  <div class="p-6">
-    Hello from the list plugin
-  </div>
+  <div
+    data-backend-plugin="list"
+    data-backend-props="{{ json_encode($props) }}"
+  ></div>
 </x-backend::layout>

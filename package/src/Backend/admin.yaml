@@ -9,8 +9,22 @@ permissions:
 
 routes:
     index:
+        model: App\Models\User
         path: /
         plugin: list
+        options:
+            checkboxes: true
+            schema:
+                id:
+                    type: number
+                email:
+                    type: string
+                created_at:
+                    type: date
+                    format: YYYY-mm-DD
+                updated_at:
+                    type: date
+                    format: YYYY-mm-DD
 
     roles:
         path: /roles

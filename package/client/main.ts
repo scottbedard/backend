@@ -1,3 +1,24 @@
 import '@/style.scss'
+import { Component, createApp } from 'vue'
+import { createIcons, icons } from 'lucide'
+import List from './plugins/List.vue'
 
-console.log('Hello from the backend')
+// create any icons rendered by the server
+createIcons({ icons })
+
+// mount first-party plugins
+const plugins: Record<string, Component> = {
+  list: List,
+}
+
+document.querySelectorAll('[data-backend-plugin]').forEach(el => {
+  const pluginName = el.getAttribute('data-backend-plugin');
+  
+  if (pluginName && pluginName in plugins) {
+    const plugin = plugins[pluginName];
+    const props = JSON.parse(el.getAttribute('data-backend-props') || '{}');
+
+    createApp(plugin, props).mount(el)
+  }
+})
+

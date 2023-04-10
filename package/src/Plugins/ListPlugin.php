@@ -75,6 +75,15 @@ class ListPlugin extends Plugin
      */
     public function view(): View
     {
-        return view('backend::list');
+        $model = $this->route['model'];
+
+        $query = $model::query();
+
+        return view('backend::list', [
+            'props' => [
+                'data' => Paginator::for($query),
+                'options' => $this->route['options'],
+            ],
+        ]);
     }
 }

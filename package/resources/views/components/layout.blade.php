@@ -14,6 +14,10 @@
     @endif
   </head>
   <body class="min-h-screen flex flex-col">
+    <script>
+      window.context = {}
+    </script>
+
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <nav class="flex-1 flex gap-x-10 items-center">
         @foreach ($nav as $button)
@@ -45,16 +49,10 @@
     </div>
 
     @if ($dev)
-      <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
       <script type="module" src="http://localhost:3000/@@vite/client"></script>
       <script type="module" src="http://localhost:3000/client/main.ts"></script>
     @elseif ($scripts)
-      <script src="https://unpkg.com/lucide@latest"></script>
       <script type="module" src="{{ asset('vendor/backend/' . $manifest->script('client/main.ts')) }}"></script>
     @endif
-
-    <script>
-      lucide.createIcons()
-    </script>
   </body>
 </html>

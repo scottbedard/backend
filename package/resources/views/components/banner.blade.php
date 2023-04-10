@@ -1,15 +1,15 @@
-<div class="border-2 border-gray-300 p-3 rounded-md">
+<div class="backend-banner">
   @isset ($header)
-    <h1 class="flex font-bold gap-x-2 items-center tracking-wide">
+    <div>
       @isset ($icon)
         <x-backend::icon :name="$icon" size="24" />
       @endisset
 
       {{ $header }}
-    </h1>
+    </div>
   @endisset
 
-  <p class="mt-1 text-gray-800 sm:ml-[24px] sm:mt-0 sm:pl-2">
+  <p>
     {{ $slot }}
   </p>
 </div>
