@@ -2,10 +2,7 @@
 
 use Bedard\Backend\BackendController;
 use Bedard\Backend\Facades\Backend;
-use Bedard\Backend\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
 
 Route::group([
     'middleware' => ['web'],
@@ -30,5 +27,4 @@ Route::group([
         });
     }
 
-    Route::get('/', [BackendController::class, 'index'])->name('backend.index');
 });

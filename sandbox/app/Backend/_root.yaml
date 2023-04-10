@@ -7,4 +7,4 @@ routes:
         path: foo
         plugin: Bedard\Backend\Plugins\BladePlugin
         options:
-            view: backend::index
+            view: test

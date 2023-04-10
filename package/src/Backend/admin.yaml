@@ -11,6 +11,10 @@ routes:
     index:
         path: /
         plugin: list
+
+    roles:
+        path: /roles
+        plugin: list
         options:
             checkboxes: true
             actions:

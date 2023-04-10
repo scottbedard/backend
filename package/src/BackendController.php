@@ -2,14 +2,15 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
-use Exception;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
 
-class BackendController extends BaseController
+class BackendController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     /**
      * Render backend route
      *
