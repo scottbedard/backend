@@ -5,9 +5,12 @@
       'be-btn-default': theme === 'default',
       'be-btn-primary': theme === 'primary',
     }]"
-    :is="to ? RouterLink : 'button'"
-    :to="to">
-    <Component v-if="icon" :is="icon" :size="18" />
+    :href="href"
+    :is="href ? 'a' : 'button'">
+    <Icon
+      v-if="icon"
+      :name="icon" 
+      :size="18" />
 
     <slot />
   </Component>
@@ -15,12 +18,12 @@
 
 <script lang="ts" setup>
 import { ButtonTheme } from '@/types'
-import { RouterLink, RouteLocationRaw } from 'vue-router';
+import Icon from './Icon.vue'
 
 defineProps<{
+  href?: string
   icon?: ReturnType<typeof defineComponent>
   theme?: ButtonTheme
-  to?: RouteLocationRaw
 }>()
 </script>
 

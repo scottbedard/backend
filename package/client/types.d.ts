@@ -27,8 +27,8 @@ export type TableOptions = {
 }
 
 export type ToolbarAction = {
+  href: string
   icon: string
   label: string
   theme: ButtonTheme
-  to: string
 }
