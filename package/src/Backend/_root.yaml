@@ -1,0 +1,10 @@
+nav:
+    icon: shield-check
+    label: bedard/backend
+
+routes:
+    index:
+        path: /
+        plugin: blade
+        options:
+            view: backend::index

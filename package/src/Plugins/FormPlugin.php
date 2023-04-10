@@ -3,8 +3,8 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
+use Bedard\Backend\Plugin;
 use Illuminate\View\View;
 
 class FormPlugin extends Plugin
@@ -17,21 +17,6 @@ class FormPlugin extends Plugin
     public function data(): array
     {
         return [];
-    }
-
-    /**
-     * Render the plugin
-     *
-     * @return Illuminate\View\View
-     */
-    public function render(): View
-    {
-        $data = $this->data();
-
-        return Backend::view(
-            data: $data,
-            view: 'backend::form', 
-        );
     }
 
     /**
@@ -48,5 +33,15 @@ class FormPlugin extends Plugin
         // if ($validator->fails()) {
         //     throw new \Exception('Invalid plugin config: ' . $validator->errors()->first());
         // }
+    }
+
+    /**
+     * Plugin view
+     *
+     * @return \Illuminate\View\View
+     */
+    public function view(): View
+    {
+        return view('backend::form');
     }
 }

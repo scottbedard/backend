@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,9 @@ class BackendServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'backend');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'backend');
 
+        // register components
+        Blade::componentNamespace('Bedard\\Backend\\View\\Components', 'backend');
+
         // public assets
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
@@ -34,10 +38,12 @@ class BackendServiceProvider extends ServiceProvider
             ]);
         }
 
-        // configure super-admin role
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(config('backend.super_admin_role')) ? true : null;
-        });
+        // register super admin gate
+        $super = config('backend.super_admin_role');
+
+        if ($super) {
+            Gate::before(fn ($user, $ability) => $user->hasRole($super) ? true : null);
+        }
     }
 
     /**

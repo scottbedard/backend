@@ -78,12 +78,13 @@ return [
     | Plugin aliases
     |--------------------------------------------------------------------------
     |
-    | These are unique aliases to be referenced from yaml files. The form
-    | and list are built in, but you can add your own.
+    | These are unique aliases to be referenced from yaml files. A few are
+    | built in for basic crud pages, but you're welcome to add your own!
     |
     */
 
     'plugins' => [
+        'blade' => \Bedard\Backend\Plugins\BladePlugin::class,
         'form' => \Bedard\Backend\Plugins\FormPlugin::class,
         'list' => \Bedard\Backend\Plugins\ListPlugin::class,
     ],

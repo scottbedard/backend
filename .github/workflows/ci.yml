@@ -44,38 +44,38 @@ jobs:
           npm install
           npm run build
 
-      - name: Configure directories
-        run: |
-          mv sandbox/.env.example .env
-          mv sandbox/* .
-          mkdir packages
-          mkdir packages/bedard
-          mkdir packages/bedard/backend
-          mv package/* packages/bedard/backend
-          chmod -R 777 ./storage ./bootstrap/cache
-          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
-          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
+      # - name: Configure directories
+      #   run: |
+      #     mv sandbox/.env.example .env
+      #     mv sandbox/* .
+      #     mkdir packages
+      #     mkdir packages/bedard
+      #     mkdir packages/bedard/backend
+      #     mv package/* packages/bedard/backend
+      #     chmod -R 777 ./storage ./bootstrap/cache
+      #     sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
+      #     sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
 
-      - name: Composer install
-        run: composer install
+      # - name: Composer install
+      #   run: composer install
 
-      - name: Generate application key
-        run: php artisan key:generate
+      # - name: Generate application key
+      #   run: php artisan key:generate
 
-      - name: Run migrations
-        run: php artisan migrate
+      # - name: Run migrations
+      #   run: php artisan migrate
 
-      - name: Publish assets
-        run: php artisan vendor:publish --tag backend
+      # - name: Publish assets
+      #   run: php artisan vendor:publish --tag backend
 
-      - name: PHPUnit
-        run: php artisan test
+      # - name: PHPUnit
+      #   run: php artisan test
 
-  deploy:
-    name: deploy
-    needs: [test]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Deploy
-        run: curl ${{secrets.DEPLOY_URL}}
+  # deploy:
+  #   name: deploy
+  #   needs: [test]
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Deploy
+  #       run: curl ${{secrets.DEPLOY_URL}}

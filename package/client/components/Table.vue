@@ -1,6 +1,16 @@
 <template>
-  <div>
-    
+  <div
+    v-if="!options.schema.length"
+    class="px-6">
+    <Banner
+      header="Schema not found"
+      icon="sheet">
+      Define a <pre class="value">schema</pre> property for this table
+      to express how it should render
+    </Banner>
+  </div>
+
+  <div v-else>
     <!-- desktop -->
     <div class="table w-full">
       <div class="table-row">
@@ -9,7 +19,9 @@
           class="table-cell whitespace-nowrap"
           style="width: 0%">
           <div class="flex h-12 items-center justify-end pl-6 pr-3 w-full">
-            <Checkbox />
+            <Checkbox
+              :model-value="isAllChecked" 
+              @update:model-value="onAllCheck"/>
           </div>
         </div>
 
@@ -28,7 +40,9 @@
           class="border-t border-gray-300 table-cell whitespace-nowrap"
           style="width: 0%">
           <div class="flex h-12 items-center justify-end pl-6 pr-3 w-full">
-            <Checkbox />
+            <Checkbox
+              :model-value="isChecked(row)"
+              @update:model-value="onCheck(row)" />
           </div>
         </div>
 
@@ -44,11 +58,42 @@
 </template>
 
 <script lang="ts" setup>
-import { Checkbox } from '@/components'
+import { stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
+import Banner from './Banner.vue'
+import Checkbox from './Checkbox.vue'
 
-defineProps<{
+const emit = defineEmits<{
+  (e: 'update:modelValue', payload: any[]): void
+}>()
+
+const props = withDefaults(defineProps<{
   data: TableData
   options: TableOptions
-}>()
+  modelValue?: any[]
+}>(), {
+  modelValue: stubArray,
+})
+
+const isAllChecked = computed(() => props.modelValue.length === props.data.items.length)
+
+const onAllCheck = () => {
+  if (isAllChecked.value) {
+    emit('update:modelValue', [])
+  } else {
+    emit('update:modelValue', props.data.items.slice(0))
+  }
+}
+
+const isChecked = (row: any) => {
+  return Boolean(props.modelValue.includes(row))
+}
+
+const onCheck = (row: any) => {
+  if (isChecked(row)) {
+    props.modelValue.splice(props.modelValue.indexOf(row), 1)
+  } else {
+    props.modelValue.push(row)
+  }
+}
 </script>

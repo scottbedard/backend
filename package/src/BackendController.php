@@ -2,14 +2,15 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Classes\Plugin;
 use Bedard\Backend\Facades\Backend;
-use Exception;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
 
-class BackendController extends BaseController
+class BackendController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     /**
      * Render backend route
      *
@@ -20,19 +21,12 @@ class BackendController extends BaseController
      */
     public function __call($name, $args)
     {
+        $routeName = request()->route()->getName();
 
-        // find constructor from alias, or use explicit class name
-        $route = request()->route()->getName();
+        $route = Backend::route($routeName);
 
-        $config = Backend::config($route);
-        
-        $name = data_get($config, 'plugin');
+        $plugin = new $route['plugin']($routeName);
 
-        $constructor = data_get(config('backend.plugins'), $name, $name);
-
-        // create plugin to handle the request
-        $plugin = new $constructor($route);
-
-        return $plugin->render();
+        return $plugin->view();
     }
 }

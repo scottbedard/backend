@@ -3,7 +3,7 @@
     <input
       type="checkbox"
       :id="id"
-      :checked="modelValue"
+      :checked="modelValue || checked"
       :disabled="disabled"
       :required="required"
       @change="onChange" />
@@ -22,6 +22,7 @@ const emit = defineEmits<{
 }>()
 
 const props = withDefaults(defineProps<{
+  checked?: boolean
   dataCheckbox?: string
   disabled?: boolean
   label?: string

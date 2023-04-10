@@ -3,10 +3,10 @@
 namespace Bedard\Backend\Classes;
 
 use Bedard\Backend\Classes\ViteManifest;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Symfony\Component\Yaml\Yaml;
@@ -14,134 +14,155 @@ use Symfony\Component\Yaml\Yaml;
 class Backend
 {
     /**
-     * Check if a user has access to a permission. If no permission
-     * is specified, the user will be checked for _any_ backend permission.
+     * Backend config
      *
-     * @param mixed $user
-     * @param ?string $permission
-     * @return bool
+     * @var array
      */
-    public function check(mixed $user, ...$permissions): bool
-    {
-        if (!$user || !is_a($user, config('backend.user'))) {
-            return false;
-        }
-
-        $super = config('backend.super_admin_role');
-
-        if (count($permissions) === 0) {
-            return $user->getAllPermissions()->count() > 0 || $user->hasRole($super);
-        }
-
-        return $user->hasAllPermissions(...Arr::flatten($permissions)) || $user->hasRole($super);
-    }
+    private array $config;
 
     /**
-     * Get backend config for route
+     * Create backend instance
      *
-     * @param string $routeName
-     *
-     * @return array
+     * @return void
      */
-    public function config(string $routeName): array
+    public function __construct()
     {
-        if (!str_starts_with($routeName, 'backend.')) {
-            return [];
-        }
+        // collect namespaced data
+        $this->config = ['controllers' => []];
 
-        list($controller, $route) = Str::of($routeName)->ltrim('backend.')->explode('.');
-        
-        return data_get($this->controllers(), "{$controller}.routes.{$route}");
-    }
+        $read = fn ($dir) => collect(scandir($dir))
+            ->filter(fn ($file) => !str_starts_with($file, '_') && str_ends_with($file, '.yaml'))
+            ->each(function ($file) use ($dir) {
+                $key = str($file)->lower()->rtrim('.yaml')->kebab()->toString();
 
-    /**
-     * Return backend controller data
-     *
-     * @return array
-     */
-    public function controllers(): array
-    {
-        // core backend
-        $backend = [];
-
-        collect(scandir(__DIR__ . '/../Backend'))
-            ->filter(fn ($file) => str_ends_with($file, '.yaml'))
-            ->each(function ($file) use (&$backend) {
-                $name = strtolower(substr($file, 0, -5));
-                $backend[$name] = Yaml::parseFile(__DIR__ . '/../Backend/' . $file);
+                $this->config['controllers'][$key] = Yaml::parseFile($dir . '/' . $file);
             });
 
-        // app backend
+        $read(__DIR__ . '/../Backend');
+
         $dir = config('backend.backend_directory');
 
-        if (file_exists($dir)) {
-            collect(scandir($dir))
-                ->filter(fn ($file) => str_ends_with($file, '.yaml'))
-                ->each(function ($file) use (&$backend, $dir) {
-                    $name = strtolower(substr($file, 0, -5));
-                    $backend[$name] = Yaml::parseFile($dir . '/' . $file);
-                });
+        if ($dir) {
+            $read($dir);
         }
 
-        // fill default values
-        data_fill($backend, '*.class', \Bedard\Backend\BackendController::class);
-        data_fill($backend, '*.model', null);
-        data_fill($backend, '*.permissions', []);
-        data_fill($backend, '*.routes.*.permissions', []);
+        // collect root data, use default if none is present
+        $root = File::exists("{$dir}/_root.yaml")
+            ? "{$dir}/_root.yaml"
+            : __DIR__ . '/../Backend/_root.yaml';
 
-        $pages = config('backend.pages', []);
+        $this->config['controllers']['_root'] = Yaml::parseFile($root);
         
-        foreach ($backend as $controller => $config) {
-            // default id to file name
-            data_fill($backend, "{$controller}.id", $controller);
-            
-            // apply page type aliases
-            foreach ($config['routes'] as $route => $routeConfig) {
-                if (isset($routeConfig['page']) && isset($pages[$routeConfig['page']])) {
-                    $backend[$controller]['routes'][$route]['page'] = $pages[$routeConfig['page']];
-                }
+        // fill defaults
+        data_fill($this->config, 'controllers.*.model', null);
+        data_fill($this->config, 'controllers.*.nav', null);
+        data_fill($this->config, 'controllers.*.nav.order', 0);
+        data_fill($this->config, 'controllers.*.permissions', []);
+        data_fill($this->config, 'controllers.*.routes', []);
+        data_fill($this->config, 'controllers.*.routes.*.options', []);
+        data_fill($this->config, 'controllers.*.routes.*.permissions', []);
+
+        foreach ($this->config['controllers'] as $controller => $c) {
+            data_fill($this->config, "controllers.{$controller}.id", $controller);
+            data_fill($this->config, "controllers.{$controller}.routes.*.model", $c['model']);
+
+            if (data_get($this->config, "controllers.{$controller}.nav")) {
+                $namespace = $controller === '_root' ? '' : $controller;
+                $backend = str(config('backend.path', ''))->trim('/');
+                $href = rtrim("/{$backend}/{$namespace}", '/');
+
+                data_fill($this->config, "controllers.{$controller}.nav.href", $href);
             }
         }
 
-        // run validation and display errors
-        $validator = Validator::make($backend, [
-            '*.class' => ['required', 'string'],
-            '*.id' => ['required', 'alpha_num:ascii', 'distinct'],
-            '*.model' => ['nullable', 'string'],
-            '*.permissions' => ['required', 'array'],
-            '*.routes.*.plugin' => ['required', 'string'],
-        ]);
-        
-        if ($validator->fails()) {
-            throw new \Exception('Invalid backend config: ' . $validator->errors()->first());
-        }
+        // apply aliases
+        foreach ($this->config['controllers'] as $controller => $c) {
+            foreach ($c['routes'] as $route => $r) {
+                $plugin = data_get(config('backend.plugins', []), data_get($r, 'plugin'));
 
-        return $backend;
+                if ($plugin) {
+                    data_set($this->config, "controllers.{$controller}.routes.{$route}.plugin", $plugin);
+                }
+            }
+        }
+        
+        // validate config
+        $validator = Validator::make($this->config, [
+            'controllers.*.id' => ['present', 'string'],
+            'controllers.*.model' => ['present', 'nullable', 'string'],
+            'controllers.*.nav' => ['present', 'nullable'],
+            'controllers.*.nav.href' => ['string'],
+            'controllers.*.nav.icon' => ['string'],
+            'controllers.*.nav.label' => ['string'],
+            'controllers.*.nav.order' => ['integer'],
+            'controllers.*.permissions' => ['present', 'array'],
+            'controllers.*.permissions.*' => ['string'],
+            'controllers.*.routes' => ['present', 'array'],
+            'controllers.*.routes.*.model' => ['present', 'nullable', 'string'],
+            'controllers.*.routes.*.options' => ['present', 'array'],
+            'controllers.*.routes.*.permissions' => ['present', 'array'],
+            'controllers.*.routes.*.permissions.*' => ['string'],
+        ]);
+
+        if ($validator->fails()) {
+            throw new Exception('Invalid backend config: ' . $validator->errors()->first());
+        }
     }
 
     /**
-     * Return a backend view
+     * Get backend config
      *
-     * @param array $data
-     * @param string $view
-     *
-     * @return \Illuminate\View\View
+     * @return array
      */
-    public function view(array $data = [], string $view = ''): View
+    public function config(): array
     {
-        $dev = env('BACKEND_DEV');
+        return $this->config;
+    }
 
-        $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
+    /**
+     * Get controller definition
+     *
+     * @param string $route
+     *
+     * @return array
+     */
+    public function controller(string $route): array
+    {
+        if (str($route)->is('backend.*.*')) {
+            [, $controllerId] = str($route)->explode('.');
+            
+            return data_get($this->config, "controllers.{$controllerId}");
+        }
 
-        return view('backend::client', [
-            'data' => $data,
-            'dev' => $dev,
-            'manifest' => $manifest,
-            'scripts' => $manifest->scripts(),
-            'styles' => $manifest->styles(),
-            'view' => view($view, [
-                'manifest' => $manifest,
-            ]),
-        ]);
+        if (str($route)->is('backend.*')) {
+            $controllerId = '_root';
+            
+            return data_get($this->config, "controllers.{$controllerId}");
+        }
+        
+        throw new Exception('Backend controller not found: ' . $controllerId);
+    }
+
+    /**
+     * Get route definition
+     *
+     * @param string $route
+     */
+    public function route(string $route): array
+    {
+        if (str($route)->is('backend.*.*')) {
+            [, $controllerId, $routeId] = str($route)->explode('.');
+
+            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+        }
+
+        if (str($route)->is('backend.*')) {
+            $controllerId = '_root';
+            $routeId = str($route)->explode('.')->last();
+
+            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+        }
+        
+        throw new Exception('Backend route not found: ' . $route);
     }
 }

@@ -1,2 +1,6 @@
 @tailwind base;
 @tailwind utilities;
+
+pre.value {
+  @apply bg-gray-100 inline-block text-sm p-1 rounded-md tracking-wide;
+}

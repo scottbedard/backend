@@ -2,33 +2,27 @@
 
 namespace Bedard\Backend\Classes;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class Paginator
 {
-    protected LengthAwarePaginator $paginator;
-
-    /**
-     * Create a paginator
-     */
-    public function __construct(LengthAwarePaginator $paginator)
-    {
-        $this->paginator = $paginator;
-    }
-
     /**
      * Normalize a length-aware paginator
      *
      * @return array
      */
-    public function data()
+    public static function for(EloquentBuilder|QueryBuilder $query)
     {
+        $paginator = $query->paginate(20);
+
         return [
-            'currentPage' => $this->paginator->currentPage(),
-            'items' => $this->paginator->items(),
-            'lastPage' => $this->paginator->lastPage(),
-            'perPage' => $this->paginator->perPage(),
-            'total' => $this->paginator->total(),
+            'currentPage' => $paginator->currentPage(),
+            'items' => $paginator->items(),
+            'lastPage' => $paginator->lastPage(),
+            'perPage' => $paginator->perPage(),
+            'total' => $paginator->total(),
         ];
     }
 }

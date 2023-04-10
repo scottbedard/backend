@@ -1,0 +1,85 @@
+model: \Spatie\Permission\Models\Role
+
+nav:
+    icon: file-key
+    label: Admin
+
+permissions:
+    - read roles
+
+routes:
+    index:
+        model: App\Models\User
+        path: /
+        plugin: list
+        options:
+            actions:
+                -   
+                    href: admin/create
+                    label: Create admin
+                    theme: primary
+                    icon: plus
+                -
+                    icon: trash
+                    label: Delete selected
+                    disabled: not checked
+            checkboxes: true
+            schema:
+                id:
+                    type: number
+                email:
+                    type: string
+                created_at:
+                    type: date
+                    format: YYYY-mm-DD
+                updated_at:
+                    type: date
+                    format: YYYY-mm-DD
+
+    create:
+        mode: App\Models\User
+        path: create
+        plugin: blade
+        options:
+            view: test
+
+    roles:
+        path: /roles
+        plugin: list
+        options:
+            checkboxes: true
+            actions:
+                -   icon: plus
+                    label: Create role
+                    to: /create
+                    theme: primary
+            schema:
+                id:
+                    type: number
+                name:
+                    type: text
+                guard_name:
+                    type: text
+                created_at:
+                    format: YYYY-mm-DD
+                    type: date
+                updated_at:
+                    format: YYYY-mm-DD
+                    type: date
+
+    # create:
+    #     path: /roles/create
+    #     permissions:
+    #         - create roles
+    #     plugin: form
+    #     options:
+    #         context: create
+    #         fields:
+    #             id:
+    #                 disabled: false
+
+    # edit:
+    #     path: /{id}/edit
+    #     permissions:
+    #         - edit role
+    #     plugin: form

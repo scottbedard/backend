@@ -27,8 +27,9 @@ export type TableOptions = {
 }
 
 export type ToolbarAction = {
+  disabled: boolean | 'checked' | 'not checked'
+  href: string
   icon: string
   label: string
   theme: ButtonTheme
-  to: string
 }
