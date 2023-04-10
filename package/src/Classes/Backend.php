@@ -67,6 +67,10 @@ class Backend
                     data_set($this->config, "controllers.{$controller}.routes.{$route}.plugin", $plugin);
                 }
             }
+
+            if ($controller === '_root') {
+                data_set($this->config, 'controllers._root.nav.href', str(data_get($c, 'nav.href'))->replace('/_root', ''));
+            }
         }
         
         // validate config

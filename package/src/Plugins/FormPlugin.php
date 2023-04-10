@@ -38,10 +38,10 @@ class FormPlugin extends Plugin
     /**
      * Plugin view
      *
-     * @return string
+     * @return \Illuminate\View\View
      */
-    public function view(): string
+    public function view(): View
     {
-        return 'backend::form';
+        return view('backend::form');
     }
 }

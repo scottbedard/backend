@@ -9,7 +9,7 @@
     </h1>
   @endisset
 
-  <p class="ml-[24px] pl-2 text-gray-800">
+  <p class="mt-1 text-gray-800 sm:ml-[24px] sm:mt-0 sm:pl-2">
     {{ $slot }}
   </p>
 </div>

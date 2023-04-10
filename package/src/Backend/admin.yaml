@@ -1,8 +1,8 @@
 model: \Spatie\Permission\Models\Role
 
 nav:
-    icon: air-vent
-    label: Roles
+    icon: file-key
+    label: Admin
 
 permissions:
     - read roles
@@ -33,7 +33,7 @@ routes:
                     type: date
 
     create:
-        path: /create
+        path: /roles/create
         permissions:
             - create roles
         plugin: form
