@@ -31,6 +31,14 @@ defineProps<{
 .be-btn {
   @apply inline-flex font-bold gap-x-2 h-11 items-center rounded-md text-sm text-gray-100 tracking-wide px-4;
 
+  &:disabled {
+    @apply opacity-70 pointer-events-none;
+  }
+
+  &:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
   > svg {
     @apply w-5;
   }

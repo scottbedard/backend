@@ -3,6 +3,7 @@
     <div class="flex flex-wrap gap-x-6 px-6">
       <Button
         v-for="action in options.actions"
+        :disabled="disabled(action)"
         :href="action.href"
         :icon="action.icon"
         :theme="action.theme">
@@ -12,20 +13,33 @@
 
     <div>
       <Table
+        v-model="checked"
         :data="data"
         :options="options" />
     </div>
-
-    <pre class="text-sm">{{ { options } }}</pre>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { TableData, TableOptions } from '@/types'
+import { TableData, TableOptions, ToolbarAction } from '@/types'
 import { Button, Table } from '@/components'
 
-defineProps<{
+const props = defineProps<{
   data: TableData
   options: TableOptions
 }>()
+
+const checked = ref<any[]>([])
+
+const disabled = (action: ToolbarAction) => {
+  if (action.disabled === 'checked') {
+    return checked.value.length > 0
+  }
+
+  if (action.disabled === 'not checked') {
+    return checked.value.length === 0
+  }
+
+  return action.disabled
+}
 </script>

@@ -22,6 +22,7 @@ routes:
                 -
                     icon: trash
                     label: Delete selected
+                    disabled: not checked
             checkboxes: true
             schema:
                 id:
