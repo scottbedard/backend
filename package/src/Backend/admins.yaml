@@ -1,28 +1,32 @@
-model: App\Models\User
-
 nav:
+    href: /backend/admins/users
     icon: file-key
     label: Admin
 
 sidenav:
     -
         icon: users
-        label: Manage user roles
-        href: /
+        label: Admins
+        href: /backend/admins/users
+    -
+        icon: clipboard
+        label: Roles
+        href: /backend/admins/roles
 
 routes:
-    index:
-        path: /
+    users:
+        model: App\Models\User
+        path: users
         permissions:
             - read admins
         plugin: list
         options:
             actions:
                 -   
-                    href: admins/create
-                    label: Create admin
+                    href: /backend/admins/create
+                    label: Add priveleges
                     theme: primary
-                    icon: plus
+                    icon: user-check
                 -
                     icon: trash
                     label: Delete selected
@@ -42,7 +46,7 @@ routes:
                     format: YYYY-mm-DD
 
     show:
-        path: '{id}'
+        path: users/{id}
         permissions:
             - read admins
         plugin: blade
@@ -50,7 +54,7 @@ routes:
             view: test
 
     create:
-        path: create
+        path: users/create
         permissions:
             - create admins
         plugin: blade
@@ -58,7 +62,7 @@ routes:
             view: test
 
     update:
-        path: '{id}/update'
+        path: users/{id}/update
         permissions:
             - update admins
         plugin: blade
@@ -66,15 +70,24 @@ routes:
             view: test
 
     roles:
-        path: /roles
+        model: Spatie\Permission\Models\Role
+        path: roles
+        permissions:
+            - read roles
         plugin: list
         options:
             checkboxes: true
             actions:
-                -   icon: plus
-                    label: Create role
-                    to: /create
+                -   
+                    href: /backend/admins/roles/create
+                    label: Create new role
                     theme: primary
+                    icon: plus
+                -
+                    icon: trash
+                    label: Delete selected
+                    disabled: not checked
+            row_href: admins/roles/{id}/update
             schema:
                 id:
                     type: number
