@@ -17,7 +17,7 @@ class AuthenticationTest extends TestCase
         $this->post('/login', [
             'email' => $user->email,
             'password' => 'password',
-        ])->assertRedirect(route('backend.index'));
+        ])->assertRedirect(route('backend._root.index'));
 
         $this->assertAuthenticated();
     }

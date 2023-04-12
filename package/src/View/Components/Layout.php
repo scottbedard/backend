@@ -25,9 +25,14 @@ class Layout extends Component
      */
     public function render(): View|Closure|string
     {
+        $routeName = request()->route()->getName();
+
         $config = Backend::config();
+        
         $dev = env('BACKEND_DEV');
+        
         $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
+        
         $user = auth()->user();
 
         // build navigation
@@ -49,10 +54,13 @@ class Layout extends Component
 
         $orderedNav = array_values(Arr::sort($nav, fn ($arr) => $arr['order']));
 
+        $sidenav = Backend::sidenav($routeName);
+        
         return view('backend::components.layout', [
             'dev' => $dev,
             'manifest' => $manifest,
             'nav' => $orderedNav,
+            'sidenav' => $sidenav,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
         ]);

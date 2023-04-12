@@ -39,8 +39,18 @@
     </header>
 
     <div class="flex flex-1">
-      <aside class="bg-primary-50 flex flex-col items-center p-6 w-20">
-        ...
+      <aside class="bg-primary-50 flex flex-col gap-6 items-center p-6 w-20">
+        @foreach ($sidenav as $link)
+          <a
+            class="aspect-square flex flex-col gap-1 items-center justify-center text-center"
+            href="{{ $link['href'] }}">
+            <x-backend::icon
+              :name="$link['icon']"
+              size="24" />
+
+            <div class="px-2 text-xs">{{ $link['label'] }}</div>
+          </a>
+        @endforeach
       </aside>
 
       <main class="flex-1">

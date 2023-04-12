@@ -3,6 +3,14 @@ nav:
     label: bedard/backend
     order: -1
 
+sidenav:
+    -
+        href: admins/roles
+        icon: user-plus
+        label: Whoa
+        permissions:
+            - read roles
+
 routes:
     index:
         path: /

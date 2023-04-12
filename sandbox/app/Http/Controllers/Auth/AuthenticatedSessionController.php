@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect(route('backend.index'));
+        return redirect(route('backend._root.index'));
     }
 
     /**

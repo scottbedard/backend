@@ -5,6 +5,7 @@ namespace Bedard\Backend\Classes;
 use Bedard\Backend\Classes\ViteManifest;
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -61,6 +62,7 @@ class Backend
         data_fill($this->config, 'controllers.*.routes', []);
         data_fill($this->config, 'controllers.*.routes.*.options', []);
         data_fill($this->config, 'controllers.*.routes.*.permissions', []);
+        data_fill($this->config, 'controllers.*.sidenav', []);
 
         foreach ($this->config['controllers'] as $controller => $c) {
             data_fill($this->config, "controllers.{$controller}.id", $controller);
@@ -102,6 +104,7 @@ class Backend
             'controllers.*.routes.*.options' => ['present', 'array'],
             'controllers.*.routes.*.permissions' => ['present', 'array'],
             'controllers.*.routes.*.permissions.*' => ['string'],
+            'controllers.*.sidenav' => ['present', 'array'],
         ]);
 
         if ($validator->fails()) {
@@ -137,10 +140,20 @@ class Backend
         if (str($route)->is('backend.*')) {
             $controllerId = '_root';
             
-            return data_get($this->config, "controllers.{$controllerId}");
+            return data_get($this->config, "controllers._root.{$controllerId}");
         }
         
         throw new Exception('Backend controller not found: ' . $controllerId);
+    }
+
+    /**
+     * Get a collection of all controllers
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function controllers(): Collection
+    {
+        return collect($this->config['controllers']);
     }
 
     /**
@@ -164,5 +177,15 @@ class Backend
         }
         
         throw new Exception('Backend route not found: ' . $route);
+    }
+
+    /**
+     * Get all sidenav items
+     *
+     * @return array
+     */
+    public function sidenav(string $route): array
+    {
+        return data_get($this->controller($route), 'sidenav', []);
     }
 }

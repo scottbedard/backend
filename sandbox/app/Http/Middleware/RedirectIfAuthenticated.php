@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(route('backend.index'));
+                return redirect(route('backend._root.index'));
             }
         }
 

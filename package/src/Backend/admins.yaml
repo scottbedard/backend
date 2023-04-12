@@ -1,21 +1,25 @@
-model: \Spatie\Permission\Models\Role
+model: App\Models\User
 
 nav:
     icon: file-key
     label: Admin
 
-permissions:
-    - read roles
+sidenav:
+    -
+        icon: users
+        label: Manage user roles
+        href: /
 
 routes:
     index:
-        model: App\Models\User
         path: /
+        permissions:
+            - read admins
         plugin: list
         options:
             actions:
                 -   
-                    href: admin/create
+                    href: admins/create
                     label: Create admin
                     theme: primary
                     icon: plus
@@ -24,6 +28,7 @@ routes:
                     label: Delete selected
                     disabled: not checked
             checkboxes: true
+            row_href: admins/{id}/update
             schema:
                 id:
                     type: number
@@ -36,9 +41,26 @@ routes:
                     type: date
                     format: YYYY-mm-DD
 
+    show:
+        path: '{id}'
+        permissions:
+            - read admins
+        plugin: blade
+        options:
+            view: test
+
     create:
-        mode: App\Models\User
         path: create
+        permissions:
+            - create admins
+        plugin: blade
+        options:
+            view: test
+
+    update:
+        path: '{id}/update'
+        permissions:
+            - update admins
         plugin: blade
         options:
             view: test

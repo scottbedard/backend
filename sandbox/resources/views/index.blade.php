@@ -20,7 +20,7 @@
         <div class="flex flex-wrap gap-6 justify-between">
           <a
             class="bg-gray-300 flex font-bold h-12 items-center justify-center px-3 rounded-md text-gray-600 transition-colors tracking-wide whitespace-nowrap w-full hover:bg-gray-200 hover:text-black sm:flex-1"
-            href="{{ route('backend.index') }}">
+            href="{{ route('backend._root.index') }}">
             &larr; Backend
           </a>
 

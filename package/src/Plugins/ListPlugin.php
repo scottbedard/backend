@@ -47,6 +47,7 @@ class ListPlugin extends Plugin
         data_fill($this->route, 'options.actions', []);
         data_fill($this->route, 'options.checkboxes', false);
         data_fill($this->route, 'options.schema', []);
+        data_fill($this->route, 'options.sidenav', []);
 
         if (Arr::isAssoc($this->route['options']['schema'])) {
             $cols = [];
@@ -59,6 +60,9 @@ class ListPlugin extends Plugin
         }
 
         foreach ($this->route['options']['actions'] as $key => $action) {
+            $rowHref = data_get($action, 'row_href', null);
+
+            data_fill($this->route, "options.actions.{$key}.row_href", $rowHref);
             data_fill($this->route, "options.actions.{$key}.theme", 'default');
         }
 

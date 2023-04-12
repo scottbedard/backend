@@ -15,7 +15,8 @@
       <Table
         v-model="checked"
         :data="data"
-        :options="options" />
+        :options="options"
+        :row-href="rowHref" />
     </div>
   </div>
 </template>
@@ -42,4 +43,6 @@ const disabled = (action: ToolbarAction) => {
 
   return action.disabled
 }
+
+const rowHref = (row: any) => props.options.row_href.replace('{id}', row.id)
 </script>

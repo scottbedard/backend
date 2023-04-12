@@ -9,8 +9,6 @@ Route::group([
     'prefix' => config('backend.path'),
 ], function () {
     $config = Backend::config();
-
-    // dd($config);
     
     foreach ($config['controllers'] as $controller) {
         Route::group([

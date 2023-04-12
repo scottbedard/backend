@@ -32,9 +32,11 @@
         </div>
       </div>
 
-      <div
+      <Component
         v-for="row in data.items"
-        class="table-row">
+        class="table-row"
+        :is="rowHref(row) ? 'a' : 'div'"
+        :href="rowHref(row)">
         <div
           v-if="options.checkboxes"
           class="border-t border-gray-300 table-cell whitespace-nowrap"
@@ -52,13 +54,13 @@
           :key="col.id">
           {{ row[col.id] }}
         </div>
-      </div>
+      </Component>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { stubArray } from 'lodash-es'
+import { noop, stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
 import Banner from './Banner.vue'
 import Checkbox from './Checkbox.vue'
@@ -69,10 +71,12 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
   data: TableData
-  options: TableOptions
   modelValue?: any[]
+  options: TableOptions
+  rowHref?: (row?: any) => any
 }>(), {
   modelValue: stubArray,
+  rowHref: noop,
 })
 
 const isAllChecked = computed(() => props.modelValue.length === props.data.items.length)
