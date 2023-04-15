@@ -13,7 +13,7 @@ Route::group([
     foreach ($config['controllers'] as $controller) {
         Route::group([
             'middleware' => array_map(fn ($p) => "Spatie\Permission\Middlewares\PermissionMiddleware:{$p}", $controller['permissions']),
-            'prefix' => $controller['id'] !== '_root' ? $controller['id'] : null,
+            'prefix' => $controller['path'],
         ], function () use ($controller) {
             $ctrl = $controller['id'];
 

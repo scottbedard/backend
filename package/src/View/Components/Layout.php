@@ -25,48 +25,25 @@ class Layout extends Component
      */
     public function render(): View|Closure|string
     {
+        $dev = env('BACKEND_DEV');
+
+        $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
+
         $routeName = request()->route()->getName();
 
-        $config = Backend::config();
-        
-        $dev = env('BACKEND_DEV');
-        
-        $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
-        
         $user = auth()->user();
 
-        // build navigation
-        $nav = [];
+        $nav = Backend::nav($user);
 
-        foreach ($config['controllers'] as $controller) {
-            $controllerNav = data_get($controller, 'nav');
-
-            if (!$controllerNav) continue;
-            
-            foreach ($controller['permissions'] as $permission) {
-                try { 
-                    if (!$user->hasPermissionTo($permission)) continue 2;
-                } catch (PermissionDoesNotExist $e) { }
-            }
-
-            array_push($nav, $controllerNav);
-        }
-        
-        $nav = Backend::nav($routeName, $user);
-
-        dd('nav', $nav);
-
-        $sidenav = Backend::sidenav($routeName, $user);
-
-        dd($sidenav);
+        $subnav = Backend::subnav($routeName, $user);
         
         return view('backend::components.layout', [
             'dev' => $dev,
             'manifest' => $manifest,
-            'nav' => $orderedNav,
-            'sidenav' => $sidenav,
+            'nav' => $nav,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
+            'subnav' => $subnav,
         ]);
     }
 }

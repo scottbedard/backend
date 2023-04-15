@@ -72,9 +72,7 @@ class Backend
      */
     public function controller(string $key): array
     {
-        $name = str($key)->is('backend.*')
-            ? str($key)->ltrim('backend.')->explode('.')->first()
-            : $key;
+        $name = str($key)->match('/^backend\.(\w+)\.?\w*$/')->toString() ?: null;
 
         $controller = data_get($this->config, "controllers.{$name}");
 
@@ -152,13 +150,14 @@ class Backend
         data_fill($config, 'controllers.*', []);
 
         foreach ($config['controllers'] as $controllerKey => $controller) {
-            $id = str_starts_with('_', $controllerKey) ? $controllerKey : str($controllerKey)->kebab()->toString();
-            
+            $id = str_starts_with($controllerKey, '_') ? $controllerKey : str($controllerKey)->kebab()->toString();
+            $path = str_starts_with($id, '_') ? null : $id;
+
             data_fill($config, "controllers.{$controllerKey}.id", $id);
             data_fill($config, "controllers.{$controllerKey}.model", null);
             data_fill($config, "controllers.{$controllerKey}.nav", null);
             data_fill($config, "controllers.{$controllerKey}.nav.permissions", []);
-            data_fill($config, "controllers.{$controllerKey}.path", $id);
+            data_fill($config, "controllers.{$controllerKey}.path", $path);
             data_fill($config, "controllers.{$controllerKey}.permissions", []);
             data_fill($config, "controllers.{$controllerKey}.routes", []);
             data_fill($config, "controllers.{$controllerKey}.subnav", []);
@@ -174,7 +173,7 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.href", null);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.icon", null);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.label", null);
-                data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.order", null);
+                data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.order", 0);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.permissions", []);
             }
 
@@ -226,11 +225,28 @@ class Backend
     /**
      * Get subnav
      *
+     * @param string $routeName
+     * @param mixed $user
+     *
      * @return array
      */
-    public function subnav(string $route): array
+    public function subnav(string $routeName, $user = null): array
     {
-        return data_get($this->controller($route), 'subnav', []);
+        $controller = $this->controller($routeName);
+        
+        return array_filter($controller['subnav'], function ($item) use ($user) {
+            try {
+                foreach ($item['permissions'] as $permission) {
+                    if (!$user->hasPermissionTo($permission)) {
+                        return false;
+                    }
+                }
+            } catch (PermissionDoesNotExist $e) {
+                return false;
+            }
+
+            return true;
+        });
     }
 
     /**

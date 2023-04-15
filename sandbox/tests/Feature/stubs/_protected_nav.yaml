@@ -3,3 +3,16 @@ nav:
     label: Books
     permissions:
         - read books
+
+subnav:
+    -   icon: user
+        label: Authors
+
+    -   icon: folder
+        label: Categories
+        permissions:
+            - read categories
+
+routes:
+    index:
+        path: null
