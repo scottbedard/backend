@@ -51,10 +51,14 @@ class Layout extends Component
 
             array_push($nav, $controllerNav);
         }
+        
+        $nav = Backend::nav($routeName, $user);
 
-        $orderedNav = array_values(Arr::sort($nav, fn ($arr) => $arr['order']));
+        dd('nav', $nav);
 
-        $sidenav = Backend::sidenav($routeName);
+        $sidenav = Backend::sidenav($routeName, $user);
+
+        dd($sidenav);
         
         return view('backend::components.layout', [
             'dev' => $dev,

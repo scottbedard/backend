@@ -55,7 +55,11 @@ class BackendServiceProvider extends ServiceProvider
     {
         // register backend facade
         $this->app->bind('backend', function () {
-            return new \Bedard\Backend\Classes\Backend();
+            $dirs = [
+                __DIR__ . '/Backend',
+            ];
+
+            return new \Bedard\Backend\Classes\Backend($dirs);
         });
     }
 }

@@ -1,0 +1,3 @@
+model: App\Models\User
+
+path: null
