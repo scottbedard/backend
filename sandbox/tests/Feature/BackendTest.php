@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use App\Models\User;
 use Bedard\Backend\Classes\Backend;
@@ -65,5 +65,26 @@ class BackendTest extends TestCase
                 'permissions' => [],
             ],
         ], $nav);
+    }
+
+    public function test_getting_protected_controller_navs()
+    {
+        $backend = new Backend([
+            __DIR__ . '/stubs/_protected_nav.yaml',
+            __DIR__ . '/stubs/_unprotected_nav.yaml',
+        ]);
+
+        Permission::firstOrCreate(['name' => 'read books']);
+        
+        // alice can read books
+        $alice = User::factory()->create();
+        $alice->givePermissionTo('read books');
+
+        $this->assertEquals(2, count($backend->nav($alice)));
+
+        // bob can't read books
+        $bob = user::factory()->create();
+
+        $this->assertEquals(1, count($backend->nav($bob)));
     }
 }

@@ -1,0 +1,5 @@
+nav:
+    icon: books
+    label: Books
+    permissions:
+        - read books

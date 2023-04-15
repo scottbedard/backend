@@ -106,9 +106,13 @@ class Backend
     }
 
     /**
-     * Get nav buttons
+     * Get top-level nav
+     *
+     * @param mixed $user
+     *
+     * @return array
      */
-    public function nav(string $routeName, $user = null): array
+    public function nav($user = null): array
     {
         $nav = [];
 
@@ -117,12 +121,23 @@ class Backend
                 array_push($nav, $controller['nav']);
             }
         }
+        
+        return array_filter($nav, function ($button) use ($user) {
+            if ($user) {
+                try {
+                    foreach ($button['permissions'] as $permission) {
+                        if (!$user->hasPermissionTo($permission)) {
+                            return false;
+                        }
+                    }
+                } catch (PermissionDoesNotExist $e) {
+                    return false;
+                }
+            }
 
-        if ($user) {
-            // ...
-        }
 
-        return $nav;
+            return true;
+        });
     }
 
     /**
