@@ -17,7 +17,7 @@ class BackendTest extends TestCase
 
         $this->assertEquals(null, data_get($backend->config, 'controllers._blank.model', 'empty'));
         $this->assertEquals([], data_get($backend->config, 'controllers._blank.nav'));
-        $this->assertEquals('_blank', data_get($backend->config, 'controllers._blank.path'));
+        $this->assertEquals(null, data_get($backend->config, 'controllers._blank.path'));
         $this->assertEquals([], data_get($backend->config, 'controllers._blank.permissions'));
         $this->assertEquals([], data_get($backend->config, 'controllers._blank.routes'));
         $this->assertEquals([], data_get($backend->config, 'controllers._blank.subnav'));
@@ -46,7 +46,16 @@ class BackendTest extends TestCase
     {
         $backend = new Backend([__DIR__ . '/stubs/_blank.yaml']);
         
-        $controller = $backend->controller('_blank');
+        $controller = $backend->controller('backend._blank');
+        
+        $this->assertEquals('_blank', $controller['id']);
+    }
+
+    public function test_getting_a_specific_routes_controller()
+    {
+        $backend = new Backend(__DIR__ . '/stubs/_blank.yaml');
+        
+        $controller = $backend->controller('backend._blank.index');
         
         $this->assertEquals('_blank', $controller['id']);
     }
