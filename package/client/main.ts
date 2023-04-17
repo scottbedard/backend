@@ -6,7 +6,7 @@ import List from './plugins/List.vue'
 // create any icons rendered by the server
 createIcons({ icons })
 
-// mount first-party plugins
+// mount first-party plugin components
 const plugins: Record<string, Component> = {
   list: List,
 }

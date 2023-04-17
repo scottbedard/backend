@@ -23,7 +23,7 @@ type TableData<T = Record<string, any>> = {
 export type TableOptions = {
   actions: ToolbarAction[]
   checkboxes: boolean
-  row_href: string
+  row_href: null | string
   schema: TableCell[]
 }
 

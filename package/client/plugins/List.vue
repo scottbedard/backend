@@ -44,5 +44,13 @@ const disabled = (action: ToolbarAction) => {
   return action.disabled
 }
 
-const rowHref = (row: any) => props.options.row_href.replace('{id}', row.id)
+const rowHref = (row: any) => {
+  // const href = props.options.row_href
+
+  // if (typeof href === 'string')
+  //   href.replace('{id}', row.id)
+  // }
+
+  // href.replace('{id}', row.id)
+}
 </script>

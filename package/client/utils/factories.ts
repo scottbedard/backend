@@ -16,8 +16,10 @@ export function createPluginConfig<T>(options: T): PluginConfig<T> {
  */
 export function createTableOptions(): TableOptions {
   return {
+    actions: [],
     checkboxes: false,
-    schema: [],
+    row_href: null,
+    schema: []
   }
 }
 

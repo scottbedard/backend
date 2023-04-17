@@ -16,10 +16,7 @@ export default defineConfig({
     manifest: true,
     outDir: resolve('public/vendor/backend'),
     rollupOptions: {
-      input: {
-        main: 'client/main.ts',
-        list: 'client/plugins/list/index.ts',
-      },
+      input: 'client/main.ts',
     },
   },
   plugins: [
