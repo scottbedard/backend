@@ -1,0 +1,247 @@
+{
+  "backend._root.index": {
+    "name": "backend._root.index",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@index",
+    "uri": "backend",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.admin.users": {
+    "name": "backend.admin.users",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@users",
+    "uri": "backend/admin/users",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.admin.show": {
+    "name": "backend.admin.show",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@show",
+    "uri": "backend/admin/users/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.admin.create": {
+    "name": "backend.admin.create",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@create",
+    "uri": "backend/admin/users/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.admin.update": {
+    "name": "backend.admin.update",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@update",
+    "uri": "backend/admin/users/{id}/update",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.admin.roles": {
+    "name": "backend.admin.roles",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@roles",
+    "uri": "backend/admin/roles",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.user.index": {
+    "name": "backend.user.index",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@index",
+    "uri": "backend/users",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.user.create": {
+    "name": "backend.user.create",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@create",
+    "uri": "backend/users/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "backend.user.edit": {
+    "name": "backend.user.edit",
+    "domain": null,
+    "action": "Bedard\\Backend\\BackendController@edit",
+    "uri": "backend/users/{id}/edit",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cypress.factory": {
+    "name": "cypress.factory",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@factory",
+    "uri": "__cypress__/factory",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.login": {
+    "name": "cypress.login",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@login",
+    "uri": "__cypress__/login",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.logout": {
+    "name": "cypress.logout",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@logout",
+    "uri": "__cypress__/logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.artisan": {
+    "name": "cypress.artisan",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@artisan",
+    "uri": "__cypress__/artisan",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.run-php": {
+    "name": "cypress.run-php",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@runPhp",
+    "uri": "__cypress__/run-php",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.csrf-token": {
+    "name": "cypress.csrf-token",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@csrfToken",
+    "uri": "__cypress__/csrf_token",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cypress.routes": {
+    "name": "cypress.routes",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@routes",
+    "uri": "__cypress__/routes",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.current-user": {
+    "name": "cypress.current-user",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@currentUser",
+    "uri": "__cypress__/current-user",
+    "method": [
+      "POST"
+    ]
+  },
+  "sanctum.csrf-cookie": {
+    "name": "sanctum.csrf-cookie",
+    "domain": null,
+    "action": "Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show",
+    "uri": "sanctum/csrf-cookie",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "ignition.healthCheck": {
+    "name": "ignition.healthCheck",
+    "domain": null,
+    "action": "Spatie\\LaravelIgnition\\Http\\Controllers\\HealthCheckController",
+    "uri": "_ignition/health-check",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "ignition.executeSolution": {
+    "name": "ignition.executeSolution",
+    "domain": null,
+    "action": "Spatie\\LaravelIgnition\\Http\\Controllers\\ExecuteSolutionController",
+    "uri": "_ignition/execute-solution",
+    "method": [
+      "POST"
+    ]
+  },
+  "ignition.updateConfig": {
+    "name": "ignition.updateConfig",
+    "domain": null,
+    "action": "Spatie\\LaravelIgnition\\Http\\Controllers\\UpdateConfigController",
+    "uri": "_ignition/update-config",
+    "method": [
+      "POST"
+    ]
+  },
+  "": {
+    "name": null,
+    "domain": null,
+    "action": "Closure",
+    "uri": "api/user",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "index": {
+    "name": "index",
+    "domain": null,
+    "action": "Closure",
+    "uri": "/",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "login": {
+    "name": "login",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
+    "uri": "login",
+    "method": [
+      "POST"
+    ]
+  },
+  "logout": {
+    "name": "logout",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+    "uri": "logout",
+    "method": [
+      "GET",
+      "HEAD",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS"
+    ]
+  }
+}
