@@ -77,6 +77,11 @@ jobs:
       - name: PHPUnit
         run: php artisan test
 
+      - name: Cypress
+        run: |
+          php artisan serve --no-reload --quiet &
+          npm run cy:run
+
   # deploy:
   #   name: deploy
   #   needs: [test]
