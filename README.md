@@ -3,55 +3,72 @@
 [![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-This project is in early development, things will likely change. Proceed with caution.
+This project aims to be an easy to use backend for Laravel applications. It is currently in very early development, proceed with caution.
 
 [View live sandbox →](https://backend.scottbedard.net)
 
 ## Installation
 
-A backend for Laravel applications. More documentation to come.
+No documentation yet, check back later.
 
-## Controllers
+## Getting started
 
-Controllers manage the backend areas of your application. They are defined using `yaml` files, and use the excellent [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) package to create protected routes and APIs. In most situations, you'll find this file is all you need to create standard lists and forms. As an example, let's make a controller to manage our application's users. We can scaffold our controller files with the following command.
-
-```bash
-php artisan backend:controller users
-```
-
-A new controller file should now exist at `app/Backend/users.yaml`. Here we can define permissions, routes, and other settings for this backend area. To understand how these work, let's look at our new `edit` route, and some of the other config options.
+Backend areas are defined using `yaml` files. Let's look at an example `users.yaml` file and see how they work.
 
 ```yaml
-id: users
+# these define the permissions required to access the controller.
+# this includes the nav, routes, and all other items
+permissions:
+    - read users
 
+# this property adds an item to the main backend navigation.
+# see the notes below for more info on icons
+nav:
+    href: /backend/users
+    icon: users
+    label: Users
+    
+# the eloquent model that plugins should use.
+# if needed, this can be overwritten for individual routes.
 model: App\Models\User
 
-permissions:
-    - view users
-    
-routes:
-    edit:
-        page: form
-        path: /{id}/edit
+# subnavs add a secondary nav bar to all of this controller's routes.
+# to restrict link visibility, define a permissions array.
+subnav:
+    -
+        href: /backend/users
+        icon: users
+        label: Users
+    -
+        href: /backend/users/groups
+        icon: folder
+        label: Groups
         permissions:
-            - create users
+            - read user groups
+
+# routes are managed by plugins. see the documentation below for info on the
+# built-in ones, and on how to create your own.
+routes:
+
+    # routes can define a path property, null values target the controller base.
+    # if none is defined, it will be inferred from the route name (like "create" below!).
+    index:
+        path: null
+        plugin: list
         options:
             # ...
+
+    # routes inherit the permissions of their controller, but may also define their own
+    # to be required in addition to these.
+    create:
+        plugin: form
+        options:
+            # ...
+        permissions:
+            - create users
 ```
 
-- **`id`** A unique identifier to namespace the controller routes. If none is defined, the file name will be used.
-- **`model`** The model associated with this controller's resource.
-- **`permissions`** The permissions required to view routes associated with this controller.
-- **`routes`**
-  - **`edit`** A unique name that maps to a controller method.
-    - **`page`** The page ro render for our route. We'll discuss these more later.
-    - **`path`** URL path to our route, defined using [Laravel's normal routing syntax](https://laravel.com/docs/routing#route-parameters)
-    - **`permissions`** Additional permissions required to access this route.
-    - **`options`** Any additional data needed for the page.
-
-For full control of the request, you can extend a `Bedard\Backend\BackendController` and assign it to the `class` property of this file.
-
-## Pages
+## Plugins
 
 No documentation yet, check back later.
 
