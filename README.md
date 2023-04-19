@@ -79,18 +79,55 @@ routes:
 
 ## Permissions
 
-Permissions are provided by Spatie's awesome [`laravel-permission`](https://github.com/spatie/laravel-permission) package. Several config items already support custom permissions, more docs to come.
-
-## Plugins
-
-No documentation yet, check back later.
-
-## Super admins
-
-The `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. If needed, this role can be renamed using the `BACKEND_SUPER_ADMIN_ROLE` environment variable. Execute the following to create a super admin.
+Permissions are provided by Spatie's awesome [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
 
 ```sh
 php artisan backend:assign-role {id} 'super admin'
+```
+
+Several config elements already support custom permissions, more docs to come...
+
+## Plugins
+
+Plugins are still being developed, but in general they are responsible for handling requests and rendering a view. A plugin has access to the config, and thus can add it's own behavior around that config.
+
+### Blade
+
+This plugin renders a blade template.
+
+```yaml
+plugin: blade
+options:
+    view: app::view
+```
+
+### List
+
+Lists are being worked on. For now, options look like this.
+
+```yaml
+plugin: list
+options:
+    schema:
+        id:
+            type: number
+        email:
+            type: email
+        created_at:
+            type: date
+        updated_at:
+            label: Last seen
+            type: timeago
+```
+
+### Form
+
+Forms haven't been developed yet.
+
+```yaml
+plugin: form
+options:
+    # ...
 ```
 
 ## License
