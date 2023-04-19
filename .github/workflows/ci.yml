@@ -28,6 +28,7 @@ jobs:
       DB_PASSWORD: password
       DB_PORT: 33306
       DB_USERNAME: root
+      GITHUB_ACTION: true
 
     steps:
       - name: Checkout
@@ -43,12 +44,6 @@ jobs:
           cd package
           npm install
           npm run build
-
-      # - name: Configure directories
-      #   run: |
-      #     cp ./.env.example ./.env
-      #     sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' .env
-      #     chmod -R 777 ./storage ./bootstrap/cache
 
       - name: Configure directories
         run: |
