@@ -46,30 +46,36 @@ jobs:
 
       # - name: Configure directories
       #   run: |
-      #     mv sandbox/.env.example .env
-      #     mv sandbox/* .
-      #     mkdir packages
-      #     mkdir packages/bedard
-      #     mkdir packages/bedard/backend
-      #     mv package/* packages/bedard/backend
+      #     cp ./.env.example ./.env
+      #     sed -i -e 's/BROADCAST_DRIVER=pusher/BROADCAST_DRIVER=log/g' .env
       #     chmod -R 777 ./storage ./bootstrap/cache
-      #     sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
-      #     sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
 
-      # - name: Composer install
-      #   run: composer install
+      - name: Configure directories
+        run: |
+          mv sandbox/.env.example .env
+          mv sandbox/* .
+          mkdir packages
+          mkdir packages/bedard
+          mkdir packages/bedard/backend
+          mv package/* packages/bedard/backend
+          chmod -R 777 ./storage ./bootstrap/cache
+          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.json
+          sed -i -e 's_/var/www/html_/home/runner/work/backend/backend_g' composer.lock
 
-      # - name: Generate application key
-      #   run: php artisan key:generate
+      - name: Composer install
+        run: composer install
 
-      # - name: Run migrations
-      #   run: php artisan migrate
+      - name: Generate application key
+        run: php artisan key:generate
 
-      # - name: Publish assets
-      #   run: php artisan vendor:publish --tag backend
+      - name: Run migrations
+        run: php artisan migrate
 
-      # - name: PHPUnit
-      #   run: php artisan test
+      - name: Publish assets
+        run: php artisan vendor:publish --tag backend
+
+      - name: PHPUnit
+        run: php artisan test
 
   # deploy:
   #   name: deploy
