@@ -77,19 +77,9 @@ routes:
             - create users
 ```
 
-## Permissions
-
-Permissions are provided by Spatie's awesome [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
-
-```sh
-php artisan backend:assign-role {id} 'super admin'
-```
-
-Several config elements already support custom permissions, more docs to come...
-
 ## Plugins
 
-Plugins are still being developed. In general, they handle requests and returning a [blade template](https://laravel.com/docs/10.x/blade). Plugins have access to the full config, and can add their own behavior around that data. A few plugins are aliased by default. This can be customized in `config/backend.php`.
+Plugins are still being developed. In general though, they handle requests and returning a [blade template](https://laravel.com/docs/10.x/blade). Plugins have access to the full config, and can add their own behavior around that data. A few plugins are aliased by default in `config/backend.php`.
 
 ```php
 return [
@@ -139,6 +129,16 @@ plugin: form
 options:
     # ...
 ```
+
+## Permissions
+
+Permissions are provided by Spatie's awesome [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
+
+```sh
+php artisan backend:assign-role {id} 'super admin'
+```
+
+Several config elements already support custom permissions, more docs to come...
 
 ## License
 
