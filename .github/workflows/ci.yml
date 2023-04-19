@@ -77,11 +77,11 @@ jobs:
           npm install
           php artisan serve --no-reload --quiet & npm run cy:run
 
-  # deploy:
-  #   name: deploy
-  #   needs: [test]
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: Deploy
-  #       run: curl ${{secrets.DEPLOY_URL}}
+  deploy:
+    name: deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy
+        run: curl ${{secrets.DEPLOY_URL}}
