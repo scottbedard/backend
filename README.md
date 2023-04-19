@@ -31,7 +31,7 @@ permissions:
     - read users
 
 # this property adds an item to the main backend navigation.
-# see the notes below for more info on icons
+# icons may be any valid lucide name (https://lucide.dev)
 nav:
     href: /backend/users
     icon: users
