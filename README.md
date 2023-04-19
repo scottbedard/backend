@@ -89,7 +89,17 @@ Several config elements already support custom permissions, more docs to come...
 
 ## Plugins
 
-Plugins are still being developed, but in general they are responsible for handling requests and rendering a view. A plugin has access to the config, and thus can add it's own behavior around that config.
+Plugins are still being developed. In general, they handle requests and returning a [blade template](https://laravel.com/docs/10.x/blade). Plugins have access to the full config, and can add their own behavior around that data. A few plugins are aliased by default. This can be customized in `config/backend.php`.
+
+```php
+return [
+    'plugins' => [
+        'blade' => \Bedard\Backend\Plugins\BladePlugin::class,
+        'form' => \Bedard\Backend\Plugins\FormPlugin::class,
+        'list' => \Bedard\Backend\Plugins\ListPlugin::class,
+    ],
+]
+```
 
 ### Blade
 
@@ -98,12 +108,12 @@ This plugin renders a blade template.
 ```yaml
 plugin: blade
 options:
-    view: app::view
+    view: namespace::view
 ```
 
 ### List
 
-Lists are being worked on. For now, options look like this.
+Lists are being developed, check back later.
 
 ```yaml
 plugin: list
