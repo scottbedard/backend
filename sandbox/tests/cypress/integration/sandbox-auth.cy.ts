@@ -1,7 +1,10 @@
 describe('sandbox auth', () => {
-  it('login as admin', () => {
+  beforeEach(() => {
+    cy.logout()
+  })
+
+  it('log in', () => {
     cy
-      .logout()
       .visit('/')
       .get('input[type="email"]')
       .clear()
@@ -14,6 +17,18 @@ describe('sandbox auth', () => {
       .url()
       .then(url => {
         expect(url.endsWith('/backend')).to.be.true
+      })
+  })
+
+  it('log out', () => {
+    cy
+      .login({ email: 'admin@example.com' })
+      .visit('/backend')
+      .get('[data-cy="logout"]')
+      .click()
+      .url()
+      .then(url => {
+        expect(url.endsWith('/login')).to.be.true
       })
   })
 })

@@ -39,6 +39,7 @@ class Layout extends Component
         
         return view('backend::components.layout', [
             'dev' => $dev,
+            'logout' => config('backend.logout_href'),
             'manifest' => $manifest,
             'nav' => $nav,
             'scripts' => $manifest->scripts(),

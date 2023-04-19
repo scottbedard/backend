@@ -20,7 +20,7 @@ return [
     | Guest redirect
     |--------------------------------------------------------------------------
     |
-    | Unauthenticated users will be redirected here.
+    | Users that are not logged in will be redirected here
     |
     */
 
@@ -39,23 +39,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Guest redirect
+    | Logout href
     |--------------------------------------------------------------------------
     |
-    | Route middleware alias to restrict access to the backend. Users must be
-    | authenticated and have atleast one backend permission to pass middleware.
+    | This defines where to link the logout button to.
     |
     */
 
-    'middleware_alias' => env('BACKEND_MIDDLEWARE_ALIAS', 'backend'),
+    'logout_href' => '/logout',
 
     /*
     |--------------------------------------------------------------------------
-    | Guest redirect
+    | Backend directory
     |--------------------------------------------------------------------------
     |
-    | Route middleware alias to restrict access to the backend. Users must be
-    | authenticated and have atleast one backend permission to pass middleware.
+    | Directory to scan for backend .yaml files.
     |
     */
 

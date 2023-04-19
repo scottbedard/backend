@@ -32,7 +32,10 @@
       </nav>
 
       <div>
-        <a class="text-gray-100/80 hover:text-white" href="/">
+        <a
+          class="text-gray-100/80 hover:text-white"
+          href="{{ $logout }}"
+          data-cy="logout">
           <x-backend::icon name="log-out" size="20" />
         </a>
       </div>
