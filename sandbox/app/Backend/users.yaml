@@ -15,11 +15,11 @@ routes:
                 id:
                     disabled: true
                 created_at:
-                    format: YYYY-mm-DD
+                    format: LLL Mo, yyyy
                     type: date
                 updated_at:
-                    format: YYYY-mm-DD
-                    type: date
+                    label: Last updated
+                    type: timeago
 
     create:
         path: /create

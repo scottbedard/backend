@@ -52,7 +52,18 @@
           v-for="col in options.schema"
           class="align-middle border-t border-gray-300 h-12 px-3 table-cell first:pl-6 last:pr-6"
           :key="col.id">
-          {{ row[col.id] }}
+
+          <span
+            v-if="col.type === 'date'"
+            v-text="format(parseISO(row[col.id]), col.format)" />
+
+          <span
+            v-else-if="col.type === 'timeago'"
+            v-text="formatRelative(parseISO(row[col.id]), now)" />
+          
+          <span
+            v-else
+            v-text="row[col.id]" />
         </div>
       </Component>
     </div>
@@ -60,10 +71,14 @@
 </template>
 
 <script lang="ts" setup>
+import { format, formatRelative, parseISO, subDays } from 'date-fns'
 import { noop, stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
+import { useNow } from '@vueuse/core'
 import Banner from './Banner.vue'
 import Checkbox from './Checkbox.vue'
+
+const d = subDays(new Date, 5)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', payload: any[]): void
@@ -78,6 +93,8 @@ const props = withDefaults(defineProps<{
   modelValue: stubArray,
   rowHref: noop,
 })
+
+const now = useNow()
 
 const isAllChecked = computed(() => props.modelValue.length === props.data.items.length)
 

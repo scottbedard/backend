@@ -39,11 +39,11 @@ routes:
                 email:
                     type: string
                 created_at:
+                    format: LLL Mo, yyyy
                     type: date
-                    format: YYYY-mm-DD
                 updated_at:
-                    type: date
-                    format: YYYY-mm-DD
+                    label: Last updated
+                    type: timeago
 
     show:
         path: users/{id}
