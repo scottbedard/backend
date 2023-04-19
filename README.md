@@ -3,15 +3,24 @@
 [![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-This project aims to be an easy to use backend for Laravel applications. It is currently in very early development, proceed with caution.
+Every application eventually needs a backend. This is sometimes an after thought though, and can require extra work right when a backend is needed most! A rushed backend can become poorly maintained, under built, and the source of endless tech debt. This project hopes to be a solution to this problem.
+
+The process will look something like this...
+
+1. Run composer install
+2. Create some `yaml` files
+3. Enjoy an awesome backend with flexible priveleges and configurations
+
+That said, this is in very early development, take everything you see with a grain of salt.
 
 [View live sandbox →](https://backend.scottbedard.net)
 
+
 ## Installation
 
-No documentation yet, check back later.
+No docs yet, check back later.
 
-## Getting started
+## Basic usage
 
 Backend areas are defined using `yaml` files. Let's look at an example `users.yaml` file and see how they work.
 
@@ -67,6 +76,10 @@ routes:
         permissions:
             - create users
 ```
+
+## Permissions
+
+Permissions are provided by Spatie's awesome [`laravel-permission`](https://github.com/spatie/laravel-permission) package. Several config items already support custom permissions, more docs to come.
 
 ## Plugins
 
