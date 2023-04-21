@@ -3,7 +3,7 @@
 [![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-Every application eventually needs a backend. This is sometimes an after thought though, and can require extra work right when a backend is needed most! A rushed backend can become poorly maintained, under built, and the source of endless tech debt. This project hopes to be a solution to that problem.
+Every application eventually needs a backend. This is sometimes an after thought though, and can require extra work right when a backend is needed most! A rushed backend is often under built, poorly maintained, and a source of endless tech debt. This project aims to be a solution to that problem.
 
 The process looks something like this...
 
@@ -18,15 +18,15 @@ That said, this is in very early development, take everything you see with a gra
 
 ## Installation
 
-No docs yet, check back later.
+No documentation yet, check back later.
 
 ## Basic usage
 
-Backend areas are defined using `yaml` files. Let's look at an example `users.yaml` file and see how they work.
+Backend areas are defined using `yaml` files. Let's look at an example `users.yaml` to see how they work.
 
 ```yaml
-# these define the permissions required to access the controller.
-# this includes the nav, routes, and all other items
+# permissions define what credentials are required for this controller.
+# these permissions are applied to all controller items (nav, routes, etc...)
 permissions:
     - read users
 
@@ -110,12 +110,10 @@ subnav:
 Plugins are still being developed. In general though, they handle a request and return a view. Plugins have access to the full config, and can add behavior around that config. The following plugins are aliased by default in `config/backend.php`.
 
 ```php
-return [
-    'plugins' => [
-        'blade' => \Bedard\Backend\Plugins\BladePlugin::class,
-        'form' => \Bedard\Backend\Plugins\FormPlugin::class,
-        'list' => \Bedard\Backend\Plugins\ListPlugin::class,
-    ],
+'plugins' => [
+    'blade' => \Bedard\Backend\Plugins\BladePlugin::class,
+    'form' => \Bedard\Backend\Plugins\FormPlugin::class,
+    'list' => \Bedard\Backend\Plugins\ListPlugin::class,
 ]
 ```
 
