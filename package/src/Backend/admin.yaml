@@ -1,17 +1,17 @@
 nav:
-    href: /backend/admin/users
     icon: file-key
     label: Admin
+    to: backend.admin.users
 
 subnav:
     -
         icon: users
         label: Admins
-        href: /backend/admin/users
+        to: backend.admin.users
     -
         icon: clipboard
         label: Roles
-        href: /backend/admin/roles
+        to: backend.admin.roles
 
 routes:
     users:
@@ -23,16 +23,16 @@ routes:
         options:
             actions:
                 -   
-                    href: /backend/admin/create
+                    icon: user-check
                     label: Add priveleges
                     theme: primary
-                    icon: user-check
+                    to: backend.admin.create
                 -
+                    disabled: not checked
                     icon: trash
                     label: Delete selected
-                    disabled: not checked
             checkboxes: true
-            row_href: admin/{id}/update
+            row_to: users/{id}/update
             schema:
                 id:
                     type: number
@@ -79,7 +79,7 @@ routes:
             checkboxes: true
             actions:
                 -   
-                    href: /backend/admin/roles/create
+                    href: /foo/bar
                     label: Create new role
                     theme: primary
                     icon: plus
@@ -87,7 +87,7 @@ routes:
                     icon: trash
                     label: Delete selected
                     disabled: not checked
-            row_href: admin/roles/{id}/update
+            row_to: admin/roles/{id}/update
             schema:
                 id:
                     type: number

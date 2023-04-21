@@ -4,6 +4,7 @@ namespace Bedard\Backend\Classes;
 
 use Bedard\Backend\Classes\ViteManifest;
 use Bedard\Backend\Exceptions\ControllerNotFoundException;
+use Bedard\Backend\UrlNormalizer;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -50,13 +51,13 @@ class Backend
                         $name = str($file)->lower()->rtrim('.yaml')->explode('/')->last();
                         $config['controllers'][$name] = Yaml::parseFile($file) ?? [];
                     }
-                } else {
+                } elseif (File::isFile($target)) {
                     $name = str($target)->lower()->rtrim('.yaml')->explode('/')->last();
+
                     $config['controllers'][$name] = Yaml::parseFile($target) ?? [];
                 }
             }
         }
-
 
         $this->config = $this->normalize($config);
 
@@ -145,10 +146,13 @@ class Backend
      */
     private function normalize(array $config): array
     {
+        // load plugin aliases
         $plugins = config('backend.plugins', []);
 
+        // ensure empty yaml files don't break
         data_fill($config, 'controllers.*', []);
 
+        // walk through config and fill values
         foreach ($config['controllers'] as $controllerKey => $controller) {
             $id = str_starts_with($controllerKey, '_') ? $controllerKey : str($controllerKey)->kebab()->toString();
             $path = str_starts_with($id, '_') ? null : $id;
@@ -156,7 +160,6 @@ class Backend
             data_fill($config, "controllers.{$controllerKey}.id", $id);
             data_fill($config, "controllers.{$controllerKey}.model", null);
             data_fill($config, "controllers.{$controllerKey}.nav", null);
-            data_fill($config, "controllers.{$controllerKey}.nav.permissions", []);
             data_fill($config, "controllers.{$controllerKey}.path", $path);
             data_fill($config, "controllers.{$controllerKey}.permissions", []);
             data_fill($config, "controllers.{$controllerKey}.routes", []);
@@ -167,6 +170,8 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.nav.icon", null);
                 data_fill($config, "controllers.{$controllerKey}.nav.label", null);
                 data_fill($config, "controllers.{$controllerKey}.nav.order", 0);
+                data_fill($config, "controllers.{$controllerKey}.nav.permissions", []);
+                data_fill($config, "controllers.{$controllerKey}.nav.to", null);
             }
 
             foreach ($config['controllers'][$controllerKey]['subnav'] as $i => $subnav) {
@@ -175,6 +180,7 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.label", null);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.order", 0);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.permissions", []);
+                data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.to", null);
             }
 
             foreach ($config['controllers'][$controllerKey]['routes'] as $routeKey => $route) {
@@ -263,6 +269,8 @@ class Backend
             'controllers.*.nav.label' => ['nullable', 'string'],
             'controllers.*.nav.order' => ['int'],
             'controllers.*.nav.permissions' => ['array'],
+            'controllers.*.nav.to' => ['nullable', 'string'],
+            'controllers.*.path' => ['present', 'nullable', 'string'],
             'controllers.*.permissions' => ['present', 'array'],
             'controllers.*.permissions.*' => ['string'],
             'controllers.*.routes' => ['present', 'nullable', 'array'],
@@ -275,6 +283,7 @@ class Backend
             'controllers.*.subnav.*.label' => ['present', 'nullable', 'string'],
             'controllers.*.subnav.*.order' => ['present', 'int'],
             'controllers.*.subnav.*.permissions' => ['present', 'array'],
+            'controllers.*.subnav.*.to' => ['present', 'nullable', 'string'],
         ]);
 
         if ($validator->fails()) {

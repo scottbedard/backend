@@ -16,7 +16,7 @@ class BackendTest extends TestCase
         $backend = new Backend([__DIR__ . '/stubs']);
 
         $this->assertEquals(null, data_get($backend->config, 'controllers._blank.model', 'empty'));
-        $this->assertEquals([], data_get($backend->config, 'controllers._blank.nav'));
+        $this->assertEquals(null, data_get($backend->config, 'controllers._blank.nav'));
         $this->assertEquals(null, data_get($backend->config, 'controllers._blank.path'));
         $this->assertEquals([], data_get($backend->config, 'controllers._blank.permissions'));
         $this->assertEquals([], data_get($backend->config, 'controllers._blank.routes'));
@@ -73,6 +73,7 @@ class BackendTest extends TestCase
                 'label' => 'Books',
                 'order' => 0,
                 'permissions' => [],
+                'to' => null,
             ],
         ], $nav);
     }
