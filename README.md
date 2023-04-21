@@ -77,9 +77,37 @@ routes:
             - create users
 ```
 
+## Common config
+
+Some behavior is being shared between parts of the config.
+
+### `icon`
+
+Icon components are available on the client and server. Any valid [Lucide](https://lucide.dev) icon (kebab-cased!) is supported.
+
+```yaml
+nav:
+    icon: rocket
+```
+
+### `to`
+
+When `href` is present, a cooresponding `to` should also be available. This `to` property can be a route name, but also a string with keywords for `{backend}` and `{controller}`.
+
+```yaml
+nav:
+    label: Users
+    to: /{backend}/{controller}/users
+    
+subnav:
+    -
+        label: Roles
+        to: backend.admin.roles
+```
+
 ## Plugins
 
-Plugins are still being developed. In general though, they handle requests and returning a [blade template](https://laravel.com/docs/10.x/blade). Plugins have access to the full config, and can add their own behavior around that data. A few plugins are aliased by default in `config/backend.php`.
+Plugins are still being developed. In general though, they handle a request and return a view. Plugins have access to the full config, and can add behavior around that config. The following plugins are aliased by default in `config/backend.php`.
 
 ```php
 return [
