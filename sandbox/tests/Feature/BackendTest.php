@@ -118,8 +118,27 @@ class BackendTest extends TestCase
 
     public function test_nav_href()
     {
-        $backend = new Backend(__DIR__ . '/stubs/_nav_href.yaml');
+        $to = new Backend(__DIR__ . '/stubs/_nav_to.yaml');
 
-        $this->assertEquals(route('backend.admin.users'), $backend->get('controllers._nav_href.nav.href'));
+        $href = new Backend(__DIR__ . '/stubs/_nav_href.yaml');
+
+        $both = new Backend(__DIR__ . '/stubs/_nav_href_to.yaml');
+
+        $this->assertEquals(route('backend.admin.users'), $to->get('controllers._nav_to.nav.href'));
+        
+        $this->assertEquals('https://example.com', $href->get('controllers._nav_href.nav.href'));
+
+        $this->assertEquals('https://example.com', $both->get('controllers._nav_href_to.nav.href'));
+    }
+
+    public function test_subnav_href()
+    {
+        $backend = new Backend(__DIR__ . '/stubs/_subnav_href.yaml');
+
+        $this->assertEquals(route('backend.admin.users'), $backend->get('controllers._subnav_href.subnav.0.href'));
+        
+        $this->assertEquals('https://example.com', $backend->get('controllers._subnav_href.subnav.1.href'));
+
+        $this->assertEquals('https://example.com', $backend->get('controllers._subnav_href.subnav.2.href'));
     }
 }

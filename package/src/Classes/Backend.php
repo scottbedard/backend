@@ -201,6 +201,13 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.order", 0);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.permissions", []);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.to", null);
+
+                $href = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.href");
+                $to = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.to");
+
+                if  ($to && $href === null) {
+                    data_set($config, "controllers.{$controllerKey}.subnav.{$i}.href", Href::format($to));
+                }
             }
 
             foreach ($config['controllers'][$controllerKey]['routes'] as $routeKey => $route) {

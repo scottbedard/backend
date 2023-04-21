@@ -1,2 +1,3 @@
 nav:
     href: https://example.com
+    to: backend.admin.users
