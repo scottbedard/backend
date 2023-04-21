@@ -3,13 +3,13 @@
 [![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-Every application eventually needs a backend. This is sometimes an after thought though, and can require extra work right when a backend is needed most! A rushed backend can become poorly maintained, under built, and the source of endless tech debt. This project hopes to be a solution.
+Every application eventually needs a backend. This is sometimes an after thought though, and can require extra work right when a backend is needed most! A rushed backend can become poorly maintained, under built, and the source of endless tech debt. This project hopes to be a solution to that problem.
 
-The process will look something like this...
+The process looks something like this...
 
-1. Run composer install
-2. Create some `yaml` files
-3. Enjoy an awesome backend with flexible priveleges and configurations
+1. Composer install
+2. Generate some `yaml` files
+3. Enjoy an awesome backend with flexible priveleges and configuration
 
 That said, this is in very early development, take everything you see with a grain of salt.
 
@@ -83,7 +83,7 @@ Some behavior is being shared between parts of the config.
 
 ### `icon`
 
-Icon components are available on the client and server. Any valid [Lucide](https://lucide.dev) icon (kebab-cased!) is supported.
+Icon components are available on the client and server. Any valid [Lucide icon](https://lucide.dev) name is supported.
 
 ```yaml
 nav:
@@ -160,7 +160,7 @@ options:
 
 ## Permissions
 
-Permissions are provided by Spatie's awesome [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
+Permissions are provided by the excellent [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
 
 ```sh
 php artisan backend:assign-role {id} 'super admin'
