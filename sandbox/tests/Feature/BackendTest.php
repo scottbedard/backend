@@ -115,4 +115,11 @@ class BackendTest extends TestCase
 
         $this->assertEquals(1, count($backend->subnav('backend._protected_nav.index', $bob)));
     }
+
+    public function test_nav_href()
+    {
+        $backend = new Backend(__DIR__ . '/stubs/_nav_href.yaml');
+
+        $this->assertEquals(route('backend.admin.users'), $backend->get('controllers._nav_href.nav.href'));
+    }
 }

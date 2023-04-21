@@ -105,6 +105,19 @@ class Backend
     }
 
     /**
+     * Get a value from the config
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get(string $key, mixed $default = null)
+    {
+        return data_get($this->config, $key, $default);
+    }
+
+    /**
      * Get top-level nav
      *
      * @param mixed $user
@@ -172,6 +185,13 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.nav.order", 0);
                 data_fill($config, "controllers.{$controllerKey}.nav.permissions", []);
                 data_fill($config, "controllers.{$controllerKey}.nav.to", null);
+
+                $href = data_get($config, "controllers.{$controllerKey}.nav.href");
+                $to = data_get($config, "controllers.{$controllerKey}.nav.to");
+
+                if  ($to && $href === null) {
+                    data_set($config, "controllers.{$controllerKey}.nav.href", Href::format($to));
+                }
             }
 
             foreach ($config['controllers'][$controllerKey]['subnav'] as $i => $subnav) {
