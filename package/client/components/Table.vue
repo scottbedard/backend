@@ -41,7 +41,9 @@
           v-if="options.checkboxes"
           class="border-t border-gray-300 table-cell whitespace-nowrap"
           style="width: 0%">
-          <div class="flex h-12 items-center justify-end pl-6 pr-3 w-full">
+          <div
+            class="flex h-12 items-center justify-end pl-6 pr-3 w-full"
+            @click.stop.prevent="onCheck(row)">
             <Checkbox
               :model-value="isChecked(row)"
               @update:model-value="onCheck(row)" />
@@ -137,3 +139,9 @@ const onCheck = (row: any) => {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+a.table-row {
+  @apply hover:bg-primary-100/50;
+}
+</style>
