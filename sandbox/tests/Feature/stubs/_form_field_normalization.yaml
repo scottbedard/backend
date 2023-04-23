@@ -1,0 +1,16 @@
+routes:
+    associative_fields:
+        plugin: form
+        options:
+            fields:
+                first:
+                    # ...
+                second:
+                    # ...
+    
+    sequential_fields:
+        plugin: form
+        options:
+            fields:
+                -   id: foo
+                -   id: bar 

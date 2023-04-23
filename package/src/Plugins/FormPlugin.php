@@ -5,34 +5,44 @@ namespace Bedard\Backend\Plugins;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
 use Bedard\Backend\Plugin;
+use Illuminate\Support\Arr;
 use Illuminate\View\View;
 
 class FormPlugin extends Plugin
 {
     /**
-     * Plugin data
+     * Validation rules
      *
-     * @return array
+     * @var array
      */
-    public function data(): array
-    {
-        return [];
-    }
+    protected array $rules = [
+        // actions
+        // 'options.fields' => ['present', 'array'],
+        // 'options.fields.*.label' => ['present', 'nullable', 'string'],
+    ];
 
     /**
-     * Validate config
+     * Normalize plugin config
      *
-     * @throws Exception
+     * @return void
      */
-    public function validate(): void
+    public function normalize(): void
     {
-        // $validator = Validator::make($this->config, [
-        //     // ...
-        // ]);
-        
-        // if ($validator->fails()) {
-        //     throw new \Exception('Invalid plugin config: ' . $validator->errors()->first());
-        // }
+        if (data_get($this->route, 'options') === null) {
+            data_set($this->route, 'options', []);
+        }
+
+        data_fill($this->route, 'options.fields', []);
+
+        if (Arr::isAssoc($this->route['options']['fields'])) {
+            $cols = [];
+
+            foreach ($this->route['options']['fields'] as $id => $col) {
+                $cols[] = array_merge(['id' => $id], $col ?? []);
+            }
+
+            data_set($this->route, 'options.fields', $cols);
+        }
     }
 
     /**

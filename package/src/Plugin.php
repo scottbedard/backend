@@ -3,6 +3,7 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Facades\Backend;
+use Exception;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 

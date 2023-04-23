@@ -57,9 +57,16 @@ routes:
         path: users/create
         permissions:
             - create admins
-        plugin: blade
+        plugin: form
         options:
-            view: test
+            fields:
+                id:
+                    disabled: true
+                    span: 6
+                    type: number
+                email:
+                    span: 6
+                    type: email
 
     update:
         path: users/{id}/update
