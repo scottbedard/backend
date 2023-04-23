@@ -12,7 +12,7 @@ export default defineConfig({
       return setupNodeEvents(on, config)
     },
     specPattern: 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
-    supportFile: 'tests/cypress/support/index.js',
+    supportFile: 'tests/cypress/support/index.ts',
   },
   fixturesFolder: 'tests/cypress/fixture',
   retries: 2,

@@ -3,6 +3,14 @@
 declare namespace Cypress {
     interface Chainable<Subject> {
         /**
+         * Assert request redirected to a path.
+         *
+         * @example
+         * cy.assertRedirect('/somewhere/awesome')
+         */
+        assertRedirect(path: string): Chainable<any>;
+
+        /**
          * Log in the user with the given attributes, or create a new user and then log them in.
          *
          * @example
