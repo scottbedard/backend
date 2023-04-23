@@ -59,36 +59,6 @@
       "HEAD"
     ]
   },
-  "backend.user.index": {
-    "name": "backend.user.index",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@index",
-    "uri": "backend/users",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.user.create": {
-    "name": "backend.user.create",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@create",
-    "uri": "backend/users/create",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.user.edit": {
-    "name": "backend.user.edit",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@edit",
-    "uri": "backend/users/{id}/edit",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
   "cypress.factory": {
     "name": "cypress.factory",
     "domain": null,
