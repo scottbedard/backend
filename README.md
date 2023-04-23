@@ -3,13 +3,13 @@
 [![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-Every application eventually needs a backend. This is sometimes an after thought though, and can require extra work right when a backend is needed most! A rushed backend is often under built, poorly maintained, and a source of endless tech debt. This project aims to be a solution to that problem.
+Every application eventually needs a backend. This is sometimes an after thought though, and a rushed backend can become the source of endless tech debt. The goal of this project is to be a "backend as config" solution to the problem.
 
-The process looks something like this...
+The process will look something like this...
 
 1. Composer install
-2. Generate some `yaml` files
-3. Enjoy an awesome backend with flexible priveleges and configuration
+2. Artisan generate a few `yaml` files
+3. Enjoy an awesome backend with fine-grained permissions
 
 That said, this is in very early development, take everything you see with a grain of salt.
 
