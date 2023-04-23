@@ -55,4 +55,17 @@ class FormPluginTest extends TestCase
         $this->assertEquals('foo', $form->option('fields.0.id'));
         $this->assertEquals('bar', $form->option('fields.1.id'));
     }
+
+    public function test_forms_can_extend_other_forms()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
+            route: 'backend._form_field_normalization.extention_child',
+        );
+
+        $this->assertEquals('foo', $form->option('fields.0.id'));
+        $this->assertEquals('baz', $form->option('fields.1.id'));
+        $this->assertEquals('bar', $form->option('fields.2.id'));
+        $this->assertEquals('hello', $form->option('fields.2.label'));
+    }
 }

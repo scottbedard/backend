@@ -23,3 +23,27 @@ routes:
             fields:
                 -   id: foo
                 -   id: bar 
+
+    extention_parent:
+        plugin: form
+        options:
+            fields:
+                foo:
+                    order: 1
+                bar:
+                    label: bar
+                    order: 2
+    
+    extention_child:
+        plugin: form
+        options:
+            extends: extention_parent
+            fields:
+                # foo:
+                #     this field is inherited from parent
+                baz:
+                    label: baz
+                    order: 2
+                bar:
+                    label: hello # <- change label to "hello"
+                    order: 3 # <- reorder to be last
