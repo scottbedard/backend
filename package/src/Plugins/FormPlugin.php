@@ -16,9 +16,9 @@ class FormPlugin extends Plugin
      * @var array
      */
     protected array $rules = [
-        // actions
-        // 'options.fields' => ['present', 'array'],
-        // 'options.fields.*.label' => ['present', 'nullable', 'string'],
+        'options.fields' => ['present', 'array'],
+        'options.fields.*.disabled' => ['present', 'boolean'],
+        'options.fields.*.label' => ['present', 'nullable', 'string'],
     ];
 
     /**
@@ -42,6 +42,15 @@ class FormPlugin extends Plugin
             }
 
             data_set($this->route, 'options.fields', $cols);
+        }
+
+        foreach ($this->route['options']['fields'] as $key => $field) {
+            if ($field === null) {
+                $this->route['options']['fields'][$key] = [];
+            }
+
+            data_fill($this->route, "options.fields.{$key}.disabled", false);
+            data_fill($this->route, "options.fields.{$key}.label", str($field['id'])->headline()->toString());
         }
     }
 

@@ -1,4 +1,13 @@
 routes:
+    blank_field:
+        plugin: form
+        options: 
+            fields:
+                foo:
+                    # ...
+                bar:
+                    label: null
+
     associative_fields:
         plugin: form
         options:

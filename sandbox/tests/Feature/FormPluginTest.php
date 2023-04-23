@@ -10,14 +10,36 @@ use Tests\TestCase;
 
 class FormPluginTest extends TestCase
 {
-    public function test_associative_form_fields()
+    private function form($stubs, $route)
     {
-        $backend = Backend::from(__DIR__ . '/stubs/_form_field_normalization.yaml');
-        $route = 'backend._form_field_normalization.associative_fields';
+        $backend = Backend::from($stubs);
         BackendFacade::shouldReceive('controller')->andReturn($backend->controller($route));
         BackendFacade::shouldReceive('route')->andReturn($backend->route($route));
 
-        $form = new FormPlugin($route);
+        return new FormPlugin($route);
+    }
+
+    public function test_filling_blank_field_values()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
+            route: 'backend._form_field_normalization.blank_field',
+        );
+
+        // first field
+        $this->assertEquals(false, $form->option('fields.0.disabled'));
+        $this->assertEquals('Foo', $form->option('fields.0.label'));
+
+        // second field
+        $this->assertEquals(null, $form->option('fields.1.label'));
+    }
+
+    public function test_associative_form_fields()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
+            route: 'backend._form_field_normalization.associative_fields',
+        );
         
         $this->assertEquals('first', $form->option('fields.0.id'));
         $this->assertEquals('second', $form->option('fields.1.id'));
@@ -25,12 +47,10 @@ class FormPluginTest extends TestCase
 
     public function test_sequential_form_fields()
     {
-        $backend = Backend::from(__DIR__ . '/stubs/_form_field_normalization.yaml');
-        $route = 'backend._form_field_normalization.sequential_fields';
-        BackendFacade::shouldReceive('controller')->andReturn($backend->controller($route));
-        BackendFacade::shouldReceive('route')->andReturn($backend->route($route));
-
-        $form = new FormPlugin($route);
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
+            route: 'backend._form_field_normalization.sequential_fields',
+        );
         
         $this->assertEquals('foo', $form->option('fields.0.id'));
         $this->assertEquals('bar', $form->option('fields.1.id'));
