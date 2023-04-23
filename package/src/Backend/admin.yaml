@@ -62,6 +62,7 @@ routes:
             fields:
                 id:
                     disabled: true
+                    label: ID
                     span: 6
                     type: number
                 email:
@@ -73,6 +74,8 @@ routes:
         permissions:
             - update admins
         plugin: form
+        options:
+            extends: create
 
     roles:
         model: Spatie\Permission\Models\Role

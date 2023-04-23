@@ -1,5 +1,16 @@
 export type ButtonTheme = 'primary' | 'danger' | 'default'
 
+export type FormField = {
+  disabled: boolean
+  id: string
+  label: null | string
+  order: number
+}
+
+export type FormOptions = {
+  fields: FormField[]
+}
+
 export type PluginConfig<T = Record<string, any>> = {
   options: T
   path: string
