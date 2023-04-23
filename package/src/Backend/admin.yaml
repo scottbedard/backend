@@ -32,7 +32,7 @@ routes:
                     icon: trash
                     label: Delete selected
             checkboxes: true
-            row_to: /{backend/{controller}/users/{id}/update
+            row_to: /{backend}/{controller}/users/{id}/update
             schema:
                 id:
                     type: number

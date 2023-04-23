@@ -1,6 +1,5 @@
 <template>
   <div class="gap-y-6 grid py-6">
-    <pre class="text-xs">{{ options }}</pre>
     <div class="flex flex-wrap gap-x-6 px-6">
       <Button
         v-for="action in options.actions"
