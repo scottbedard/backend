@@ -45,6 +45,11 @@ jobs:
           npm install
           npm run build
 
+      - name: Vitest
+        run: |
+          cd package
+          npm test
+
       - name: Configure directories
         run: |
           mv sandbox/.env.example .env

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import autoImport from 'unplugin-auto-import/vite'
 import fs from 'fs'
 import path from 'path'
@@ -55,5 +55,11 @@ export default defineConfig({
   server: {
     host: 'localhost',
     port: 3000,
+  },
+  test: {
+    globals: true,
+    include: [
+      'client/**/*.spec.ts',
+    ],
   },
 })
