@@ -65,9 +65,7 @@ routes:
         path: users/{id}/update
         permissions:
             - update admins
-        plugin: blade
-        options:
-            view: test
+        plugin: form
 
     roles:
         model: Spatie\Permission\Models\Role

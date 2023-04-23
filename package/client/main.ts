@@ -1,6 +1,7 @@
 import '@/style.scss'
 import { Component, createApp } from 'vue'
 import { createIcons, icons } from 'lucide'
+import Form from './plugins/Form.vue'
 import List from './plugins/List.vue'
 
 // create any icons rendered by the server
@@ -8,6 +9,7 @@ createIcons({ icons })
 
 // mount first-party plugin components
 const plugins: Record<string, Component> = {
+  form: Form,
   list: List,
 }
 

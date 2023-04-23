@@ -42,6 +42,10 @@ class FormPlugin extends Plugin
      */
     public function view(): View
     {
-        return view('backend::form');
+        return view('backend::form', [
+            'props' => [
+                'options' => $this->route['options'],
+            ],
+        ]);
     }
 }

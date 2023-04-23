@@ -1,5 +1,6 @@
 <x-backend::layout>
-  <div class="p-6">
-    Hello form the form plugin
-  </div>
+  <div
+    data-backend-plugin="form"
+    data-backend-props="{{ json_encode($props) }}"
+  ></div>
 </x-backend::layout>
