@@ -59,7 +59,7 @@
 
           <span
             v-else-if="col.type === 'timeago'"
-            v-text="formatRelative(parseISO(row[col.id]), now)" />
+            v-text="formatDistanceToNow(parseISO(row[col.id]), { addSuffix: true })" />
           
           <span
             v-else
@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { format, formatRelative, parseISO, subDays } from 'date-fns'
+import { format, formatDistanceToNow, parseISO, subDays } from 'date-fns'
 import { noop, stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
 import { useNow } from '@vueuse/core'
