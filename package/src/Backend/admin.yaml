@@ -1,7 +1,7 @@
 nav:
     icon: file-key
     label: Admin
-    to: backend.admin.users
+    to: /{backend}/admin/users
 
 subnav:
     -
@@ -22,7 +22,7 @@ routes:
         plugin: list
         options:
             actions:
-                -   
+                -
                     icon: user-check
                     label: Add priveleges
                     theme: primary

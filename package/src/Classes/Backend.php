@@ -21,7 +21,7 @@ class Backend
      *
      * @var array
      */
-    public readonly array $config;
+    private array $config;
 
     /**
      * Create backend instance
@@ -30,38 +30,35 @@ class Backend
      *
      * @return void
      */
-    public function __construct(string|array $targets = [])
+    public function __construct(...$targets)
     {
         $config = [
             'controllers' => [],
         ];
 
-        if (is_string($targets)) {
-            $name = str($targets)->lower()->rtrim('.yaml')->explode('/')->last();
-            $config['controllers'][$name] = Yaml::parseFile($targets) ?? [];
-        } elseif (is_array($targets)) {
-            foreach ($targets as $target) {
-                if (File::isDirectory($target)) {
-                    $files = collect(scandir($target))
-                        ->filter(fn ($file) => str_ends_with($file, '.yaml'))
-                        ->map(fn ($file) => $target . '/' . $file)
-                        ->toArray();
+        $parse = function (string $path) use (&$config, &$parse) {
+            if (File::isDirectory($path)) {
+                collect(scandir($path))
+                    ->filter(fn ($p) => str_ends_with($p, '.yaml'))
+                    ->each(fn ($p) => $parse("{$path}/{$p}"));
 
-                    foreach ($files as $file) {
-                        $name = str($file)->lower()->rtrim('.yaml')->explode('/')->last();
-                        $config['controllers'][$name] = Yaml::parseFile($file) ?? [];
-                    }
-                } elseif (File::isFile($target)) {
-                    $name = str($target)->lower()->rtrim('.yaml')->explode('/')->last();
-
-                    $config['controllers'][$name] = Yaml::parseFile($target) ?? [];
-                }
+                return;
             }
-        }
 
-        $this->config = $this->normalize($config);
+            if (File::isFile($path)) {
+                $key = str($path)
+                    ->lower()
+                    ->rtrim('.yaml')
+                    ->explode('/')
+                    ->last();
 
-        $this->validate();
+                $config['controllers'][$key] = Yaml::parseFile($path) ?? [];
+            }
+        };
+
+        collect($targets)->flatten()->each($parse);
+
+        $this->set($config);
     }
 
     /**
@@ -105,6 +102,18 @@ class Backend
     }
 
     /**
+     * Static constructor
+     *
+     * @param array $targets
+     *
+     * @return self
+     */
+    public static function from(...$targets): self
+    {
+        return new static(...$targets);
+    }
+
+    /**
      * Get a value from the config
      *
      * @param string $key
@@ -126,40 +135,67 @@ class Backend
      */
     public function nav($user = null): array
     {
-        $nav = [];
-
-        foreach ($this->config['controllers'] as $controllerKey => $controller) {
-            if ($controller['nav']) {
-                array_push($nav, $controller['nav']);
-            }
-        }
-        
-        return array_filter($nav, function ($button) use ($user) {
-            if ($user) {
-                try {
-                    foreach ($button['permissions'] as $permission) {
-                        if (!$user->hasPermissionTo($permission)) {
-                            return false;
+        return $this
+            ->controllers()
+            ->filter(fn ($ctrl) => $ctrl['nav'])
+            ->filter(function ($item) use ($user) {
+                if ($user) {
+                    try {
+                        foreach ($item['permissions'] as $permission) {
+                            if (!$user->hasPermissionTo($permission)) return;
                         }
+                    } catch (PermissionDoesNotExist $e) {
+                        return;
                     }
-                } catch (PermissionDoesNotExist $e) {
-                    return false;
                 }
-            }
+    
+                return true;
+            })
+            ->reduce(function ($acc, $ctrl) {
+                $nav = data_get($ctrl, 'nav');
+                $href = data_get($ctrl, 'nav.href');
+                $to = data_get($ctrl, 'nav.to');
 
+                if (!$href && $to) {
+                    $nav['href'] = Href::format($to);
+                }
 
-            return true;
-        });
+                return $acc ? [...$acc, $nav] : [$nav];
+            });
     }
 
     /**
-     * Normalize config
+     * Get route definition
      *
-     * @return array
+     * @param string $route
      */
-    private function normalize(array $config): array
+    public function route(string $route): array
     {
-        // load plugin aliases
+        if (str($route)->is('backend.*.*')) {
+            [, $controllerId, $routeId] = str($route)->explode('.');
+
+            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+        }
+
+        if (str($route)->is('backend.*')) {
+            $controllerId = '_root';
+            $routeId = str($route)->explode('.')->last();
+
+            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+        }
+        
+        throw new Exception('Backend route not found: ' . $route);
+    }
+
+    /**
+     * Set config data
+     *
+     * @param array $data
+     *
+     * @return void
+     */
+    private function set(array $config): void
+    {
         $plugins = config('backend.plugins', []);
 
         // ensure empty yaml files don't break
@@ -186,12 +222,12 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.nav.permissions", []);
                 data_fill($config, "controllers.{$controllerKey}.nav.to", null);
 
-                $href = data_get($config, "controllers.{$controllerKey}.nav.href");
-                $to = data_get($config, "controllers.{$controllerKey}.nav.to");
+                // $href = data_get($config, "controllers.{$controllerKey}.nav.href");
+                // $to = data_get($config, "controllers.{$controllerKey}.nav.to");
 
-                if  ($to && $href === null) {
-                    data_set($config, "controllers.{$controllerKey}.nav.href", Href::format($to));
-                }
+                // if  ($to && $href === null) {
+                //     data_set($config, "controllers.{$controllerKey}.nav.href", Href::format($to));
+                // }
             }
 
             foreach ($config['controllers'][$controllerKey]['subnav'] as $i => $subnav) {
@@ -202,12 +238,12 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.permissions", []);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.to", null);
 
-                $href = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.href");
-                $to = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.to");
+                // $href = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.href");
+                // $to = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.to");
 
-                if  ($to && $href === null) {
-                    data_set($config, "controllers.{$controllerKey}.subnav.{$i}.href", Href::format($to));
-                }
+                // if  ($to && $href === null) {
+                //     data_set($config, "controllers.{$controllerKey}.subnav.{$i}.href", Href::format($to));
+                // }
             }
 
             foreach ($config['controllers'][$controllerKey]['routes'] as $routeKey => $route) {
@@ -229,30 +265,9 @@ class Backend
             }
         }
 
-        return $config;
-    }
-
-    /**
-     * Get route definition
-     *
-     * @param string $route
-     */
-    public function route(string $route): array
-    {
-        if (str($route)->is('backend.*.*')) {
-            [, $controllerId, $routeId] = str($route)->explode('.');
-
-            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
-        }
-
-        if (str($route)->is('backend.*')) {
-            $controllerId = '_root';
-            $routeId = str($route)->explode('.')->last();
-
-            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
-        }
+        $this->validate($config);
         
-        throw new Exception('Backend route not found: ' . $route);
+        $this->config = $config;
     }
 
     /**
@@ -285,11 +300,13 @@ class Backend
     /**
      * Validate config
      *
+     * @param array $config
+     *
      * @return void
      */
-    public function validate(): void
+    private function validate(array $config): void
     {
-        $validator = Validator::make($this->config, [
+        $validator = Validator::make($config, [
             'controllers.*.model' => ['present', 'nullable', 'string'],
             'controllers.*.nav' => ['present', 'nullable', 'array'],
             'controllers.*.nav.icon' => ['nullable', 'string'],

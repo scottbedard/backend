@@ -9,13 +9,17 @@ class Href
     /**
      * Format href
      *
-     * @param string $to
+     * @param string|null $to
      * @param string|null $controller
      *
-     * @return string
+     * @return ?string
      */
-    public static function format(string $to, string $controller = null): string
+    public static function format(string $to = null, string $controller = null): ?string
     {
+        if ($to === null) {
+            return null;
+        }
+
         if (Route::has($to)) {
             return route($to);
         }

@@ -9,7 +9,7 @@ Route::group([
     'prefix' => config('backend.path'),
 ], function () {
     $config = Backend::config();
-    
+
     foreach ($config['controllers'] as $controller) {
         Route::group([
             'middleware' => array_map(fn ($p) => "Spatie\Permission\Middlewares\PermissionMiddleware:{$p}", $controller['permissions']),
