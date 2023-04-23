@@ -163,14 +163,22 @@ class Backend
         if (str($route)->is('backend.*.*')) {
             [, $controllerId, $routeId] = str($route)->explode('.');
 
-            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+            $obj = data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+
+            if ($obj) {
+                return $obj;
+            }
         }
 
-        if (str($route)->is('backend.*')) {
+        elseif (str($route)->is('backend.*')) {
             $controllerId = '_root';
             $routeId = str($route)->explode('.')->last();
 
-            return data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+            $obj = data_get($this->config, "controllers.{$controllerId}.routes.{$routeId}");
+
+            if ($obj) {
+                return $obj;
+            }
         }
         
         throw new Exception('Backend route not found: ' . $route);

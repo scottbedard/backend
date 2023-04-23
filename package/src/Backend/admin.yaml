@@ -1,7 +1,7 @@
 nav:
     icon: file-key
     label: Admin
-    to: /{backend}/admin/users
+    to: /{backend}/{controller}/users
 
 subnav:
     -
@@ -32,7 +32,7 @@ routes:
                     icon: trash
                     label: Delete selected
             checkboxes: true
-            row_to: users/{id}/update
+            row_to: /{backend/{controller}/users/{id}/update
             schema:
                 id:
                     type: number

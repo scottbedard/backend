@@ -1,0 +1,7 @@
+path: users
+
+routes:
+    show:
+        plugin: list
+        options:
+            row_to: /{backend}/{controller}/{id}

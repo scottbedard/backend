@@ -33,10 +33,10 @@
       </div>
 
       <Component
-        v-for="row in data.items"
+        v-for="row in items"
         class="table-row"
-        :is="rowHref(row) ? 'a' : 'div'"
-        :href="rowHref(row)">
+        :is="row.href ? 'a' : 'div'"
+        :href="row.href">
         <div
           v-if="options.checkboxes"
           class="border-t border-gray-300 table-cell whitespace-nowrap"
@@ -76,6 +76,7 @@ import { stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
 import Banner from './Banner.vue'
 import Checkbox from './Checkbox.vue'
+import { replaceRouteParams } from '@/utils'
 
 const d = subDays(new Date, 5)
 
@@ -91,8 +92,32 @@ const props = withDefaults(defineProps<{
   modelValue: stubArray,
 })
 
+/**
+ * Table items
+ */
+const items = computed(() => props.data.items.map((item: Record<string, any>) => {
+  if (props.options.row_to) {
+    item.href = replaceRouteParams(props.options.row_to, item)
+  }
+
+  return item
+}))
+
+/**
+ * Test if all rows are checked
+ */
 const isAllChecked = computed(() => props.modelValue.length === props.data.items.length)
 
+/**
+ * Test if a single row is checked
+ */
+const isChecked = (row: any) => {
+  return Boolean(props.modelValue.includes(row))
+}
+
+/**
+ * Toggle all rows
+ */
 const onAllCheck = () => {
   if (isAllChecked.value) {
     emit('update:modelValue', [])
@@ -101,23 +126,14 @@ const onAllCheck = () => {
   }
 }
 
-const isChecked = (row: any) => {
-  return Boolean(props.modelValue.includes(row))
-}
-
+/**
+ * Toggle a single row
+ */
 const onCheck = (row: any) => {
   if (isChecked(row)) {
     props.modelValue.splice(props.modelValue.indexOf(row), 1)
   } else {
     props.modelValue.push(row)
   }
-}
-
-const rowHref = (row: Record<string, any>) => {
-  if (!props.options.row_to) {
-    return null
-  }
-
-  return '#'
 }
 </script>

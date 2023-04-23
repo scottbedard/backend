@@ -1,5 +1,6 @@
 <template>
   <div class="gap-y-6 grid py-6">
+    <pre class="text-xs">{{ options }}</pre>
     <div class="flex flex-wrap gap-x-6 px-6">
       <Button
         v-for="action in options.actions"
@@ -15,15 +16,14 @@
       <Table
         v-model="checked"
         :data="data"
-        :options="options"
-        :row-href="rowHref" />
+        :options="options" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { TableData, TableOptions, ToolbarAction } from '@/types'
 import { Button, Table } from '@/components'
+import { TableData, TableOptions, ToolbarAction } from '@/types'
 
 const props = defineProps<{
   data: TableData
@@ -42,15 +42,5 @@ const disabled = (action: ToolbarAction) => {
   }
 
   return action.disabled
-}
-
-const rowHref = (row: any) => {
-  // const href = props.options.row_href
-
-  // if (typeof href === 'string')
-  //   href.replace('{id}', row.id)
-  // }
-
-  // href.replace('{id}', row.id)
 }
 </script>

@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Plugins;
 
+use Bedard\Backend\Classes\Href;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
 use Bedard\Backend\Plugin;
@@ -46,8 +47,8 @@ class ListPlugin extends Plugin
 
         data_fill($this->route, 'options.actions', []);
         data_fill($this->route, 'options.checkboxes', false);
+        data_fill($this->route, 'options.row_to', null);
         data_fill($this->route, 'options.schema', []);
-        data_fill($this->route, 'options.sidenav', []);
 
         if (Arr::isAssoc($this->route['options']['schema'])) {
             $cols = [];
@@ -59,10 +60,11 @@ class ListPlugin extends Plugin
             data_set($this->route, 'options.schema', $cols);
         }
 
-        foreach ($this->route['options']['actions'] as $key => $action) {
-            $rowHref = data_get($action, 'row_href', null);
+        if ($this->route['options']['row_to']) {
+            $this->route['options']['row_to'] = Href::format($this->route['options']['row_to'], $this->controller['path']);
+        }
 
-            data_fill($this->route, "options.actions.{$key}.row_href", $rowHref);
+        foreach ($this->route['options']['actions'] as $key => $action) {
             data_fill($this->route, "options.actions.{$key}.theme", 'default');
         }
 
