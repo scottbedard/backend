@@ -130,6 +130,25 @@ class BackendTest extends TestCase
         $this->assertEquals('/backend/hello/foobar', $nav[0]['href']);
     }
 
+    public function test_nav_order()
+    {
+        $nav1 = Backend::from(
+            __DIR__ . '/stubs/_nav_order_1.yaml',
+            __DIR__ . '/stubs/_nav_order_2.yaml',
+        )->nav();
+
+        $this->assertEquals('First', $nav1[0]['label']);
+        $this->assertEquals('Second', $nav1[1]['label']);
+
+        $nav2 = Backend::from(
+            __DIR__ . '/stubs/_nav_order_2.yaml', // <- order of navs is different
+            __DIR__ . '/stubs/_nav_order_1.yaml',
+        )->nav();
+
+        $this->assertEquals('First', $nav2[0]['label']); // <- final order should be the same
+        $this->assertEquals('Second', $nav2[1]['label']);
+    }
+
     public function test_subnav_href()
     {
         $subnav = Backend::from(__DIR__ . '/stubs/_subnav_href.yaml')->subnav('backend._subnav_href.index');

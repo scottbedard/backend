@@ -146,9 +146,10 @@ class Backend
                     $ctrl['nav']['href'] = Href::format($ctrl['nav']['to'], $ctrl['path']);
                 }
 
-                return $acc ? $acc->push($ctrl['nav']) : collect([$ctrl['nav']]);
-            })
+                return $acc->push($ctrl['nav']);
+            }, collect())
             ->sortBy('order')
+            ->values()
             ->toArray();
     }
 
@@ -262,8 +263,8 @@ class Backend
                     $link['href'] = Href::format($link['to'], $controller['path']);
                 }
 
-                return $acc ? [...$acc, $link] : [$link];
-            });
+                return [...$acc, $link];
+            }, []);
     }
 
     /**
