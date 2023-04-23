@@ -28,6 +28,11 @@ class Href
 
         if (is_string($controller)) {
             $to = str($to)->replace('{controller}', $controller);
+        } elseif (is_null($controller)) {
+            $to = str($to)
+                ->replace('{controller}/', '')
+                ->replace('/{controller}', '')
+                ->replace('{controller}', '');
         }
 
         return $to;

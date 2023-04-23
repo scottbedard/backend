@@ -116,11 +116,18 @@ class BackendTest extends TestCase
         $this->assertEquals(1, count($backend->subnav('backend._protected_nav.index', $bob)));
     }
 
-    public function test_nav_href()
+    public function test_nav_to_route()
     {
-        $nav = Backend::from(__DIR__ . '/stubs/_nav_to.yaml')->nav();
+        $nav = Backend::from(__DIR__ . '/stubs/_nav_to_route.yaml')->nav();
 
         $this->assertEquals(route('backend.admin.users'), $nav[0]['href']);
+    }
+
+    public function test_nav_to_path()
+    {
+        $nav = Backend::from(__DIR__ . '/stubs/_nav_to_path.yaml')->nav();
+
+        $this->assertEquals('/backend/hello/foobar', $nav[0]['href']);
     }
 
     public function test_subnav_href()
@@ -130,5 +137,6 @@ class BackendTest extends TestCase
         $this->assertEquals(route('backend.admin.users'), $subnav[0]['href']);
         $this->assertEquals('https://example.com', $subnav[1]['href']);
         $this->assertEquals('https://example.com', $subnav[2]['href']);
+        $this->assertEquals('/backend/subnav/foobar', $subnav[3]['href']);
     }
 }

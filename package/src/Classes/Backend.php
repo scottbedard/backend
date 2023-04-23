@@ -139,15 +139,14 @@ class Backend
         return $this
             ->controllers()
             ->filter(fn ($ctrl) => $ctrl['nav'])
-            ->map(fn ($ctrl) => $ctrl['nav'])
-            ->filter(fn ($nav) => !$user || $this->test($user, $nav['permissions']))
+            ->filter(fn ($ctrl) => !$user || $this->test($user, $ctrl['nav']['permissions']))
             ->values()
-            ->reduce(function ($acc, $link) {
-                if (!$link['href'] && $link['to']) {
-                    $link['href'] = Href::format($link['to']);
+            ->reduce(function ($acc, $ctrl) {
+                if (!$ctrl['nav']['href'] && $ctrl['nav']['to']) {
+                    $ctrl['nav']['href'] = Href::format($ctrl['nav']['to'], $ctrl['path']);
                 }
 
-                return $acc ? $acc->push($link) : collect([$link]);
+                return $acc ? $acc->push($ctrl['nav']) : collect([$ctrl['nav']]);
             })
             ->sortBy('order')
             ->toArray();
@@ -258,9 +257,9 @@ class Backend
 
         return collect($controller['subnav'])
             ->filter(fn ($subnav) => !$user || $this->test($user, $subnav['permissions']))
-            ->reduce(function ($acc, $link) {
+            ->reduce(function ($acc, $link) use ($controller) {
                 if (!$link['href'] && $link['to']) {
-                    $link['href'] = Href::format($link['to']);
+                    $link['href'] = Href::format($link['to'], $controller['path']);
                 }
 
                 return $acc ? [...$acc, $link] : [$link];

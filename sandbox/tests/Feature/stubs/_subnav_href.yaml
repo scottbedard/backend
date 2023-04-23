@@ -6,3 +6,7 @@ subnav:
     -
         href: https://example.com
         to: backend.admin.users
+    -
+        to: /{backend}/{controller}/foobar
+
+path: subnav
