@@ -72,9 +72,8 @@
 
 <script lang="ts" setup>
 import { format, formatDistanceToNow, parseISO, subDays } from 'date-fns'
-import { noop, stubArray } from 'lodash-es'
+import { stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
-import { useNow } from '@vueuse/core'
 import Banner from './Banner.vue'
 import Checkbox from './Checkbox.vue'
 
@@ -88,13 +87,9 @@ const props = withDefaults(defineProps<{
   data: TableData
   modelValue?: any[]
   options: TableOptions
-  rowHref?: (row?: any) => any
 }>(), {
   modelValue: stubArray,
-  rowHref: noop,
 })
-
-const now = useNow()
 
 const isAllChecked = computed(() => props.modelValue.length === props.data.items.length)
 
@@ -116,5 +111,13 @@ const onCheck = (row: any) => {
   } else {
     props.modelValue.push(row)
   }
+}
+
+const rowHref = (row: Record<string, any>) => {
+  if (!props.options.row_to) {
+    return null
+  }
+
+  return '#'
 }
 </script>

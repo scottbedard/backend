@@ -24,7 +24,7 @@ type TableData<T = Record<string, any>> = {
 export type TableOptions = {
   actions: ToolbarAction[]
   checkboxes: boolean
-  row_href: null | string
+  row_to: null | string
   schema: TableCell[]
 }
 
