@@ -18,7 +18,7 @@ export function createTableOptions(): TableOptions {
   return {
     actions: [],
     checkboxes: false,
-    row_href: null,
+    row_to: null,
     schema: []
   }
 }
