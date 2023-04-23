@@ -6,6 +6,7 @@ use Bedard\Backend\Classes\ViteManifest;
 use Bedard\Backend\Exceptions\ControllerNotFoundException;
 use Bedard\Backend\UrlNormalizer;
 use Exception;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -129,39 +130,27 @@ class Backend
     /**
      * Get top-level nav
      *
-     * @param mixed $user
+     * @param Illuminate\Foundation\Auth\User $user
      *
      * @return array
      */
-    public function nav($user = null): array
+    public function nav(User $user = null): array
     {
         return $this
             ->controllers()
             ->filter(fn ($ctrl) => $ctrl['nav'])
-            ->filter(function ($item) use ($user) {
-                if ($user) {
-                    try {
-                        foreach ($item['permissions'] as $permission) {
-                            if (!$user->hasPermissionTo($permission)) return;
-                        }
-                    } catch (PermissionDoesNotExist $e) {
-                        return;
-                    }
+            ->map(fn ($ctrl) => $ctrl['nav'])
+            ->filter(fn ($nav) => !$user || $this->test($user, $nav['permissions']))
+            ->values()
+            ->reduce(function ($acc, $link) {
+                if (!$link['href'] && $link['to']) {
+                    $link['href'] = Href::format($link['to']);
                 }
-    
-                return true;
+
+                return $acc ? $acc->push($link) : collect([$link]);
             })
-            ->reduce(function ($acc, $ctrl) {
-                $nav = data_get($ctrl, 'nav');
-                $href = data_get($ctrl, 'nav.href');
-                $to = data_get($ctrl, 'nav.to');
-
-                if (!$href && $to) {
-                    $nav['href'] = Href::format($to);
-                }
-
-                return $acc ? [...$acc, $nav] : [$nav];
-            });
+            ->sortBy('order')
+            ->toArray();
     }
 
     /**
@@ -221,29 +210,14 @@ class Backend
                 data_fill($config, "controllers.{$controllerKey}.nav.order", 0);
                 data_fill($config, "controllers.{$controllerKey}.nav.permissions", []);
                 data_fill($config, "controllers.{$controllerKey}.nav.to", null);
-
-                // $href = data_get($config, "controllers.{$controllerKey}.nav.href");
-                // $to = data_get($config, "controllers.{$controllerKey}.nav.to");
-
-                // if  ($to && $href === null) {
-                //     data_set($config, "controllers.{$controllerKey}.nav.href", Href::format($to));
-                // }
             }
 
             foreach ($config['controllers'][$controllerKey]['subnav'] as $i => $subnav) {
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.href", null);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.icon", null);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.label", null);
-                data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.order", 0);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.permissions", []);
                 data_fill($config, "controllers.{$controllerKey}.subnav.{$i}.to", null);
-
-                // $href = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.href");
-                // $to = data_get($config, "controllers.{$controllerKey}.subnav.{$i}.to");
-
-                // if  ($to && $href === null) {
-                //     data_set($config, "controllers.{$controllerKey}.subnav.{$i}.href", Href::format($to));
-                // }
             }
 
             foreach ($config['controllers'][$controllerKey]['routes'] as $routeKey => $route) {
@@ -274,27 +248,44 @@ class Backend
      * Get subnav
      *
      * @param string $routeName
-     * @param mixed $user
+     * @param Illuminate\Foundation\Auth\User $user
      *
      * @return array
      */
-    public function subnav(string $routeName, $user = null): array
+    public function subnav(string $routeName, User $user = null): array
     {
         $controller = $this->controller($routeName);
-        
-        return array_filter($controller['subnav'], function ($item) use ($user) {
-            try {
-                foreach ($item['permissions'] as $permission) {
-                    if (!$user->hasPermissionTo($permission)) {
-                        return false;
-                    }
-                }
-            } catch (PermissionDoesNotExist $e) {
-                return false;
-            }
 
-            return true;
-        });
+        return collect($controller['subnav'])
+            ->filter(fn ($subnav) => !$user || $this->test($user, $subnav['permissions']))
+            ->reduce(function ($acc, $link) {
+                if (!$link['href'] && $link['to']) {
+                    $link['href'] = Href::format($link['to']);
+                }
+
+                return $acc ? [...$acc, $link] : [$link];
+            });
+    }
+
+    /**
+     * Test for a set of permissions
+     *
+     * @param Illuminate\Foundation\Auth\User $user
+     * @param array $permissions
+     * 
+     * @return bool
+     */
+    private function test(User $user, array $permissions): bool
+    {
+        try {
+            foreach ($permissions as $permission) {
+                if (!$user->hasPermissionTo($permission)) return false;
+            }
+        } catch (PermissionDoesNotExist $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -325,7 +316,6 @@ class Backend
             'controllers.*.subnav' => ['present', 'array'],
             'controllers.*.subnav.*.icon' => ['present', 'nullable', 'string'],
             'controllers.*.subnav.*.label' => ['present', 'nullable', 'string'],
-            'controllers.*.subnav.*.order' => ['present', 'int'],
             'controllers.*.subnav.*.permissions' => ['present', 'array'],
             'controllers.*.subnav.*.to' => ['present', 'nullable', 'string'],
         ]);

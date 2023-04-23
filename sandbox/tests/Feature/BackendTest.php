@@ -64,7 +64,7 @@ class BackendTest extends TestCase
     {
         $backend = Backend::from(__DIR__ . '/stubs/books.yaml');
         
-        $nav = $backend->nav('backend.books.index');
+        $nav = $backend->nav();
         
         $this->assertEquals([
             [
@@ -80,10 +80,10 @@ class BackendTest extends TestCase
 
     public function test_getting_protected_controller_navs()
     {
-        $backend = Backend::from([
+        $backend = Backend::from(
             __DIR__ . '/stubs/_protected_nav.yaml',
             __DIR__ . '/stubs/_unprotected_nav.yaml',
-        ]);
+        );
 
         Permission::firstOrCreate(['name' => 'read books']);
         
@@ -94,7 +94,7 @@ class BackendTest extends TestCase
         $this->assertEquals(2, count($backend->nav($alice)));
 
         // bob can't
-        $bob = user::factory()->create();
+        $bob = User::factory()->create();
 
         $this->assertEquals(1, count($backend->nav($bob)));
     }
@@ -121,5 +121,14 @@ class BackendTest extends TestCase
         $nav = Backend::from(__DIR__ . '/stubs/_nav_to.yaml')->nav();
 
         $this->assertEquals(route('backend.admin.users'), $nav[0]['href']);
+    }
+
+    public function test_subnav_href()
+    {
+        $subnav = Backend::from(__DIR__ . '/stubs/_subnav_href.yaml')->subnav('backend._subnav_href.index');
+        
+        $this->assertEquals(route('backend.admin.users'), $subnav[0]['href']);
+        $this->assertEquals('https://example.com', $subnav[1]['href']);
+        $this->assertEquals('https://example.com', $subnav[2]['href']);
     }
 }
