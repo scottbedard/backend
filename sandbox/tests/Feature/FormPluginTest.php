@@ -22,8 +22,8 @@ class FormPluginTest extends TestCase
     public function test_filling_blank_field_values()
     {
         $form = $this->form(
-            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
-            route: 'backend._form_field_normalization.blank_field',
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.blank_field',
         );
 
         // first field
@@ -37,8 +37,8 @@ class FormPluginTest extends TestCase
     public function test_associative_form_fields()
     {
         $form = $this->form(
-            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
-            route: 'backend._form_field_normalization.associative_fields',
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.associative_fields',
         );
         
         $this->assertEquals('first', $form->option('fields.0.id'));
@@ -48,8 +48,8 @@ class FormPluginTest extends TestCase
     public function test_sequential_form_fields()
     {
         $form = $this->form(
-            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
-            route: 'backend._form_field_normalization.sequential_fields',
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.sequential_fields',
         );
         
         $this->assertEquals('foo', $form->option('fields.0.id'));
@@ -59,8 +59,8 @@ class FormPluginTest extends TestCase
     public function test_forms_can_extend_other_forms()
     {
         $form = $this->form(
-            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
-            route: 'backend._form_field_normalization.extention_child',
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.extention_child',
         );
 
         $this->assertEquals('foo', $form->option('fields.0.id'));
@@ -72,8 +72,8 @@ class FormPluginTest extends TestCase
     public function test_form_field_spans()
     {
         $form = $this->form(
-            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
-            route: 'backend._form_field_normalization.field_spans',
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.field_spans',
         );
         
         $this->assertEquals([

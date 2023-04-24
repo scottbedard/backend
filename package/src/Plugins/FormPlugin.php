@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Breakpoint;
+use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
 use Bedard\Backend\Plugin;
@@ -43,7 +44,7 @@ class FormPlugin extends Plugin
         data_fill($this->route, 'options.fields', []);
 
         // normalize fields
-        data_set($this->route, 'options.fields', $this->sequential($this->option('fields')));
+        data_set($this->route, 'options.fields', KeyedArray::of($this->option('fields'), 'id'));
 
         // extend parent form
         $extends = $this->option('extends');
@@ -57,7 +58,7 @@ class FormPlugin extends Plugin
 
             $fields = collect($this->option('fields'));
 
-            $extensions = collect($this->sequential($parent))->map(function ($field) use ($fields) {
+            $extensions = collect(KeyedArray::of($parent, 'id'))->map(function ($field) use ($fields) {
                 $child = $fields->first(fn ($child) => $child['id'] === $field['id']);
 
                 if ($child) {
@@ -77,6 +78,7 @@ class FormPlugin extends Plugin
             data_fill($this->route, "options.fields.{$key}.disabled", false);
             data_fill($this->route, "options.fields.{$key}.label", str($field['id'])->headline()->toString());
             data_fill($this->route, "options.fields.{$key}.order", 0);
+            data_fill($this->route, "options.fields.{$key}.type", 'text');
 
             data_set($this->route, "options.fields.{$key}.span", Breakpoint::create($field['span'] ?? 12));
         }
@@ -86,32 +88,6 @@ class FormPlugin extends Plugin
             ->sortBy('order')
             ->values()
             ->toArray();
-    }
-
-    /**
-     * Normalize fields to a sequential array
-     *
-     * @param array $fields
-     */
-    private function sequential(array $fields): array
-    {
-        $arr = [];
-
-        // normalize fields to a sequential array
-        if (Arr::isAssoc($fields)) {
-            foreach ($fields as $id => $field) {
-                $arr[] = array_merge(['id' => $id], $field ?? []);
-            }
-        } else {
-            $arr = $fields;
-        }
-
-        // prevent blank fields from being treated as null
-        foreach ($arr as $i => $field) {
-            if ($field === null) $arr[$i] = [];
-        }
-
-        return $arr;
     }
 
     /**

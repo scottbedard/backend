@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Href;
+use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
 use Bedard\Backend\Plugin;
@@ -50,15 +51,7 @@ class ListPlugin extends Plugin
         data_fill($this->route, 'options.row_to', null);
         data_fill($this->route, 'options.schema', []);
 
-        if (Arr::isAssoc($this->route['options']['schema'])) {
-            $cols = [];
-
-            foreach ($this->route['options']['schema'] as $id => $col) {
-                $cols[] = array_merge(['id' => $id], $col);
-            }
-
-            data_set($this->route, 'options.schema', $cols);
-        }
+        data_set($this->route, 'options.schema', KeyedArray::of($this->route['options']['schema'], 'id'));
 
         if ($this->route['options']['row_to']) {
             $this->route['options']['row_to'] = Href::format($this->route['options']['row_to'], $this->controller['path']);
