@@ -18,6 +18,7 @@
 
 <script lang="ts" setup>
 import { ButtonTheme } from '@/types'
+import { defineComponent } from 'vue'
 import Icon from './Icon.vue'
 
 defineProps<{
