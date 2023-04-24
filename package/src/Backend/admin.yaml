@@ -68,6 +68,12 @@ routes:
                 email:
                     span: 6
                     type: email
+                created_at:
+                    span: 6
+                    type: datetime
+                updated_at:
+                    span: 6
+                    type: datetime
 
     update:
         path: users/{id}/update

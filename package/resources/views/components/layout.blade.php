@@ -43,7 +43,7 @@
 
     <div class="flex flex-1">
       @if (count($subnav) > 0)
-        <aside class="bg-gray-100 flex flex-col gap-6 items-center p-6 w-20">
+        <aside class="bg-gray-100 flex-col gap-6 hidden items-center p-6 w-20 md:flex">
           @foreach ($subnav as $link)
             <a
               class="aspect-square flex flex-col gap-1 items-center justify-center text-center"
