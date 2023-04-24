@@ -7,6 +7,7 @@
 
 <script lang="ts" setup>
 import { createIcons, icons } from 'lucide'
+import { onMounted } from 'vue'
 
 onMounted(() => {
   createIcons({ icons })

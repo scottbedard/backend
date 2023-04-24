@@ -1,13 +1,13 @@
 export type ButtonTheme = 'primary' | 'danger' | 'default'
 
-export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-
 export type FormField = {
   disabled: boolean
   id: string
   label: null | string
   order: number
-  span: Record<Breakpoint, GridSpan>
+  placeholder?: string
+  span: Record<TailwindScreen, GridSpan>
+  type: string
 }
 
 export type FormOptions = {
@@ -43,6 +43,8 @@ export type TableOptions = {
   row_to: null | string
   schema: TableCell[]
 }
+
+export type TailwindScreen = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 export type ToolbarAction = {
   disabled: boolean | 'checked' | 'not checked'

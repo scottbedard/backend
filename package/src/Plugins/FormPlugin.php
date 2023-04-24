@@ -21,6 +21,8 @@ class FormPlugin extends Plugin
         'options.fields.*.disabled' => ['present', 'boolean'],
         'options.fields.*.label' => ['present', 'nullable', 'string'],
         'options.fields.*.order' => ['present', 'integer'],
+        'options.fields.*.placeholder' => ['string'],
+        'options.fields.*.type' => ['present', 'string'],
         'options.fields' => ['present', 'array'],
     ];
 

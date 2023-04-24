@@ -68,6 +68,7 @@ routes:
                 email:
                     span: 6
                     type: email
+                    placeholder: user@example.com
                 created_at:
                     span: 6
                     type: datetime

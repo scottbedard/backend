@@ -22,6 +22,7 @@
 
 <script lang="ts" setup>
 import { Button, Table } from '@/components'
+import { ref } from 'vue'
 import { TableData, TableOptions, ToolbarAction } from '@/types'
 
 const props = defineProps<{

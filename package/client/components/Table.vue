@@ -73,14 +73,13 @@
 </template>
 
 <script lang="ts" setup>
-import { format, formatDistanceToNow, parseISO, subDays } from 'date-fns'
+import { computed } from 'vue'
+import { format, formatDistanceToNow, parseISO } from 'date-fns'
+import { replaceRouteParams } from '@/utils'
 import { stubArray } from 'lodash-es'
 import { TableData, TableOptions } from '@/types'
 import Banner from './Banner.vue'
 import Checkbox from './Checkbox.vue'
-import { replaceRouteParams } from '@/utils'
-
-const d = subDays(new Date, 5)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', payload: any[]): void
