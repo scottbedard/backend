@@ -3,7 +3,7 @@
 [![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-Every application eventually needs a backend. This is sometimes an after thought though, and a rushed backend can become the source of endless tech debt. The goal of this project is to be a "backend as config" solution to the problem.
+Every application eventually needs a backend. This is sometimes an after thought though, and a rushed backend can become the source of endless tech debt. The goal here is to be a "backend as config" solution to the problem.
 
 The process will look something like this...
 
@@ -148,12 +148,18 @@ options:
 
 ### Form
 
-Forms haven't been developed yet.
+Forms are being developed, check back later.
 
 ```yaml
 plugin: form
 options:
-    # ...
+    fields:
+        name:
+            span: 6
+            type: text
+        email:
+            span: 6
+            type: email
 ```
 
 ## Permissions
