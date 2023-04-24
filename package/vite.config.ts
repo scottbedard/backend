@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config'
-import autoImport from 'unplugin-auto-import/vite'
 import fs from 'fs'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'

@@ -8,7 +8,6 @@ use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
 use Bedard\Backend\Plugin;
 use Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
