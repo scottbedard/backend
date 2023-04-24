@@ -3,7 +3,10 @@
     <div class="border border-[red] gap-6 grid grid-cols-12">
       <div
         v-for="field in options.fields"
-        class="border border-[blue] col-span-6">
+        class="border border-[blue] col-span-6"
+        :style="{
+          gridColumn: `span ${field.span[bp]} / span ${field.span[bp]}`
+        }">
         {{ field.id }}
       </div>
     </div>
@@ -21,4 +24,6 @@ const bp = useBreakpoint()
 defineProps<{
   options: FormOptions
 }>()
+
+// `span 1 / span 1`
 </script>
