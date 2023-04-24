@@ -47,3 +47,21 @@ routes:
                 bar:
                     label: hello # <- change label to "hello"
                     order: 3 # <- reorder to be last
+
+    standard_breakpoints:
+        plugin: form
+        options:
+            fields:
+                foo:
+                    span: 6 # <- sm: 12, md: 12, lg: 6, xl: 6, 2xl: 6
+
+    field_spans:
+        plugin: form
+        options:
+            fields:
+                foo:
+                    span: 6
+                bar:
+                    span:
+                        md: 6
+                        lg: 4

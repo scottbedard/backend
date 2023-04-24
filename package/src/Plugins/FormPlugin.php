@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Plugins;
 
+use Bedard\Backend\Classes\Breakpoint;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
 use Bedard\Backend\Plugin;
@@ -74,6 +75,8 @@ class FormPlugin extends Plugin
             data_fill($this->route, "options.fields.{$key}.disabled", false);
             data_fill($this->route, "options.fields.{$key}.label", str($field['id'])->headline()->toString());
             data_fill($this->route, "options.fields.{$key}.order", 0);
+
+            data_set($this->route, "options.fields.{$key}.span", Breakpoint::create($field['span'] ?? 12));
         }
 
         // finalize normalization and order fields

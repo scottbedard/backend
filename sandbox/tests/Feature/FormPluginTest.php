@@ -68,4 +68,30 @@ class FormPluginTest extends TestCase
         $this->assertEquals('bar', $form->option('fields.2.id'));
         $this->assertEquals('hello', $form->option('fields.2.label'));
     }
+
+    public function test_form_field_spans()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_field_normalization.yaml',
+            route: 'backend._form_field_normalization.field_spans',
+        );
+        
+        $this->assertEquals([
+            'xs' => 12,
+            'sm' => 12,
+            'md' => 12,
+            'lg' => 6,
+            'xl' => 6,
+            '2xl' => 6,
+        ], $form->option('fields.0.span'));
+
+        $this->assertEquals([
+            'xs' => 12,
+            'sm' => 12,
+            'md' => 6,
+            'lg' => 4,
+            'xl' => 4,
+            '2xl' => 4,
+        ], $form->option('fields.1.span'));
+    }
 }

@@ -63,10 +63,16 @@ routes:
                 id:
                     disabled: true
                     label: ID
-                    span: 6
+                    span:
+                        sm: 12
+                        md: 6
+                        lg: 4
                     type: number
                 email:
-                    span: 6
+                    span:
+                        sm: 12
+                        md: 6
+                        lg: 4
                     type: email
                 created_at:
                     span: 6
