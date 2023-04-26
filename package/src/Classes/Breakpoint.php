@@ -8,10 +8,11 @@ class Breakpoint
      * Create a breakpoints array.
      *
      * @param array|int $span
+     * @param int $cols
      *
      * @return array
      */
-    public static function create(array|int $span): array
+    public static function create(array|int $span, int $cols = 12): array
     {
         if (is_int($span)) {
             return [
@@ -24,7 +25,7 @@ class Breakpoint
             ];
         }
 
-        $xs = data_get($span, 'xs', 12);
+        $xs = data_get($span, 'xs', $cols);
 
         $sm = data_get($span, 'sm', $xs);
 

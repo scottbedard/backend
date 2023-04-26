@@ -1,26 +1,39 @@
 import '@/style.scss'
-import { Component, createApp } from 'vue'
 import { createIcons, icons } from 'lucide'
-import Form from './plugins/Form.vue'
-import List from './plugins/List.vue'
+import form from './plugins/form/index'
+import grid from './scripts/grid'
+import list from './plugins/list/index'
 
 // create any icons rendered by the server
 createIcons({ icons })
 
-// mount first-party plugin components
-const plugins: Record<string, Component> = {
-  form: Form,
-  list: List,
+// execute first-party plugins
+const plugins: Record<string, (el: HTMLElement) => void> = {
+  form,
+  list,
 }
 
-document.querySelectorAll('[data-backend-plugin]').forEach(el => {
+document.querySelectorAll('[data-backend-plugin]').forEach(async (el) => {
   const pluginName = el.getAttribute('data-backend-plugin');
   
-  if (pluginName && pluginName in plugins) {
-    const plugin = plugins[pluginName];
-    const props = JSON.parse(el.getAttribute('data-backend-props') || '{}');
-
-    createApp(plugin, props).mount(el)
+  if (pluginName && pluginName in plugins && el instanceof HTMLElement) {
+    const plugin = plugins[pluginName]
+    
+    plugin(el)
   }
 })
 
+// mount first-party components
+const scripts: Record<string, (el: HTMLElement) => void> = {
+  grid,
+}
+
+document.querySelectorAll('[data-backend-script]').forEach(async (el) => {
+  const scriptName = el.getAttribute('data-backend-script');
+  
+  if (scriptName && scriptName in scripts && el instanceof HTMLElement) {
+    const script = scripts[scriptName]
+    
+    script(el)
+  }
+})

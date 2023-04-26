@@ -1,6 +1,11 @@
-<x-backend::layout>
-  <div
-    data-backend-plugin="form"
-    data-backend-props="{{ json_encode($props) }}"
-  ></div>
+<x-backend::layout padded>
+  <x-backend::grid padded>
+
+    @foreach ($options['fields'] as $field)
+      <x-backend::grid-cell :span="$field['span']">
+        <x-backend::input />
+      </x-backend::grid-cell>
+    @endforeach
+
+  </x-backend::grid>
 </x-backend::layout>

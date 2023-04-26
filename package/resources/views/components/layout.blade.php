@@ -58,7 +58,7 @@
         </aside>
       @endif
 
-      <main class="flex-1">
+      <main {{ $attributes->merge(['class' => $padded ? 'flex-1 p-6' : 'flex-1']) }}>
         {{ $slot }}
       </main>
     </div>

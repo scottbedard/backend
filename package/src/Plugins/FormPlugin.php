@@ -18,12 +18,12 @@ class FormPlugin extends Plugin
      * @var array
      */
     protected array $rules = [
+        'options.fields' => ['present', 'array'],
         'options.fields.*.disabled' => ['present', 'boolean'],
         'options.fields.*.label' => ['present', 'nullable', 'string'],
         'options.fields.*.order' => ['present', 'integer'],
         'options.fields.*.placeholder' => ['string'],
         'options.fields.*.type' => ['present', 'string'],
-        'options.fields' => ['present', 'array'],
     ];
 
     /**
@@ -97,9 +97,7 @@ class FormPlugin extends Plugin
     public function view(): View
     {
         return view('backend::form', [
-            'props' => [
-                'options' => $this->route['options'],
-            ],
+            'options' => $this->route['options'],
         ]);
     }
 }
