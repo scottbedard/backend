@@ -33,20 +33,12 @@ class FormPlugin extends Plugin
      */
     public function fields(): array
     {
-        $aliases = config('backend.fields', []);
-
-        return array_map(function ($field) use ($aliases) {
-            $type = data_get($field, 'type', 'text');
-
-            if (array_key_exists($type, $aliases)) {
-                $type = $aliases[$type];
+        return array_map(function ($field) {
+            if (!class_exists($field['type'])) {
+                throw new Exception("Field type \"{$field['type']}\" not found");
             }
 
-            if (!class_exists($type)) {
-                throw new Exception("Field type \"{$type}\" not found");
-            }
-
-            return new $type($field);
+            return new $field['type']($field);
         }, $this->option('fields'));
     }
 
