@@ -64,17 +64,14 @@ routes:
                     disabled: true
                     label: ID
                     span: 6
-                    type: number
                 email:
                     span: 6
-                    type: email
                     placeholder: user@example.com
+                    type: Bedard\Backend\Form\EmailField
                 created_at:
                     span: 6
-                    type: datetime
                 updated_at:
                     span: 6
-                    type: datetime
 
     update:
         path: users/{id}/update

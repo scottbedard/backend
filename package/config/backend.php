@@ -17,6 +17,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | User
+    |--------------------------------------------------------------------------
+    |
+    | The user model associated with your application.
+    |
+    */
+
+    'user' => \App\Models\User::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Guest redirect
     |--------------------------------------------------------------------------
     |
@@ -89,12 +100,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User
+    | Field aliases
     |--------------------------------------------------------------------------
     |
-    | The user model associated with your application.
+    | These aliases are used by the form plugin and map to the `fields` option.
     |
     */
 
-    'user' => \App\Models\User::class,
+    'fields' => [
+        'email' => \Bedard\Backend\Form\EmailField::class,
+        'number' => \Bedard\Backend\Form\NumberField::class,
+        'text' => \Bedard\Backend\Form\TextField::class,
+    ]
 ];

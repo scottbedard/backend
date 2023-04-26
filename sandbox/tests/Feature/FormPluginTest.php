@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Bedard\Backend\Classes\Backend;
 use Bedard\Backend\Classes\Href;
 use Bedard\Backend\Facades\Backend as BackendFacade;
+use Bedard\Backend\Form\TextField;
 use Bedard\Backend\Plugins\FormPlugin;
 use Tests\TestCase;
 
@@ -29,6 +30,7 @@ class FormPluginTest extends TestCase
         // first field
         $this->assertEquals(false, $form->option('fields.0.disabled'));
         $this->assertEquals('Foo', $form->option('fields.0.label'));
+        $this->assertEquals(TextField::class, $form->option('fields.0.type'));
 
         // second field
         $this->assertEquals(null, $form->option('fields.1.label'));
@@ -93,5 +95,18 @@ class FormPluginTest extends TestCase
             'xl' => 4,
             '2xl' => 4,
         ], $form->option('fields.1.span'));
+    }
+
+    public function test_field_type_default_and_aliases()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.field_aliases',
+        );
+        
+        $this->assertEquals('Bedard\Backend\Form\TextField', $form->option('fields.0.type'));
+        $this->assertEquals('Bedard\Backend\Form\EmailField', $form->option('fields.1.type'));
+        $this->assertEquals('Bedard\Backend\Form\NumberField', $form->option('fields.2.type'));
+        $this->assertEquals('Bedard\Backend\Form\TextField', $form->option('fields.3.type'));
     }
 }

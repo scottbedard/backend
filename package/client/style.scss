@@ -1,14 +1,6 @@
 @tailwind base;
 @tailwind utilities;
 
-pre.value {
-  @apply bg-gray-100 inline-block text-sm p-1 rounded-md tracking-wide;
-}
-
-.be-label {
-  @apply font-bold tracking-wide;
-}
-
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button,
 input[type='number'] {

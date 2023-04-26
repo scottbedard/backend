@@ -1,9 +1,9 @@
 <x-backend::layout padded>
   <x-backend::grid padded>
 
-    @foreach ($options['fields'] as $field)
-      <x-backend::grid-cell :span="$field['span']">
-        <x-backend::input />
+    @foreach ($fields as $field)
+      <x-backend::grid-cell :span="$field->get('span', 12)">
+        {{ $field->render() }}
       </x-backend::grid-cell>
     @endforeach
 

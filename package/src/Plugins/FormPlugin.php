@@ -6,6 +6,7 @@ use Bedard\Backend\Classes\Breakpoint;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
+use Bedard\Backend\Form\TextField;
 use Bedard\Backend\Plugin;
 use Exception;
 use Illuminate\View\View;
@@ -22,9 +23,32 @@ class FormPlugin extends Plugin
         'options.fields.*.disabled' => ['present', 'boolean'],
         'options.fields.*.label' => ['present', 'nullable', 'string'],
         'options.fields.*.order' => ['present', 'integer'],
-        'options.fields.*.placeholder' => ['string'],
-        'options.fields.*.type' => ['present', 'string'],
+        'options.fields.*.type' => ['present', 'nullable', 'string'],
     ];
+
+    /**
+     * Fields
+     *
+     * @return array
+     */
+    public function fields(): array
+    {
+        $aliases = config('backend.fields', []);
+
+        return array_map(function ($field) use ($aliases) {
+            $type = data_get($field, 'type', 'text');
+
+            if (array_key_exists($type, $aliases)) {
+                $type = $aliases[$type];
+            }
+
+            if (!class_exists($type)) {
+                throw new Exception("Field type \"{$type}\" not found");
+            }
+
+            return new $type($field);
+        }, $this->option('fields'));
+    }
 
     /**
      * Normalize plugin config
@@ -72,14 +96,26 @@ class FormPlugin extends Plugin
                 ->toArray();
         }
 
-        // fill default field data
+        // fill field data
+        $aliases = config('backend.fields', []);
+
         foreach ($this->route['options']['fields'] as $key => $field) {
             data_fill($this->route, "options.fields.{$key}.disabled", false);
             data_fill($this->route, "options.fields.{$key}.label", str($field['id'])->headline()->toString());
             data_fill($this->route, "options.fields.{$key}.order", 0);
-            data_fill($this->route, "options.fields.{$key}.type", 'text');
+            data_fill($this->route, "options.fields.{$key}.type", TextField::class);
 
+            // set breakpoints
             data_set($this->route, "options.fields.{$key}.span", Breakpoint::create($field['span'] ?? 12));
+
+            // apply field aliases
+            if (data_get($field, 'type') === null) {
+                data_set($this->route, "options.fields.{$key}.type", TextField::class);
+            } elseif (array_key_exists($field['type'], $aliases)) {
+                data_set($this->route, "options.fields.{$key}.type", $aliases[$field['type']]);
+            } else {
+                data_set($this->route, "options.fields.{$key}.type", $field['type']);
+            }
         }
 
         // finalize normalization and order fields
@@ -97,7 +133,8 @@ class FormPlugin extends Plugin
     public function view(): View
     {
         return view('backend::form', [
-            'options' => $this->route['options'],
+            'fields' => $this->fields(),
+            'options' => $this->options(),
         ]);
     }
 }

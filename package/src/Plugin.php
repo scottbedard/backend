@@ -58,7 +58,7 @@ abstract class Plugin
     }
 
     /**
-     * Get a plugin option
+     * Get specific plugin option
      *
      * @param string $path
      * @param mixed $default
@@ -68,6 +68,16 @@ abstract class Plugin
     public function option(string $path, $default = null)
     {
         return data_get($this->route['options'], $path, $default);
+    }
+
+    /**
+     * Get all plugin options
+     *
+     * @return array
+     */
+    public function options(): array
+    {
+        return data_get($this->route, 'options', []);
     }
 
     /**

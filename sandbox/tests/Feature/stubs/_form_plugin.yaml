@@ -55,6 +55,19 @@ routes:
                 foo:
                     span: 6 # <- sm: 12, md: 12, lg: 6, xl: 6, 2xl: 6
 
+    field_aliases:
+        plugin: form
+        options:
+            fields:
+                foo:
+                    type: null
+                bar:
+                    type: email
+                baz:
+                    type: Bedard\Backend\Form\NumberField
+                qux:
+                    # <- type property omitted, should be text
+
     field_spans:
         plugin: form
         options:
