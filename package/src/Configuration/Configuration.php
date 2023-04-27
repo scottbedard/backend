@@ -8,11 +8,25 @@ use Illuminate\Support\Facades\Validator;
 class Configuration
 {
     /**
-     * Normalized configuration
+     * Child configuration
+     *
+     * @var array
+     */
+    protected array $children = [];
+
+    /**
+     * Normalized configuration data
      *
      * @var array
      */
     protected array $config = [];
+
+    /**
+     * Child properties
+     *
+     * @var array
+     */
+    protected array $properties = [];
 
     /**
      * Validation rules
@@ -37,9 +51,32 @@ class Configuration
     {
         $this->yaml = $yaml;
 
+        $this->build();
+    }
+
+    /**
+     * Build configuration tree
+     *
+     * @return void
+     */
+    protected function build(): void
+    {
+        // normalize yaml data
         $this->normalize();
 
+        // validate configuration
         $this->validate();
+
+        // instantiate child properties
+        $children = [];
+        
+        foreach ($this->config as $key => $data) {
+            if (array_key_exists($key, $this->properties)) {
+                $children[$key] = $this->properties[$key]::create($data);
+            }
+        }
+
+        $this->children = $children;
     }
 
     /**
@@ -51,7 +88,9 @@ class Configuration
      */
     public static function create(array $yaml = []): self
     {
-        return new self($yaml);
+        $config = get_called_class();
+        
+        return new $config($yaml);
     }
 
     /**
@@ -68,17 +107,31 @@ class Configuration
     }
 
     /**
-     * Normalize configuration
+     * Normalize config data
+     *
+     * @param array $config
      *
      * @return void
      */
     protected function normalize(): void
     {
-        $config = $this->yaml;
+        $this->config = $this->yaml;
+    }
 
-        data_fill($config, 'foo', 'bar');
+    /**
+     * Get a child property
+     *
+     * @param string $key
+     *
+     * @return self|array|null
+     */
+    public function property(string $key): self | array | null
+    {
+        if (array_key_exists($key, $this->children)) {
+            return $this->children[$key];
+        }
 
-        $this->config = $config;
+        return null;
     }
 
     /**

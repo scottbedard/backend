@@ -1,9 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
+use Tests\Feature\Classes\ChildConfig;
+use Tests\Feature\Classes\ParentConfig;
 use Tests\TestCase;
 
 class ConfigurationTest extends TestCase
@@ -13,7 +15,7 @@ class ConfigurationTest extends TestCase
         $class = new class extends Configuration {
             protected function normalize(): void
             {
-                $config = $this->config;
+                $config = $this->yaml;
 
                 data_fill($config, 'foo', 'bar');
 
@@ -37,5 +39,17 @@ class ConfigurationTest extends TestCase
         $config = new class extends Configuration {
             protected array $rules = ['id' => 'required'];
         };
+    }
+
+    public function test_child_configuration()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'foo' => 'bar',
+            ],
+        ]);
+
+        $this->assertInstanceOf(ChildConfig::class, $parent->property('child'));
+        $this->assertEquals('bar', $parent->property('child')->get('foo'));
     }
 }
