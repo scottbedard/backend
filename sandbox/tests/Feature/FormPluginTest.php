@@ -109,4 +109,32 @@ class FormPluginTest extends TestCase
         $this->assertEquals('Bedard\Backend\Form\NumberField', $form->option('fields.2.type'));
         $this->assertEquals('Bedard\Backend\Form\TextField', $form->option('fields.3.type'));
     }
+
+    public function test_default_action_values()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.default_action_values',
+        );
+
+        $this->assertEquals([
+            'href' => null,
+            'icon' => null,
+            'text' => 'Hooray!',
+            'theme' => null,
+            'to' => null,
+            'type' => null,
+        ], $form->option('actions.0'));
+    }
+
+    public function test_setting_action_href_from_to()
+    {
+        $form = $this->form(
+            stubs: __DIR__ . '/stubs/_form_plugin.yaml',
+            route: 'backend._form_plugin.actions_href',
+        );
+
+        $this->assertEquals(route('backend.admin.users'), $form->option('actions.0.href'));
+        $this->assertEquals('https://example.com', $form->option('actions.1.href'));
+    }
 }

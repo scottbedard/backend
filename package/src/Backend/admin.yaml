@@ -73,6 +73,7 @@ routes:
                     span: 6
                 updated_at:
                     span: 6
+                
 
     update:
         path: users/{id}/update
@@ -81,6 +82,16 @@ routes:
         plugin: form
         options:
             extends: create
+            actions:
+                -
+                    icon: arrow-left
+                    text: Nevermind
+                    to: backend.admin.users
+                -
+                    icon: rocket
+                    text: Do stuff!
+                    theme: primary
+                    type: submit
 
     roles:
         model: Spatie\Permission\Models\Role

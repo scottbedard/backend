@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Breakpoint;
+use Bedard\Backend\Classes\Href;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Facades\Backend;
@@ -19,6 +20,13 @@ class FormPlugin extends Plugin
      * @var array
      */
     protected array $rules = [
+        'options.actions' => ['present', 'array'],
+        'options.actions.*.href' => ['nullable', 'string'],
+        'options.actions.*.icon' => ['nullable', 'string'],
+        'options.actions.*.text' => ['nullable', 'string'],
+        'options.actions.*.theme' => ['nullable', 'string'],
+        'options.actions.*.to' => ['nullable', 'string'],
+        'options.actions.*.type' => ['nullable', 'string'],
         'options.fields' => ['present', 'array'],
         'options.fields.*.disabled' => ['present', 'boolean'],
         'options.fields.*.label' => ['present', 'nullable', 'string'],
@@ -55,11 +63,19 @@ class FormPlugin extends Plugin
         }
 
         // fill default options
+        data_fill($this->route, 'options.actions', []);
         data_fill($this->route, 'options.extends', null);
         data_fill($this->route, 'options.fields', []);
 
         // normalize fields
         data_set($this->route, 'options.fields', KeyedArray::of($this->option('fields'), 'id'));
+
+        // href
+        // icon
+        // text
+        // theme
+        // to
+        // type
 
         // extend parent form
         $extends = $this->option('extends');
@@ -86,6 +102,16 @@ class FormPlugin extends Plugin
             $this->route['options']['fields'] = $extensions
                 ->concat($fields->filter(fn ($field) => !$extensions->contains('id', $field['id'])))
                 ->toArray();
+        }
+        
+        // fill action data
+        foreach ($this->route['options']['actions'] as $key => $action) {
+            data_fill($this->route, "options.actions.{$key}.href", data_get($action, 'href') ?: Href::format(data_get($action, 'to'), $this->controller['path']));
+            data_fill($this->route, "options.actions.{$key}.icon", null);
+            data_fill($this->route, "options.actions.{$key}.text", null);
+            data_fill($this->route, "options.actions.{$key}.theme", null);
+            data_fill($this->route, "options.actions.{$key}.to", null);
+            data_fill($this->route, "options.actions.{$key}.type", null);
         }
 
         // fill field data

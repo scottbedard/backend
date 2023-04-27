@@ -78,3 +78,21 @@ routes:
                     span:
                         md: 6
                         lg: 4
+
+    default_action_values:
+        plugin: form
+        options:
+            actions:
+                -
+                    text: Hooray!
+    
+    actions_href:
+        plugin: form
+        options:
+            actions:
+                -
+                    text: Users
+                    to: backend.admin.users
+                -
+                    text: Good bye
+                    to: https://example.com
