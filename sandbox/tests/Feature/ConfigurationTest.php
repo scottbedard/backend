@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
+use Illuminate\Support\Collection;
 use Tests\Feature\Classes\ChildConfig;
 use Tests\Feature\Classes\ParentConfig;
 use Tests\TestCase;
@@ -44,12 +45,24 @@ class ConfigurationTest extends TestCase
     public function test_child_configuration()
     {
         $parent = ParentConfig::create([
-            'child' => [
-                'foo' => 'bar',
+            'thing' => 'hello world',
+            'singular' => ['name' => 'thing'],
+            'plural' => [
+                ['name' => 'thing 1'],
+                ['name' => 'thing 2'],
             ],
         ]);
 
-        $this->assertInstanceOf(ChildConfig::class, $parent->property('child'));
-        $this->assertEquals('bar', $parent->property('child')->get('foo'));
+        // properties should exist in the config
+        $this->assertEquals('hello world', $parent->get('thing'));
+
+        // singular items should return the instance
+        $this->assertInstanceOf(ChildConfig::class, $parent->property('singular'));
+        $this->assertEquals('thing', $parent->property('singular')->get('name'));
+
+        // plural items should return a collection of instances
+        $this->assertInstanceOf(Collection::class, $parent->property('plural'));
+        $this->assertEquals('thing 1', $parent->property('plural')->get(0)->get('name'));
+        $this->assertEquals('thing 2', $parent->property('plural')->get(1)->get('name'));
     }
 }

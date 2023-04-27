@@ -3,6 +3,8 @@
 namespace Bedard\Backend\Configuration;
 
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 class Configuration
@@ -71,7 +73,11 @@ class Configuration
         $children = [];
         
         foreach ($this->config as $key => $data) {
-            if (array_key_exists($key, $this->properties)) {
+            if (is_array($data) && Arr::isList($data)) {
+                $children[$key] = collect($data)->map(fn ($d) => $this->properties[$key]::create($d));
+            }
+
+            elseif (is_array($data) && Arr::isAssoc($data)) {
                 $children[$key] = $this->properties[$key]::create($data);
             }
         }
@@ -123,15 +129,11 @@ class Configuration
      *
      * @param string $key
      *
-     * @return self|array|null
+     * @return Illuminate\Support\Collection|self|null
      */
-    public function property(string $key): self | array | null
+    public function property(string $key): Collection|self|null
     {
-        if (array_key_exists($key, $this->children)) {
-            return $this->children[$key];
-        }
-
-        return null;
+        return data_get($this->children, $key);
     }
 
     /**
