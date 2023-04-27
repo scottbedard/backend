@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\View\Components;
 
-use Bedard\Backend\Classes\ViteManifest;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;

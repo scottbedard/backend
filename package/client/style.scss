@@ -7,3 +7,34 @@ input[type='number'] {
   -moz-appearance: textfield !important;
   -webkit-appearance: none;
 }
+
+//
+// <x-backend::button>
+//
+.backend-btn {
+  @apply inline-flex font-bold gap-x-2 h-11 items-center justify-center rounded-md text-center text-sm text-gray-100 tracking-wide px-4;
+
+  &:disabled {
+    @apply opacity-70 pointer-events-none;
+  }
+
+  &:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  > svg {
+    @apply w-5;
+  }
+
+  &.backend-btn-default {
+    @apply bg-gray-300 text-gray-900 hover:bg-gray-300/90 hover:text-black;
+  }
+
+  &.backend-btn-danger {
+    @apply bg-danger-600 hover:bg-danger-600/90 hover:text-white;
+  }
+  
+  &.backend-btn-primary {
+    @apply bg-primary-600 hover:bg-primary-600/90 hover:text-white;
+  }
+}

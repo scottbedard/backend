@@ -6,18 +6,19 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Icon extends Component
+class Button extends Component
 {
     /**
      * Create a new component instance.
      *
-     * @param string $name
+     * @param ?string $icon
+     * @param ?string $theme
      *
      * @return void
      */
     public function __construct(
-        public string $name,
-        public string|int $size = 24,
+        public ?string $icon = null,
+        public ?string $theme = 'default',
     ) {}
 
     /**
@@ -25,6 +26,6 @@ class Icon extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('backend::components.icon');
+        return view('backend::components.button');
     }
 }

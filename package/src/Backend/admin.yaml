@@ -63,6 +63,7 @@ routes:
                 id:
                     disabled: true
                     label: ID
+                    required: true
                     span: 6
                 email:
                     span: 6

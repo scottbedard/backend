@@ -8,6 +8,23 @@ use Illuminate\View\View;
 class TextField extends Field
 {
     /**
+     * Validation rules
+     *
+     * @var array
+     */
+    protected array $rules = [
+        'max' => ['number'],
+        'maxlength' => ['number'],
+        'min' => ['number'],
+        'minlength' => ['number'],
+        'pattern' => ['string'],
+        'placeholder' => ['string'],
+        'readonly' => ['boolean'],
+        'required' => ['boolean'],
+        'stop' => ['number'],
+    ];
+
+    /**
      * Input type
      *
      * @var string
