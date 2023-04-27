@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Configuration;
 
+use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Facades\Validator;
 
 class Configuration
@@ -80,12 +81,19 @@ class Configuration
         $this->config = $config;
     }
 
+    /**
+     * Validate configuration
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
     protected function validate(): void
     {
         $validator = Validator::make($this->config, $this->rules);
         
         if ($validator->fails()) {
-            throw new Exception('Invalid backend config: ' . $validator->errors()->first());
+            throw new InvalidConfigurationException('Invalid backend configuration: ' . $validator->errors()->first());
         }
     }
 }

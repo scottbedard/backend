@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Bedard\Backend\Configuration\Configuration;
+use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Tests\TestCase;
 
 class ConfigurationTest extends TestCase
@@ -27,5 +28,14 @@ class ConfigurationTest extends TestCase
         $config = $class::create(['a' => 'b']);
         $this->assertEquals('b', $config->get('a'));
         $this->assertEquals('bar', $config->get('foo'));
+    }
+
+    public function test_invalid_config_throws_exception()
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $config = new class extends Configuration {
+            protected array $rules = ['id' => 'required'];
+        };
     }
 }
