@@ -81,7 +81,11 @@ class Configuration
             }
 
             if (is_array($prop) && count($prop) === 2) {
-                $children[$key] = collect(KeyedArray::of($data, $prop[1]))->map(fn ($d) => $prop[0]::create($d));
+                if (Arr::isList($data)) {
+                    $children[$key] = collect($data)->map(fn ($d) => $prop[0]::create($d));
+                } else {
+                    $children[$key] = collect(KeyedArray::of($data, $prop[1]))->map(fn ($d) => $prop[0]::create($d));
+                }
             }
 
             elseif (is_array($data) && Arr::isList($data)) {

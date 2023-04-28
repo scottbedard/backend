@@ -76,4 +76,20 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('bar', $parent->property('keyed')->get(1)->get('name'));
         $this->assertEquals('second', $parent->property('keyed')->get(1)->get('id'));
     }
+
+    public function test_keyed_array_with_sequential_value()
+    {
+        $parent = ParentConfig::create([
+            'keyed' => [
+                ['id' => 'first', 'name' => 'foo'],
+                ['id' => 'second', 'name' => 'bar'],
+            ],
+        ]);
+
+        $this->assertInstanceOf(Collection::class, $parent->property('keyed'));
+        $this->assertEquals('foo', $parent->property('keyed')->get(0)->get('name'));
+        $this->assertEquals('first', $parent->property('keyed')->get(0)->get('id'));
+        $this->assertEquals('bar', $parent->property('keyed')->get(1)->get('name'));
+        $this->assertEquals('second', $parent->property('keyed')->get(1)->get('id'));
+    }
 }
