@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Configuration;
 
+use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -73,12 +74,22 @@ class Configuration
         $children = [];
         
         foreach ($this->config as $key => $data) {
-            if (is_array($data) && Arr::isList($data)) {
-                $children[$key] = collect($data)->map(fn ($d) => $this->properties[$key]::create($d));
+            $prop = data_get($this->properties, $key);
+
+            if (!$prop) {
+                continue;
+            }
+
+            if (is_array($prop) && count($prop) === 2) {
+                $children[$key] = collect(KeyedArray::of($data, $prop[1]))->map(fn ($d) => $prop[0]::create($d));
+            }
+
+            elseif (is_array($data) && Arr::isList($data)) {
+                $children[$key] = collect($data)->map(fn ($d) => $prop::create($d));
             }
 
             elseif (is_array($data) && Arr::isAssoc($data)) {
-                $children[$key] = $this->properties[$key]::create($data);
+                $children[$key] = $prop::create($data);
             }
         }
 

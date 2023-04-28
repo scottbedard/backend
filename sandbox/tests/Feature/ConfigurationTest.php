@@ -51,6 +51,10 @@ class ConfigurationTest extends TestCase
                 ['name' => 'thing 1'],
                 ['name' => 'thing 2'],
             ],
+            'keyed' => [
+                'first' => ['name' => 'foo'],
+                'second' => ['name' => 'bar'],
+            ],
         ]);
 
         // properties should exist in the config
@@ -64,5 +68,12 @@ class ConfigurationTest extends TestCase
         $this->assertInstanceOf(Collection::class, $parent->property('plural'));
         $this->assertEquals('thing 1', $parent->property('plural')->get(0)->get('name'));
         $this->assertEquals('thing 2', $parent->property('plural')->get(1)->get('name'));
+
+        // keyed arrays are converted to a collection
+        $this->assertInstanceOf(Collection::class, $parent->property('keyed'));
+        $this->assertEquals('foo', $parent->property('keyed')->get(0)->get('name'));
+        $this->assertEquals('first', $parent->property('keyed')->get(0)->get('id'));
+        $this->assertEquals('bar', $parent->property('keyed')->get(1)->get('name'));
+        $this->assertEquals('second', $parent->property('keyed')->get(1)->get('id'));
     }
 }

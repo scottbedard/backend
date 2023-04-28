@@ -6,5 +6,4 @@ use Bedard\Backend\Configuration\Configuration;
 
 class ChildConfig extends Configuration
 {
-
 }
