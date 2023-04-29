@@ -59,20 +59,7 @@ class Configuration
      */
     public function __construct(array $yaml = [])
     {
-        $config = $yaml;
-
-        foreach ($this->keyed as $property => $key) {
-            if (Arr::has($config, $property) && Arr::isAssoc($config[$property])) {
-                $config[$property] = collect(KeyedArray::from($config[$property], $key))
-                    ->sortBy('order')
-                    ->values()
-                    ->toArray();
-            }
-        }
-
-        $this->config = $config;
-
-        $this->yaml = $config;
+        $this->yaml = $yaml;
 
         $this->build();
     }
@@ -84,6 +71,20 @@ class Configuration
      */
     protected function build(): void
     {
+        $config = $this->yaml;
+
+        // convert keyed arrays
+        foreach ($this->keyed as $property => $key) {
+            if (Arr::has($config, $property) && Arr::isAssoc($config[$property])) {
+                $config[$property] = collect(KeyedArray::from($config[$property], $key))
+                    ->sortBy('order')
+                    ->values()
+                    ->toArray();
+            }
+        }
+
+        $this->config = $config;
+
         // normalize yaml data
         $this->normalize();
 
