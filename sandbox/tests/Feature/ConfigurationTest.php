@@ -6,6 +6,7 @@ use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Collection;
 use Tests\Feature\Classes\ChildConfig;
+use Tests\Feature\Classes\KeyedArrayConfig;
 use Tests\Feature\Classes\ParentConfig;
 use Tests\TestCase;
 
@@ -51,10 +52,6 @@ class ConfigurationTest extends TestCase
                 ['name' => 'thing 1'],
                 ['name' => 'thing 2'],
             ],
-            'keyed' => [
-                'first' => ['name' => 'foo'],
-                'second' => ['name' => 'bar'],
-            ],
         ]);
 
         // properties should exist in the config
@@ -68,28 +65,67 @@ class ConfigurationTest extends TestCase
         $this->assertInstanceOf(Collection::class, $parent->property('plural'));
         $this->assertEquals('thing 1', $parent->property('plural')->get(0)->get('name'));
         $this->assertEquals('thing 2', $parent->property('plural')->get(1)->get('name'));
-
-        // keyed arrays are converted to a collection
-        $this->assertInstanceOf(Collection::class, $parent->property('keyed'));
-        $this->assertEquals('foo', $parent->property('keyed')->get(0)->get('name'));
-        $this->assertEquals('first', $parent->property('keyed')->get(0)->get('id'));
-        $this->assertEquals('bar', $parent->property('keyed')->get(1)->get('name'));
-        $this->assertEquals('second', $parent->property('keyed')->get(1)->get('id'));
     }
 
-    public function test_keyed_array_with_sequential_value()
+    public function test_keyed_array_with_sequential_values()
     {
-        $parent = ParentConfig::create([
-            'keyed' => [
-                ['id' => 'first', 'name' => 'foo'],
-                ['id' => 'second', 'name' => 'bar'],
+        $config = KeyedArrayConfig::create([
+            'things' => [
+                ['id' => 'foo', 'name' => 'hello'],
+                ['id' => 'bar', 'name' => 'world'],
+            ],
+        ]);
+        
+        $this->assertEquals([
+            'id' => 'foo',
+            'name' => 'hello',
+        ], $config->get('things.0'));
+
+        $this->assertEquals([
+            'id' => 'bar',
+            'name' => 'world',
+        ], $config->get('things.1'));
+    }
+
+    public function test_keyed_array_from_associative_values()
+    {
+        $config = KeyedArrayConfig::create([
+            'things' => [
+                'foo' => ['name' => 'hello'],
+                'bar' => ['name' => 'world'],
             ],
         ]);
 
-        $this->assertInstanceOf(Collection::class, $parent->property('keyed'));
-        $this->assertEquals('foo', $parent->property('keyed')->get(0)->get('name'));
-        $this->assertEquals('first', $parent->property('keyed')->get(0)->get('id'));
-        $this->assertEquals('bar', $parent->property('keyed')->get(1)->get('name'));
-        $this->assertEquals('second', $parent->property('keyed')->get(1)->get('id'));
+        $this->assertEquals([
+            'id' => 'foo',
+            'name' => 'hello',
+        ], $config->get('things.0'));
+
+        $this->assertEquals([
+            'id' => 'bar',
+            'name' => 'world',
+        ], $config->get('things.1'));
+    }
+
+    public function test_ordering_values_from_keyed_array()
+    {
+        $config = KeyedArrayConfig::create([
+            'things' => [
+                'foo' => ['name' => 'hello', 'order' => 1],
+                'bar' => ['name' => 'world', 'order' => 0],
+            ],
+        ]);
+
+        $this->assertEquals([
+            'id' => 'bar', // <- bar should be first because it's order is less than foo's
+            'name' => 'world',
+            'order' => 0,
+        ], $config->get('things.0'));
+
+        $this->assertEquals([
+            'id' => 'foo',
+            'name' => 'hello',
+            'order' => 1,
+        ], $config->get('things.1'));
     }
 }

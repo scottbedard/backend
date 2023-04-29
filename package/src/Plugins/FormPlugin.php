@@ -68,14 +68,7 @@ class FormPlugin extends Plugin
         data_fill($this->route, 'options.fields', []);
 
         // normalize fields
-        data_set($this->route, 'options.fields', KeyedArray::of($this->option('fields'), 'id'));
-
-        // href
-        // icon
-        // text
-        // theme
-        // to
-        // type
+        data_set($this->route, 'options.fields', KeyedArray::from($this->option('fields'), 'id'));
 
         // extend parent form
         $extends = $this->option('extends');
@@ -89,7 +82,7 @@ class FormPlugin extends Plugin
 
             $fields = collect($this->option('fields'));
 
-            $extensions = collect(KeyedArray::of($parent, 'id'))->map(function ($field) use ($fields) {
+            $extensions = collect(KeyedArray::from($parent, 'id'))->map(function ($field) use ($fields) {
                 $child = $fields->first(fn ($child) => $child['id'] === $field['id']);
 
                 if ($child) {

@@ -50,7 +50,7 @@ class ListPlugin extends Plugin
         data_fill($this->route, 'options.row_to', null);
         data_fill($this->route, 'options.schema', []);
 
-        data_set($this->route, 'options.schema', KeyedArray::of($this->route['options']['schema'], 'id'));
+        data_set($this->route, 'options.schema', KeyedArray::from($this->route['options']['schema'], 'id'));
 
         if ($this->route['options']['row_to']) {
             $this->route['options']['row_to'] = Href::format($this->route['options']['row_to'], $this->controller['path']);

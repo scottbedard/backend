@@ -25,6 +25,13 @@ class Configuration
     protected array $config = [];
 
     /**
+     * List of keyed arrays to be converted on instantiation
+     *
+     * @var array
+     */
+    protected array $keyed = [];
+
+    /**
      * Child properties
      *
      * @var array
@@ -52,7 +59,20 @@ class Configuration
      */
     public function __construct(array $yaml = [])
     {
-        $this->yaml = $yaml;
+        $config = $yaml;
+
+        foreach ($this->keyed as $property => $key) {
+            if (Arr::has($config, $property) && Arr::isAssoc($config[$property])) {
+                $config[$property] = collect(KeyedArray::from($config[$property], $key))
+                    ->sortBy('order')
+                    ->values()
+                    ->toArray();
+            }
+        }
+
+        $this->config = $config;
+
+        $this->yaml = $config;
 
         $this->build();
     }
@@ -78,21 +98,9 @@ class Configuration
 
             if (!$prop) {
                 continue;
-            }
-
-            if (is_array($prop) && count($prop) === 2) {
-                if (Arr::isList($data)) {
-                    $children[$key] = collect($data)->map(fn ($d) => $prop[0]::create($d));
-                } else {
-                    $children[$key] = collect(KeyedArray::of($data, $prop[1]))->map(fn ($d) => $prop[0]::create($d));
-                }
-            }
-
-            elseif (is_array($data) && Arr::isList($data)) {
+            } elseif (is_array($data) && Arr::isList($data)) {
                 $children[$key] = collect($data)->map(fn ($d) => $prop::create($d));
-            }
-
-            elseif (is_array($data) && Arr::isAssoc($data)) {
+            } elseif (is_array($data) && Arr::isAssoc($data)) {
                 $children[$key] = $prop::create($data);
             }
         }
@@ -136,7 +144,6 @@ class Configuration
      */
     protected function normalize(): void
     {
-        $this->config = $this->yaml;
     }
 
     /**
