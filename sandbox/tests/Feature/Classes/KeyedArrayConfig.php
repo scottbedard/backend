@@ -7,11 +7,11 @@ use Test\Feature\Classes\ChildConfig;
 
 class KeyedArrayConfig extends Configuration
 {
-    protected array $keyed = [
+    public array $keyed = [
         'things' => 'id',
     ];
 
-    protected array $properties = [
+    public array $properties = [
         'keyed' => ChildConfig::class,
     ];
 }

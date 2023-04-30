@@ -7,7 +7,7 @@ use Bedard\Backend\Configuration\Configuration;
 
 class ParentConfig extends Configuration
 {
-    protected array $properties = [
+    public array $properties = [
         'plural' => ChildConfig::class,
         'singular' => ChildConfig::class,
     ];

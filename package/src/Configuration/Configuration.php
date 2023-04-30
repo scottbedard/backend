@@ -15,42 +15,49 @@ class Configuration
      *
      * @var array
      */
-    protected array $children = [];
+    public array $children = [];
 
     /**
      * Normalized configuration data
      *
      * @var array
      */
-    protected array $config = [];
+    public array $config = [];
+
+    /**
+     * Default configuration values
+     *
+     * @var array
+     */
+    public array $defaults = [];
 
     /**
      * List of keyed arrays to be converted on instantiation
      *
      * @var array
      */
-    protected array $keyed = [];
+    public array $keyed = [];
 
     /**
      * Child properties
      *
      * @var array
      */
-    protected array $properties = [];
+    public array $properties = [];
 
     /**
      * Validation rules
      *
      * @var array
      */
-    protected array $rules = [];
+    public array $rules = [];
 
     /**
      * Raw yaml data
      *
      * @var array
      */
-    protected array $yaml;
+    public array $yaml;
 
     /**
      * Create a config
@@ -69,9 +76,14 @@ class Configuration
      *
      * @return void
      */
-    protected function build(): void
+    public function build(): void
     {
         $config = $this->yaml;
+
+        // fill default values
+        foreach ($this->defaults as $key => $value) {
+            data_fill($config, $key, $value);
+        }
 
         // convert keyed arrays
         foreach ($this->keyed as $property => $key) {
@@ -85,9 +97,6 @@ class Configuration
 
         $this->config = $config;
 
-        // normalize yaml data
-        $this->normalize();
-
         // validate configuration
         $this->validate();
 
@@ -97,11 +106,11 @@ class Configuration
         foreach ($this->config as $key => $data) {
             $prop = data_get($this->properties, $key);
 
-            if (!$prop) {
+            if (!$prop || !is_array($data)) {
                 continue;
-            } elseif (is_array($data) && Arr::isList($data)) {
+            } elseif (Arr::isList($data)) {
                 $children[$key] = collect($data)->map(fn ($d) => $prop::create($d));
-            } elseif (is_array($data) && Arr::isAssoc($data)) {
+            } elseif (Arr::isAssoc($data)) {
                 $children[$key] = $prop::create($data);
             }
         }
@@ -137,17 +146,6 @@ class Configuration
     }
 
     /**
-     * Normalize config data
-     *
-     * @param array $config
-     *
-     * @return void
-     */
-    protected function normalize(): void
-    {
-    }
-
-    /**
      * Get a child property
      *
      * @param string $key
@@ -166,7 +164,7 @@ class Configuration
      *
      * @return void
      */
-    protected function validate(): void
+    public function validate(): void
     {
         $validator = Validator::make($this->config, $this->rules);
         

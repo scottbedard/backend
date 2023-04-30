@@ -6,40 +6,19 @@ use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Collection;
 use Tests\Feature\Classes\ChildConfig;
+use Tests\Feature\Classes\DefaultValuesConfig;
 use Tests\Feature\Classes\KeyedArrayConfig;
 use Tests\Feature\Classes\ParentConfig;
 use Tests\TestCase;
 
 class ConfigurationTest extends TestCase
 {
-    public function test_config_normalize()
-    {
-        $class = new class extends Configuration {
-            protected function normalize(): void
-            {
-                $config = $this->yaml;
-
-                data_fill($config, 'foo', 'bar');
-
-                $this->config = $config;
-            }
-        };
-        
-        // ensure normalize works with empty values
-        $this->assertEquals('bar', $class::create()->get('foo'));
-
-        // test existing data can be preserved
-        $config = $class::create(['a' => 'b']);
-        $this->assertEquals('b', $config->get('a'));
-        $this->assertEquals('bar', $config->get('foo'));
-    }
-
     public function test_invalid_config_throws_exception()
     {
         $this->expectException(InvalidConfigurationException::class);
 
         $config = new class extends Configuration {
-            protected array $rules = ['id' => 'required'];
+            public array $rules = ['id' => 'required'];
         };
     }
 
@@ -127,5 +106,17 @@ class ConfigurationTest extends TestCase
             'name' => 'hello',
             'order' => 1,
         ], $config->get('things.1'));
+    }
+
+    public function test_setting_default_values()
+    {
+        $config = DefaultValuesConfig::create([
+            'foo' => 'some explicit value',
+        ]);
+
+        $this->assertEquals('some explicit value', $config->get('foo'));
+        $this->assertEquals('world', $config->get('hello'));
+        $this->assertEquals([], $config->get('things'));
+        $this->assertNull($config->get('blank'));
     }
 }
