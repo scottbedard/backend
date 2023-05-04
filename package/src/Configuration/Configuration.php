@@ -18,32 +18,25 @@ class Configuration
     public array $children = [];
 
     /**
-     * Normalized configuration data
+     * Normalized yaml data
      *
      * @var array
      */
     public array $config = [];
 
     /**
-     * Default configuration values
+     * Default configuration
      *
      * @var array
      */
-    public array $defaults = [];
+    public array $default = [];
 
     /**
-     * List of keyed arrays to be converted on instantiation
+     * Child property definitions
      *
      * @var array
      */
-    public array $keyed = [];
-
-    /**
-     * Child properties
-     *
-     * @var array
-     */
-    public array $properties = [];
+    public array $props = [];
 
     /**
      * Validation rules
@@ -68,54 +61,34 @@ class Configuration
     {
         $this->yaml = $yaml;
 
-        $this->build();
-    }
-
-    /**
-     * Build configuration tree
-     *
-     * @return void
-     */
-    public function build(): void
-    {
-        $config = $this->yaml;
-
         // fill default values
-        foreach ($this->defaults as $key => $value) {
+        $config = $yaml;
+
+        foreach ($this->default as $key => $value) {
             data_fill($config, $key, $value);
         }
 
-        // convert keyed arrays
-        foreach ($this->keyed as $property => $key) {
-            if (Arr::has($config, $property) && Arr::isAssoc($config[$property])) {
-                $config[$property] = collect(KeyedArray::from($config[$property], $key))
-                    ->sortBy('order')
-                    ->values()
-                    ->toArray();
+        // normalize arrays
+        foreach ($this->props as $key => $val) {
+            if (!is_array($val)) {
+                data_fill($config, $key, null);
+            } else {
+                if (!array_key_exists($key, $config)) {
+                    $config[$key] = [];
+                }
+
+                if (count($val) === 2) {
+                    [$class, $id] = $val;
+
+                    $config[$key] = collect(KeyedArray::from($config[$key], $id))
+                        ->sortBy('order')
+                        ->values()
+                        ->toArray();
+                }
             }
         }
 
         $this->config = $config;
-
-        // validate configuration
-        $this->validate();
-
-        // instantiate child properties
-        $children = [];
-        
-        foreach ($this->config as $key => $data) {
-            $prop = data_get($this->properties, $key);
-
-            if (!$prop || !is_array($data)) {
-                continue;
-            } elseif (Arr::isList($data)) {
-                $children[$key] = collect($data)->map(fn ($d) => $prop::create($d));
-            } elseif (Arr::isAssoc($data)) {
-                $children[$key] = $prop::create($data);
-            }
-        }
-
-        $this->children = $children;
     }
 
     /**
@@ -152,7 +125,7 @@ class Configuration
      *
      * @return Illuminate\Support\Collection|self|null
      */
-    public function property(string $key): Collection|self|null
+    public function prop(string $key): Collection|self|null
     {
         return data_get($this->children, $key);
     }

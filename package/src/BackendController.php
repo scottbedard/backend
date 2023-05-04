@@ -23,6 +23,8 @@ class BackendController extends Controller
     {
         $routeName = request()->route()->getName();
 
+        dd($routeName);
+
         $route = Backend::route($routeName);
 
         $plugin = new $route['plugin']($routeName);
