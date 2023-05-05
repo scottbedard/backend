@@ -108,9 +108,12 @@ class ConfigurationTest extends TestCase
         
         $grandchild = $parent->get('child.grandchild');
 
-        $this->assertEquals($parent, $child->parent);
         $this->assertInstanceOf(ChildConfig::class, $child);
         $this->assertInstanceOf(GrandchildConfig::class, $grandchild);
+
+        $this->assertEquals($parent, $parent->root());
+        $this->assertEquals($parent, $child->root());
+        $this->assertEquals($parent, $grandchild->root());
 
         $this->assertEquals(null, $parent->closest(ParentConfig::class));
         $this->assertEquals($parent, $child->closest(ParentConfig::class));

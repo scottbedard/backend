@@ -128,9 +128,9 @@ class Configuration implements ArrayAccess
     /**
      * Find the closest ancestor
      *
-     * 
+     * @return ?self
      */
-    public function closest(string $class)
+    public function closest(string $class): ?self
     {
         if ($this->parent) {
             return get_class($this->parent) === $class
@@ -209,5 +209,15 @@ class Configuration implements ArrayAccess
      */
     public function offsetUnset($offset) {
         throw new ConfigurationArrayAccessException;
+    }
+
+    /**
+     * Get the root ancestor
+     *
+     * @return self
+     */
+    public function root(): self
+    {
+        return $this->parent ? $this->parent->root() : $this;
     }
 }
