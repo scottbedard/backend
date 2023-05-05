@@ -34,6 +34,14 @@ class Configuration implements ArrayAccess
     public array $default = [];
 
     /**
+     * Parent config
+     *
+     * @var self|null
+     */
+    public ?self $parent;
+
+
+    /**
      * Child properties
      *
      * @var array
@@ -58,9 +66,11 @@ class Configuration implements ArrayAccess
      * Create a config
      *
      * @param array $yaml
+     * @param ?self $parent
      */
-    public function __construct(array $yaml = [])
+    public function __construct(array $yaml = [], ?self $parent = null)
     {
+        $this->parent = $parent;
         $this->yaml = $yaml;
 
         // fill default values
@@ -104,9 +114,11 @@ class Configuration implements ArrayAccess
             $prop = data_get($this->props, $key);
 
             if (is_array($prop)) {
-                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::create($item));
+                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::create($item, $this));
+            } elseif ($prop && is_array($val)) {
+                $data[$key] = $prop::create($val, $this);
             } else {
-                $data[$key] = $config[$key];
+                $data[$key] = $val;
             }
         }
 
@@ -114,17 +126,34 @@ class Configuration implements ArrayAccess
     }
 
     /**
+     * Find the closest ancestor
+     *
+     * 
+     */
+    public function closest(string $class)
+    {
+        if ($this->parent) {
+            return get_class($this->parent) === $class
+                ? $this->parent
+                : $this->parent->closest($class);
+        }
+
+        return null;
+    }
+
+    /**
      * Static constructor
      *
      * @param array $yaml
+     * @param ?self $parent
      *
      * @return self
      */
-    public static function create(array $yaml = []): self
+    public static function create(array $yaml = [], ?self $parent = null): self
     {
         $config = get_called_class();
         
-        return new $config($yaml);
+        return new $config($yaml, $parent);
     }
 
     /**

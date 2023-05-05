@@ -6,6 +6,9 @@ use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Collection;
 use Tests\Feature\Classes\BlankConfig;
+use Tests\Feature\Classes\ChildConfig;
+use Tests\Feature\Classes\GrandchildConfig;
+use Tests\Feature\Classes\ParentConfig;
 use Tests\Feature\Classes\TestConfig;
 use Tests\TestCase;
 
@@ -59,6 +62,7 @@ class ConfigurationTest extends TestCase
     {
         $config = TestConfig::create([
             'string' => 'hello',
+            'child' => ['name' => 'one'],
             'children' => [
                 ['name' => 'two'],
                 ['name' => 'three'],
@@ -74,17 +78,42 @@ class ConfigurationTest extends TestCase
         $this->assertInstanceOf(Collection::class, $config->get('other_children'));
         $this->assertInstanceOf(Collection::class, $config->get('other_keyed_children'));
 
+        $this->assertInstanceOf(BlankConfig::class, $config->get('child'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('children.0'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('children.1'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('keyed_children.0'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('keyed_children.1'));
         
         $this->assertEquals('hello', $config->get('string'));
+        $this->assertEquals('one', $config->get('child.name'));
         $this->assertEquals('two', $config->get('children.0.name'));
         $this->assertEquals('three', $config->get('children.1.name'));
         $this->assertEquals('foo', $config->get('keyed_children.0.id'));
         $this->assertEquals('four', $config->get('keyed_children.0.name'));
         $this->assertEquals('bar', $config->get('keyed_children.1.id'));
         $this->assertEquals('five', $config->get('keyed_children.1.name'));
+    }
+
+    public function test_ancestor_access()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'grandchild' => [
+                    'name' => 'hello',
+                ],
+            ],
+        ]);
+
+        $child = $parent->get('child');
+        
+        $grandchild = $parent->get('child.grandchild');
+
+        $this->assertEquals($parent, $child->parent);
+        $this->assertInstanceOf(ChildConfig::class, $child);
+        $this->assertInstanceOf(GrandchildConfig::class, $grandchild);
+
+        $this->assertEquals(null, $parent->closest(ParentConfig::class));
+        $this->assertEquals($parent, $child->closest(ParentConfig::class));
+        $this->assertEquals($parent, $grandchild->closest(ParentConfig::class));
     }
 }
