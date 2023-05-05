@@ -73,10 +73,12 @@ class ConfigurationTest extends TestCase
         $this->assertInstanceOf(Collection::class, $config->get('keyed_children'));
         $this->assertInstanceOf(Collection::class, $config->get('other_children'));
         $this->assertInstanceOf(Collection::class, $config->get('other_keyed_children'));
+
         $this->assertInstanceOf(BlankConfig::class, $config->get('children.0'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('children.1'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('keyed_children.0'));
         $this->assertInstanceOf(BlankConfig::class, $config->get('keyed_children.1'));
+        
         $this->assertEquals('hello', $config->get('string'));
         $this->assertEquals('two', $config->get('children.0.name'));
         $this->assertEquals('three', $config->get('children.1.name'));
