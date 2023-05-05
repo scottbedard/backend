@@ -2,21 +2,16 @@
 
 namespace Bedard\Backend\Configuration;
 
+use ArrayAccess;
 use Bedard\Backend\Classes\KeyedArray;
+use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
-class Configuration
+class Configuration implements ArrayAccess
 {
-    /**
-     * Child configuration
-     *
-     * @var array
-     */
-    public array $children = [];
-
     /**
      * Normalized yaml data
      *
@@ -25,14 +20,21 @@ class Configuration
     public array $config = [];
 
     /**
-     * Default configuration
+     * Configuration data
+     *
+     * @var array
+     */
+    public array $data = [];
+
+    /**
+     * Default data
      *
      * @var array
      */
     public array $default = [];
 
     /**
-     * Child property definitions
+     * Child properties
      *
      * @var array
      */
@@ -86,10 +88,29 @@ class Configuration
             }
         }
 
-        // save normalized config and validate
+        // validate and store the config
+        $validator = Validator::make($config, $this->rules);
+        
+        if ($validator->fails()) {
+            throw new InvalidConfigurationException('Invalid backend configuration: ' . $validator->errors()->first());
+        }
+
         $this->config = $config;
 
-        $this->validate();
+        // finalize data and instantiate props
+        $data = [];
+
+        foreach ($this->config as $key => $val) {
+            $prop = data_get($this->props, $key);
+
+            if (is_array($prop)) {
+                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::create($item));
+            } else {
+                $data[$key] = $config[$key];
+            }
+        }
+
+        $this->data = $data;
     }
 
     /**
@@ -116,34 +137,48 @@ class Configuration
      */
     public function get(string $path, $default = null)
     {
-        return data_get($this->config, $path, $default);
+        return data_get($this->data, $path, $default);
     }
 
     /**
-     * Get a child property
+     * Check offset existence
      *
-     * @param string $key
-     *
-     * @return Illuminate\Support\Collection|self|null
+     * @param $offset
      */
-    public function prop(string $key): Collection|self|null
-    {
-        return data_get($this->children, $key);
+    public function offsetExists($offset) {
+        return isset($this->data[$offset]);
     }
 
     /**
-     * Validate configuration
+     * Get data
      *
-     * @throws Exception
-     *
-     * @return void
+     * @param $offset
      */
-    public function validate(): void
+    public function offsetGet($offset) {
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+    }
+
+    /**
+     * Set data
+     *
+     * @param $offset
+     * @param $value
+     *
+     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     */
+    public function offsetSet($offset, $value)
     {
-        $validator = Validator::make($this->config, $this->rules);
-        
-        if ($validator->fails()) {
-            throw new InvalidConfigurationException('Invalid backend configuration: ' . $validator->errors()->first());
-        }
+        throw new ConfigurationArrayAccessException;
+    }
+
+    /**
+     * Unset data
+     *
+     * @param $offset
+     *
+     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     */
+    public function offsetUnset($offset) {
+        throw new ConfigurationArrayAccessException;
     }
 }
