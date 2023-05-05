@@ -73,9 +73,7 @@ class Configuration
             if (!is_array($val)) {
                 data_fill($config, $key, null);
             } else {
-                if (!array_key_exists($key, $config)) {
-                    $config[$key] = [];
-                }
+                data_fill($config, $key, []);
 
                 if (count($val) === 2) {
                     [$class, $id] = $val;
@@ -88,7 +86,10 @@ class Configuration
             }
         }
 
+        // save normalized config and validate
         $this->config = $config;
+
+        $this->validate();
     }
 
     /**

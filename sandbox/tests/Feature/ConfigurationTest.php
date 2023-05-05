@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Collection;
-use Tests\Feature\Classes\ChildConfig;
-use Tests\Feature\Classes\DefaultValuesConfig;
-use Tests\Feature\Classes\ParentConfig;
+use Tests\Feature\Classes\TestConfig;
 use Tests\TestCase;
 
 class ConfigurationTest extends TestCase
@@ -21,9 +19,9 @@ class ConfigurationTest extends TestCase
         };
     }
 
-    public function test_prop_definitions()
+    public function test_default_values_and_prop_normalizing()
     {
-        $config = ParentConfig::create([
+        $config = TestConfig::create([
             'child' => ['name' => 'one'],
             'children' => [
                 ['name' => 'two'],
@@ -48,18 +46,11 @@ class ConfigurationTest extends TestCase
             'other_child' => null,
             'other_children' => [],
             'other_keyed_children' => [],
+            'array' => [],
+            'bool' => true,
+            'int' => 1,
+            'null' => null,
+            'string' => 'string',
         ], $config->config);
-    }
-
-    public function test_setting_default_values()
-    {
-        $config = DefaultValuesConfig::create([
-            'foo' => 'some explicit value',
-        ]);
-
-        $this->assertEquals('some explicit value', $config->get('foo'));
-        $this->assertEquals('world', $config->get('hello'));
-        $this->assertEquals([], $config->get('things'));
-        $this->assertNull($config->get('blank'));
     }
 }
