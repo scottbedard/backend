@@ -2,48 +2,60 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Bedard\Backend\Classes\Backend;
-use Bedard\Backend\Configuration\Controller;
-use Bedard\Backend\Exceptions\DuplicateControllerIdException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Collection;
-use Spatie\Permission\Models\Permission;
+// use App\Models\User;
+// use Bedard\Backend\Classes\Backend;
+// use Bedard\Backend\Configuration\Controller;
+use Bedard\Backend\Exceptions\ConfigurationException;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Support\Collection;
+// use Spatie\Permission\Models\Permission;
+use Bedard\Backend\Configuration\Backend;
 use Tests\TestCase;
-use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Role;
 
 class BackendTest extends TestCase
 {
-    public function test_loading_a_single_backend_directory()
+    public function test_creating_backend_from_directory()
     {
-        $backend = Backend::from(__DIR__ . '/stubs');
+        $backend = Backend::create(__DIR__ . '/stubs/directory');
 
-        $this->assertInstanceOf(Collection::class, $backend->controllers);
-        $this->assertInstanceOf(Controller::class, $backend->controller('_blank')); // <- loaded from stubs directory
-        $this->assertNull($backend->controller('_controller_that_doesnt_exist'));
+        $this->assertEquals('foo', $backend->controller('foo')->get('id'));
+        $this->assertEquals('bar', $backend->controller('bar')->get('id'));
+    }
+
+    public function test_creating_backend_from_file()
+    {
+        $backend = Backend::create(
+            __DIR__ . '/stubs/_blank.yaml',
+        );
+        
+        $this->assertTrue($backend->get('controllers')->count() === 1);
+        $this->assertEquals('_blank', $backend->controller('_blank')->get('id'));
     }
 
     public function test_duplicate_controller_ids_throws_exception()
     {
-        $this->expectException(DuplicateControllerIdException::class);
+        $this->expectException(ConfigurationException::class);
 
-        $backend = Backend::from(
+        $backend = Backend::create(
             __DIR__ . '/stubs/_duplicate_id_a.yaml',
             __DIR__ . '/stubs/_duplicate_id_b.yaml',
         );
     }
     
-    // public function test_backend_controller_route_defaults()
-    // {
-    //     $backend = Backend::from(__DIR__ . '/stubs');
+    public function test_backend_controller_route_defaults()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
 
-    //     $index = $backend->route('backend.books.index');
+        $index = $backend->route('backend.books.index');
 
-    //     $this->assertNull($index['path']);
-    //     $this->assertEquals('App\Models\Book', $index['model']);
-    //     $this->assertEquals('Bedard\\Backend\\Plugins\\BladePlugin', $index['plugin']);
-    //     $this->assertEquals('backend::missing-plugin', $index['options']['view']);
-    // }
+        dd($index);
+
+        $this->assertNull($index['path']);
+        $this->assertEquals('App\Models\Book', $index['model']);
+        $this->assertEquals('Bedard\\Backend\\Plugins\\BladePlugin', $index['plugin']);
+        $this->assertEquals('backend::missing-plugin', $index['options']['view']);
+    }
 
     // public function test_creating_backend_from_explicit_files()
     // {

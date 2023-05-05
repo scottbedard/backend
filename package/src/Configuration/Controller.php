@@ -11,17 +11,13 @@ class Controller extends Configuration
         'subnav' => [],
     ];
 
-    public array $config = [
-        'nav' => Nav::class,
-        'routes' => [Route::class, 'path'],
-        'subnav' => [Subnav::class],
+    public array $props = [
+        // 'nav' => Nav::class,
+        'routes' => [Route::class, 'id'],
+        // 'subnav' => [Subnav::class],
     ];
 
     public array $rules = [
-        'nav' => ['present', 'nullable'],
-        'permissions.*' => ['string'],
-        'permissions' => ['present', 'array'],
-        'routes' => ['present', 'array'],
-        'subnav' => ['present', 'array'],
+        // ...
     ];
 }

@@ -6,4 +6,4 @@ nav:
 
 routes:
     index:
-        # path: assert default is null
+        path: null

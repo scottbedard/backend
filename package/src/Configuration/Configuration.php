@@ -5,7 +5,7 @@ namespace Bedard\Backend\Configuration;
 use ArrayAccess;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
-use Bedard\Backend\Exceptions\InvalidConfigurationException;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -56,13 +56,6 @@ class Configuration implements ArrayAccess
     public array $rules = [];
 
     /**
-     * Raw yaml data
-     *
-     * @var array
-     */
-    public array $yaml;
-
-    /**
      * Create a config
      *
      * @param array $yaml
@@ -71,7 +64,6 @@ class Configuration implements ArrayAccess
     public function __construct(array $yaml = [], ?self $parent = null)
     {
         $this->parent = $parent;
-        $this->yaml = $yaml;
 
         // fill default values
         $config = $yaml;
@@ -102,7 +94,7 @@ class Configuration implements ArrayAccess
         $validator = Validator::make($config, $this->rules);
         
         if ($validator->fails()) {
-            throw new InvalidConfigurationException('Invalid backend configuration: ' . $validator->errors()->first());
+            throw new ConfigurationException(get_called_class() . ' validation error: ' . $validator->errors()->first());
         }
 
         $this->config = $config;
@@ -144,16 +136,15 @@ class Configuration implements ArrayAccess
     /**
      * Static constructor
      *
-     * @param array $yaml
-     * @param ?self $parent
+     * @param $args
      *
      * @return self
      */
-    public static function create(array $yaml = [], ?self $parent = null): self
+    public static function create(...$args): self
     {
         $config = get_called_class();
         
-        return new $config($yaml, $parent);
+        return new $config(...$args);
     }
 
     /**
