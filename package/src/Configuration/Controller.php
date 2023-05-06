@@ -4,20 +4,16 @@ namespace Bedard\Backend\Configuration;
 
 class Controller extends Configuration
 {
-    public array $default = [
-        'nav' => null,
-        'permissions' => [],
+    public array $defaults = [
+        'model' => null,
         'routes' => [],
-        'subnav' => [],
     ];
 
     public array $props = [
-        // 'nav' => Nav::class,
         'routes' => [Route::class, 'id'],
-        // 'subnav' => [Subnav::class],
     ];
 
     public array $rules = [
-        // ...
+        'model' => ['nullable', 'string']
     ];
 }

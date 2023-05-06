@@ -31,7 +31,14 @@ class Configuration implements ArrayAccess
      *
      * @var array
      */
-    public array $default = [];
+    public array $defaults = [];
+
+    /**
+     * Inherited data
+     *
+     * @var array
+     */
+    public array $inherits = [];
 
     /**
      * Parent config
@@ -39,7 +46,6 @@ class Configuration implements ArrayAccess
      * @var self|null
      */
     public ?self $parent;
-
 
     /**
      * Child properties
@@ -63,12 +69,26 @@ class Configuration implements ArrayAccess
      */
     public function __construct(array $yaml = [], ?self $parent = null)
     {
-        $this->parent = $parent;
-
-        // fill default values
+        // inherit config and fill default values
         $config = $yaml;
 
-        foreach ($this->default as $key => $value) {
+        $this->parent = $parent;
+
+        foreach ($this->inherits as $key) {
+            $ancestor = $parent;
+
+            while ($ancestor) {
+                if (array_key_exists($key, $ancestor->config)) {
+                    data_fill($config, $key, $ancestor->config[$key]);
+
+                    break;
+                }
+
+                $ancestor = $ancestor->parent;
+            }
+        }
+
+        foreach ($this->defaults as $key => $value) {
             data_fill($config, $key, $value);
         }
 

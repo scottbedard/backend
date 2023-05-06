@@ -5,13 +5,14 @@ namespace Tests\Feature;
 // use App\Models\User;
 // use Bedard\Backend\Classes\Backend;
 // use Bedard\Backend\Configuration\Controller;
-use Bedard\Backend\Exceptions\ConfigurationException;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 // use Illuminate\Support\Collection;
 // use Spatie\Permission\Models\Permission;
-use Bedard\Backend\Configuration\Backend;
-use Tests\TestCase;
 // use Spatie\Permission\Models\Role;
+use Bedard\Backend\Configuration\Backend;
+use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Plugins\BladePlugin;
+use Tests\TestCase;
 
 class BackendTest extends TestCase
 {
@@ -49,12 +50,11 @@ class BackendTest extends TestCase
 
         $index = $backend->route('backend.books.index');
 
-        dd($index);
-
-        $this->assertNull($index['path']);
-        $this->assertEquals('App\Models\Book', $index['model']);
-        $this->assertEquals('Bedard\\Backend\\Plugins\\BladePlugin', $index['plugin']);
-        $this->assertEquals('backend::missing-plugin', $index['options']['view']);
+        $this->assertNull($index->get('path'));
+        $this->assertEquals('App\Models\Book', $index->get('model'));
+        $this->assertInstanceOf(BladePlugin::class, $index->get('plugin'));
+        $this->assertEquals([], $index->get('options'));
+        $this->assertEquals($index, $index->get('plugin')->parent);
     }
 
     // public function test_creating_backend_from_explicit_files()

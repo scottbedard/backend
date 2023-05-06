@@ -14,7 +14,7 @@ class Backend extends Configuration
      *
      * @var array
      */
-    public array $default = [
+    public array $defaults = [
         'controllers' => [],
     ];
 
@@ -89,34 +89,37 @@ class Backend extends Configuration
      * Get route definition
      *
      * @param string $route
+     *
+     * @return Bedard\Backend\Configuration\Route
      */
-    public function route(string $route): array
+    public function route(string $route): Route
     {
         if (str($route)->is('backend.*.*')) {
             [, $controllerId, $routeId] = str($route)->explode('.');
 
-            $route = $this
-                ->controller($controllerId)
-                ->get('routes')
-                ->first(fn ($r) => $r['id'] === $routeId);
+            $controller = $this->controller($controllerId);
 
-            $obj = $this->get("controllers.{$controllerId}.routes.{$routeId}");
-
-            if ($obj) {
-                return $obj;
+            if ($controller) {
+                $route = $controller
+                    ->get('routes')
+                    ->first(fn ($r) => $r->get('id') === $routeId);
+                
+                if ($route) {
+                    return $route;
+                }
             }
         }
 
         elseif (str($route)->is('backend.*')) {
-            $controllerId = '_root';
+            // $controllerId = '_root';
 
-            $routeId = str($route)->explode('.')->last();
+            // $routeId = str($route)->explode('.')->last();
 
-            $obj = $this->get("controllers.{$controllerId}.routes.{$routeId}");
+            // $obj = $this->get("controllers.{$controllerId}.routes.{$routeId}");
 
-            if ($obj) {
-                return $obj;
-            }
+            // if ($obj) {
+            //     return $obj;
+            // }
         }
         
         throw new ConfigurationException('Backend route not found: ' . $route);

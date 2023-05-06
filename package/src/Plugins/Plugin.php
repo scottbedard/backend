@@ -2,11 +2,12 @@
 
 namespace Bedard\Backend\Plugins;
 
+use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Configuration\Route;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class BladePlugin extends Plugin
+class Plugin extends Configuration
 {
     /**
      * Render a plugin.

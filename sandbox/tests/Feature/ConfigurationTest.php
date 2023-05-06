@@ -3,11 +3,12 @@
 namespace Tests\Feature;
 
 use Bedard\Backend\Configuration\Configuration;
-use Bedard\Backend\Exceptions\InvalidConfigurationException;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Support\Collection;
 use Tests\Feature\Classes\BlankConfig;
 use Tests\Feature\Classes\ChildConfig;
 use Tests\Feature\Classes\GrandchildConfig;
+use Tests\Feature\Classes\InheritConfig;
 use Tests\Feature\Classes\ParentConfig;
 use Tests\Feature\Classes\TestConfig;
 use Tests\TestCase;
@@ -16,7 +17,7 @@ class ConfigurationTest extends TestCase
 {
     public function test_invalid_config_throws_exception()
     {
-        $this->expectException(InvalidConfigurationException::class);
+        $this->expectException(ConfigurationException::class);
 
         $config = new class extends Configuration {
             public array $rules = ['id' => 'required'];
@@ -118,5 +119,18 @@ class ConfigurationTest extends TestCase
         $this->assertEquals(null, $parent->closest(ParentConfig::class));
         $this->assertEquals($parent, $child->closest(ParentConfig::class));
         $this->assertEquals($parent, $grandchild->closest(ParentConfig::class));
+    }
+
+    public function test_inheriting_parent_config()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'grandchild' => [],
+            ],
+        ]);
+
+        $this->assertNull($parent->get('child.name'));
+        
+        $this->assertEquals('foo', $parent->get('child.grandchild.name'));
     }
 }
