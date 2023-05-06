@@ -57,30 +57,15 @@ class BackendTest extends TestCase
         $this->assertEquals($index, $index->get('plugin')->parent);
     }
 
-    // public function test_creating_backend_from_explicit_files()
-    // {
-    //     $backend = Backend::from(__DIR__ . '/stubs/_blank.yaml');
+    public function test_getting_a_specific_controller()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/_blank.yaml');
 
-    //     $this->assertEquals(['_blank'], $backend->controllers()->keys()->toArray());
-    // }
-
-    // public function test_getting_a_specific_controller()
-    // {
-    //     $backend = Backend::from(__DIR__ . '/stubs/_blank.yaml');
+        $controller = $backend->controller('_blank');
         
-    //     $controller = $backend->controller('backend._blank');
-        
-    //     $this->assertEquals('_blank', $controller['id']);
-    // }
-
-    // public function test_getting_a_specific_routes_controller()
-    // {
-    //     $backend = Backend::from(__DIR__ . '/stubs/_blank.yaml');
-        
-    //     $controller = $backend->controller('backend._blank.index');
-        
-    //     $this->assertEquals('_blank', $controller['id']);
-    // }
+        $this->assertEquals($backend, $controller->parent);
+        $this->assertEquals('_blank', $controller->get('id'));
+    }
 
     // public function test_getting_controller_navs()
     // {

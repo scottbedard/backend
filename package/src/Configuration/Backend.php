@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 class Backend extends Configuration
 {
     /**
-     * Default
+     * Default data
      *
      * @var array
      */
@@ -19,7 +19,7 @@ class Backend extends Configuration
     ];
 
     /**
-     * Properties
+     * Child properties
      *
      * @var array
      */
@@ -28,8 +28,8 @@ class Backend extends Configuration
     ];
 
     /**
-     * Rules
-     * 
+     * Validation rules
+     *
      * @var array
      */
     public array $rules = [
@@ -37,13 +37,12 @@ class Backend extends Configuration
     ];
 
     /**
-     * Create a backend
+     * Construct
      *
-     * @param array $targets
+     * @param array $files
      */
     public function __construct(...$files)
     {
-        // read yaml files and build config
         $controllers = [];
 
         $parse = function (string $path) use (&$controllers, &$parse) {
@@ -108,18 +107,6 @@ class Backend extends Configuration
                     return $route;
                 }
             }
-        }
-
-        elseif (str($route)->is('backend.*')) {
-            // $controllerId = '_root';
-
-            // $routeId = str($route)->explode('.')->last();
-
-            // $obj = $this->get("controllers.{$controllerId}.routes.{$routeId}");
-
-            // if ($obj) {
-            //     return $obj;
-            // }
         }
         
         throw new ConfigurationException('Backend route not found: ' . $route);

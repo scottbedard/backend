@@ -41,7 +41,7 @@ class Configuration implements ArrayAccess
     public array $inherits = [];
 
     /**
-     * Parent config
+     * Parent
      *
      * @var self|null
      */
@@ -62,7 +62,7 @@ class Configuration implements ArrayAccess
     public array $rules = [];
 
     /**
-     * Create a config
+     * Construct
      *
      * @param array $yaml
      * @param ?self $parent

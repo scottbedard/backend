@@ -42,7 +42,7 @@ class Route extends Configuration
     ];
 
     /**
-     * Create a config
+     * Construct
      *
      * @param array $args
      */
