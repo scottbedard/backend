@@ -21,7 +21,9 @@
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <nav class="flex-1 flex gap-x-10 items-center">
         @foreach ($nav as $button)
-          <a class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white" href="{{ $button['href'] }}">
+          <a
+            class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white"
+            href="{{ $button->href() }}">
             @if ($button->get('icon'))
               <x-backend::icon :name="$button->get('icon')" size="20" />
             @endif
