@@ -11,6 +11,7 @@ class Controller extends Configuration
      */
     public array $defaults = [
         'model' => null,
+        'nav' => [],
         'permissions' => [],
         'routes' => [],
     ];
@@ -21,6 +22,7 @@ class Controller extends Configuration
      * @var array
      */
     public array $props = [
+        'nav' => [Nav::class],
         'routes' => [Route::class, 'id'],
     ];
 

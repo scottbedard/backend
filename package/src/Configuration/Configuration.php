@@ -99,7 +99,9 @@ class Configuration implements ArrayAccess
             } else {
                 data_fill($config, $key, []);
 
-                if (count($val) === 2) {
+                if (count($val) === 1 && Arr::isAssoc($config[$key])) {
+                    $config[$key] = [$config[$key]];
+                } elseif (count($val) === 2) {
                     [$class, $id] = $val;
 
                     $config[$key] = collect(KeyedArray::from($config[$key], $id))

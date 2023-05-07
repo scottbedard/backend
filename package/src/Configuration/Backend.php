@@ -96,6 +96,20 @@ class Backend extends Configuration
     }
 
     /**
+     * Get all root level navigation
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function nav(): Collection
+    {
+        return $this->controllers()
+            ->map(fn ($controller) => $controller->get('nav'))
+            ->flatten()
+            ->sortBy('order')
+            ->values();
+    }
+
+    /**
      * Get route definition
      *
      * @param string $route

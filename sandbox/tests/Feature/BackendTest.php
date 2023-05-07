@@ -12,6 +12,7 @@ namespace Tests\Feature;
 use Bedard\Backend\Configuration\Backend;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Plugins\BladePlugin;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class BackendTest extends TestCase
@@ -93,6 +94,25 @@ class BackendTest extends TestCase
         
         $this->assertNull($backend->controller('_blank')->path());
         $this->assertEquals('books', $backend->controller('books')->path());
+    }
+
+    public function test_ordered_controller_navs()
+    {
+        $backend = Backend::create(
+            __DIR__ . '/stubs/_nav_order_1.yaml',
+            __DIR__ . '/stubs/_nav_order_2.yaml',
+            __DIR__ . '/stubs/_nav_double.yaml',
+        );
+        
+        $nav = $backend->nav();
+
+        $this->assertInstanceOf(Collection::class, $nav);
+        $this->assertEquals(4, $nav->count());
+        
+        $this->assertEquals('Zero', $nav->get('0')->get('label'));     
+        $this->assertEquals('One', $nav->get('1')->get('label'));     
+        $this->assertEquals('Two', $nav->get('2')->get('label'));     
+        $this->assertEquals('Three', $nav->get('3')->get('label'));        
     }
 
     // public function test_getting_controller_navs()

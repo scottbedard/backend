@@ -95,6 +95,19 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('five', $config->get('keyed_children.1.name'));
     }
 
+    public function test_single_item_from_assoc_array()
+    {
+        $config = TestConfig::create([
+            'children' => [
+                'name' => 'foo',
+            ],
+        ]);
+        
+        $this->assertEquals(1, $config->get('children')->count());
+        $this->assertInstanceOf(BlankConfig::class, $config->get('children.0'));
+        $this->assertEquals('foo', $config->get('children.0.name'));
+    }
+
     public function test_ancestor_access()
     {
         $parent = ParentConfig::create([
