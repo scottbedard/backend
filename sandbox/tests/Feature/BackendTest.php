@@ -6,13 +6,13 @@ namespace Tests\Feature;
 // use Bedard\Backend\Configuration\Controller;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 // use Illuminate\Support\Collection;
-use Spatie\Permission\Models\Permission;
-// use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Bedard\Backend\Configuration\Backend;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Plugins\BladePlugin;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class BackendTest extends TestCase
@@ -65,6 +65,10 @@ class BackendTest extends TestCase
         $readThings = Permission::firstOrCreate(['name' => 'read things']);
         $superAdmin = Permission::firstOrCreate(['name' => config('backend.super_admin_role')]);
 
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $admin->givePermissionTo($readThings);
+        $admin->givePermissionTo($readBooks);
+
         // alice has no permissions
         $alice = User::factory()->create();
 
@@ -87,6 +91,10 @@ class BackendTest extends TestCase
         $emily = User::factory()->create();
         $emily->givePermissionTo($superAdmin);
 
+        // frank can read things and books via a role
+        $frank = User::factory()->create();
+        $frank->assignRole($admin);
+
         // everyone but alice can access the controller
         $backend = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml');
         $this->assertEquals(0, $backend->controllers($alice)->count());
@@ -94,6 +102,7 @@ class BackendTest extends TestCase
         $this->assertEquals(1, $backend->controllers($cindy)->count());
         $this->assertEquals(1, $backend->controllers($dave)->count());
         $this->assertEquals(1, $backend->controllers($emily)->count());
+        $this->assertEquals(1, $backend->controllers($frank)->count());
 
         // alice has no nav
         $this->assertEquals(0, $backend->nav($alice)->count());
@@ -113,6 +122,17 @@ class BackendTest extends TestCase
         $this->assertEquals(2, $daveNav->count());
         $this->assertEquals('Home', $daveNav->first()->get('label'));
         $this->assertEquals('Books', $daveNav->last()->get('label'));
+
+        // emily is super admin and can access everything
+        $emilyNav = $backend->nav($emily);
+        $this->assertEquals(2, $emilyNav->count());
+        $this->assertEquals('Home', $emilyNav->first()->get('label'));
+        $this->assertEquals('Books', $emilyNav->last()->get('label'));
+
+        // frank is admin and can access everything
+        $frankNav = $backend->nav($frank);
+        $this->assertEquals('Home', $frankNav->first()->get('label'));
+        $this->assertEquals('Books', $frankNav->last()->get('label'));
     }
 
     public function test_getting_a_specific_controller()
