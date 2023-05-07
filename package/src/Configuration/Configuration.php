@@ -119,7 +119,7 @@ class Configuration implements ArrayAccess
 
         $this->config = $config;
 
-        // finalize data and instantiate props
+        // finalize data and instantiate child props
         $data = [];
 
         foreach ($this->config as $key => $val) {

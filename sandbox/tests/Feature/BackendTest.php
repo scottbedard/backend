@@ -57,6 +57,14 @@ class BackendTest extends TestCase
         $this->assertEquals($index, $index->get('plugin')->parent);
     }
 
+    public function test_getting_all_controllers()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
+
+        $this->assertEquals(1, $backend->controllers()->count());
+        $this->assertEquals('books', $backend->controllers()->first()->get('id'));
+    }
+
     public function test_getting_a_specific_controller()
     {
         $backend = Backend::create(__DIR__ . '/stubs/_blank.yaml');
@@ -65,6 +73,26 @@ class BackendTest extends TestCase
         
         $this->assertEquals($backend, $controller->parent);
         $this->assertEquals('_blank', $controller->get('id'));
+    }
+
+    public function test_route_getting_data_from_controller()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
+        
+        $route = $backend->route('backend.books.index');
+
+        $this->assertEquals('books', $route->controller()->get('id'));
+    }
+
+    public function test_default_controller_paths()
+    {
+        $backend = Backend::create(
+            __DIR__ . '/stubs/_blank.yaml',
+            __DIR__ . '/stubs/books.yaml',
+        );
+        
+        $this->assertNull($backend->controller('_blank')->get('path'));
+        $this->assertEquals('books', $backend->controller('books')->get('path'));
     }
 
     // public function test_getting_controller_navs()

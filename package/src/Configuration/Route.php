@@ -56,9 +56,19 @@ class Route extends Configuration
         $plugin = data_get($plugins, $this->config['plugin'], $this->config['plugin']);
 
         if ($plugin !== Plugin::class && !is_subclass_of($plugin, Plugin::class)) {
-            throw new ConfigurationException('Invalid plugin class "' . $this->config['plugin'] . '"');
+            throw new ConfigurationException('Invalid plugin class "' . $plugin . '"');
         }
 
         $this->data['plugin'] = $plugin::create($this->config['options'], $this);
+    }
+
+    /**
+     * Get the route's controller
+     *
+     * @return \Bedard\Backend\Configuration\Controller
+     */
+    public function controller(): Controller
+    {
+        return $this->closest(Controller::class);
     }
 }

@@ -4,6 +4,7 @@ namespace Bedard\Backend\Configuration;
 
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
 
@@ -81,7 +82,17 @@ class Backend extends Configuration
      */
     public function controller(string $id): ?Configuration
     {
-        return $this->get('controllers')->first(fn ($item) => $item->get('id') === $id);
+        return $this->controllers()->first(fn ($item) => $item->get('id') === $id);
+    }
+
+    /**
+     * Get all controllers
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function controllers(): Collection
+    {
+        return $this->get('controllers');
     }
 
     /**
