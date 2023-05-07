@@ -134,17 +134,4 @@ class FormPlugin extends Plugin
     //         ->values()
     //         ->toArray();
     // }
-
-    /**
-     * Plugin view
-     *
-     * @return \Illuminate\View\View
-     */
-    public function view(): View
-    {
-        return view('backend::form', [
-            // 'fields' => $this->fields(),
-            // 'options' => $this->options(),
-        ]);
-    }
 }

@@ -37,17 +37,20 @@ class Controller extends Configuration
     ];
 
     /**
-     * Construct
+     * Path
      *
-     * @param array $yaml
-     * @param ?Configuration $parent
+     * @return ?string
      */
-    public function __construct(array $config = [], ?Configuration $parent = null)
-    {
-        if (!array_key_exists('path', $config) && !str_starts_with($config['id'], '_')) {
-            $config['path'] = str($config['id'])->slug()->toString();
+    public function path(): ?string
+    {        
+        if (array_key_exists('path', $this->data)) {
+            return $this->data['path'];
         }
 
-        parent::__construct($config, $parent);
+        $id = $this->get('id');
+
+        return str_starts_with($id, '_')
+            ? null
+            : str($id)->slug()->toString();
     }
 }

@@ -65,22 +65,22 @@ class ListPlugin extends Plugin
     //     }
     // }
 
-    /**
-     * Render the plugin
-     *
-     * @return \Illuminate\View\View
-     */
-    public function view(): View
-    {
-        $model = $this->route['model'];
+    // /**
+    //  * Render the plugin
+    //  *
+    //  * @return \Illuminate\View\View
+    //  */
+    // public function view(): View
+    // {
+    //     $model = $this->route['model'];
 
-        $query = $model::query();
+    //     $query = $model::query();
 
-        return view('backend::list', [
-            'props' => [
-                'data' => Paginator::for($query),
-                'options' => $this->route['options'],
-            ],
-        ]);
-    }
+    //     return view('backend::list', [
+    //         'props' => [
+    //             'data' => Paginator::for($query),
+    //             'options' => $this->route['options'],
+    //         ],
+    //     ]);
+    // }
 }

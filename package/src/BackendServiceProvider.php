@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend;
 
+use Bedard\Backend\Configuration\Backend;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -55,10 +56,7 @@ class BackendServiceProvider extends ServiceProvider
     {
         // register backend facade
         $this->app->singleton('backend', function () {
-            return new \Bedard\Backend\Classes\Backend([
-                __DIR__ . '/Backend',
-                config('backend.backend_directory'),
-            ]);
+            return Backend::create(__DIR__ . '/Backend', config('backend.backend_directory'));
         });
     }
 }

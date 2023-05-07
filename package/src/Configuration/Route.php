@@ -17,6 +17,7 @@ class Route extends Configuration
         'model' => null,
         'options' => [],
         'path' => null,
+        'permissions' => [],
         'plugin' => BladePlugin::class,
     ];
 
@@ -38,29 +39,10 @@ class Route extends Configuration
         'model' => ['nullable', 'string'],
         'options' => ['present', 'array'],
         'path' => ['nullable', 'string'],
+        'permissions.*' => ['string'],
+        'permissions' => ['present', 'array'],
         'plugin' => ['nullable', 'string'],
     ];
-
-    /**
-     * Construct
-     *
-     * @param array $args
-     */
-    public function __construct(...$args)
-    {
-        parent::__construct(...$args);
-
-        // set data to plugin instance
-        $plugins = config('backend.plugins', []);
-
-        $plugin = data_get($plugins, $this->config['plugin'], $this->config['plugin']);
-
-        if ($plugin !== Plugin::class && !is_subclass_of($plugin, Plugin::class)) {
-            throw new ConfigurationException('Invalid plugin class "' . $plugin . '"');
-        }
-
-        $this->data['plugin'] = $plugin::create($this->config['options'], $this);
-    }
 
     /**
      * Get the route's controller
@@ -70,5 +52,43 @@ class Route extends Configuration
     public function controller(): Controller
     {
         return $this->closest(Controller::class);
+    }
+
+    /**
+     * Path
+     *
+     * @return ?string
+     */
+    public function path(): ?string
+    {
+        if (array_key_exists('path', $this->data)) {
+            return $this->data['path'];
+        }
+
+        $id = $this->get('id');
+
+        return str_starts_with($id, '_')
+            ? null
+            : str($id)->slug()->toString();
+    }
+
+    /**
+     * Create plugin instance
+     *
+     * @return \Bedard\Backend\Plugins\Plugin
+     */
+    public function plugin(): Plugin
+    {
+        $plugins = config('backend.plugins', []);
+
+        $plugin = $this->get('plugin');
+
+        $class = data_get($plugins, $plugin, $plugin);
+
+        if ($class !== Plugin::class && !is_subclass_of($class, Plugin::class)) {
+            throw new ConfigurationException('Invalid plugin class "' . $class . '"');
+        }
+
+        return $class::create($this->config['options'], $this);
     }
 }

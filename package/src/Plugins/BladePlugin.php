@@ -11,12 +11,9 @@ class BladePlugin extends Plugin
     /**
      * Render a plugin.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Bedard\Backend\Configuration\Route $route
-     *
      * @return \Illuminate\View\View
      */
-    public function render(Request $request, Route $route): View
+    public function render(): View
     {
         return view('backend::missing-plugin');
     }

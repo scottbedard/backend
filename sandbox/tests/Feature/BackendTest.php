@@ -52,9 +52,9 @@ class BackendTest extends TestCase
 
         $this->assertNull($index->get('path'));
         $this->assertEquals('App\Models\Book', $index->get('model'));
-        $this->assertInstanceOf(BladePlugin::class, $index->get('plugin'));
+        $this->assertInstanceOf(BladePlugin::class, $index->plugin());
         $this->assertEquals([], $index->get('options'));
-        $this->assertEquals($index, $index->get('plugin')->parent);
+        $this->assertEquals($index, $index->plugin()->parent);
     }
 
     public function test_getting_all_controllers()
@@ -91,8 +91,8 @@ class BackendTest extends TestCase
             __DIR__ . '/stubs/books.yaml',
         );
         
-        $this->assertNull($backend->controller('_blank')->get('path'));
-        $this->assertEquals('books', $backend->controller('books')->get('path'));
+        $this->assertNull($backend->controller('_blank')->path());
+        $this->assertEquals('books', $backend->controller('books')->path());
     }
 
     // public function test_getting_controller_navs()
