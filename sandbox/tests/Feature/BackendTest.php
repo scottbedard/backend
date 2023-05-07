@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-// use Bedard\Backend\Classes\Backend;
-// use Bedard\Backend\Configuration\Controller;
-// use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Support\Collection;
 use App\Models\User;
 use Bedard\Backend\Configuration\Backend;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Plugins\BladePlugin;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -17,6 +14,8 @@ use Tests\TestCase;
 
 class BackendTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_creating_backend_from_directory()
     {
         $backend = Backend::create(__DIR__ . '/stubs/directory');
@@ -97,6 +96,7 @@ class BackendTest extends TestCase
 
         // everyone but alice can access the controller
         $backend = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml');
+        
         $this->assertEquals(0, $backend->controllers($alice)->count());
         $this->assertEquals(1, $backend->controllers($bob)->count());
         $this->assertEquals(1, $backend->controllers($cindy)->count());

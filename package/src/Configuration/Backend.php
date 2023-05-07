@@ -104,7 +104,7 @@ class Backend extends Configuration
                 if (!$user) {
                     return true;
                 }
-
+                
                 if ($super && $user->hasPermissionTo($super)) {
                     return true;
                 }
