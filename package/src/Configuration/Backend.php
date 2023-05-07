@@ -78,12 +78,13 @@ class Backend extends Configuration
      * Get controller by ID
      *
      * @param string $id
+     * @param ?\Illuminate\Foundation\Auth\User $user
      *
      * @return ?\Bedard\Backend\Configuration\Configuration
      */
-    public function controller(string $id): ?Configuration
+    public function controller(string $id, ?User $user = null): ?Configuration
     {
-        return $this->controllers()->first(fn ($item) => $item->get('id') === $id);
+        return $this->controllers($user)->first(fn ($item) => $item->get('id') === $id);
     }
 
     /**
@@ -95,9 +96,22 @@ class Backend extends Configuration
      */
     public function controllers(?User $user = null): Collection
     {
+        $super = config('backend.super_admin_role');
+
         return $this
             ->get('controllers')
-            ->filter(fn ($controller) => !$user || $user->hasAllPermissions($controller->get('permissions')));
+            ->filter(function ($controller) use ($user, $super) {
+                if (!$user) {
+                    return true;
+                }
+
+                if ($super && $user->hasPermissionTo($super)) {
+                    return true;
+                }
+
+                return $user->hasAllPermissions($controller->get('permissions'));
+            })
+            ->values();
     }
 
     /**
@@ -107,13 +121,25 @@ class Backend extends Configuration
      *
      * @return \Illuminate\Support\Collection
      */
-    public function nav(?User $user): Collection
+    public function nav(?User $user = null): Collection
     {
+        $super = config('backend.super_admin_role');
+
         return $this->controllers($user)
                 ->map(fn ($controller) => $controller->get('nav'))
                 ->flatten()
                 ->sortBy('order')
-                ->filter(fn ($nav) => !$user || $user->hasAllPermissions($nav->get('permissions')))
+                ->filter(function ($nav) use ($user, $super) {
+                    if (!$user) {
+                        return true;
+                    }
+    
+                    if ($super && $user->hasPermissionTo($super)) {
+                        return true;
+                    }
+    
+                    return $user->hasAllPermissions($nav->get('permissions'));
+                })
                 ->values();
     }
 

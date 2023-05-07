@@ -63,6 +63,7 @@ class BackendTest extends TestCase
         $readBooks = Permission::firstOrCreate(['name' => 'read books']);
         $readCategories = Permission::firstOrCreate(['name' => 'read categories']);
         $readThings = Permission::firstOrCreate(['name' => 'read things']);
+        $superAdmin = Permission::firstOrCreate(['name' => config('backend.super_admin_role')]);
 
         // alice has no permissions
         $alice = User::factory()->create();
@@ -82,13 +83,17 @@ class BackendTest extends TestCase
         $dave->givePermissionTo($readBooks);
         $dave->givePermissionTo($readCategories);
 
-        $backend = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml');
+        // emily is a super-admin, and can access everything
+        $emily = User::factory()->create();
+        $emily->givePermissionTo($superAdmin);
 
         // everyone but alice can access the controller
+        $backend = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml');
         $this->assertEquals(0, $backend->controllers($alice)->count());
         $this->assertEquals(1, $backend->controllers($bob)->count());
         $this->assertEquals(1, $backend->controllers($cindy)->count());
         $this->assertEquals(1, $backend->controllers($dave)->count());
+        $this->assertEquals(1, $backend->controllers($emily)->count());
 
         // alice has no nav
         $this->assertEquals(0, $backend->nav($alice)->count());
@@ -158,45 +163,6 @@ class BackendTest extends TestCase
         $this->assertEquals('Two', $nav->get('2')->get('label'));     
         $this->assertEquals('Three', $nav->get('3')->get('label'));        
     }
-
-    // public function test_getting_controller_navs()
-    // {
-    //     $backend = Backend::from(__DIR__ . '/stubs/books.yaml');
-        
-    //     $nav = $backend->nav();
-        
-    //     $this->assertEquals([
-    //         [
-    //             'href' => null,
-    //             'icon' => 'book',
-    //             'label' => 'Books',
-    //             'order' => 0,
-    //             'permissions' => [],
-    //             'to' => null,
-    //         ],
-    //     ], $nav);
-    // }
-
-    // public function test_getting_protected_controller_navs()
-    // {
-    //     $backend = Backend::from(
-    //         __DIR__ . '/stubs/_protected_nav.yaml',
-    //         __DIR__ . '/stubs/_unprotected_nav.yaml',
-    //     );
-
-    //     Permission::firstOrCreate(['name' => 'read books']);
-        
-    //     // alice can read books
-    //     $alice = User::factory()->create();
-    //     $alice->givePermissionTo('read books');
-
-    //     $this->assertEquals(2, count($backend->nav($alice)));
-
-    //     // bob can't
-    //     $bob = User::factory()->create();
-
-    //     $this->assertEquals(1, count($backend->nav($bob)));
-    // }
 
     // public function test_getting_protected_controller_subnavs()
     // {
