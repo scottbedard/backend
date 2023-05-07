@@ -7,6 +7,7 @@ use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 use Symfony\Component\Yaml\Yaml;
 
 class Backend extends Configuration
@@ -75,6 +76,39 @@ class Backend extends Configuration
     }
 
     /**
+     * Test if a user has permissions
+     *
+     * @param \Illuminate\Foundation\Auth\User $user
+     * @param array $permissions
+     *
+     * @return bool
+     */
+    public function check(User $user, array $permissions)
+    {
+        foreach ($permissions as $permission) {
+            if (!$user->can($permission)) {
+                return false;
+            }
+        }
+
+        return true;
+
+        // try {
+        //     $super = config('backend.super_admin_role');
+
+        //     if ($super && $user->hasRole($super)) {
+        //         return true;
+        //     }
+        // } catch (PermissionDoesNotExist $e) { }
+
+        // try {
+        //     return $user->hasAllPermissions($permissions);
+        // } catch (PermissionDoesNotExist $e) {
+        //     return false;
+        // }
+    }
+
+    /**
      * Get controller by ID
      *
      * @param string $id
@@ -100,17 +134,7 @@ class Backend extends Configuration
 
         return $this
             ->get('controllers')
-            ->filter(function ($controller) use ($user, $super) {
-                if (!$user) {
-                    return true;
-                }
-                
-                if ($super && $user->hasPermissionTo($super)) {
-                    return true;
-                }
-
-                return $user->hasAllPermissions($controller->get('permissions'));
-            })
+            ->filter(fn ($controller) => !$user || $this->check($user, $controller->get('permissions')))
             ->values();
     }
 
@@ -129,17 +153,7 @@ class Backend extends Configuration
                 ->map(fn ($controller) => $controller->get('nav'))
                 ->flatten()
                 ->sortBy('order')
-                ->filter(function ($nav) use ($user, $super) {
-                    if (!$user) {
-                        return true;
-                    }
-    
-                    if ($super && $user->hasPermissionTo($super)) {
-                        return true;
-                    }
-    
-                    return $user->hasAllPermissions($nav->get('permissions'));
-                })
+                ->filter(fn ($nav) => !$user || $this->check($user, $nav->get('permissions')))
                 ->values();
     }
 

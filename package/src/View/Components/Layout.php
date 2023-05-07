@@ -32,15 +32,13 @@ class Layout extends Component
 
         $user = auth()->user();
 
-        // $nav = Backend::nav($user);
-
         // $subnav = Backend::subnav($routeName, $user);
         
         return view('backend::components.layout', [
             'dev' => $dev,
             'logout' => config('backend.logout_href'),
             'manifest' => $manifest,
-            'nav' => [],
+            'nav' => Backend::nav($user),
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
             'subnav' => [],

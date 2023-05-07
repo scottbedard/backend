@@ -62,7 +62,7 @@ class BackendTest extends TestCase
         $readBooks = Permission::firstOrCreate(['name' => 'read books']);
         $readCategories = Permission::firstOrCreate(['name' => 'read categories']);
         $readThings = Permission::firstOrCreate(['name' => 'read things']);
-        $superAdmin = Permission::firstOrCreate(['name' => config('backend.super_admin_role')]);
+        $superAdmin = Role::firstOrCreate(['name' => config('backend.super_admin_role')]);
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->givePermissionTo($readThings);
@@ -88,7 +88,7 @@ class BackendTest extends TestCase
 
         // emily is a super-admin, and can access everything
         $emily = User::factory()->create();
-        $emily->givePermissionTo($superAdmin);
+        $emily->assignRole($superAdmin);
 
         // frank can read things and books via a role
         $frank = User::factory()->create();
