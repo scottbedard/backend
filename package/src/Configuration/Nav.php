@@ -12,6 +12,7 @@ class Nav extends Configuration
     public array $defaults = [
         'icon' => null,
         'order' => 0,
+        'permissions' => [],
     ];
 
     /**
@@ -23,6 +24,8 @@ class Nav extends Configuration
         'icon' => ['nullable', 'string'],
         'label' => ['required', 'string'],
         'order' => ['required', 'int'],
+        'permissions.*' => ['string'],
+        'permissions' => ['present', 'array'],
         'to' => ['required' => 'string'],
     ];
 }

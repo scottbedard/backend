@@ -4,6 +4,7 @@ namespace Bedard\Backend\Configuration;
 
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationException;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
@@ -78,7 +79,7 @@ class Backend extends Configuration
      *
      * @param string $id
      *
-     * @return ?Bedard\Backend\Configuration\Configuration
+     * @return ?\Bedard\Backend\Configuration\Configuration
      */
     public function controller(string $id): ?Configuration
     {
@@ -86,27 +87,34 @@ class Backend extends Configuration
     }
 
     /**
-     * Get all controllers
+     * Get controllers
      *
-     * @return Illuminate\Support\Collection
+     * @param ?\Illuminate\Foundation\Auth\User $user
+     *
+     * @return \Illuminate\Support\Collection
      */
-    public function controllers(): Collection
+    public function controllers(?User $user = null): Collection
     {
-        return $this->get('controllers');
+        return $this
+            ->get('controllers')
+            ->filter(fn ($controller) => !$user || $user->hasAllPermissions($controller->get('permissions')));
     }
 
     /**
-     * Get all root level navigation
+     * Get top level navigation
+     * 
+     * @param ?\Illuminate\Foundation\Auth\User $user
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
-    public function nav(): Collection
+    public function nav(?User $user): Collection
     {
-        return $this->controllers()
-            ->map(fn ($controller) => $controller->get('nav'))
-            ->flatten()
-            ->sortBy('order')
-            ->values();
+        return $this->controllers($user)
+                ->map(fn ($controller) => $controller->get('nav'))
+                ->flatten()
+                ->sortBy('order')
+                ->filter(fn ($nav) => !$user || $user->hasAllPermissions($nav->get('permissions')))
+                ->values();
     }
 
     /**
@@ -114,7 +122,7 @@ class Backend extends Configuration
      *
      * @param string $route
      *
-     * @return Bedard\Backend\Configuration\Route
+     * @return \Bedard\Backend\Configuration\Route
      */
     public function route(string $route): Route
     {

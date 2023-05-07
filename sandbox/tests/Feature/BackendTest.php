@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-// use App\Models\User;
 // use Bedard\Backend\Classes\Backend;
 // use Bedard\Backend\Configuration\Controller;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 // use Illuminate\Support\Collection;
-// use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Permission;
 // use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Bedard\Backend\Configuration\Backend;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Plugins\BladePlugin;
@@ -58,12 +58,56 @@ class BackendTest extends TestCase
         $this->assertEquals($index, $index->plugin()->parent);
     }
 
-    public function test_getting_all_controllers()
+    public function test_getting_controllers_and_navs()
     {
-        $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
+        $readBooks = Permission::firstOrCreate(['name' => 'read books']);
+        $readCategories = Permission::firstOrCreate(['name' => 'read categories']);
+        $readThings = Permission::firstOrCreate(['name' => 'read things']);
 
-        $this->assertEquals(1, $backend->controllers()->count());
-        $this->assertEquals('books', $backend->controllers()->first()->get('id'));
+        // alice has no permissions
+        $alice = User::factory()->create();
+
+        // bob can only access the controller
+        $bob = User::factory()->create();
+        $bob->givePermissionTo($readThings);
+
+        // cindy can read books
+        $cindy = User::factory()->create();
+        $cindy->givePermissionTo($readThings);
+        $cindy->givePermissionTo($readBooks);
+
+        // dave can read everything
+        $dave = User::factory()->create();
+        $dave->givePermissionTo($readThings);
+        $dave->givePermissionTo($readBooks);
+        $dave->givePermissionTo($readCategories);
+
+        $backend = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml');
+
+        // everyone but alice can access the controller
+        $this->assertEquals(0, $backend->controllers($alice)->count());
+        $this->assertEquals(1, $backend->controllers($bob)->count());
+        $this->assertEquals(1, $backend->controllers($cindy)->count());
+        $this->assertEquals(1, $backend->controllers($dave)->count());
+
+        // alice has no nav
+        $this->assertEquals(0, $backend->nav($alice)->count());
+
+        // bob can only access unprotected navs
+        $bobNav = $backend->nav($bob);
+        $this->assertEquals(1, $bobNav->count());
+        $this->assertEquals('Home', $bobNav->first()->get('label'));
+
+        // cindy and dave can access protected nav
+        $cindyNav = $backend->nav($cindy);
+        $this->assertEquals(2, $cindyNav->count());
+        $this->assertEquals('Home', $cindyNav->first()->get('label'));
+        $this->assertEquals('Books', $cindyNav->last()->get('label'));
+
+        $daveNav = $backend->nav($dave);
+        $this->assertEquals(2, $daveNav->count());
+        $this->assertEquals('Home', $daveNav->first()->get('label'));
+        $this->assertEquals('Books', $daveNav->last()->get('label'));
     }
 
     public function test_getting_a_specific_controller()

@@ -1,8 +1,11 @@
 nav:
-    icon: books
-    label: Books
-    permissions:
-        - read books
+    -   icon: home
+        label: Home
+
+    -   icon: books
+        label: Books
+        permissions:
+            - read books
 
 subnav:
     -   icon: user
@@ -13,6 +16,5 @@ subnav:
         permissions:
             - read categories
 
-routes:
-    index:
-        path: null
+permissions:
+    - read things
