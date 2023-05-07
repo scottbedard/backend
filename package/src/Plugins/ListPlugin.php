@@ -3,35 +3,80 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Href;
-use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Facades\Backend;
-use Exception;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use Bedard\Backend\Configuration\ListAction;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
 {
+    /**
+     * Default data
+     *
+     * @var array
+     */
+    public array $defaults = [
+        'actions' => [],
+        'checkboxes' => false,
+    ];
+
+    /**
+     * Inherited data
+     *
+     * @var array
+     */
+    public array $inherits = [
+        'model',
+    ];
+
+    /**
+     * Child properties
+     *
+     * @var array
+     */
+    public array $props = [
+        'actions' => [ListAction::class],
+    ];
+
     /**
      * Validation rules
      *
      * @var array
      */
     public array $rules = [
+        'actions' => ['present', 'array'],
+        'checkboxes' => ['present', 'boolean'],
+        'model' => ['required', 'string'],
+
         // // actions
         // 'options.actions' => ['present', 'array'],
         // 'options.actions.*.icon' => ['string'],
         // 'options.actions.*.label' => ['required', 'string'],
         // 'options.actions.*.to' => ['string'],
 
-        // // checkboxes
-        // 'options.checkboxes' => ['required', 'boolean'],
 
         // // schema
         // 'options.schema' => ['present', 'array'],
         // 'options.schema.*.type' => ['required', 'string'],
     ];
+    
+    /**
+     * Render a plugin.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render(): View
+    {
+        $model = $this->get('model');
+        $query = $model::query();
+
+
+        return view('backend::list', [
+            'props' => [
+                'data' => Paginator::for($query),
+                'options' => $this->config,
+            ],
+        ]);
+    }
 
     // /**
     //  * Normalize plugin config

@@ -92,20 +92,6 @@ class Backend extends Configuration
         }
 
         return true;
-
-        // try {
-        //     $super = config('backend.super_admin_role');
-
-        //     if ($super && $user->hasRole($super)) {
-        //         return true;
-        //     }
-        // } catch (PermissionDoesNotExist $e) { }
-
-        // try {
-        //     return $user->hasAllPermissions($permissions);
-        // } catch (PermissionDoesNotExist $e) {
-        //     return false;
-        // }
     }
 
     /**

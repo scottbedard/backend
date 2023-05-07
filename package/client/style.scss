@@ -38,3 +38,25 @@ input[type='number'] {
     @apply bg-primary-600 hover:bg-primary-600/90 hover:text-white;
   }
 }
+
+//
+// <x-backend::banner>
+//
+.backend-banner {
+  @apply border-2 border-gray-300 p-3 rounded-md;
+
+  > header {
+    @apply flex font-bold gap-2 items-center tracking-wide;
+  }
+
+  > div {
+    @apply block ml-[24px] pl-2;
+  }
+}
+
+//
+// <pre class="value" />
+//
+.value {
+  @apply bg-gray-100 p-1 rounded-md text-sm;
+}

@@ -5,7 +5,7 @@
     <Banner
       header="Schema not found"
       icon="sheet">
-      Define a <pre class="value">schema</pre> property for this table
+      Define a <pre class="inline value">schema</pre> property for this table
       to express how it should render
     </Banner>
   </div>
