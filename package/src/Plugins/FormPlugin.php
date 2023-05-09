@@ -2,13 +2,6 @@
 
 namespace Bedard\Backend\Plugins;
 
-use Bedard\Backend\Classes\Breakpoint;
-use Bedard\Backend\Classes\Href;
-use Bedard\Backend\Classes\KeyedArray;
-use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Facades\Backend;
-use Bedard\Backend\Form\TextField;
-use Exception;
 use Illuminate\View\View;
 
 class FormPlugin extends Plugin
@@ -32,6 +25,18 @@ class FormPlugin extends Plugin
         // 'options.fields.*.order' => ['present', 'integer'],
         // 'options.fields.*.type' => ['present', 'nullable', 'string'],
     ];
+
+    /**
+     * Render
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render(): View
+    {
+        return view('backend::form', [
+            // ...
+        ]);
+    }
 
     // /**
     //  * Fields

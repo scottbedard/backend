@@ -1,6 +1,7 @@
 <x-backend::layout padded>
   <div class="gap-6 grid">
-    <x-backend::grid padded>
+    yooo
+    {{-- <x-backend::grid padded>
       @foreach ($fields as $field)
         <x-backend::grid-cell :span="$field->option('span', 12)">
           {{ $field->render() }}
@@ -21,6 +22,6 @@
         theme="primary">
         Create admin
       </x-backend::button>
-    </div>
+    </div> --}}
   </div>
 </x-backend::layout>

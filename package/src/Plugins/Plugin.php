@@ -21,7 +21,7 @@ class Plugin extends Configuration
     }
 
     /**
-     * Render a plugin
+     * Render
      *
      * @return \Illuminate\View\View
      */

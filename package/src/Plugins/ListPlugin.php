@@ -91,7 +91,7 @@ class ListPlugin extends Plugin
     }
     
     /**
-     * Render a plugin.
+     * Render
      *
      * @return \Illuminate\View\View
      */

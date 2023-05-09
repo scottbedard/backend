@@ -32,7 +32,7 @@ routes:
                     icon: trash
                     label: Delete selected
             checkboxes: true
-            row_to: /{backend}/{controller}/users/{id}/update
+            row_to: /{backend}/{controller}/users/edit/{id}
             schema:
                 id:
                     type: number
@@ -44,14 +44,6 @@ routes:
                 updated_at:
                     label: Last updated
                     type: timeago
-
-    show:
-        path: users/{id}
-        permissions:
-            - read admins
-        plugin: blade
-        options:
-            view: test
 
     create:
         path: users/create
@@ -76,7 +68,7 @@ routes:
                 
 
     update:
-        path: users/{id}/update
+        path: users/edit/{id}
         permissions:
             - update admins
         plugin: form
