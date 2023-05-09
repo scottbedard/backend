@@ -71,7 +71,7 @@ class ListPlugin extends Plugin
     {
         $options = $this->toArray();
 
-        $options['row_to'] = Href::format($options['row_to'], $this->controller()->get('path'));
+        $options['row_to'] = Href::format($options['row_to'], $this->controller()->path());
 
         return $options;
     }
