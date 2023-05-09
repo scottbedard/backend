@@ -146,4 +146,39 @@ class ConfigurationTest extends TestCase
         
         $this->assertEquals('foo', $parent->get('child.grandchild.name'));
     }
+
+    public function test_casting_configuration_to_array()
+    {
+        $config = TestConfig::create([
+            'child' => ['name' => 'one'],
+            'children' => [
+                ['name' => 'two'],
+                ['name' => 'three'],
+            ],
+            'keyed_children' => [
+                'foo' => ['name' => 'four'],
+                'bar' => ['name' => 'five'],
+            ],
+        ]);
+        
+        $this->assertEquals([
+            'child' => ['name' => 'one'],
+            'children' => [
+                ['name' => 'two'],
+                ['name' => 'three'],
+            ],
+            'keyed_children' => [
+                ['id' => 'foo', 'name' => 'four'],
+                ['id' => 'bar', 'name' => 'five'],
+            ],
+            'array' => [],
+            'bool' => true,
+            'int' => 1,
+            'null' => null,
+            'string' => 'string',
+            'other_child' => null,
+            'other_children' => [],
+            'other_keyed_children' => [],
+        ], $config->toArray());
+    }
 }

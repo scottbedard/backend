@@ -1,23 +1,7 @@
 path: list-plugin
 
 routes:
-    schema_associative:
+    parse_row_to:
         plugin: list
         options:
-            schema:
-                foo:
-                    # ...
-                bar:
-                    # ...
-
-    schema_sequential:
-        plugin: list
-        options:
-            schema:
-                -   id: foo
-                -   id: bar
-
-    row_to_keyword_replacement:
-        plugin: list
-        options:
-            row_to: /{backend}/{controller}/{id}
+            row_to: /{backend}/{controller}/users/{id}

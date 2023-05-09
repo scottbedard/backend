@@ -167,6 +167,16 @@ class Backend extends Configuration
                 }
             }
         }
+
+        $route = $this
+            ->controllers()
+            ->map(fn ($controller) => $controller->get('routes'))
+            ->flatten()
+            ->first(fn ($r) => $r->get('id') === $route);
+
+        if ($route) {
+            return $route;
+        }
         
         throw new ConfigurationException('Backend route not found: ' . $route);
     }

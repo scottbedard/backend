@@ -6,11 +6,12 @@ use ArrayAccess;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
 use Bedard\Backend\Exceptions\ConfigurationException;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
-class Configuration implements ArrayAccess
+class Configuration implements ArrayAccess, Arrayable
 {
     /**
      * Normalized yaml data
@@ -232,5 +233,15 @@ class Configuration implements ArrayAccess
     public function root(): self
     {
         return $this->parent ? $this->parent->root() : $this;
+    }
+
+    /**
+     * Cast to array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return collect($this->data)->toArray();
     }
 }

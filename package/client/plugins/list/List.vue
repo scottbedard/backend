@@ -16,6 +16,7 @@
         v-model="checked"
         :data="data"
         :options="options" />
+
       <pre class="text-xs p-6">{{ { options } }}</pre>
     </div>
   </div>

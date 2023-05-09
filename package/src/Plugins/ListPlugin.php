@@ -5,6 +5,7 @@ namespace Bedard\Backend\Plugins;
 use Bedard\Backend\Classes\Href;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Configuration\ListAction;
+use Bedard\Backend\Configuration\ListColumn;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
@@ -35,6 +36,7 @@ class ListPlugin extends Plugin
      */
     public array $props = [
         'actions' => [ListAction::class],
+        'schema' => [ListColumn::class, 'id'],
     ];
 
     /**
@@ -45,7 +47,8 @@ class ListPlugin extends Plugin
     public array $rules = [
         'actions' => ['present', 'array'],
         'checkboxes' => ['present', 'boolean'],
-        'model' => ['required', 'string'],
+        // 'model' => ['required', 'string'],
+        'schema' => ['present', 'array'],
 
         // // actions
         // 'options.actions' => ['present', 'array'],
@@ -58,6 +61,34 @@ class ListPlugin extends Plugin
         // 'options.schema' => ['present', 'array'],
         // 'options.schema.*.type' => ['required', 'string'],
     ];
+
+    /**
+     * Get normalized list options
+     *
+     * @return array
+     */
+    public function options()
+    {
+        $options = $this->toArray();
+
+        $options['row_to'] = Href::format($options['row_to'], $this->controller()->get('path'));
+
+        return $options;
+    }
+
+    /**
+     * Query list data
+     *
+     * @return array
+     */
+    public function query(): array
+    {
+        $model = $this->get('model');
+
+        $query = $model::query();
+
+        return Paginator::for($query);
+    }
     
     /**
      * Render a plugin.
@@ -66,14 +97,10 @@ class ListPlugin extends Plugin
      */
     public function render(): View
     {
-        $model = $this->get('model');
-        $query = $model::query();
-
-
         return view('backend::list', [
             'props' => [
-                'data' => Paginator::for($query),
-                'options' => $this->config,
+                'data' => $this->query(),
+                'options' => $this->options(),
             ],
         ]);
     }
