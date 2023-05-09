@@ -184,63 +184,36 @@ class BackendTest extends TestCase
         $this->assertEquals('Three', $nav->get('3')->get('label'));        
     }
 
-    // public function test_getting_protected_controller_subnavs()
-    // {
-    //     $backend = Backend::from(__DIR__ . '/stubs/_protected_nav.yaml');
-        
-    //     Permission::firstOrCreate(['name' => 'read categories']);
-        
-    //     $alice = User::factory()->create();
+    public function test_getting_protected_subnavs()
+    {
+        // "things" are required for controller, "categories" are required for subnav
+        $readThings = Permission::firstOrCreate(['name' => 'read things']);
+        $readCategories = Permission::firstOrCreate(['name' => 'read categories']);
 
-    //     $alice->givePermissionTo('read categories');
+        // alice has no permissions
+        $alice = User::factory()->create();
 
-    //     $this->assertEquals(2, count($backend->subnav('backend._protected_nav.index', $alice)));
+        // bob has controller permissions
+        $bob = User::factory()->create();
+        $bob->givePermissionTo($readThings);
 
-    //     $bob = user::factory()->create();
+        // cindy has controller and subnav permissions
+        $cindy = User::factory()->create();
+        $cindy->givePermissionTo($readThings);
+        $cindy->givePermissionTo($readCategories);
 
-    //     $this->assertEquals(1, count($backend->subnav('backend._protected_nav.index', $bob)));
-    // }
+        // alice should have no subnav items
+        $ctrl = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml')->controller('_protected_nav');
 
-    // public function test_nav_to_route()
-    // {
-    //     $nav = Backend::from(__DIR__ . '/stubs/_nav_to_route.yaml')->nav();
+        $this->assertEquals(0, $ctrl->subnav($alice)->count());
 
-    //     $this->assertEquals(route('backend.admin.users'), $nav[0]['href']);
-    // }
+        // bob can only see unprotected subnav
+        $this->assertEquals(1, $ctrl->subnav($bob)->count());
+        $this->assertEquals('Authors', $ctrl->subnav($bob)->first()->get('label'));
 
-    // public function test_nav_to_path()
-    // {
-    //     $nav = Backend::from(__DIR__ . '/stubs/_nav_to_path.yaml')->nav();
-
-    //     $this->assertEquals('/backend/hello/foobar', $nav[0]['href']);
-    // }
-
-    // public function test_nav_order()
-    // {
-    //     $nav1 = Backend::from(
-    //         __DIR__ . '/stubs/_nav_order_1.yaml',
-    //         __DIR__ . '/stubs/_nav_order_2.yaml',
-    //     )->nav();
-
-    //     $this->assertEquals('First', $nav1[0]['label']);
-    //     $this->assertEquals('Second', $nav1[1]['label']);
-
-    //     $nav2 = Backend::from(
-    //         __DIR__ . '/stubs/_nav_order_2.yaml', // <- order of navs is different
-    //         __DIR__ . '/stubs/_nav_order_1.yaml',
-    //     )->nav();
-
-    //     $this->assertEquals('First', $nav2[0]['label']); // <- final order should be the same
-    //     $this->assertEquals('Second', $nav2[1]['label']);
-    // }
-
-    // public function test_subnav_href()
-    // {
-    //     $subnav = Backend::from(__DIR__ . '/stubs/_subnav_href.yaml')->subnav('backend._subnav_href.index');
-        
-    //     $this->assertEquals(route('backend.admin.users'), $subnav[0]['href']);
-    //     $this->assertEquals('https://example.com', $subnav[1]['href']);
-    //     $this->assertEquals('https://example.com', $subnav[2]['href']);
-    //     $this->assertEquals('/backend/subnav/foobar', $subnav[3]['href']);
-    // }
+        // cindy can see protected subnav
+        $this->assertEquals(2, $ctrl->subnav($cindy)->count());
+        $this->assertEquals('Authors', $ctrl->subnav($cindy)->first()->get('label'));
+        $this->assertEquals('Categories', $ctrl->subnav($cindy)->last()->get('label'));
+    }
 }

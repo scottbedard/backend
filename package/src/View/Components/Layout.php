@@ -28,20 +28,22 @@ class Layout extends Component
 
         $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
 
-        // $routeName = request()->route()->getName();
-
         $user = auth()->user();
 
-        // $subnav = Backend::subnav($routeName, $user);
+        $nav = Backend::nav($user);
+
+        $route = Backend::route(request()->route()->getName());
+
+        $subnav = $route->controller()->subnav($user);
         
         return view('backend::components.layout', [
             'dev' => $dev,
             'logout' => config('backend.logout_href'),
             'manifest' => $manifest,
-            'nav' => Backend::nav($user),
+            'nav' => $nav,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
-            'subnav' => [],
+            'subnav' => $subnav,
         ]);
     }
 }

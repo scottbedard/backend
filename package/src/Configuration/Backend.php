@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Configuration;
 
+use Bedard\Backend\Classes\Bouncer;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Foundation\Auth\User;
@@ -76,25 +77,6 @@ class Backend extends Configuration
     }
 
     /**
-     * Test if a user has permissions
-     *
-     * @param \Illuminate\Foundation\Auth\User $user
-     * @param array $permissions
-     *
-     * @return bool
-     */
-    public function check(User $user, array $permissions)
-    {
-        foreach ($permissions as $permission) {
-            if (!$user->can($permission)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Get controller by ID
      *
      * @param string $id
@@ -116,11 +98,9 @@ class Backend extends Configuration
      */
     public function controllers(?User $user = null): Collection
     {
-        $super = config('backend.super_admin_role');
-
         return $this
             ->get('controllers')
-            ->filter(fn ($controller) => !$user || $this->check($user, $controller->get('permissions')))
+            ->filter(fn ($controller) => !$user || Bouncer::check($user, $controller->get('permissions')))
             ->values();
     }
 
@@ -133,13 +113,11 @@ class Backend extends Configuration
      */
     public function nav(?User $user = null): Collection
     {
-        $super = config('backend.super_admin_role');
-
         return $this->controllers($user)
                 ->map(fn ($controller) => $controller->get('nav'))
                 ->flatten()
                 ->sortBy('order')
-                ->filter(fn ($nav) => !$user || $this->check($user, $nav->get('permissions')))
+                ->filter(fn ($nav) => !$user || Bouncer::check($user, $nav->get('permissions')))
                 ->values();
     }
 

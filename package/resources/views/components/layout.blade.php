@@ -49,12 +49,12 @@
           @foreach ($subnav as $link)
             <a
               class="aspect-square flex flex-col gap-1 items-center justify-center text-center"
-              href="{{ $link['href'] }}">
+              href="{{ $link->href() }}">
               <x-backend::icon
-                :name="$link['icon']"
+                :name="$link->get('icon')"
                 size="24" />
 
-              <div class="px-2 text-xs">{{ $link['label'] }}</div>
+              <div class="px-2 text-xs">{{ $link->get('label') }}</div>
             </a>
           @endforeach
         </aside>
