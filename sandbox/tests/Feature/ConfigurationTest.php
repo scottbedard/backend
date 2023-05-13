@@ -9,6 +9,8 @@ use Tests\Feature\Classes\BlankConfig;
 use Tests\Feature\Classes\ChildConfig;
 use Tests\Feature\Classes\GrandchildConfig;
 use Tests\Feature\Classes\InheritConfig;
+use Tests\Feature\Classes\LazyChild;
+use Tests\Feature\Classes\LazyParent;
 use Tests\Feature\Classes\ParentConfig;
 use Tests\Feature\Classes\TestConfig;
 use Tests\TestCase;
@@ -195,5 +197,36 @@ class ConfigurationTest extends TestCase
             'other_children' => [],
             'other_keyed_children' => [],
         ], $config->toArray());
+    }
+
+    public function test_non_instantiation_of_keyed_array()
+    {
+        $config = LazyParent::create([
+            'child' => ['name' => 'one'],
+            'children' => [
+                ['name' => 'two'],
+                ['name' => 'three'],
+            ],
+            'keyed_children' => [
+                'foo' => ['name' => 'four'],
+                'bar' => ['name' => 'five'],
+            ],
+        ]);
+        
+        $this->assertIsArray($config->get('child'));
+        $this->assertInstanceOf(Collection::class, $config->get('children'));
+        $this->assertInstanceOf(Collection::class, $config->get('keyed_children'));
+
+        $this->assertEquals(['name' => 'one'], $config->get('child'));
+
+        $this->assertEquals([
+            ['name' => 'two'],
+            ['name' => 'three'],
+        ], $config->get('children')->toArray());
+
+        $this->assertEquals([
+            ['id' => 'foo', 'name' => 'four'],
+            ['id' => 'bar', 'name' => 'five'],
+        ], $config->get('keyed_children')->toArray());
     }
 }

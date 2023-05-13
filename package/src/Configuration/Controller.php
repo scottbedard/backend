@@ -44,6 +44,20 @@ class Controller extends Configuration
     ];
 
     /**
+     * Get route by id
+     *
+     * @param string $id
+     *
+     * @return ?\Bedard\Backend\Configuration\Route
+     */
+    public function route(string $id): ?Route
+    {
+        return $this
+            ->get('routes')
+            ->first(fn ($r) => $r->get('id') === $id);
+    }
+
+    /**
      * Get subnav items
      * 
      * @param ?\Illuminate\Foundation\Auth\User $user

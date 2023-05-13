@@ -2,9 +2,12 @@
 
 namespace Bedard\Backend\Plugins;
 
-use Illuminate\View\View;
-
+use Bedard\Backend\Classes\ArrayUtil;
+use Bedard\Backend\Configuration\Configuration;
+use Bedard\Backend\Configuration\FormField;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\View\View;
 
 class FormPlugin extends Plugin
 {
@@ -14,7 +17,7 @@ class FormPlugin extends Plugin
      * @var array
      */
     public array $defaults = [
-        // ...
+        'fields' => [],
     ];
 
     /**
@@ -27,18 +30,61 @@ class FormPlugin extends Plugin
     ];
 
     /**
+     * Child properties
+     *
+     * @var array
+     */
+    public array $props = [
+        'fields' => [FormField::class, 'id'],
+    ];
+
+    /**
      * Validation rules
      *
      * @var array
      */
     public array $rules = [
+        'fields' => ['present', 'array'],
         'model' => ['nullable', 'string'],
     ];
 
     /**
+     * Construct
+     *
+     * @param array $config
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
+     */
+    public function __construct(array $config = [], ?Configuration $parent = null)
+    {
+        parent::__construct($config, $parent);
+
+        // extend parent form
+        $extends = $this->get('extends');
+
+        if ($extends) {
+            $base = $this->controller()->route($extends)?->plugin();
+
+            if (!$base) {
+                throw new ConfigurationException("Failed to extend \"{$extends}\", form not found");
+            }
+
+            $this->data['fields'] = collect(ArrayUtil::mergeBy($base->get('fields'), $this->get('fields'), 'id'))
+                ->map(function ($field) {
+                    if (!array_key_exists('order', $field)) {
+                        $field['order'] = 0;
+                    }
+
+                    return FormField::create($field, $this);
+                })
+                ->sortBy('order')
+                ->values();
+        }
+    }
+
+    /**
      * Form data
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return ?\Illuminate\Database\Eloquent\Model
      */
     public function data(): ?Model
     {

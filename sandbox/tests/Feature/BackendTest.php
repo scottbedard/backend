@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Bedard\Backend\Configuration\Backend;
+use Bedard\Backend\Configuration\Route;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Plugins\BladePlugin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,6 +56,16 @@ class BackendTest extends TestCase
         $this->assertInstanceOf(BladePlugin::class, $index->plugin());
         $this->assertEquals([], $index->get('options'));
         $this->assertEquals($index, $index->plugin()->parent);
+    }
+
+    public function test_getting_controller_route()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
+
+        $route = $backend->route('index');
+
+        $this->assertInstanceOf(Route::class, $route);
+        $this->assertEquals('index', $route->get('id'));
     }
 
     public function test_getting_controllers_and_navs()

@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class Configuration implements ArrayAccess, Arrayable
 {
     /**
+     * Auto-create child instances
+     *
+     * @var bool
+     */
+    public static bool $autocreate = true;
+
+    /**
      * Normalized yaml data
      *
      * @var array
@@ -129,9 +136,9 @@ class Configuration implements ArrayAccess, Arrayable
             $prop = data_get($this->props, $key);
 
             if (is_array($prop)) {
-                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::create($item, $this));
+                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::$autocreate ? $prop[0]::create($item, $this) : $item);
             } elseif ($prop && is_array($val)) {
-                $data[$key] = $prop::create($val, $this);
+                $data[$key] = $prop::$autocreate ? $prop::create($val, $this) : $val;
             } else {
                 $data[$key] = $val;
             }
