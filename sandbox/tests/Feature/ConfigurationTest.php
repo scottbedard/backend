@@ -147,6 +147,21 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('foo', $parent->get('child.grandchild.name'));
     }
 
+    public function test_overwriting_inherited_config()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'grandchild' => [
+                    'name' => 'bar',
+                ],
+            ],
+        ]);
+
+        $this->assertNull($parent->get('child.name'));
+        
+        $this->assertEquals('bar', $parent->get('child.grandchild.name'));
+    }
+
     public function test_casting_configuration_to_array()
     {
         $config = TestConfig::create([

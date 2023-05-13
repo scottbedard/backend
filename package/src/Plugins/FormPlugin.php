@@ -4,27 +4,52 @@ namespace Bedard\Backend\Plugins;
 
 use Illuminate\View\View;
 
+use Illuminate\Database\Eloquent\Model;
+
 class FormPlugin extends Plugin
 {
+    /**
+     * Default data
+     *
+     * @var array
+     */
+    public array $defaults = [
+        // ...
+    ];
+
+    /**
+     * Inherited data
+     *
+     * @var array
+     */
+    public array $inherits = [
+        'model',
+    ];
+
     /**
      * Validation rules
      *
      * @var array
      */
     public array $rules = [
-        // 'options.actions' => ['present', 'array'],
-        // 'options.actions.*.href' => ['nullable', 'string'],
-        // 'options.actions.*.icon' => ['nullable', 'string'],
-        // 'options.actions.*.text' => ['nullable', 'string'],
-        // 'options.actions.*.theme' => ['nullable', 'string'],
-        // 'options.actions.*.to' => ['nullable', 'string'],
-        // 'options.actions.*.type' => ['nullable', 'string'],
-        // 'options.fields' => ['present', 'array'],
-        // 'options.fields.*.disabled' => ['present', 'boolean'],
-        // 'options.fields.*.label' => ['present', 'nullable', 'string'],
-        // 'options.fields.*.order' => ['present', 'integer'],
-        // 'options.fields.*.type' => ['present', 'nullable', 'string'],
+        'model' => ['nullable', 'string'],
     ];
+
+    /**
+     * Form data
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function data(): ?Model
+    {
+        $model = $this->get('model');
+
+        if (!$model) {
+            return null;
+        }
+
+        return $model::where(request()->route()->parameters)->firstOrFail();
+    }
 
     /**
      * Render
@@ -33,8 +58,10 @@ class FormPlugin extends Plugin
      */
     public function render(): View
     {
+        $data = $this->data();
+
         return view('backend::form', [
-            // ...
+            'data' => $data,
         ]);
     }
 

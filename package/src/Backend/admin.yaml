@@ -46,6 +46,7 @@ routes:
                     type: timeago
 
     create:
+        model: App\Models\User
         path: users/create
         permissions:
             - create admins
@@ -67,7 +68,8 @@ routes:
                     span: 6
                 
 
-    update:
+    edit:
+        model: App\Models\User
         path: users/edit/{id}
         permissions:
             - update admins
