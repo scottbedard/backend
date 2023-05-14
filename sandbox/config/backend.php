@@ -103,13 +103,11 @@ return [
     | Field aliases
     |--------------------------------------------------------------------------
     |
-    | These aliases are used by the form plugin and map to the `fields` option.
+    | These aliases are used by the form plugin and map to the `type` option.
     |
     */
 
     'fields' => [
-        'email' => \Bedard\Backend\Form\EmailField::class,
-        'number' => \Bedard\Backend\Form\NumberField::class,
-        'text' => \Bedard\Backend\Form\TextField::class,
+        // ...
     ]
 ];

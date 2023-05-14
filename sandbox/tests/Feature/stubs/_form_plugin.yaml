@@ -32,26 +32,6 @@ routes:
                 qux: # <- no order, should be first
                     label: qux
 
-    standard_breakpoints:
-        plugin: form
-        options:
-            fields:
-                foo:
-                    span: 6 # <- sm: 12, md: 12, lg: 6, xl: 6, 2xl: 6
-
-    field_aliases:
-        plugin: form
-        options:
-            fields:
-                foo:
-                    type: null
-                bar:
-                    type: email
-                baz:
-                    type: Bedard\Backend\Form\NumberField
-                qux:
-                    # <- type property omitted, should be text
-
     field_spans:
         plugin: form
         options:
@@ -62,21 +42,12 @@ routes:
                     span:
                         md: 6
                         lg: 4
-
-    default_action_values:
-        plugin: form
-        options:
-            actions:
-                -
-                    text: Hooray!
     
-    actions_href:
+    default_labels:
         plugin: form
         options:
-            actions:
-                -
-                    text: Users
-                    to: backend.admin.users
-                -
-                    text: Good bye
-                    to: https://example.com
+            fields:
+                one_two:
+                    # no label key, should use titleized id
+                foo_bar:
+                    label: null # <- should retain no label

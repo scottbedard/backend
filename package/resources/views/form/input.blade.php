@@ -1,7 +1,9 @@
 <div class="w-full">
-  <label class="font-bold tracking-wide">{{ $options['label'] }}</label>
+  <label class="font-bold tracking-wide">{{ $field->get('label') }}</label>
 
-  <input
+  <div>Soon...</div>
+
+  {{-- <input
     class="border border-gray-300 h-11 px-3 rounded-md w-full"
     type="{{ $type }}"
     @if (array_key_exists('placeholder', $options))
@@ -43,5 +45,5 @@
     @if (array_key_exists('step', $options))
       step="{{ $options['step'] }}"
     @endif
-  />
+  /> --}}
 </div>

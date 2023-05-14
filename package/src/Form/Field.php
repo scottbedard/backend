@@ -2,46 +2,55 @@
 
 namespace Bedard\Backend\Form;
 
-use Exception;
-use Illuminate\Support\Facades\Validator;
+use Bedard\Backend\Classes\Breakpoint;
+use Bedard\Backend\Configuration\Configuration;
 use Illuminate\View\View;
 
-abstract class Field
+class Field extends Configuration
 {
     /**
-     * Field options
+     * Auto-create child instances
+     *
+     * @var bool
+     */
+    public static bool $autocreate = false;
+
+    /**
+     * Default data
      *
      * @var array
      */
-    protected array $options;
+    public array $defaults = [
+        'order' => 0,
+        'span' => 12,
+        'type' => null,
+    ];
 
     /**
      * Validation rules
      *
      * @var array
      */
-    protected array $rules = [];
+    public array $rules = [
+        'id' => 'required',
+        'label' => ['present', 'nullable', 'string'],
+        'order' => ['present', 'integer'],
+        'type' => ['present', 'nullable', 'string'],
+    ];
 
     /**
-     * Create a field
-     * 
-     * @param array $options
-     */
-    public function __construct(array $options = []) {
-        $this->options = $options;
-
-        $this->validate();
-    }
-
-    /**
-     * Get field options
+     * Construct
      *
-     * @param string $path
-     * @param mixed $default
+     * @param array $config
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
      */
-    public function option(string $path, $default = null)
+    public function __construct(array $config = [], ?Configuration $parent = null)
     {
-        return data_get($this->options, $path, $default);
+        data_fill($config, 'label', str(data_get($config, 'id'))->headline()->toString());
+
+        data_set($config, 'span', Breakpoint::create(data_get($config, 'span', 12)));
+
+        parent::__construct($config, $parent);
     }
 
     /**
@@ -49,21 +58,10 @@ abstract class Field
      *
      * @return \Illuminate\View\View
      */
-    abstract public function render(): View;
-
-    /**
-     * Validate config
-     *
-     * @throws \Exception
-     *
-     * @return void
-     */
-    protected function validate(): void
+    public function render(): View
     {
-        $validator = Validator::make($this->options, $this->rules);
-        
-        if ($validator->fails()) {
-            throw new Exception('Invalid form field: ' . $validator->errors()->first());
-        }
+        return view('backend::form.input', [
+            'field' => $this,
+        ]);
     }
 }

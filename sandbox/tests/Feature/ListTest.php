@@ -3,10 +3,10 @@
 namespace Tests\Unit;
 
 use Bedard\Backend\Configuration\Backend;
-use Bedard\Backend\Plugins\ListPlugin;
+use Bedard\Backend\Plugins\List;
 use Tests\TestCase;
 
-class ListPluginTest extends TestCase
+class ListTest extends TestCase
 {
     public function test_row_to_parsing()
     {

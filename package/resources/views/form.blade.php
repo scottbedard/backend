@@ -1,12 +1,11 @@
 <x-backend::layout padded>
   <div class="gap-6 grid">
     <x-backend::grid padded>
-      Hello
-      {{-- @foreach ($fields as $field)
-        <x-backend::grid-cell :span="$field->option('span', 12)">
+      @foreach ($fields as $field)
+        <x-backend::grid-cell :span="$field->get('span', 12)">
           {{ $field->render() }}
         </x-backend::grid-cell>
-      @endforeach --}}
+      @endforeach
     </x-backend::grid>
 
     <div class="flex flex-wrap justify-end gap-6 ">
