@@ -61,7 +61,6 @@ routes:
                 email:
                     span: 6
                     placeholder: user@example.com
-                    type: Bedard\Backend\Form\EmailField
                 created_at:
                     span: 6
                 updated_at:

@@ -108,6 +108,6 @@ return [
     */
 
     'fields' => [
-        // ...
-    ]
+        'input' => \Bedard\Backend\Form\InputField::class,
+    ],
 ];

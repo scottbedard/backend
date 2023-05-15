@@ -51,3 +51,14 @@ routes:
                     # no label key, should use titleized id
                 foo_bar:
                     label: null # <- should retain no label
+
+    field_stub:
+        plugin: form
+        options:
+            fields:
+                foo:
+                    type: Tests\Feature\Classes\FieldStub
+                bar:
+                    type: input
+                baz:
+                    label: default type should be input

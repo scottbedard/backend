@@ -4,6 +4,7 @@ namespace Bedard\Backend\Form;
 
 use Bedard\Backend\Classes\Breakpoint;
 use Bedard\Backend\Configuration\Configuration;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\View\View;
 
 class Field extends Configuration
@@ -23,7 +24,7 @@ class Field extends Configuration
     public array $defaults = [
         'order' => 0,
         'span' => 12,
-        'type' => null,
+        'type' => InputField::class,
     ];
 
     /**
@@ -35,7 +36,7 @@ class Field extends Configuration
         'id' => 'required',
         'label' => ['present', 'nullable', 'string'],
         'order' => ['present', 'integer'],
-        'type' => ['present', 'nullable', 'string'],
+        'type' => ['required', 'string'],
     ];
 
     /**
@@ -51,6 +52,35 @@ class Field extends Configuration
         data_set($config, 'span', Breakpoint::create(data_get($config, 'span', 12)));
 
         parent::__construct($config, $parent);
+    }
+
+    /**
+     * Create a field from it's type
+     *
+     * @param array $config
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
+     * 
+     * @return self
+     */
+    public static function createFromType(array $config = [], ?Configuration $parent): self
+    {
+        if (!array_key_exists('type', $config)) {
+            throw new ConfigurationException('Missing field type');
+        }
+
+        $type = $config['type'];
+
+        if (class_exists($type)) {
+            return new $type($config, $parent);
+        }
+
+        $fields = config('backend.fields');
+
+        if (array_key_exists($type, $fields)) {
+            return new $fields[$type]($config, $parent);
+        }
+
+        throw new ConfigurationException("Unknown field type \"{$type}\"");
     }
 
     /**

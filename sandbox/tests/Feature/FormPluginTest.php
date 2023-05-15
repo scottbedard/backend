@@ -4,7 +4,9 @@ namespace Tests\Unit;
 
 use Bedard\Backend\Configuration\Backend;
 use Bedard\Backend\Form\Field;
+use Bedard\Backend\Form\InputField;
 use Bedard\Backend\Plugins\FormPlugin;
+use Tests\Feature\Classes\FieldStub;
 use Tests\TestCase;
 
 class FormPluginTest extends TestCase
@@ -85,5 +87,18 @@ class FormPluginTest extends TestCase
             
         $this->assertEquals('One Two', $plugin->get('fields.0.label'));
         $this->assertNull($plugin->get('fields.1.label'));
+    }
+
+    public function test_fields_subclasses()
+    {
+        $plugin = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
+            ->route('field_stub')
+            ->plugin();
+            
+        $this->assertInstanceOf(FieldStub::class, $plugin->get('fields.0'));
+
+        $this->assertInstanceOf(InputField::class, $plugin->get('fields.1'));
+
+        $this->assertInstanceOf(InputField::class, $plugin->get('fields.2'));
     }
 }

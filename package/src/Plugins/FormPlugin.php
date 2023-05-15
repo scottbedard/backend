@@ -6,6 +6,7 @@ use Bedard\Backend\Classes\ArrayUtil;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Form\Field;
+use Bedard\Backend\Form\InputField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 
@@ -64,11 +65,10 @@ class FormPlugin extends Plugin
 
         $create = fn ($arr) => collect($arr)
             ->map(function ($field) {
-                if (!array_key_exists('order', $field)) {
-                    $field['order'] = 0;
-                }
+                data_fill($field, 'order', 0);
+                data_fill($field, 'type', InputField::class);
 
-                return Field::create($field, $this);
+                return Field::createFromType($field, $this);
             })
             ->sortBy('order')
             ->values();
