@@ -13,7 +13,6 @@ class InputField extends Field
      * @var array
      */
     public array $defaults = [
-        'input' => 'text',
         'order' => 0,
         'span' => 12,
     ];
