@@ -32,7 +32,7 @@ routes:
                     icon: trash
                     label: Delete selected
             checkboxes: true
-            row_to: /{backend}/{controller}/users/{id}/update
+            row_to: /{backend}/{controller}/users/edit/{id}
             schema:
                 id:
                     type: number
@@ -45,15 +45,8 @@ routes:
                     label: Last updated
                     type: timeago
 
-    show:
-        path: users/{id}
-        permissions:
-            - read admins
-        plugin: blade
-        options:
-            view: test
-
     create:
+        model: App\Models\User
         path: users/create
         permissions:
             - create admins
@@ -68,15 +61,24 @@ routes:
                 email:
                     span: 6
                     placeholder: user@example.com
-                    type: Bedard\Backend\Form\EmailField
                 created_at:
                     span: 6
                 updated_at:
                     span: 6
-                
+            actions:
+                -
+                    icon: arrow-left
+                    label: Nevermind
+                    to: backend.admin.users
+                -
+                    icon: rocket
+                    label: Do stuff!
+                    theme: primary
+                    type: submit
 
-    update:
-        path: users/{id}/update
+    edit:
+        model: App\Models\User
+        path: users/edit/{id}
         permissions:
             - update admins
         plugin: form
@@ -85,11 +87,11 @@ routes:
             actions:
                 -
                     icon: arrow-left
-                    text: Nevermind
+                    label: Nevermind
                     to: backend.admin.users
                 -
-                    icon: rocket
-                    text: Do stuff!
+                    icon: plus
+                    label: Create admin
                     theme: primary
                     type: submit
 
@@ -125,20 +127,3 @@ routes:
                 updated_at:
                     format: YYYY-mm-DD
                     type: date
-
-    # create:
-    #     path: /roles/create
-    #     permissions:
-    #         - create roles
-    #     plugin: form
-    #     options:
-    #         context: create
-    #         fields:
-    #             id:
-    #                 disabled: false
-
-    # edit:
-    #     path: /{id}/edit
-    #     permissions:
-    #         - edit role
-    #     plugin: form

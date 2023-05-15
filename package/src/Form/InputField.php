@@ -5,14 +5,24 @@ namespace Bedard\Backend\Form;
 use Bedard\Backend\Form\Field;
 use Illuminate\View\View;
 
-class TextField extends Field
+class InputField extends Field
 {
+    /**
+     * Default data
+     *
+     * @var array
+     */
+    public array $defaults = [
+        'order' => 0,
+        'span' => 12,
+    ];
+
     /**
      * Validation rules
      *
      * @var array
      */
-    protected array $rules = [
+    public array $rules = [
         'max' => ['number'],
         'maxlength' => ['number'],
         'min' => ['number'],
@@ -21,15 +31,7 @@ class TextField extends Field
         'placeholder' => ['string'],
         'readonly' => ['boolean'],
         'required' => ['boolean'],
-        'stop' => ['number'],
     ];
-
-    /**
-     * Input type
-     *
-     * @var string
-     */
-    public string $type = 'text';
 
     /**
      * Render
@@ -39,8 +41,7 @@ class TextField extends Field
     public function render(): View
     {
         return view('backend::form.input', [
-            'options' => $this->options,
-            'type' => $this->type,
+            'field' => $this,
         ]);
     }
 }

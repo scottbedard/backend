@@ -2,46 +2,85 @@
 
 namespace Bedard\Backend\Form;
 
-use Exception;
-use Illuminate\Support\Facades\Validator;
+use Bedard\Backend\Classes\Breakpoint;
+use Bedard\Backend\Configuration\Configuration;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\View\View;
 
-abstract class Field
+class Field extends Configuration
 {
     /**
-     * Field options
+     * Auto-create child instances
+     *
+     * @var bool
+     */
+    public static bool $autocreate = false;
+
+    /**
+     * Default data
      *
      * @var array
      */
-    protected array $options;
+    public array $defaults = [
+        'order' => 0,
+        'span' => 12,
+        'type' => InputField::class,
+    ];
 
     /**
      * Validation rules
      *
      * @var array
      */
-    protected array $rules = [];
+    public array $rules = [
+        'id' => 'required',
+        'label' => ['present', 'nullable', 'string'],
+        'order' => ['present', 'integer'],
+        'type' => ['required', 'string'],
+    ];
 
     /**
-     * Create a field
-     * 
-     * @param array $options
+     * Construct
+     *
+     * @param array $config
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
      */
-    public function __construct(array $options = []) {
-        $this->options = $options;
+    public function __construct(array $config = [], ?Configuration $parent = null)
+    {
+        data_fill($config, 'label', str(data_get($config, 'id'))->headline()->toString());
 
-        $this->validate();
+        data_set($config, 'span', Breakpoint::create(data_get($config, 'span', 12)));
+
+        parent::__construct($config, $parent);
     }
 
     /**
-     * Get field options
+     * Create a field from it's type
      *
-     * @param string $path
-     * @param mixed $default
+     * @param array $config
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
+     * 
+     * @return self
      */
-    public function option(string $path, $default = null)
+    public static function createFromType(array $config = [], ?Configuration $parent): self
     {
-        return data_get($this->options, $path, $default);
+        if (!array_key_exists('type', $config)) {
+            throw new ConfigurationException('Missing field type');
+        }
+
+        $type = $config['type'];
+
+        if (class_exists($type)) {
+            return new $type($config, $parent);
+        }
+
+        $fields = config('backend.fields');
+
+        if (array_key_exists($type, $fields)) {
+            return new $fields[$type]($config, $parent);
+        }
+
+        throw new ConfigurationException("Unknown field type \"{$type}\"");
     }
 
     /**
@@ -49,21 +88,10 @@ abstract class Field
      *
      * @return \Illuminate\View\View
      */
-    abstract public function render(): View;
-
-    /**
-     * Validate config
-     *
-     * @throws \Exception
-     *
-     * @return void
-     */
-    protected function validate(): void
+    public function render(): View
     {
-        $validator = Validator::make($this->options, $this->rules);
-        
-        if ($validator->fails()) {
-            throw new Exception('Invalid form field: ' . $validator->errors()->first());
-        }
+        return view('backend::form.input', [
+            'field' => $this,
+        ]);
     }
 }

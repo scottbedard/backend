@@ -7,14 +7,14 @@ use Illuminate\Support\Arr;
 class KeyedArray
 {
     /**
-     * Create keyed array
+     * Create keyed array from associative array
      *
      * @param array $source
      * @param string $key
      *
      * @return array
      */
-    public static function of(array $source, string $key): array
+    public static function from(array $source, string $key): array
     {
         if (Arr::isAssoc($source)) {
             $output = [];
@@ -23,7 +23,10 @@ class KeyedArray
                 $output[] = array_merge([$key => $k], $value ?? []);
             }
 
-            return $output;
+            return collect($output)
+                ->sortBy('order')
+                ->values()
+                ->toArray();
         }
 
         foreach ($source as $key => $value) {

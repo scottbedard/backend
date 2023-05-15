@@ -1,15 +1,13 @@
 <div class="backend-banner">
   @isset ($header)
-    <div>
+    <header>
       @isset ($icon)
         <x-backend::icon :name="$icon" size="24" />
       @endisset
 
       {{ $header }}
-    </div>
+    </header>
   @endisset
 
-  <p>
-    {{ $slot }}
-  </p>
+  <div>{{ $slot }}</div>
 </div>

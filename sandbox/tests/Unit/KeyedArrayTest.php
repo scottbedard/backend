@@ -17,7 +17,7 @@ class KeyedArrayTest extends TestCase
             [
                 'id' => 'foo',
             ],
-        ], KeyedArray::of($source, 'id'));
+        ], KeyedArray::from($source, 'id'));
     }
 
     public function test_keyed_array_from_associative(): void
@@ -40,7 +40,7 @@ class KeyedArrayTest extends TestCase
                 'id' => 'bar', 
                 'value' => 2,
             ],
-        ], KeyedArray::of($source, 'id'));
+        ], KeyedArray::from($source, 'id'));
     }
 
     public function test_keyed_array_from_sequential()
@@ -65,6 +65,6 @@ class KeyedArrayTest extends TestCase
                 'id' => 'bar', 
                 'value' => 2,
             ],
-        ], KeyedArray::of($source, 'id'));
+        ], KeyedArray::from($source, 'id'));
     }
 }

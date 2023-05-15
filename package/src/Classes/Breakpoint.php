@@ -16,9 +16,9 @@ class Breakpoint
     {
         if (is_int($span)) {
             return [
-                'xs' => 12,
-                'sm' => 12,
-                'md' => 12,
+                'xs' => $cols,
+                'sm' => $cols,
+                'md' => $cols,
                 'lg' => $span,
                 'xl' => $span,
                 '2xl' => $span,

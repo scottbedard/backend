@@ -1,47 +1,42 @@
 <div class="w-full">
-  <label class="font-bold tracking-wide">{{ $options['label'] }}</label>
+  <label class="font-bold tracking-wide">{{ $field->get('label') }}</label>
 
   <input
     class="border border-gray-300 h-11 px-3 rounded-md w-full"
-    type="{{ $type }}"
-    @if (array_key_exists('placeholder', $options))
-      placeholder="{{ $options['placeholder'] }}"
+    @if ($field->get('placeholder'))
+      placeholder="{{ $field->get('placeholder') }}"
     @endif
 
-    @if (array_key_exists('max', $options))
-      max="{{ $options['max'] }}"
+    @if ($field->get('max'))
+      max="{{ $field->get('max') }}"
     @endif
 
-    @if (array_key_exists('maxlength', $options))
-      maxlength="{{ $options['maxlength'] }}"
+    @if ($field->get('maxlength'))
+      maxlength="{{ $field->get('maxlength') }}"
     @endif
     
-    @if (array_key_exists('min', $options))
-      min="{{ $options['min'] }}"
+    @if ($field->get('min'))
+      min="{{ $field->get('min') }}"
     @endif
     
-    @if (array_key_exists('minlength', $options))
-      minlength="{{ $options['minlength'] }}"
+    @if ($field->get('minlength'))
+      minlength="{{ $field->get('minlength') }}"
     @endif
     
-    @if (array_key_exists('pattern', $options))
-      pattern="{{ $options['pattern'] }}"
+    @if ($field->get('pattern'))
+      pattern="{{ $field->get('pattern') }}"
     @endif
     
-    @if (array_key_exists('placeholder', $options))
-      placeholder="{{ $options['placeholder'] }}"
+    @if ($field->get('placeholder'))
+      placeholder="{{ $field->get('placeholder') }}"
     @endif
     
-    @if (array_key_exists('readonly', $options) && $options['readonly'])
+    @if ($field->get('readonly', $field))
       readonly
     @endif
 
-    @if (array_key_exists('required', $options) && $options['required'])
+    @if ($field->get('required'))
       required
-    @endif
-    
-    @if (array_key_exists('step', $options))
-      step="{{ $options['step'] }}"
     @endif
   />
 </div>

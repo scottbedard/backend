@@ -5,8 +5,7 @@
     <Banner
       header="Schema not found"
       icon="sheet">
-      Define a <pre class="value">schema</pre> property for this table
-      to express how it should render
+      Define a <pre class="inline value">schema</pre> property to define how the table should render.
     </Banner>
   </div>
 
@@ -28,7 +27,7 @@
         <div
           v-for="col in options.schema"
           class="align-middle h-12 px-3 table-cell whitespace-nowrap first:pl-6 last:pr-6">
-          <span v-text="col.label" class="font-bold" />
+          <span v-text="col.header" class="font-bold" />
         </div>
       </div>
 

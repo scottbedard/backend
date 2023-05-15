@@ -21,12 +21,14 @@
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <nav class="flex-1 flex gap-x-10 items-center">
         @foreach ($nav as $button)
-          <a class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white" href="{{ $button['href'] }}">
-            @if (array_key_exists('icon', $button))
-              <x-backend::icon :name="$button['icon']" size="20" />
+          <a
+            class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white"
+            href="{{ $button->href() }}">
+            @if ($button->get('icon'))
+              <x-backend::icon :name="$button->get('icon')" size="20" />
             @endif
 
-            {{ data_get($button, 'label', 'label') }}
+            {{ $button->get('label') }}
           </a>
         @endforeach
       </nav>
@@ -47,12 +49,12 @@
           @foreach ($subnav as $link)
             <a
               class="aspect-square flex flex-col gap-1 items-center justify-center text-center"
-              href="{{ $link['href'] }}">
+              href="{{ $link->href() }}">
               <x-backend::icon
-                :name="$link['icon']"
+                :name="$link->get('icon')"
                 size="24" />
 
-              <div class="px-2 text-xs">{{ $link['label'] }}</div>
+              <div class="px-2 text-xs">{{ $link->get('label') }}</div>
             </a>
           @endforeach
         </aside>

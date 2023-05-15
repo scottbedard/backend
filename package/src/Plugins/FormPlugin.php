@@ -2,157 +2,123 @@
 
 namespace Bedard\Backend\Plugins;
 
-use Bedard\Backend\Classes\Breakpoint;
-use Bedard\Backend\Classes\Href;
-use Bedard\Backend\Classes\KeyedArray;
-use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Facades\Backend;
-use Bedard\Backend\Form\TextField;
-use Bedard\Backend\Plugin;
-use Exception;
+use Bedard\Backend\Classes\ArrayUtil;
+use Bedard\Backend\Configuration\FormAction;
+use Bedard\Backend\Configuration\Configuration;
+use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Form\Field;
+use Bedard\Backend\Form\InputField;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 
 class FormPlugin extends Plugin
 {
     /**
+     * Default data
+     *
+     * @var array
+     */
+    public array $defaults = [
+        'fields' => [],
+    ];
+
+    /**
+     * Inherited data
+     *
+     * @var array
+     */
+    public array $inherits = [
+        'model',
+    ];
+
+    /**
+     * Child properties
+     *
+     * @var array
+     */
+    public array $props = [
+        'actions' => [FormAction::class, 'id'],
+        'fields' => [Field::class, 'id'],
+    ];
+
+    /**
      * Validation rules
      *
      * @var array
      */
-    protected array $rules = [
-        'options.actions' => ['present', 'array'],
-        'options.actions.*.href' => ['nullable', 'string'],
-        'options.actions.*.icon' => ['nullable', 'string'],
-        'options.actions.*.text' => ['nullable', 'string'],
-        'options.actions.*.theme' => ['nullable', 'string'],
-        'options.actions.*.to' => ['nullable', 'string'],
-        'options.actions.*.type' => ['nullable', 'string'],
-        'options.fields' => ['present', 'array'],
-        'options.fields.*.disabled' => ['present', 'boolean'],
-        'options.fields.*.label' => ['present', 'nullable', 'string'],
-        'options.fields.*.order' => ['present', 'integer'],
-        'options.fields.*.type' => ['present', 'nullable', 'string'],
+    public array $rules = [
+        'fields' => ['present', 'array'],
+        'model' => ['nullable', 'string'],
     ];
 
     /**
-     * Fields
+     * Construct
      *
-     * @return array
+     * @param array $config
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
      */
-    public function fields(): array
+    public function __construct(array $config = [], ?Configuration $parent = null)
     {
-        return array_map(function ($field) {
-            if (!class_exists($field['type'])) {
-                throw new Exception("Field type \"{$field['type']}\" not found");
-            }
+        // construct form
+        parent::__construct($config, $parent);
 
-            return new $field['type']($field);
-        }, $this->option('fields'));
-    }
+        // create field instances, extending parent form if necessary
+        $extends = $this->get('extends');
 
-    /**
-     * Normalize plugin config
-     *
-     * @return void
-     */
-    public function normalize(): void
-    {
-        // prevent empty options from being treated as null
-        if (data_get($this->route, 'options') === null) {
-            data_set($this->route, 'options', []);
-        }
+        $create = fn ($arr) => collect($arr)
+            ->map(function ($field) {
+                data_fill($field, 'order', 0);
+                data_fill($field, 'type', InputField::class);
 
-        // fill default options
-        data_fill($this->route, 'options.actions', []);
-        data_fill($this->route, 'options.extends', null);
-        data_fill($this->route, 'options.fields', []);
-
-        // normalize fields
-        data_set($this->route, 'options.fields', KeyedArray::of($this->option('fields'), 'id'));
-
-        // href
-        // icon
-        // text
-        // theme
-        // to
-        // type
-
-        // extend parent form
-        $extends = $this->option('extends');
+                return Field::createFromType($field, $this);
+            })
+            ->sortBy('order')
+            ->values();
 
         if ($extends) {
-            $parent = data_get($this->controller, "routes.{$extends}.options.fields");
+            $base = $this->controller()->route($extends)?->plugin();
 
-            if (!$parent) {
-                throw new Exception("Failed to extend form {$extends}");
+            if (!$base) {
+                throw new ConfigurationException("Failed to extend \"{$extends}\", form not found");
             }
 
-            $fields = collect($this->option('fields'));
-
-            $extensions = collect(KeyedArray::of($parent, 'id'))->map(function ($field) use ($fields) {
-                $child = $fields->first(fn ($child) => $child['id'] === $field['id']);
-
-                if ($child) {
-                    $field = array_merge($field, $child);
-                }
-
-                return $field;
-            });
-
-            $this->route['options']['fields'] = $extensions
-                ->concat($fields->filter(fn ($field) => !$extensions->contains('id', $field['id'])))
-                ->toArray();
+            $this->data['fields'] = $create(
+                ArrayUtil::mergeBy($base->get('fields'), $this->get('fields'), 'id')
+            );
+        } else {
+            $this->data['fields'] = $create($this->get('fields'));
         }
-        
-        // fill action data
-        foreach ($this->route['options']['actions'] as $key => $action) {
-            data_fill($this->route, "options.actions.{$key}.href", data_get($action, 'href') ?: Href::format(data_get($action, 'to'), $this->controller['path']));
-            data_fill($this->route, "options.actions.{$key}.icon", null);
-            data_fill($this->route, "options.actions.{$key}.text", null);
-            data_fill($this->route, "options.actions.{$key}.theme", null);
-            data_fill($this->route, "options.actions.{$key}.to", null);
-            data_fill($this->route, "options.actions.{$key}.type", null);
-        }
-
-        // fill field data
-        $aliases = config('backend.fields', []);
-
-        foreach ($this->route['options']['fields'] as $key => $field) {
-            data_fill($this->route, "options.fields.{$key}.disabled", false);
-            data_fill($this->route, "options.fields.{$key}.label", str($field['id'])->headline()->toString());
-            data_fill($this->route, "options.fields.{$key}.order", 0);
-            data_fill($this->route, "options.fields.{$key}.type", TextField::class);
-
-            // set breakpoints
-            data_set($this->route, "options.fields.{$key}.span", Breakpoint::create($field['span'] ?? 12));
-
-            // apply field aliases
-            if (data_get($field, 'type') === null) {
-                data_set($this->route, "options.fields.{$key}.type", TextField::class);
-            } elseif (array_key_exists($field['type'], $aliases)) {
-                data_set($this->route, "options.fields.{$key}.type", $aliases[$field['type']]);
-            } else {
-                data_set($this->route, "options.fields.{$key}.type", $field['type']);
-            }
-        }
-
-        // finalize normalization and order fields
-        $this->route['options']['fields'] = collect($this->route['options']['fields'])
-            ->sortBy('order')
-            ->values()
-            ->toArray();
     }
 
     /**
-     * Plugin view
+     * Form data
+     *
+     * @return ?\Illuminate\Database\Eloquent\Model
+     */
+    public function data(): ?Model
+    {
+        $model = $this->get('model');
+
+        if (!$model) {
+            return null;
+        }
+
+        return $model::where(request()->route()->parameters)->firstOrFail();
+    }
+
+    /**
+     * Render
      *
      * @return \Illuminate\View\View
      */
-    public function view(): View
+    public function render(): View
     {
+        $data = $this->data();
+
         return view('backend::form', [
-            'fields' => $this->fields(),
-            'options' => $this->options(),
+            'actions' => $this->get('actions'),
+            'data' => $data,
+            'fields' => $this->get('fields'),
         ]);
     }
 }

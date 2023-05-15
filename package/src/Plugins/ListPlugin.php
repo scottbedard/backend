@@ -3,84 +3,91 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\Href;
-use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Facades\Backend;
-use Bedard\Backend\Plugin;
-use Exception;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use Bedard\Backend\Configuration\ListAction;
+use Bedard\Backend\Configuration\ListColumn;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
 {
     /**
+     * Default data
+     *
+     * @var array
+     */
+    public array $defaults = [
+        'checkboxes' => false,
+    ];
+
+    /**
+     * Inherited data
+     *
+     * @var array
+     */
+    public array $inherits = [
+        'model',
+    ];
+
+    /**
+     * Child properties
+     *
+     * @var array
+     */
+    public array $props = [
+        'actions' => [ListAction::class],
+        'schema' => [ListColumn::class, 'id'],
+    ];
+
+    /**
      * Validation rules
      *
      * @var array
      */
-    protected array $rules = [
-        // actions
-        'options.actions' => ['present', 'array'],
-        'options.actions.*.icon' => ['string'],
-        'options.actions.*.label' => ['required', 'string'],
-        'options.actions.*.to' => ['string'],
-
-        // checkboxes
-        'options.checkboxes' => ['required', 'boolean'],
-
-        // schema
-        'options.schema' => ['present', 'array'],
-        'options.schema.*.type' => ['required', 'string'],
+    public array $rules = [
+        'actions' => ['present', 'array'],
+        'checkboxes' => ['present', 'boolean'],
+        'schema' => ['present', 'array'],
     ];
 
     /**
-     * Normalize plugin config
+     * Get normalized list options
      *
-     * @return void
+     * @return array
      */
-    public function normalize(): void
+    public function options()
     {
-        if (data_get($this->route, 'options') === null) {
-            data_set($this->route, 'options', []);
-        }
+        $options = $this->toArray();
 
-        data_fill($this->route, 'options.actions', []);
-        data_fill($this->route, 'options.checkboxes', false);
-        data_fill($this->route, 'options.row_to', null);
-        data_fill($this->route, 'options.schema', []);
+        $options['row_to'] = Href::format($options['row_to'], $this->controller()->path());
 
-        data_set($this->route, 'options.schema', KeyedArray::of($this->route['options']['schema'], 'id'));
-
-        if ($this->route['options']['row_to']) {
-            $this->route['options']['row_to'] = Href::format($this->route['options']['row_to'], $this->controller['path']);
-        }
-
-        foreach ($this->route['options']['actions'] as $key => $action) {
-            data_fill($this->route, "options.actions.{$key}.theme", 'default');
-        }
-
-        foreach ($this->route['options']['schema'] as $key => $col) {
-            data_fill($this->route, "options.schema.{$key}.type", 'text');
-            data_fill($this->route, "options.schema.{$key}.label", Str::headline($col['id']));
-        }
+        return $options;
     }
 
     /**
-     * Render the plugin
+     * Query list data
      *
-     * @return \Illuminate\View\View
+     * @return array
      */
-    public function view(): View
+    public function query(): array
     {
-        $model = $this->route['model'];
+        $model = $this->get('model');
 
         $query = $model::query();
 
+        return Paginator::for($query);
+    }
+    
+    /**
+     * Render
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render(): View
+    {
         return view('backend::list', [
             'props' => [
-                'data' => Paginator::for($query),
-                'options' => $this->route['options'],
+                'data' => $this->query(),
+                'options' => $this->options(),
             ],
         ]);
     }
