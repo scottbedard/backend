@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\ArrayUtil;
+use Bedard\Backend\Configuration\FormAction;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Form\Field;
@@ -36,6 +37,7 @@ class FormPlugin extends Plugin
      * @var array
      */
     public array $props = [
+        'actions' => [FormAction::class, 'id'],
         'fields' => [Field::class, 'id'],
     ];
 
@@ -114,6 +116,7 @@ class FormPlugin extends Plugin
         $data = $this->data();
 
         return view('backend::form', [
+            'actions' => $this->get('actions'),
             'data' => $data,
             'fields' => $this->get('fields'),
         ]);

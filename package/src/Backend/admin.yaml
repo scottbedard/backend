@@ -65,7 +65,16 @@ routes:
                     span: 6
                 updated_at:
                     span: 6
-                
+            actions:
+                -
+                    icon: arrow-left
+                    label: Nevermind
+                    to: backend.admin.users
+                -
+                    icon: rocket
+                    label: Do stuff!
+                    theme: primary
+                    type: submit
 
     edit:
         model: App\Models\User
@@ -78,11 +87,11 @@ routes:
             actions:
                 -
                     icon: arrow-left
-                    text: Nevermind
+                    label: Nevermind
                     to: backend.admin.users
                 -
-                    icon: rocket
-                    text: Do stuff!
+                    icon: plus
+                    label: Create admin
                     theme: primary
                     type: submit
 
@@ -118,20 +127,3 @@ routes:
                 updated_at:
                     format: YYYY-mm-DD
                     type: date
-
-    # create:
-    #     path: /roles/create
-    #     permissions:
-    #         - create roles
-    #     plugin: form
-    #     options:
-    #         context: create
-    #         fields:
-    #             id:
-    #                 disabled: false
-
-    # edit:
-    #     path: /{id}/edit
-    #     permissions:
-    #         - edit role
-    #     plugin: form

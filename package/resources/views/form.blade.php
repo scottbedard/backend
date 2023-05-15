@@ -9,18 +9,16 @@
     </x-backend::grid>
 
     <div class="flex flex-wrap justify-end gap-6 ">
-      <x-backend::button
-        class="w-full sm:w-auto"
-        icon="arrow-left">
-        Return to list
-      </x-backend::button>
-
-      <x-backend::button
-        class="w-full sm:w-auto"
-        icon="user-plus"
-        theme="primary">
-        Create admin
-      </x-backend::button>
+      @foreach ($actions as $action)
+        <x-backend::button
+          class="w-full sm:w-auto"
+          :href="$action->get('href')"
+          :icon="$action->get('icon')"
+          :theme="$action->get('theme')"
+          :to="$action->get('to')">
+          {{ $action->get('label') }}
+        </x-backend::button>
+      @endforeach
     </div>
   </div>
 </x-backend::layout>
