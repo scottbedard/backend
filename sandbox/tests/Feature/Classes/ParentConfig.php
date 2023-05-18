@@ -12,5 +12,7 @@ class ParentConfig extends Configuration
 
     public array $props = [
         'child' => ChildConfig::class,
+        'children' => [ChildConfig::class],
+        'keyed_children' => [ChildConfig::class, 'id'],
     ];
 }

@@ -229,4 +229,23 @@ class ConfigurationTest extends TestCase
             ['id' => 'bar', 'name' => 'five'],
         ], $config->get('keyed_children')->toArray());
     }
+
+    public function test_child_nodes_set_parent_key()
+    {
+        $config = ParentConfig::create([
+            'child' => ['name' => 'one'],
+            'children' => [
+                ['name' => 'two'],
+            ],
+            'keyed_children' => [
+                'foo' => ['name' => 'four'],
+            ],
+        ]);
+
+        $this->assertEquals('child', $config->get('child')->parentKey);
+
+        $this->assertEquals('children', $config->get('children.0')->parentKey);
+
+        $this->assertEquals('keyed_children', $config->get('keyed_children.0')->parentKey);   
+    }
 }

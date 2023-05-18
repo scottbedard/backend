@@ -56,6 +56,13 @@ class Configuration implements ArrayAccess, Arrayable
     public ?self $parent;
 
     /**
+     * Parent key
+     * 
+     * @var ?string
+     */
+    public ?string $parentKey;
+
+    /**
      * Child properties
      *
      * @var array
@@ -74,13 +81,16 @@ class Configuration implements ArrayAccess, Arrayable
      *
      * @param array $yaml
      * @param ?self $parent
+     * @param ?string $parentKey
      */
-    public function __construct(array $yaml = [], ?self $parent = null)
+    public function __construct(array $yaml = [], ?self $parent = null, ?string $parentKey = null)
     {
         // inherit config and fill default values
         $config = $yaml;
 
         $this->parent = $parent;
+
+        $this->parentKey = $parentKey;
 
         foreach ($this->inherits as $key) {
             $ancestor = $parent;
@@ -136,9 +146,9 @@ class Configuration implements ArrayAccess, Arrayable
             $prop = data_get($this->props, $key);
 
             if (is_array($prop)) {
-                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::$autocreate ? $prop[0]::create($item, $this) : $item);
+                $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::$autocreate ? $prop[0]::create($item, $this, $key) : $item);
             } elseif ($prop && is_array($val)) {
-                $data[$key] = $prop::$autocreate ? $prop::create($val, $this) : $val;
+                $data[$key] = $prop::$autocreate ? $prop::create($val, $this, $key) : $val;
             } else {
                 $data[$key] = $val;
             }

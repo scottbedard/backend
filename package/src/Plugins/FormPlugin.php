@@ -54,13 +54,14 @@ class FormPlugin extends Plugin
     /**
      * Construct
      *
-     * @param array $config
+     * @param array $yaml
      * @param ?\Bedard\Backend\Configuration\Configuration $parent
+     * @param ?string $parentKey
      */
-    public function __construct(array $config = [], ?Configuration $parent = null)
+    public function __construct(array $config = [], ?Configuration $parent = null, ?string $parentKey = null)
     {
         // construct form
-        parent::__construct($config, $parent);
+        parent::__construct($config, $parent, $parentKey);
 
         // create field instances, extending parent form if necessary
         $extends = $this->get('extends');
