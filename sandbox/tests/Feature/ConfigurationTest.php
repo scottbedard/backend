@@ -246,6 +246,6 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals('children', $config->get('children.0')->parentKey);
 
-        $this->assertEquals('keyed_children', $config->get('keyed_children.0')->parentKey);   
+        $this->assertEquals('keyed_children.foo', $config->get('keyed_children.0')->parentKey);   
     }
 }

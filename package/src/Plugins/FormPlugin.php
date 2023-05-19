@@ -14,15 +14,6 @@ use Illuminate\View\View;
 class FormPlugin extends Plugin
 {
     /**
-     * Default data
-     *
-     * @var array
-     */
-    public array $defaults = [
-        'fields' => [],
-    ];
-
-    /**
      * Inherited data
      *
      * @var array
@@ -47,6 +38,7 @@ class FormPlugin extends Plugin
      * @var array
      */
     public array $rules = [
+        'actions' => ['present', 'array'],
         'fields' => ['present', 'array'],
         'model' => ['nullable', 'string'],
     ];

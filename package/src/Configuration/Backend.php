@@ -28,7 +28,7 @@ class Backend extends Configuration
      * @var array
      */
     public array $props = [
-        'controllers' => [Controller::class, 'path'],
+        'controllers' => [Controller::class, 'id'],
     ];
 
     /**
@@ -37,7 +37,7 @@ class Backend extends Configuration
      * @var array
      */
     public array $rules = [
-        'controllers.*.id' => 'required|distinct',
+        'controllers.*.id' => ['required', 'distinct', 'string'],
     ];
 
     /**

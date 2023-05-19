@@ -93,16 +93,10 @@ class Configuration implements ArrayAccess, Arrayable
         $this->parentKey = $parentKey;
 
         foreach ($this->inherits as $key) {
-            $ancestor = $parent;
+            $ancestor = $this->climb(fn ($p) => array_key_exists($key, $p->config));
 
-            while ($ancestor) {
-                if (array_key_exists($key, $ancestor->config)) {
-                    data_fill($config, $key, $ancestor->config[$key]);
-
-                    break;
-                }
-
-                $ancestor = $ancestor->parent;
+            if ($ancestor) {
+                data_fill($config, $key, $ancestor->config[$key]);
             }
         }
 
@@ -134,7 +128,7 @@ class Configuration implements ArrayAccess, Arrayable
         $validator = Validator::make($config, $this->rules);
         
         if ($validator->fails()) {
-            throw new ConfigurationException(get_called_class() . ' validation error: ' . $validator->errors()->first());
+            throw new ConfigurationException($this->getConfigurationPath() . ': ' . $validator->errors()->first());
         }
 
         $this->config = $config;
@@ -154,23 +148,46 @@ class Configuration implements ArrayAccess, Arrayable
             }
         }
 
+        // add parent keys to keyed array items
+        foreach ($this->props as $key => $val) {
+            if (is_array($val) && count($val) === 2 ) {
+                [$class, $id] = $val;
+
+                $data[$key]
+                    ->filter(fn ($item) => is_a($item, $class))
+                    ->each(fn ($item) => $item->parentKey = trim($item->parentKey . ".{$item->get($id)}", '.'));
+            }
+        }
+
         $this->data = $data;
     }
 
     /**
-     * Find the closest ancestor
+     * Find ancestor configuration
+     *
+     * @param callable $fn
+     *
+     * @return ?self
+     */
+    public function climb(callable $fn): ?self
+    {
+        $parent = $this->parent;
+
+        if ($parent) {
+            return $fn($parent) ? $parent : $parent->climb($fn);
+        }
+
+        return null;
+    }
+
+    /**
+     * Find closest ancestor by type
      *
      * @return ?self
      */
     public function closest(string $class): ?self
     {
-        if ($this->parent) {
-            return get_class($this->parent) === $class
-                ? $this->parent
-                : $this->parent->closest($class);
-        }
-
-        return null;
+        return $this->climb(fn ($parent) => get_class($parent) === $class);
     }
 
     /**
@@ -198,6 +215,21 @@ class Configuration implements ArrayAccess, Arrayable
     public function get(string $path, $default = null)
     {
         return data_get($this->data, $path, $default);
+    }
+
+    public function getConfigurationPath(): string
+    {
+        $path = [];
+
+        $this->climb(function ($parent) use (&$path) {
+            $parentKey = $parent->parentKey;
+
+            if ($parentKey) {
+                array_push($path, $parentKey);
+            }
+        });
+
+        return implode('.', array_reverse($path));
     }
 
     /**

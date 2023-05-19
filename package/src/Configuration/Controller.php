@@ -44,6 +44,18 @@ class Controller extends Configuration
     ];
 
     /**
+     * Construct
+     *
+     * @param array $yaml
+     * @param ?\Bedard\Backend\Configuration\Configuration $parent
+     * @param ?string $parentKey
+     */
+    public function __construct(array $config, ?Configuration $parent = null, ?string $parentKey = null)
+    {
+        parent::__construct($config, $parent, $parentKey);
+    }
+
+    /**
      * Get route by id
      *
      * @param string $id

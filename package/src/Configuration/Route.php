@@ -89,6 +89,6 @@ class Route extends Configuration
             throw new ConfigurationException('Invalid plugin class "' . $class . '"');
         }
 
-        return $class::create($this->config['options'], $this);
+        return $class::create($this->config['options'], $this, $this->get('id'));
     }
 }
