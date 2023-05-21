@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Support\Collection;
+use Tests\Feature\Classes\BaseRules;
 use Tests\Feature\Classes\BlankConfig;
 use Tests\Feature\Classes\ChildConfig;
+use Tests\Feature\Classes\ExtensionRules;
 use Tests\Feature\Classes\GrandchildConfig;
 use Tests\Feature\Classes\InheritConfig;
 use Tests\Feature\Classes\LazyChild;
@@ -22,7 +24,7 @@ class ConfigurationTest extends TestCase
         $this->expectException(ConfigurationException::class);
 
         $config = new class extends Configuration {
-            public array $rules = ['id' => 'required'];
+            public static array $rules = ['id' => 'required'];
         };
     }
 
@@ -247,5 +249,15 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('children', $config->get('children.0')->parentKey);
 
         $this->assertEquals('keyed_children.foo', $config->get('keyed_children.0')->parentKey);   
+    }
+
+    public function test_extending_validation_rules()
+    {
+        $config = ExtensionRules::create();
+
+        $this->assertEquals([
+            'foo' => ['string', 'nullable'],
+            'bar' => ['string'],
+        ], $config->getValidationRules());
     }
 }

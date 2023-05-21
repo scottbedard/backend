@@ -101,4 +101,16 @@ class FormPluginTest extends TestCase
 
         $this->assertInstanceOf(InputField::class, $plugin->get('fields.2'));
     }
+
+    public function test_validation_error_path()
+    {
+        $plugin = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
+            ->route('validation_error_path')
+            ->plugin();
+
+        $this->assertEquals(
+            'controllers._form_plugin.routes.validation_error_path.options.fields.foo',
+            $plugin->get('fields.0')->getConfigurationPath()
+        );
+    }
 }

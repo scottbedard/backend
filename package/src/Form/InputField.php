@@ -12,7 +12,7 @@ class InputField extends Field
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'order' => 0,
         'span' => 12,
     ];
@@ -22,7 +22,7 @@ class InputField extends Field
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'max' => ['number'],
         'maxlength' => ['number'],
         'min' => ['number'],

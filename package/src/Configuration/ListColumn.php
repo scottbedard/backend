@@ -11,7 +11,7 @@ class ListColumn extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         // ...
     ];
 
@@ -20,7 +20,7 @@ class ListColumn extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'id' => ['distinct', 'required', 'string'],
     ];
 

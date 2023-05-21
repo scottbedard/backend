@@ -15,7 +15,7 @@ class ListPlugin extends Plugin
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'checkboxes' => false,
     ];
 
@@ -43,7 +43,7 @@ class ListPlugin extends Plugin
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'actions' => ['present', 'array'],
         'checkboxes' => ['present', 'boolean'],
         'schema' => ['present', 'array'],

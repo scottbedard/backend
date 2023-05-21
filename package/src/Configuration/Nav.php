@@ -11,7 +11,7 @@ class Nav extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'href' => null,
         'icon' => null,
         'order' => 0,
@@ -23,7 +23,7 @@ class Nav extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'href' => ['nullable', 'string'],
         'icon' => ['nullable', 'string'],
         'label' => ['required', 'string'],

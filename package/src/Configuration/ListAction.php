@@ -9,7 +9,7 @@ class ListAction extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'href' => null,
         'icon' => null,
         'to' => null,
@@ -20,7 +20,7 @@ class ListAction extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'href' => ['nullable', 'string'],
         'icon' => ['nullable', 'string'],
         'label' => ['required', 'string'],

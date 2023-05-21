@@ -7,7 +7,7 @@ use Bedard\Backend\Configuration\Configuration;
 
 class TestConfig extends Configuration
 {
-    public array $defaults = [
+    public static array $defaults = [
         'array' => [],
         'bool' => true,
         'int' => 1,

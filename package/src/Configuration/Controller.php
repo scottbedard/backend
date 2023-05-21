@@ -13,7 +13,7 @@ class Controller extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'model' => null,
         'nav' => [],
         'permissions' => [],
@@ -36,7 +36,7 @@ class Controller extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'id' => ['required', 'string'],
         'model' => ['nullable', 'string'],
         'permissions.*' => ['string'],

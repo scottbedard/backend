@@ -13,7 +13,7 @@ class Route extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'model' => null,
         'options' => [],
         'path' => null,
@@ -35,7 +35,7 @@ class Route extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'model' => ['nullable', 'string'],
         'options' => ['present', 'array'],
         'path' => ['nullable', 'string'],

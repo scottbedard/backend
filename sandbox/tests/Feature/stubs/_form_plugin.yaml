@@ -62,3 +62,10 @@ routes:
                     type: input
                 baz:
                     label: default type should be input
+    
+    validation_error_path:
+        plugin: form
+        options:
+            fields:
+                foo:
+                    type: input

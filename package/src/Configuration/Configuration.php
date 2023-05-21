@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use ReflectionClass;
 
 class Configuration implements ArrayAccess, Arrayable
 {
@@ -39,7 +40,7 @@ class Configuration implements ArrayAccess, Arrayable
      *
      * @var array
      */
-    public array $defaults = [];
+    public static array $defaults = [];
 
     /**
      * Inherited data
@@ -74,7 +75,7 @@ class Configuration implements ArrayAccess, Arrayable
      *
      * @var array
      */
-    public array $rules = [];
+    public static array $rules = [];
 
     /**
      * Construct
@@ -100,7 +101,7 @@ class Configuration implements ArrayAccess, Arrayable
             }
         }
 
-        foreach ($this->defaults as $key => $value) {
+        foreach ($this->getDefaultValues() as $key => $value) {
             data_fill($config, $key, $value);
         }
 
@@ -125,7 +126,7 @@ class Configuration implements ArrayAccess, Arrayable
         }
 
         // validate and store the config
-        $validator = Validator::make($config, $this->rules);
+        $validator = Validator::make($config, $this::getValidationRules());
         
         if ($validator->fails()) {
             throw new ConfigurationException($this->getConfigurationPath() . ': ' . $validator->errors()->first());
@@ -217,9 +218,18 @@ class Configuration implements ArrayAccess, Arrayable
         return data_get($this->data, $path, $default);
     }
 
+    /**
+     * Get configuration path
+     *
+     * @return string
+     */
     public function getConfigurationPath(): string
     {
         $path = [];
+
+        if ($this->parentKey) {
+            array_push($path, $this->parentKey);
+        }
 
         $this->climb(function ($parent) use (&$path) {
             $parentKey = $parent->parentKey;
@@ -230,6 +240,46 @@ class Configuration implements ArrayAccess, Arrayable
         });
 
         return implode('.', array_reverse($path));
+    }
+
+    /**
+     * Get default values
+     *
+     * @return array
+     */
+    public function getDefaultValues(): array
+    {
+        $defaults = [];
+
+        $class = get_called_class();
+
+        while ($class && is_array($class::$defaults)) {
+            $defaults = array_merge($class::$defaults, $defaults);
+
+            $class = get_parent_class($class);
+        }
+
+        return $defaults;
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        $rules = [];
+
+        $class = get_called_class();
+
+        while ($class && is_array($class::$rules)) {
+            $rules = array_merge_recursive($class::$rules, $rules);
+
+            $class = get_parent_class($class);
+        }
+
+        return $rules;
     }
 
     /**

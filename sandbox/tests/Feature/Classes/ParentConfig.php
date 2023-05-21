@@ -6,7 +6,7 @@ use Bedard\Backend\Configuration\Configuration;
 
 class ParentConfig extends Configuration
 {
-    public array $defaults = [
+    public static array $defaults = [
         'name' => 'foo',
     ];
 

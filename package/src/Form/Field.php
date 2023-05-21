@@ -21,7 +21,7 @@ class Field extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'order' => 0,
         'span' => 12,
         'type' => InputField::class,
@@ -32,10 +32,11 @@ class Field extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'id' => 'required',
         'label' => ['present', 'nullable', 'string'],
         'order' => ['present', 'integer'],
+        'span' => ['present'],
         'type' => ['required', 'string'],
     ];
 

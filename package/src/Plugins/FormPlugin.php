@@ -37,7 +37,7 @@ class FormPlugin extends Plugin
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'actions' => ['present', 'array'],
         'fields' => ['present', 'array'],
         'model' => ['nullable', 'string'],
@@ -48,12 +48,11 @@ class FormPlugin extends Plugin
      *
      * @param array $yaml
      * @param ?\Bedard\Backend\Configuration\Configuration $parent
-     * @param ?string $parentKey
      */
-    public function __construct(array $config = [], ?Configuration $parent = null, ?string $parentKey = null)
+    public function __construct(array $config = [], ?Configuration $parent = null)
     {
         // construct form
-        parent::__construct($config, $parent, $parentKey);
+        parent::__construct($config, $parent);
 
         // create field instances, extending parent form if necessary
         $extends = $this->get('extends');
@@ -63,7 +62,7 @@ class FormPlugin extends Plugin
                 data_fill($field, 'order', 0);
                 data_fill($field, 'type', InputField::class);
 
-                return Field::createFromType($field, $this);
+                return Field::createFromType($field, $this, 'options.fields.' . $field['id']);
             })
             ->sortBy('order')
             ->values();

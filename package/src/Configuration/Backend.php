@@ -18,7 +18,7 @@ class Backend extends Configuration
      *
      * @var array
      */
-    public array $defaults = [
+    public static array $defaults = [
         'controllers' => [],
     ];
 
@@ -36,7 +36,7 @@ class Backend extends Configuration
      *
      * @var array
      */
-    public array $rules = [
+    public static array $rules = [
         'controllers.*.id' => ['required', 'distinct', 'string'],
     ];
 
