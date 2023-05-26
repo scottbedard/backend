@@ -33,17 +33,6 @@ class FormPlugin extends Plugin
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'actions' => ['present', 'array'],
-        'fields' => ['present', 'array'],
-        'model' => ['nullable', 'string'],
-    ];
-
-    /**
      * Construct
      *
      * @param array $yaml
@@ -96,6 +85,20 @@ class FormPlugin extends Plugin
         }
 
         return $model::where(request()->route()->parameters)->firstOrFail();
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'actions' => ['present', 'array'],
+            'fields' => ['present', 'array'],
+            'model' => ['nullable', 'string'],
+        ];
     }
 
     /**

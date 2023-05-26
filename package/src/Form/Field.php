@@ -5,6 +5,7 @@ namespace Bedard\Backend\Form;
 use Bedard\Backend\Classes\Breakpoint;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Rules\Breakpoints;
 use Illuminate\View\View;
 
 class Field extends Configuration
@@ -25,19 +26,6 @@ class Field extends Configuration
         'order' => 0,
         'span' => 12,
         'type' => InputField::class,
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'id' => 'required',
-        'label' => ['present', 'nullable', 'string'],
-        'order' => ['present', 'integer'],
-        'span' => ['present'],
-        'type' => ['required', 'string'],
     ];
 
     /**
@@ -84,6 +72,22 @@ class Field extends Configuration
         }
 
         throw new ConfigurationException("Unknown field type \"{$type}\"");
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'id' => 'required',
+            'label' => ['present', 'nullable', 'string'],
+            'order' => ['present', 'integer'],
+            'span' => ['present'],
+            'type' => ['required', 'string'],
+        ];
     }
 
     /**

@@ -19,19 +19,6 @@ class FormAction extends Configuration
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'href' => ['nullable', 'string'],
-        'icon' => ['nullable', 'string'],
-        'label' => ['required', 'string'],
-        'theme' => ['required', 'string', 'in:default,danger,primary'],
-        'to' => ['nullable', 'string'],
-    ];
-
-    /**
      * Construct
      *
      * @param array $yaml
@@ -45,5 +32,21 @@ class FormAction extends Configuration
         if (is_string($this->data['to']) && $this->data['href'] === null) {
             $this->data['href'] = Href::format($this->data['to']);
         }
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'href' => ['nullable', 'string'],
+            'icon' => ['nullable', 'string'],
+            'label' => ['required', 'string'],
+            'theme' => ['required', 'string', 'in:default,danger,primary'],
+            'to' => ['nullable', 'string'],
+        ];
     }
 }

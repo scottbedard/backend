@@ -7,24 +7,6 @@ use Bedard\Backend\Classes\Href;
 class ListColumn extends Configuration
 {
     /**
-     * Default data
-     *
-     * @var array
-     */
-    public static array $defaults = [
-        // ...
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'id' => ['distinct', 'required', 'string'],
-    ];
-
-    /**
      * Construct
      *
      * @param array $yaml
@@ -36,5 +18,17 @@ class ListColumn extends Configuration
         data_fill($config, 'header', str($config['id'])->headline()->toString());
 
         parent::__construct($config, $parent, $parentKey);
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'id' => ['distinct', 'required', 'string'],
+        ];
     }
 }

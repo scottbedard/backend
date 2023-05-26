@@ -5,7 +5,7 @@ namespace Bedard\Backend\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class Breakpoints implements ValidationRule
+class ColumnSpan implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -14,6 +14,6 @@ class Breakpoints implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // ...
+        $fail('you suck');
     }
 }

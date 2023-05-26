@@ -16,7 +16,6 @@ class Route extends Configuration
     public static array $defaults = [
         'model' => null,
         'options' => [],
-        'path' => null,
         'permissions' => [],
         'plugin' => BladePlugin::class,
     ];
@@ -31,20 +30,6 @@ class Route extends Configuration
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'model' => ['nullable', 'string'],
-        'options' => ['present', 'array'],
-        'path' => ['nullable', 'string'],
-        'permissions.*' => ['string'],
-        'permissions' => ['present', 'array'],
-        'plugin' => ['nullable', 'string'],
-    ];
-
-    /**
      * Get the route's controller
      *
      * @return \Bedard\Backend\Configuration\Controller
@@ -55,21 +40,51 @@ class Route extends Configuration
     }
 
     /**
+     * Get config data
+     *
+     * @param string $path
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get(string $path, $default = null)
+    {
+        if ($path === 'path') {
+            return $this->path();
+        }
+
+        return parent::get($path, $default);
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'model' => ['nullable', 'string'],
+            'options' => ['present', 'array'],
+            'path' => ['nullable', 'string'],
+            'permissions.*' => ['string'],
+            'permissions' => ['present', 'array'],
+            'plugin' => ['nullable', 'string'],
+        ];
+    }
+
+    /**
      * Path
      *
      * @return ?string
      */
     public function path(): ?string
     {
-        if (array_key_exists('path', $this->data)) {
-            return $this->data['path'];
+        if (array_key_exists('path', $this->config)) {
+            return $this->config['path'];
         }
 
-        $id = $this->get('id');
-
-        return str_starts_with($id, '_')
-            ? null
-            : str($id)->slug()->toString();
+        return str($this->get('id'))->slug()->toString();
     }
 
     /**

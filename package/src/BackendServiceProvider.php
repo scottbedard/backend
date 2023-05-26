@@ -3,8 +3,10 @@
 namespace Bedard\Backend;
 
 use Bedard\Backend\Configuration\Backend;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
@@ -24,12 +26,31 @@ class BackendServiceProvider extends ServiceProvider
 
         // register components
         Blade::componentNamespace('Bedard\\Backend\\View\\Components', 'backend');
-
+ 
         // public assets
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),
             __DIR__ . '/../public' => public_path('vendor/backend'),
         ], 'backend');
+
+        // // register validation rules
+        // Validator::extend('breakpoints', function ($attributes, $span) {
+        //     $check = fn ($val) => is_integer($val) && $val >= 0 && $val <= 12;
+
+        //     if (is_integer($span) && $check($span)) {
+        //         return true;
+        //     }
+            
+        //     if (Arr::isAssoc($span)) {
+        //         foreach ($span as $key => $val) {
+        //             if (!is_string($key) || !$check($val)) {
+        //                 return false;
+        //             }
+        //         }
+        //     }
+
+        //     return true;
+        // }, 'Span values must be an integer between 0 and 12');
 
         // register backend commands in console
         if ($this->app->runningInConsole()) {
@@ -54,9 +75,9 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // register backend facade
-        $this->app->singleton('backend', function () {
-            return Backend::create(__DIR__ . '/Backend', config('backend.backend_directory'));
-        });
+        // // register backend facade
+        // $this->app->singleton('backend', function () {
+        //     return Backend::create(__DIR__ . '/Backend', config('backend.backend_directory'));
+        // });
     }
 }

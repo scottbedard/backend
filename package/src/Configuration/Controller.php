@@ -32,18 +32,6 @@ class Controller extends Configuration
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'id' => ['required', 'string'],
-        'model' => ['nullable', 'string'],
-        'permissions.*' => ['string'],
-        'permissions' => ['present', 'array'],
-    ];
-
-    /**
      * Construct
      *
      * @param array $yaml
@@ -53,6 +41,38 @@ class Controller extends Configuration
     public function __construct(array $config, ?Configuration $parent = null, ?string $parentKey = null)
     {
         parent::__construct($config, $parent, $parentKey);
+    }
+
+    /**
+     * Get config data
+     *
+     * @param string $path
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get(string $path, $default = null)
+    {
+        if ($path === 'path') {
+            return $this->path();
+        }
+
+        return parent::get($path, $default);
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'id' => ['required', 'string'],
+            'model' => ['nullable', 'string'],
+            'permissions.*' => ['string'],
+            'permissions' => ['present', 'array'],
+        ];
     }
 
     /**
@@ -95,11 +115,11 @@ class Controller extends Configuration
      */
     public function path(): ?string
     {        
-        if (array_key_exists('path', $this->data)) {
-            return $this->data['path'];
+        if (array_key_exists('path', $this->config)) {
+            return $this->config['path'];
         }
 
-        $id = $this->get('id');
+        $id = $this->config['id'];
 
         return str_starts_with($id, '_')
             ? null

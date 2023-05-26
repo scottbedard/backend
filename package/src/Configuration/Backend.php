@@ -32,15 +32,6 @@ class Backend extends Configuration
     ];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [
-        'controllers.*.id' => ['required', 'distinct', 'string'],
-    ];
-
-    /**
      * Construct
      *
      * @param array $files
@@ -102,6 +93,18 @@ class Backend extends Configuration
             ->get('controllers')
             ->filter(fn ($controller) => !$user || Bouncer::check($user, $controller->get('permissions')))
             ->values();
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [
+            'controllers.*.id' => ['required', 'distinct', 'string'],
+        ];
     }
 
     /**

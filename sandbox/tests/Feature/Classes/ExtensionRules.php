@@ -4,8 +4,11 @@ namespace Tests\Feature\Classes;
 
 class ExtensionRules extends BaseRules
 {
-    public static array $rules = [
-        'foo' => ['nullable'],
-        'bar' => ['string'],
-    ];
+    public function getValidationRules(): array
+    {
+        return array_merge_recursive(parent::getValidationRules(), [
+            'foo' => ['nullable'],
+            'bar' => ['string'],
+        ]);
+    }
 }

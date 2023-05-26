@@ -2,14 +2,12 @@
 
 namespace Tests\Feature\Classes;
 
-use Bedard\Backend\Configuration\Configuration;
-
-class BaseRules extends Configuration
+class OverwriteRules extends BaseRules
 {
     public function getValidationRules(): array
     {
         return [
-            'foo' => ['string'],
+            'foo' => ['integer'],
         ];
     }
 }

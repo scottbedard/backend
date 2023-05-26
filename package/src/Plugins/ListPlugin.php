@@ -39,15 +39,18 @@ class ListPlugin extends Plugin
     ];
 
     /**
-     * Validation rules
+     * Get validation rules
      *
-     * @var array
+     * @return array
      */
-    public static array $rules = [
-        'actions' => ['present', 'array'],
-        'checkboxes' => ['present', 'boolean'],
-        'schema' => ['present', 'array'],
-    ];
+    public function getValidationRules(): array
+    {
+        return [
+            'actions' => ['present', 'array'],
+            'checkboxes' => ['present', 'boolean'],
+            'schema' => ['present', 'array'],
+        ];
+    }
 
     /**
      * Get normalized list options

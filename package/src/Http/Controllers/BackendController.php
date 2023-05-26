@@ -2,7 +2,7 @@
 
 namespace Bedard\Backend\Http\Controllers;
 
-use Bedard\Backend\Facades\Backend;
+// use Bedard\Backend\Facades\Backend;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -19,11 +19,11 @@ class BackendController extends Controller
      */
     public function handle(Request $request)
     {
-        $route = Backend::route($request->route()->getName());
+        // $route = Backend::route($request->route()->getName());
         
-        if ($request->method() === 'GET') {
-            return $route->plugin()->render($request);
-        }
+        // if ($request->method() === 'GET') {
+        //     return $route->plugin()->render($request);
+        // }
 
         throw new \Exception('Not implemented yet');
     }

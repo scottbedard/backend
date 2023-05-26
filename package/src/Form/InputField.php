@@ -18,20 +18,23 @@ class InputField extends Field
     ];
 
     /**
-     * Validation rules
+     * Get validation rules
      *
-     * @var array
+     * @return array
      */
-    public static array $rules = [
-        'max' => ['number'],
-        'maxlength' => ['number'],
-        'min' => ['number'],
-        'minlength' => ['number'],
-        'pattern' => ['string'],
-        'placeholder' => ['string'],
-        'readonly' => ['boolean'],
-        'required' => ['boolean'],
-    ];
+    public function getValidationRules(): array
+    {
+        return array_merge_recursive(parent::getValidationRules(), [
+            'max' => ['number'],
+            'maxlength' => ['number'],
+            'min' => ['number'],
+            'minlength' => ['number'],
+            'pattern' => ['string'],
+            'placeholder' => ['string'],
+            'readonly' => ['boolean'],
+            'required' => ['boolean'],
+        ]);
+    }
 
     /**
      * Render

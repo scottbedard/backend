@@ -9,7 +9,9 @@ use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Translation\ArrayLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\Validator;
 use ReflectionClass;
 
 class Configuration implements ArrayAccess, Arrayable
@@ -71,13 +73,6 @@ class Configuration implements ArrayAccess, Arrayable
     public array $props = [];
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static array $rules = [];
-
-    /**
      * Construct
      *
      * @param array $yaml
@@ -125,9 +120,14 @@ class Configuration implements ArrayAccess, Arrayable
             }
         }
 
-        // validate and store the config
-        $validator = Validator::make($config, $this::getValidationRules());
-        
+        // validate and store the config. we're avoiding the validator facade because
+        // facades require an application, which makes unit testing more difficult
+        $validator = new Validator(
+            translator: new Translator(new ArrayLoader, 'en'),
+            data: $config,
+            rules: $this->getValidationRules(),
+        );
+
         if ($validator->fails()) {
             throw new ConfigurationException($this->getConfigurationPath() . ': ' . $validator->errors()->first());
         }
@@ -269,17 +269,7 @@ class Configuration implements ArrayAccess, Arrayable
      */
     public function getValidationRules(): array
     {
-        $rules = [];
-
-        $class = get_called_class();
-
-        while ($class && is_array($class::$rules)) {
-            $rules = array_merge_recursive($class::$rules, $rules);
-
-            $class = get_parent_class($class);
-        }
-
-        return $rules;
+        return [];
     }
 
     /**

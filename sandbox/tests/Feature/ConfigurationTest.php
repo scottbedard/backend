@@ -13,6 +13,7 @@ use Tests\Feature\Classes\GrandchildConfig;
 use Tests\Feature\Classes\InheritConfig;
 use Tests\Feature\Classes\LazyChild;
 use Tests\Feature\Classes\LazyParent;
+use Tests\Feature\Classes\OverwriteRules;
 use Tests\Feature\Classes\ParentConfig;
 use Tests\Feature\Classes\TestConfig;
 use Tests\TestCase;
@@ -24,7 +25,10 @@ class ConfigurationTest extends TestCase
         $this->expectException(ConfigurationException::class);
 
         $config = new class extends Configuration {
-            public static array $rules = ['id' => 'required'];
+            public function getValidationRules(): array
+            {
+                return ['id' => 'required'];
+            }
         };
     }
 
@@ -253,11 +257,20 @@ class ConfigurationTest extends TestCase
 
     public function test_extending_validation_rules()
     {
-        $config = ExtensionRules::create();
+        $config = ExtensionRules::create(['foo' => 'bar']);
 
         $this->assertEquals([
             'foo' => ['string', 'nullable'],
             'bar' => ['string'],
+        ], $config->getValidationRules());
+    }
+
+    public function test_overwriting_validation_rules()
+    {
+        $config = OverwriteRules::create(['foo' => 1]);
+
+        $this->assertEquals([
+            'foo' => ['integer'],
         ], $config->getValidationRules());
     }
 }

@@ -19,19 +19,22 @@ class Nav extends Configuration
     ];
 
     /**
-     * Validation rules
+     * Get validation rules
      *
-     * @var array
+     * @return array
      */
-    public static array $rules = [
-        'href' => ['nullable', 'string'],
-        'icon' => ['nullable', 'string'],
-        'label' => ['required', 'string'],
-        'order' => ['required', 'int'],
-        'permissions.*' => ['string'],
-        'permissions' => ['present', 'array'],
-        'to' => ['nullable', 'string'],
-    ];
+    public function getValidationRules(): array
+    {
+        return [
+            'href' => ['nullable', 'string'],
+            'icon' => ['nullable', 'string'],
+            'label' => ['required', 'string'],
+            'order' => ['required', 'int'],
+            'permissions.*' => ['string'],
+            'permissions' => ['present', 'array'],
+            'to' => ['nullable', 'string'],
+        ];
+    }
 
     /**
      * Format the href attribute
