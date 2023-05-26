@@ -15,7 +15,7 @@ class FormPluginTest extends TestCase
     {
         // parent
         $parent = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('extension_parent')
+            ->route('backend._form_plugin.extension_parent')
             ->plugin();
 
         $this->assertEquals(2, $parent->get('fields')->count());
@@ -26,7 +26,7 @@ class FormPluginTest extends TestCase
 
         // child
         $child = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('extension_child')
+            ->route('backend._form_plugin.extension_child')
             ->plugin();
 
         $this->assertEquals(3, $child->get('fields')->count());
@@ -39,7 +39,7 @@ class FormPluginTest extends TestCase
                
         // grandchild
         $grandchild = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('extension_grandchild')
+            ->route('backend._form_plugin.extension_grandchild')
             ->plugin(); 
 
         $this->assertEquals(4, $grandchild->get('fields')->count());
@@ -57,7 +57,7 @@ class FormPluginTest extends TestCase
     public function test_forms_generate_column_spans()
     {
         $plugin = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('field_spans')
+            ->route('backend._form_plugin.field_spans')
             ->plugin();
             
         $this->assertEquals([
@@ -82,7 +82,7 @@ class FormPluginTest extends TestCase
     public function test_fields_set_default_label_when_not_null()
     {
         $plugin = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('default_labels')
+            ->route('backend._form_plugin.default_labels')
             ->plugin();
             
         $this->assertEquals('One Two', $plugin->get('fields.0.label'));
@@ -92,7 +92,7 @@ class FormPluginTest extends TestCase
     public function test_fields_subclasses()
     {
         $plugin = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('field_stub')
+            ->route('backend._form_plugin.field_stub')
             ->plugin();
             
         $this->assertInstanceOf(FieldStub::class, $plugin->get('fields.0'));
@@ -105,7 +105,7 @@ class FormPluginTest extends TestCase
     public function test_validation_error_path()
     {
         $plugin = Backend::create(__DIR__ . '/stubs/_form_plugin.yaml')
-            ->route('validation_error_path')
+            ->route('backend._form_plugin.validation_error_path')
             ->plugin();
 
         $this->assertEquals(

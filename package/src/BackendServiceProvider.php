@@ -75,9 +75,9 @@ class BackendServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // // register backend facade
-        // $this->app->singleton('backend', function () {
-        //     return Backend::create(__DIR__ . '/Backend', config('backend.backend_directory'));
-        // });
+        // register backend singleton
+        $this->app->singleton('backend', function () {
+            return Backend::create(__DIR__ . '/Backend', config('backend.backend_directory'));
+        });
     }
 }

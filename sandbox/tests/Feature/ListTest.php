@@ -11,7 +11,7 @@ class ListTest extends TestCase
     public function test_row_to_parsing()
     {
         $opts = Backend::create(__DIR__ . '/stubs/_list_plugin.yaml')
-            ->route('parse_row_to')
+            ->route('backend._list_plugin.parse_row_to')
             ->plugin()
             ->options();
             

@@ -131,10 +131,13 @@ class Backend extends Configuration
      *
      * @return \Bedard\Backend\Configuration\Route
      */
-    public function route(string $route): Route
+    public function route(string $id): Route
     {
-        if (str($route)->is('backend.*.*')) {
-            [, $controllerId, $routeId] = str($route)->explode('.');
+        $str = str($id);
+
+        // get route from controller + route id
+        if ($str->is('backend.*.*')) {
+            [, $controllerId, $routeId] = $str->explode('.');
 
             $controller = $this->controller($controllerId);
 
@@ -149,16 +152,23 @@ class Backend extends Configuration
             }
         }
 
-        $route = $this
-            ->controllers()
-            ->map(fn ($controller) => $controller->get('routes'))
-            ->flatten()
-            ->first(fn ($r) => $r->get('id') === $route);
+        // get index route for controller id
+        else if ($str->is('backend.*')) {
+            [, $controllerId] = $str->explode('.');
 
-        if ($route) {
-            return $route;
+            $controller = $this->controller($controllerId);
+
+            if ($controller) {
+                $route = $controller
+                    ->get('routes')
+                    ->first(fn ($r) => $r->get('path') === null);
+
+                if ($route) {
+                    return $route;
+                }
+            } 
         }
         
-        throw new ConfigurationException('Backend route not found: ' . $route);
+        throw new ConfigurationException('Backend route not found: ' . $id);
     }
 }
