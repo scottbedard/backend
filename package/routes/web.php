@@ -9,7 +9,7 @@ Route::group([
 ], function () {
 
     Route::get('/{controller?}/{route?}/{any?}', function () {
-        // ...
+        return 'hello';
     })->name('backend.controller.route')->where('any', '.*');
 
     // foreach (Backend::controllers() as $controller) {
