@@ -2,10 +2,12 @@
 
 namespace Bedard\Backend\Configuration;
 
-use Bedard\Backend\Classes\Href;
+use Bedard\Backend\Traits\ToHref;
 
 class Nav extends Configuration
 {
+    use ToHref;
+
     /**
      * Default data
      *
@@ -34,15 +36,5 @@ class Nav extends Configuration
             'permissions' => ['present', 'array'],
             'to' => ['nullable', 'string'],
         ];
-    }
-
-    /**
-     * Format the href attribute
-     *
-     * @return ?string
-     */
-    public function href(): ?string
-    {
-        return $this->get('href') ?? Href::format($this->get('to'), $this->closest(Controller::class)?->get('id'));
     }
 }
