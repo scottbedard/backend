@@ -127,12 +127,20 @@ class Backend extends Configuration
     /**
      * Get route definition
      *
-     * @param string $route
+     * @param ?string $route
      *
      * @return \Bedard\Backend\Configuration\Route
      */
-    public function route(string $id): Route
+    public function route(?string $id): Route
     {
+        if ($id === null) {
+            return $this->controllers()
+                ->filter(fn ($controller) => $controller->get('path') === null)
+                ->map(fn ($controller) => $controller->get('routes'))
+                ->flatten()
+                ->first(fn ($route) => $route->path() === null);
+        }
+
         $str = str($id);
 
         // get route from controller + route id

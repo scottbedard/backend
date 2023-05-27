@@ -3,11 +3,14 @@
 namespace Bedard\Backend\Configuration;
 
 use Bedard\Backend\Classes\Bouncer;
+use Bedard\Backend\Traits\Permissions;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 
 class Controller extends Configuration
 {
+    use Permissions;
+
     /**
      * Default data
      *

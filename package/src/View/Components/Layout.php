@@ -24,12 +24,13 @@ class Layout extends Component
      */
     public function render(): View|Closure|string
     {
-        throw new \Exception('Not implemented');
-        // $dev = env('BACKEND_DEV');
+        $dev = env('BACKEND_DEV');
 
-        // $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
+        $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
 
-        // $user = auth()->user();
+        $user = auth()->user();
+
+        dd($user->toArray());
 
         // $nav = Backend::nav($user);
 
@@ -37,14 +38,14 @@ class Layout extends Component
 
         // $subnav = $route->controller()->subnav($user);
         
-        // return view('backend::components.layout', [
-        //     'dev' => $dev,
-        //     'logout' => config('backend.logout_href'),
-        //     'manifest' => $manifest,
-        //     'nav' => $nav,
-        //     'scripts' => $manifest->scripts(),
-        //     'styles' => $manifest->styles(),
-        //     'subnav' => $subnav,
-        // ]);
+        return view('backend::components.layout', [
+            'dev' => $dev,
+            'logout' => config('backend.logout_href'),
+            'manifest' => $manifest,
+            'nav' => $nav,
+            'scripts' => $manifest->scripts(),
+            'styles' => $manifest->styles(),
+            'subnav' => $subnav,
+        ]);
     }
 }

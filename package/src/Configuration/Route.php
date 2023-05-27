@@ -5,9 +5,12 @@ namespace Bedard\Backend\Configuration;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Plugins\BladePlugin;
 use Bedard\Backend\Plugins\Plugin;
+use Bedard\Backend\Traits\Permissions;
 
 class Route extends Configuration
 {
+    use Permissions;
+
     /**
      * Default data
      *

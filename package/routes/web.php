@@ -8,21 +8,8 @@ Route::group([
     'prefix' => config('backend.path'),
 ], function () {
 
-    Route::get('/{controller?}/{route?}/{any?}', function () {
-        return 'hello';
-    })->name('backend.controller.route')->where('any', '.*');
-
-    // foreach (Backend::controllers() as $controller) {
-    //     Route::group([
-    //         // 'middleware' => ...
-    //         'prefix' => $controller->path(),
-    //     ], function () use ($controller) {
-    //         foreach ($controller->get('routes') as $route) {
-    //             Route::middleware([ /* ... */ ])
-    //                 ->any($route->path(), [BackendController::class, 'handle'])
-    //                 ->name("backend.{$controller->get('id')}.{$route->get('id')}");
-    //         }
-    //     });
-    // }
+    Route::get('/{controller?}/{route?}/{any?}', [BackendController::class, 'route'])
+        ->name('backend.controller.route')
+        ->where('any', '.*');
 
 });

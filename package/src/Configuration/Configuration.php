@@ -140,7 +140,11 @@ class Configuration implements ArrayAccess, Arrayable
         foreach ($this->config as $key => $val) {
             $prop = data_get($this->props, $key);
 
-            if (is_array($prop)) {
+            $setter = str('set_' . $key . '_attribute')->camel()->toString();
+
+            if (method_exists($this, $setter)) {
+                $data[$key] = $this->$setter($val);
+            } elseif (is_array($prop)) {
                 $data[$key] = collect($config[$key])->map(fn ($item) => $prop[0]::$autocreate ? $prop[0]::create($item, $this, $key) : $item);
             } elseif ($prop && is_array($val)) {
                 $data[$key] = $prop::$autocreate ? $prop::create($val, $this, $key) : $val;
