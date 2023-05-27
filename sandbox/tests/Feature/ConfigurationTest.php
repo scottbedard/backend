@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Support\Collection;
+use Tests\Feature\Classes\AttributeSetter;
 use Tests\Feature\Classes\BaseRules;
 use Tests\Feature\Classes\BlankConfig;
 use Tests\Feature\Classes\ChildConfig;
@@ -272,5 +273,12 @@ class ConfigurationTest extends TestCase
         $this->assertEquals([
             'foo' => ['integer'],
         ], $config->getValidationRules());
+    }
+
+    public function test_configuration_attribute_setter()
+    {
+        $config = AttributeSetter::create(['test' => 'foo-bar-baz']);
+
+        $this->assertEquals('FOO-BAR-BAZ', $config->get('test'));
     }
 }
