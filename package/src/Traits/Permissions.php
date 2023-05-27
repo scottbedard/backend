@@ -11,14 +11,24 @@ trait Permissions
      *
      * @return array
      */
-    public function setPermissionsAttribute()
+    public function setPermissionsAttribute(?array $permissions): array
     {
-        $permissions = data_get($this->config, 'permissions', []);
+        $permissions = is_array($permissions) ? $permissions : [];
 
         $this->climb(function ($ancestor) use (&$permissions) {
             $permissions = array_merge(data_get($ancestor->config, 'permissions', []), $permissions);
         });
 
         return array_unique($permissions);
+    }
+
+    /**
+     * Test permissions for user
+     *
+     * @return void
+     */
+    public function testPermissionsForUser($user): void
+    {
+
     }
 }

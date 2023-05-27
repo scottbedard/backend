@@ -28,21 +28,29 @@ class BackendController extends Controller
             return redirect(config('backend.guest_redirect'));
         }
 
+        // find the route
         $id = $controller === null
             ? null
             : ($route === null
                 ? "backend.{$controller}"
                 : "backend.{$controller}.{$route}");
-            
+
         $route = Backend::route($id);
 
-        // redirect users who lack authorization
-        $permissions = $route->get('permissions');
-
-        if ($request->method() === 'GET') {
-            return $route->plugin()->render($request);
+        // ensure user has permission to access the route
+        foreach ($route->get('permissions', []) as $permission) {
+            if ($permission) {
+                dd('perm', $permission);
+            }
+            if (!$user->can($permission)) {
+                return redirect(config('backend.unauthorized_redirect'));
+            }
         }
 
-        throw new \Exception('Not implemented yet');
+        // if ($request->method() === 'GET') {
+        //     return $route->plugin()->render($request);
+        // }
+
+        // throw new \Exception('Not implemented yet');
     }
 }
