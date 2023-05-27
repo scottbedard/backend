@@ -25,8 +25,19 @@ class Config
      */
     public function __construct(array $config = [])
     {
-        $this->config = array_merge($this->getDefaultAttributes(), $config);
+        // set default attributes
+        $defaults = $this->getDefaultAttributes();
 
+        foreach (get_class_methods($this) as $method) {
+            if (str_starts_with($method, 'getDefault') && str_ends_with($method, 'Attribute')) {
+                $attr = str(substr($method, 10, -9))->snake()->toString();
+
+                data_fill($defaults, $attr, $this->$method());
+            }
+        }
+
+        $this->config = array_merge($defaults, $config);
+        
         $this->data = [];
     }
 

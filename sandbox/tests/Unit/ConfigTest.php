@@ -6,6 +6,7 @@ use Bedard\Backend\Config\Config;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\Noop;
+use Tests\Unit\Traits\DynamicTestAttribute;
 
 class ConfigTest extends TestCase
 {
@@ -25,6 +26,27 @@ class ConfigTest extends TestCase
             'foo' => 'bar',
             'hello' => 'world',
             'overwrite' => 'new value',
+        ], $config->config);
+    }
+    
+    public function test_dynamic_default_values()
+    {
+        $config = new class extends Config
+        {
+            use DynamicTestAttribute;
+
+            public function getDefaultAttributes(): array
+            {
+                return [
+                    'overwrite' => 'new value',
+                ];
+            }
+        };
+
+        $this->assertEquals([
+            'overwrite' => 'new value',
+            'test' => 'hello',
+            'multi_word' => 'world',
         ], $config->config);
     }
 }
