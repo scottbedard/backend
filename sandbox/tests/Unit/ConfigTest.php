@@ -49,4 +49,44 @@ class ConfigTest extends TestCase
             'multi_word' => 'world',
         ], $config->config);
     }
+
+    public function test_custom_attribute_setter()
+    {
+        $config = new class extends Config
+        {
+            public function getDefaultAttributes(): array
+            {
+                return [
+                    'foo' => 'bar',
+                    'multi_word' => 1,
+                ];
+            }
+
+            public function getDefaultDynamicAttribute()
+            {
+                return 'hello';
+            }
+
+            public function setDynamicAttribute($value)
+            {
+                return $value . ' world';
+            }
+
+            public function setFooAttribute($value)
+            {
+                return strtoupper($value);
+            }
+
+            public function setMultiWordAttribute($value)
+            {
+                return $value * 2;
+            }
+        };
+
+        $this->assertEquals([
+            'dynamic' => 'hello world',
+            'foo' => 'BAR',
+            'multi_word' => 2,
+        ], $config->data);
+    }
 }

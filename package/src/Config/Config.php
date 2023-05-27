@@ -37,8 +37,19 @@ class Config
         }
 
         $this->config = array_merge($defaults, $config);
+
+        // set normalized data
+        $data = [];
+
+        foreach ($this->config as $key => $value) {
+            $setter = str('set_' . $key . '_attribute')->camel()->toString();
+
+            if (method_exists($this, $setter)) {
+                $data[$key] = $this->$setter($value);
+            }
+        }
         
-        $this->data = [];
+        $this->data = $data;
     }
 
     /**
@@ -55,10 +66,15 @@ class Config
 
     /**
      * Get config value
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
-        return $key;
+        return data_get($this->data, $key, $default);
     }
 
     /**
