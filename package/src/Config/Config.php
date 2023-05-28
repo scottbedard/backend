@@ -142,6 +142,16 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
+     * Find closest ancestor
+     *
+     * @return ?self
+     */
+    public function closest(string $class): ?self
+    {
+        return $this->climb(fn ($parent) => get_class($parent) === $class);
+    }
+
+    /**
      * Static constructor
      *
      * @param mixed ...$args

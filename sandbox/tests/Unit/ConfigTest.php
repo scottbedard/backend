@@ -4,15 +4,18 @@ namespace Tests\Unit;
 
 use Bedard\Backend\Config\Config;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\Classes\Child;
 use Tests\Unit\Classes\Defaults;
+use Tests\Unit\Classes\Grandchild;
 use Tests\Unit\Classes\InheritsName;
 use Tests\Unit\Classes\Noop;
+use Tests\Unit\Classes\ParentConfig;
 use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Traits\DynamicTestAttribute;
 
-class ConfigTest extends TestCase
+class s extends TestCase
 {
     public function test_static_config_constructor()
     {
@@ -190,5 +193,28 @@ class ConfigTest extends TestCase
 
         $this->assertEquals('alice', $config->keyed_children[0]->name);
         $this->assertEquals('cindy', $config->keyed_children[1]->name);
+    }
+
+    public function test_accessing_closest_ancestor()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'child' => [],
+            ],
+        ]);
+
+        $child = $parent->child;
+
+        $grandchild = $parent->child->child;
+
+        $this->assertInstanceOf(Child::class, $child);
+
+        $this->assertEquals($parent, $child->closest(ParentConfig::class));
+
+        $this->assertInstanceOf(Grandchild::class, $grandchild);
+
+        $this->assertEquals($parent, $grandchild->closest(ParentConfig::class));
+
+        $this->assertNull($parent->closest(Noop::class));
     }
 }
