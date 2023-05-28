@@ -21,19 +21,19 @@ class Config implements ArrayAccess, Arrayable
      *
      * @var array
      */
-    public readonly array $config;
+    public readonly array $__config;
 
     /**
      * Normalized config data
      *
      * @var array
      */
-    public readonly array $data;
+    public readonly array $__data;
 
     /**
      * Create config instance
      *
-     * @param array $config
+     * @param array $__config
      */
     public function __construct(array $config = [])
     {
@@ -48,12 +48,12 @@ class Config implements ArrayAccess, Arrayable
             }
         }
 
-        $this->config = array_merge($defaults, $config);
+        $this->__config = array_merge($defaults, $config);
 
         // set normalized data
         $data = [];
 
-        foreach ($this->config as $key => $value) {
+        foreach ($this->__config as $key => $value) {
             $setter = str('set_' . $key . '_attribute')->camel()->toString();
 
             if (method_exists($this, $setter)) {
@@ -71,7 +71,17 @@ class Config implements ArrayAccess, Arrayable
             }
         }
         
-        $this->data = $data;
+        $this->__data = $data;
+    }
+
+    /**
+     * Get a piece of data
+     *
+     * 
+     */
+    public function __get(string $name): mixed
+    {
+        return $this->get($name);
     }
 
     /**
@@ -96,7 +106,7 @@ class Config implements ArrayAccess, Arrayable
      */
     public function get(string $key, $default = null)
     {
-        return data_get($this->data, $key, $default);
+        return data_get($this->__data, $key, $default);
     }
 
     /**
@@ -115,7 +125,7 @@ class Config implements ArrayAccess, Arrayable
      * @param $offset
      */
     public function offsetExists($offset) {
-        return isset($this->data[$offset]);
+        return isset($this->__data[$offset]);
     }
 
     /**
@@ -124,7 +134,7 @@ class Config implements ArrayAccess, Arrayable
      * @param $offset
      */
     public function offsetGet($offset) {
-        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+        return isset($this->__data[$offset]) ? $this->__data[$offset] : null;
     }
 
     /**
@@ -158,6 +168,6 @@ class Config implements ArrayAccess, Arrayable
      */
     public function toArray(): array
     {
-        return collect($this->data)->toArray();
+        return collect($this->__data)->toArray();
     }
 }

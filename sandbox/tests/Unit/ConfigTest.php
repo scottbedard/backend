@@ -27,7 +27,7 @@ class ConfigTest extends TestCase
             'foo' => 'bar',
             'hello' => 'world',
             'overwrite' => 'new value',
-        ], $config->config);
+        ], $config->__config);
     }
     
     public function test_dynamic_default_values()
@@ -48,7 +48,7 @@ class ConfigTest extends TestCase
             'overwrite' => 'new value',
             'test' => 'hello',
             'multi_word' => 'world',
-        ], $config->config);
+        ], $config->__config);
     }
 
     public function test_custom_attribute_setter()
@@ -88,17 +88,17 @@ class ConfigTest extends TestCase
             'dynamic' => 'hello world',
             'foo' => 'BAR',
             'multi_word' => 2,
-        ], $config->data);
+        ], $config->__data);
     }
 
     public function test_parent_of_single_child()
     {
-        $class = ParentOfSingleChild::create([
+        $parent = ParentOfSingleChild::create([
             'child' => ['name' => 'alice'],
         ]);
 
-        $this->assertInstanceOf(Noop::class, $class->get('child'));
+        $this->assertInstanceOf(Noop::class, $parent->child);
 
-        $this->assertEquals('alice', $class->get('child.name'));
+        $this->assertEquals('alice', $parent->child->name);
     }
 }
