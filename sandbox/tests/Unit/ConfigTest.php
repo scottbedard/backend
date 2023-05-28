@@ -6,6 +6,7 @@ use Bedard\Backend\Config\Config;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\Noop;
+use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Traits\DynamicTestAttribute;
@@ -115,5 +116,21 @@ class ConfigTest extends TestCase
         $this->assertEquals('alice', $parent->children[0]->name);
 
         $this->assertEquals('bob', $parent->children[1]->name);
+    }
+
+    public function test_parent_of_keyed_children()
+    {
+        $parent = ParentOfKeyedChildren::create([
+            'keyed_children' => [
+                'alice' => ['age' => 35],
+                'bob' => ['age' => 40],
+            ],
+        ]);
+        
+        $this->assertEquals('alice', $parent->keyed_children[0]->name);
+        $this->assertEquals(35, $parent->keyed_children[0]->age);
+
+        $this->assertEquals('bob', $parent->keyed_children[1]->name);
+        $this->assertEquals(40, $parent->keyed_children[1]->age);
     }
 }

@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Config;
 
 use ArrayAccess;
+use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
@@ -43,44 +44,50 @@ class Config implements ArrayAccess, Arrayable
 
         $this->__config = array_merge($defaults, $config);
 
-        // set normalized data
-        $children = $this->children();
-        
+        // iterate over config and create child instances
         $data = [];
 
-        foreach ($this->__config as $key => $value) {
-            $setter = str('set_' . $key . '_attribute')->camel()->toString();
+        $children = $this->children();
+        
+        foreach ($this->__config as $configKey => $childValue) {
+
+            // prefer custom setters over anything else
+            $setter = str('set_' . $configKey . '_attribute')->camel()->toString();
 
             if (method_exists($this, $setter)) {
-                $data[$key] = $this->$setter($value);
+                $data[$configKey] = $this->$setter($childValue);
             }
 
-            elseif (array_key_exists($key, $children)) {
-                $child = $children[$key];
+            // otherwise convert array into collections
+            elseif (array_key_exists($configKey, $children)) {
+                $child = $children[$configKey];
 
                 // map strings directly to their class names
                 if (is_string($child)) {
-                    $data[$key] = $child::create($value);
+                    $data[$configKey] = $child::create($childValue);
                 }
 
-                if (is_array($child) && count($child) === 1) {
+                // map one-dimensional arrays to their class name
+                elseif (is_array($child) && count($child) === 1) {
                     [$childClass] = $child;
 
-                    $data[$key] = collect($this->__config[$key])->map(fn ($m) => $childClass::create($m));
+                    $data[$configKey] = collect($childValue)->map(fn ($m) => $childClass::create($m));
                 }
-                
-                // // create associative arrays by their key
-                // $keyed = is_array($this->children[$key]) && count($this->children[$key]) === 1;
 
-                // if ($keyed) {
+                // map two-dimensional array to their class name and keyed value
+                elseif (is_array($child) && count($child) === 2) {
+                    [$childClass, $childKey] = $child;
 
-                // } else {
-                //     dd('not keyed', $key);
-                // }
+                    $data[$configKey] = collect(KeyedArray::from($childValue, $childKey))
+                        ->map(fn ($child) => $childClass::create($child))
+                        ->sortBy('order')
+                        ->values();
+                }
             }
 
+            // finally, set all other static data
             else {
-                $data[$key] = $value;
+                $data[$configKey] = $childValue;
             }
         }
         
