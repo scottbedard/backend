@@ -15,7 +15,7 @@ use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Traits\DynamicTestAttribute;
 
-class s extends TestCase
+class ConfigTest extends TestCase
 {
     public function test_static_config_constructor()
     {
@@ -193,6 +193,23 @@ class s extends TestCase
 
         $this->assertEquals('alice', $config->keyed_children[0]->name);
         $this->assertEquals('cindy', $config->keyed_children[1]->name);
+    }
+
+    public function test_climbing_ancestor_tree()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'child' => [],
+                'depth' => 1,
+            ],
+            'depth' => 0,
+        ]);
+
+        $grandchild = $parent->child->child;
+        
+        $this->assertInstanceOf(Child::class, $grandchild->climb(fn ($p) => $p->depth === 1));
+
+        $this->assertInstanceOf(ParentConfig::class, $grandchild->climb(fn ($p) => $p->depth === 0));
     }
 
     public function test_accessing_closest_ancestor()
