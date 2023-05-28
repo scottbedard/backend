@@ -142,16 +142,20 @@ class ConfigTest extends TestCase
     {
         $parent = ParentOfKeyedChildren::create([
             'keyed_children' => [
-                ['name' => 'alice', 'age' => 35],
-                ['name' => 'bob', 'age' => 40],
+                ['name' => 'alice', 'age' => 35, 'order' => 2],
+                ['name' => 'bob', 'age' => 40, 'order' => 1],
+                ['name' => 'cindy', 'age' => 45, 'order' => 0],
             ],
         ]);
         
-        $this->assertEquals('alice', $parent->keyed_children[0]->name);
-        $this->assertEquals(35, $parent->keyed_children[0]->age);
+        $this->assertEquals('cindy', $parent->keyed_children[0]->name);
+        $this->assertEquals(45, $parent->keyed_children[0]->age);
 
         $this->assertEquals('bob', $parent->keyed_children[1]->name);
         $this->assertEquals(40, $parent->keyed_children[1]->age);
+        
+        $this->assertEquals('alice', $parent->keyed_children[2]->name);
+        $this->assertEquals(35, $parent->keyed_children[2]->age);
     }
 
     public function test_inheriting_config_from_parent()
