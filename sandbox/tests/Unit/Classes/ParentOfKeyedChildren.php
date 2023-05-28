@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Config;
 
 class ParentOfKeyedChildren extends Config
 {
-    public function children(): array
+    public function getChildren(): array
     {
         return [
             'keyed_children' => [Noop::class, 'name'],

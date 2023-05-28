@@ -25,14 +25,25 @@ class Config implements ArrayAccess, Arrayable
     public readonly array $__data;
 
     /**
+     * Parent config instance
+     *
+     * @var ?self
+     */
+    public readonly ?self $__parent;
+
+    /**
      * Create config instance
      *
      * @param array $__config
      */
-    public function __construct(array $config = [])
+    public function __construct(array $config = [], self $parent = null)
     {
-        // set default attributes
-        $defaults = $this->getDefaultAttributes();
+        // set default attributes and parent instance
+        $this->__parent = $parent;
+
+        $defaults = $this->getDefaultConfig();
+
+        $inherited = $this->getInheritedConfig();
 
         foreach (get_class_methods($this) as $method) {
             if (str($method)->is('getDefault*Attribute')) {
@@ -42,12 +53,20 @@ class Config implements ArrayAccess, Arrayable
             }
         }
 
+        foreach ($inherited as $key) {
+            $parent = $this->climb(fn ($p) => array_key_exists($key, $p->__config));
+
+            if ($parent) {
+                data_fill($config, $key, $parent->__config[$key]);
+            }
+        }
+
         $this->__config = array_merge($defaults, $config);
 
         // iterate over config and create child instances
         $data = [];
 
-        $children = $this->children();
+        $children = $this->getChildren();
         
         foreach ($this->__config as $configKey => $childValue) {
 
@@ -64,14 +83,14 @@ class Config implements ArrayAccess, Arrayable
 
                 // map strings directly to their class names
                 if (is_string($child)) {
-                    $data[$configKey] = $child::create($childValue);
+                    $data[$configKey] = $child::create($childValue, $this);
                 }
 
                 // map one-dimensional arrays to their class name
                 elseif (is_array($child) && count($child) === 1) {
                     [$childClass] = $child;
 
-                    $data[$configKey] = collect($childValue)->map(fn ($m) => $childClass::create($m));
+                    $data[$configKey] = collect($childValue)->map(fn ($m) => $childClass::create($m, $this));
                 }
 
                 // map two-dimensional array to their class name and keyed value
@@ -79,7 +98,7 @@ class Config implements ArrayAccess, Arrayable
                     [$childClass, $childKey] = $child;
 
                     $data[$configKey] = collect(KeyedArray::from($childValue, $childKey))
-                        ->map(fn ($child) => $childClass::create($child))
+                        ->map(fn ($child) => $childClass::create($child, $this))
                         ->sortBy('order')
                         ->values();
                 }
@@ -105,13 +124,21 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Get children definition
+     * Find ancestor configuration
      *
-     * @return array
+     * @param callable $fn
+     *
+     * @return ?self
      */
-    public function children(): array
+    public function climb(callable $fn): ?self
     {
-        return [];
+        $parent = $this->__parent;
+
+        if ($parent) {
+            return $fn($parent) ? $parent : $parent->climb($fn);
+        }
+
+        return null;
     }
 
     /**
@@ -140,11 +167,31 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Get default attributes
+     * Get children definition
      *
      * @return array
      */
-    public function getDefaultAttributes(): array
+    public function getChildren(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get default config
+     *
+     * @return array
+     */
+    public function getDefaultConfig(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get inherited config
+     * 
+     * @return array
+     */
+    public function getInheritedConfig(): array
     {
         return [];
     }

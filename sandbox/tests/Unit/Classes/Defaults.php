@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Config;
 
 class Defaults extends Config
 {
-    public function getDefaultAttributes(): array
+    public function getDefaultConfig(): array
     {
         return [
             'foo' => 'bar',

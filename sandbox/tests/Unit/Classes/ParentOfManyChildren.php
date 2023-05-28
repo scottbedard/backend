@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Config;
 
 class ParentOfManyChildren extends Config
 {
-    public function children(): array
+    public function getChildren(): array
     {
         return [
             'children' => [Noop::class],
