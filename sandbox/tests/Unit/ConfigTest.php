@@ -6,6 +6,7 @@ use Bedard\Backend\Config\Config;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\Noop;
+use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Traits\DynamicTestAttribute;
 
 class ConfigTest extends TestCase
@@ -15,7 +16,7 @@ class ConfigTest extends TestCase
         $this->assertInstanceOf(Noop::class, Noop::create());
     }
 
-    public function test_default_values_are_spread_over_config()
+    public function test_config_overwrites_defaults()
     {
         $config = Defaults::create([
             'hello' => 'world',
@@ -88,5 +89,16 @@ class ConfigTest extends TestCase
             'foo' => 'BAR',
             'multi_word' => 2,
         ], $config->data);
+    }
+
+    public function test_parent_of_single_child()
+    {
+        $class = ParentOfSingleChild::create([
+            'child' => ['name' => 'alice'],
+        ]);
+
+        $this->assertInstanceOf(Noop::class, $class->get('child'));
+
+        $this->assertEquals('alice', $class->get('child.name'));
     }
 }

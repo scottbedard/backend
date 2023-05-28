@@ -2,8 +2,20 @@
 
 namespace Bedard\Backend\Config;
 
-class Config
+use ArrayAccess;
+use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
+
+class Config implements ArrayAccess, Arrayable
 {
+    /**
+     * Child attributes
+     *
+     * @var array
+     */
+    public array $children = [];
+
     /**
      * Raw yaml config
      *
@@ -29,7 +41,7 @@ class Config
         $defaults = $this->getDefaultAttributes();
 
         foreach (get_class_methods($this) as $method) {
-            if (str_starts_with($method, 'getDefault') && str_ends_with($method, 'Attribute')) {
+            if (str($method)->is('getDefault*Attribute')) {
                 $attr = str(substr($method, 10, -9))->snake()->toString();
 
                 data_fill($defaults, $attr, $this->$method());
@@ -46,6 +58,16 @@ class Config
 
             if (method_exists($this, $setter)) {
                 $data[$key] = $this->$setter($value);
+            }
+
+            elseif (array_key_exists($key, $this->children)) {
+                if (is_string($this->children[$key])) {
+                    $data[$key] = $this->children[$key]::create($value);
+                }
+            }
+
+            else {
+                $data[$key] = $value;
             }
         }
         
@@ -85,5 +107,57 @@ class Config
     public function getDefaultAttributes(): array
     {
         return [];
+    }
+
+        /**
+     * Check offset existence
+     *
+     * @param $offset
+     */
+    public function offsetExists($offset) {
+        return isset($this->data[$offset]);
+    }
+
+    /**
+     * Get data
+     *
+     * @param $offset
+     */
+    public function offsetGet($offset) {
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+    }
+
+    /**
+     * Set data
+     *
+     * @param $offset
+     * @param $value
+     *
+     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new ConfigurationArrayAccessException;
+    }
+
+    /**
+     * Unset data
+     *
+     * @param $offset
+     *
+     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     */
+    public function offsetUnset($offset) {
+        throw new ConfigurationArrayAccessException;
+    }
+
+    /**
+     * Cast to array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return collect($this->data)->toArray();
     }
 }
