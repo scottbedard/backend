@@ -4,12 +4,12 @@ namespace Tests\Unit\Classes;
 
 use Bedard\Backend\Config\Config;
 
-class ParentOfSingleChild extends Config
+class ParentOfManyChildren extends Config
 {
     public function children(): array
     {
         return [
-            'child' => Noop::class,
+            'children' => [Noop::class],
         ];
     }
 }

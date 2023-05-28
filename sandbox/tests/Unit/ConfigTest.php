@@ -6,6 +6,7 @@ use Bedard\Backend\Config\Config;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\Noop;
+use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Traits\DynamicTestAttribute;
 
@@ -100,5 +101,19 @@ class ConfigTest extends TestCase
         $this->assertInstanceOf(Noop::class, $parent->child);
 
         $this->assertEquals('alice', $parent->child->name);
+    }
+
+    public function test_parent_of_many_children()
+    {
+        $parent = ParentOfManyChildren::create([
+            'children' => [
+                ['name' => 'alice'],
+                ['name' => 'bob'],
+            ],
+        ]);
+
+        $this->assertEquals('alice', $parent->children[0]->name);
+
+        $this->assertEquals('bob', $parent->children[1]->name);
     }
 }

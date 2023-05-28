@@ -10,13 +10,6 @@ use Illuminate\Support\Arr;
 class Config implements ArrayAccess, Arrayable
 {
     /**
-     * Child attributes
-     *
-     * @var array
-     */
-    public array $children = [];
-
-    /**
      * Raw yaml config
      *
      * @var array
@@ -51,6 +44,8 @@ class Config implements ArrayAccess, Arrayable
         $this->__config = array_merge($defaults, $config);
 
         // set normalized data
+        $children = $this->children();
+        
         $data = [];
 
         foreach ($this->__config as $key => $value) {
@@ -60,10 +55,28 @@ class Config implements ArrayAccess, Arrayable
                 $data[$key] = $this->$setter($value);
             }
 
-            elseif (array_key_exists($key, $this->children)) {
-                if (is_string($this->children[$key])) {
-                    $data[$key] = $this->children[$key]::create($value);
+            elseif (array_key_exists($key, $children)) {
+                $child = $children[$key];
+
+                // map strings directly to their class names
+                if (is_string($child)) {
+                    $data[$key] = $child::create($value);
                 }
+
+                if (is_array($child) && count($child) === 1) {
+                    [$childClass] = $child;
+
+                    $data[$key] = collect($this->__config[$key])->map(fn ($m) => $childClass::create($m));
+                }
+                
+                // // create associative arrays by their key
+                // $keyed = is_array($this->children[$key]) && count($this->children[$key]) === 1;
+
+                // if ($keyed) {
+
+                // } else {
+                //     dd('not keyed', $key);
+                // }
             }
 
             else {
@@ -82,6 +95,16 @@ class Config implements ArrayAccess, Arrayable
     public function __get(string $name): mixed
     {
         return $this->get($name);
+    }
+
+    /**
+     * Get children definition
+     *
+     * @return array
+     */
+    public function children(): array
+    {
+        return [];
     }
 
     /**
@@ -119,7 +142,7 @@ class Config implements ArrayAccess, Arrayable
         return [];
     }
 
-        /**
+    /**
      * Check offset existence
      *
      * @param $offset
