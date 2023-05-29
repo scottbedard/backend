@@ -5,8 +5,13 @@ namespace Bedard\Backend\Config;
 use ArrayAccess;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use Illuminate\Translation\ArrayLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 
 class Config implements ArrayAccess, Arrayable
 {
@@ -32,6 +37,13 @@ class Config implements ArrayAccess, Arrayable
     public readonly ?self $__parent;
 
     /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public readonly array $__rules;
+
+    /**
      * Create config instance
      *
      * @param array $__config
@@ -41,11 +53,13 @@ class Config implements ArrayAccess, Arrayable
         // set default attributes and parent instance
         $this->__parent = $parent;
 
+        $methods = get_class_methods($this);
+
         $defaults = $this->getDefaultConfig();
 
         $inherited = $this->getInheritedConfig();
 
-        foreach (get_class_methods($this) as $method) {
+        foreach ($methods as $method) {
             if (str($method)->is('getDefault*Attribute')) {
                 $attr = str(substr($method, 10, -9))->snake()->toString();
 
@@ -70,7 +84,7 @@ class Config implements ArrayAccess, Arrayable
         
         foreach ($this->__config as $configKey => $configValue) {
 
-            // prefer custom setters over anything else
+            // prefer custom setters over all else
             $setter = str('set_' . $configKey . '_attribute')->camel()->toString();
 
             if (method_exists($this, $setter)) {
@@ -86,14 +100,14 @@ class Config implements ArrayAccess, Arrayable
                     $data[$configKey] = $child::create($configValue, $this);
                 }
 
-                // map one-dimensional arrays to their class name
+                // map single-entry arrays to their class name
                 elseif (is_array($child) && count($child) === 1) {
                     [$childClass] = $child;
 
                     $data[$configKey] = collect($configValue)->map(fn ($m) => $childClass::create($m, $this));
                 }
 
-                // map two-dimensional array to their class name and keyed value
+                // map dual-entry arrays to their class name and keyed property
                 elseif (is_array($child) && count($child) === 2) {
                     [$childClass, $childKey] = $child;
 
@@ -111,6 +125,23 @@ class Config implements ArrayAccess, Arrayable
         }
         
         $this->__data = $data;
+
+        // collect all validation rules
+        $rules = $this->getValidationRules();
+
+        foreach (array_filter($methods, fn ($m) => $m !== 'getValidationRules') as $method) {
+            if (str($method)->is('get*ValidationRules')) {
+                $rules = array_merge($rules, $this->$method());
+            }
+        }
+
+        foreach ($rules as $key => $value) {
+            if (is_null($value)) {
+                unset($rules[$key]);
+            }
+        }
+
+        $this->__rules = $rules;
     }
 
     /**
@@ -240,7 +271,7 @@ class Config implements ArrayAccess, Arrayable
      * @param $offset
      * @param $value
      *
-     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     * @throws \Bedard\Backend\Exceptions\ConfigurationArrayAccessException
      */
     public function offsetSet($offset, $value)
     {
@@ -252,7 +283,7 @@ class Config implements ArrayAccess, Arrayable
      *
      * @param $offset
      *
-     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     * @throws \Bedard\Backend\Exceptions\ConfigurationArrayAccessException
      */
     public function offsetUnset($offset) {
         throw new ConfigurationArrayAccessException;
@@ -266,5 +297,25 @@ class Config implements ArrayAccess, Arrayable
     public function toArray(): array
     {
         return collect($this->__data)->toArray();
+    }
+
+    /**
+     * Validate config
+     *
+     * @throws \Bedard\Backend\Exceptions\ConfigurationException
+     *
+     * @return void
+     */
+    public function validate(): void
+    {
+        $validator = new Validator(
+            translator: new Translator(new ArrayLoader, 'en'),
+            data: $this->__config,
+            rules: $this->__rules,
+        );
+
+        if ($validator->fails()) {
+            throw new ConfigurationException('path.to.config: ' . $validator->errors()->first());
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Bedard\Backend\Config\Config;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\Child;
 use Tests\Unit\Classes\Defaults;
@@ -237,5 +238,52 @@ class ConfigTest extends TestCase
         $this->assertEquals($parent, $grandchild->closest(ParentConfig::class));
 
         $this->assertNull($parent->closest(Noop::class));
+    }
+
+    public function test_invalid_config_throws_exception()
+    {
+        $config = new class extends Config
+        {
+            public function getValidationRules(): array
+            {
+                return [
+                    'name' => ['required', 'string'],
+                ];
+            }
+        };
+
+        $this->expectException(ConfigurationException::class);
+        
+        $config->validate();
+    }
+
+    public function test_merging_dynamic_validation_rules()
+    {
+        $config = new class extends Config
+        {
+            public function getValidationRules(): array
+            {
+                return [
+                    'name' => ['string'],
+                    'foo' => ['required'],
+                ];
+            }
+
+            public function getDynamicValidationRules(): array
+            {
+                $rules = $this->getValidationRules();
+
+                return [
+                    'name' => array_merge($rules['name'], ['required']), // <- make an existing rule required
+                    'age' => ['integer'], // <- add a new rule
+                    'foo' => null, // <- overwrite foo with null to remove the required rule
+                ];
+            }
+        };
+
+        $this->assertEquals([
+            'name' => ['string', 'required'],
+            'age' => ['integer'],
+        ], $config->__rules);
     }
 }
