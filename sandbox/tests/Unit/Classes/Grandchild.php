@@ -6,10 +6,10 @@ use Bedard\Backend\Config\Config;
 
 class Grandchild extends Config
 {
-    public function getChildren(): array
+    public function getValidationRules(): array
     {
         return [
-
+            'invalid' => 'prohibited', // <- allows us to force validation errors
         ];
     }
 }

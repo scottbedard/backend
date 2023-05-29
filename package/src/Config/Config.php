@@ -345,5 +345,7 @@ class Config implements ArrayAccess, Arrayable
         if ($validator->fails()) {
             throw new ConfigurationException('path.to.config: ' . $validator->errors()->first());
         }
+
+        $this->descendents(fn ($child) => $child->validate());
     }
 }

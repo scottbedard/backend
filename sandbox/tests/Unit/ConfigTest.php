@@ -240,6 +240,28 @@ class ConfigTest extends TestCase
         $this->assertNull($parent->closest(Noop::class));
     }
 
+    public function test_descending_child_tree()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'children' => [
+                    ['id' => 'baz'],
+                    ['id' => 'qux'],
+                ],
+                'id' => 'bar',
+            ],
+            'id' => 'foo', // <- not a descendent, should be excluded
+        ]);
+
+        $descendents = [];
+        
+        $parent->descendents(function ($child) use (&$descendents) {
+            $descendents[] = $child->id;
+        });
+        
+        $this->assertEquals(['bar', 'baz', 'qux'], $descendents);
+    }
+
     public function test_invalid_config_throws_exception()
     {
         $config = new class extends Config
@@ -255,6 +277,19 @@ class ConfigTest extends TestCase
         $this->expectException(ConfigurationException::class);
         
         $config->validate();
+    }
+
+    public function test_invalid_descendent_config_throws_exception()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'child' => ['invalid' => true],
+            ],
+        ]);
+
+        $this->expectException(ConfigurationException::class);
+        
+        $parent->validate();
     }
 
     public function test_merging_dynamic_validation_rules()
@@ -285,27 +320,5 @@ class ConfigTest extends TestCase
             'name' => ['string', 'required'],
             'age' => ['integer'],
         ], $config->__rules);
-    }
-
-    public function test_descending_calls_to_child_config()
-    {
-        $parent = ParentConfig::create([
-            'child' => [
-                'children' => [
-                    ['id' => 'baz'],
-                    ['id' => 'qux'],
-                ],
-                'id' => 'bar',
-            ],
-            'id' => 'foo', // <- not a descendent, should be excluded
-        ]);
-
-        $descendents = [];
-        
-        $parent->descendents(function ($child) use (&$descendents) {
-            $descendents[] = $child->id;
-        });
-        
-        $this->assertEquals(['bar', 'baz', 'qux'], $descendents);
     }
 }
