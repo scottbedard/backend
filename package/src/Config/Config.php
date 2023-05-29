@@ -68,13 +68,13 @@ class Config implements ArrayAccess, Arrayable
 
         $children = $this->getChildren();
         
-        foreach ($this->__config as $configKey => $childValue) {
+        foreach ($this->__config as $configKey => $configValue) {
 
             // prefer custom setters over anything else
             $setter = str('set_' . $configKey . '_attribute')->camel()->toString();
 
             if (method_exists($this, $setter)) {
-                $data[$configKey] = $this->$setter($childValue);
+                $data[$configKey] = $this->$setter($configValue);
             }
 
             // otherwise convert array into collections
@@ -83,21 +83,21 @@ class Config implements ArrayAccess, Arrayable
 
                 // map strings directly to their class names
                 if (is_string($child)) {
-                    $data[$configKey] = $child::create($childValue, $this);
+                    $data[$configKey] = $child::create($configValue, $this);
                 }
 
                 // map one-dimensional arrays to their class name
                 elseif (is_array($child) && count($child) === 1) {
                     [$childClass] = $child;
 
-                    $data[$configKey] = collect($childValue)->map(fn ($m) => $childClass::create($m, $this));
+                    $data[$configKey] = collect($configValue)->map(fn ($m) => $childClass::create($m, $this));
                 }
 
                 // map two-dimensional array to their class name and keyed value
                 elseif (is_array($child) && count($child) === 2) {
                     [$childClass, $childKey] = $child;
 
-                    $data[$configKey] = collect(KeyedArray::from($childValue, $childKey))
+                    $data[$configKey] = collect(KeyedArray::from($configValue, $childKey))
                         ->map(fn ($child) => $childClass::create($child, $this))
                         ->sortBy('order')
                         ->values();
@@ -106,7 +106,7 @@ class Config implements ArrayAccess, Arrayable
 
             // finally, set all other static data
             else {
-                $data[$configKey] = $childValue;
+                $data[$configKey] = $configValue;
             }
         }
         
@@ -213,6 +213,16 @@ class Config implements ArrayAccess, Arrayable
      */
     public function offsetExists($offset) {
         return isset($this->__data[$offset]);
+    }
+
+    /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [];
     }
 
     /**
