@@ -155,7 +155,7 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Find ancestor configuration
+     * Find ancestor
      *
      * @param callable $fn
      *
@@ -192,6 +192,34 @@ class Config implements ArrayAccess, Arrayable
     public static function create(...$args): static
     {
         return new static(...$args);
+    }
+
+    /**
+     * Execute callback on descendents
+     *
+     * @param callable $fn
+     *
+     * @return void
+     */
+    public function descendents(callable $fn): void
+    {
+        $walk = function ($child) use ($fn) {
+            if (is_a($child, self::class) || is_subclass_of($child, self::class)) {
+                $fn($child);
+
+                $child->descendents($fn); 
+            }
+        };
+
+        foreach ($this->__data as $key => $val) {
+            if (is_iterable($val)) {
+                foreach ($this->$key as $child) {
+                    $walk($child);
+                }
+            } else {
+                $walk($this->$key);
+            }
+        }
     }
 
     /**

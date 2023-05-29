@@ -286,4 +286,26 @@ class ConfigTest extends TestCase
             'age' => ['integer'],
         ], $config->__rules);
     }
+
+    public function test_descending_calls_to_child_config()
+    {
+        $parent = ParentConfig::create([
+            'child' => [
+                'children' => [
+                    ['id' => 'baz'],
+                    ['id' => 'qux'],
+                ],
+                'id' => 'bar',
+            ],
+            'id' => 'foo', // <- not a descendent, should be excluded
+        ]);
+
+        $descendents = [];
+        
+        $parent->descendents(function ($child) use (&$descendents) {
+            $descendents[] = $child->id;
+        });
+        
+        $this->assertEquals(['bar', 'baz', 'qux'], $descendents);
+    }
 }
