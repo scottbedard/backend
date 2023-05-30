@@ -40,9 +40,12 @@ class Backend extends Config
 
         collect($files)->flatten()->each($parse);
         
-        parent::__construct([
-            'controllers' => $controllers,
-        ]);
+        parent::__construct(
+            config: [
+                'controllers' => $controllers,
+            ],
+            configPath: 'backend',
+        );
 
         $this->validate();
     }

@@ -45,22 +45,7 @@ class BackendTest extends TestCase
             __DIR__ . '/stubs/_duplicate_id_a.yaml',
             __DIR__ . '/stubs/_duplicate_id_b.yaml',
         );
-
-        dd($backend->toArray());
     }
-    
-    // public function test_backend_controller_route_defaults()
-    // {
-    //     $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
-
-    //     $index = $backend->route('backend.books.index');
-
-    //     $this->assertNull($index->get('path'));
-    //     $this->assertEquals('App\Models\Book', $index->get('model'));
-    //     $this->assertInstanceOf(BladePlugin::class, $index->plugin());
-    //     $this->assertEquals([], $index->get('options'));
-    //     $this->assertEquals($index, $index->plugin()->parent);
-    // }
 
     // public function test_getting_controllers_and_navs()
     // {
