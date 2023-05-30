@@ -171,6 +171,12 @@ class Config implements ArrayAccess, Arrayable
             return $this->$name;
         }
 
+        $getter = str('get_' . $name . '_attribute')->camel()->toString();
+
+        if (method_exists($this, $getter)) {
+            return $this->$getter();
+        }
+
         return $this->get($name);
     }
 

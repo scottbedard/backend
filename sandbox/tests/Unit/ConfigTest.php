@@ -351,4 +351,26 @@ class ConfigTest extends TestCase
 
         $this->assertEquals($config->children[0]->child->getFullConfigPath(), 'children.0.child');
     }
+
+    public function test_computed_property()
+    {
+        $config = new class extends Config
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'name' => 'alice',
+                ];
+            }
+
+            public function getUppercaseNameAttribute(): string
+            {
+                return strtoupper($this->name);
+            }
+        };
+
+        $this->assertEquals($config->uppercaseName, 'ALICE');
+
+        $this->assertEquals($config->uppercase_name, 'ALICE');
+    }
 }
