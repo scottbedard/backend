@@ -60,7 +60,7 @@ class Config implements ArrayAccess, Arrayable
         $inherited = $this->getInheritedConfig();
 
         foreach ($methods as $method) {
-            if (str($method)->is('getDefault*Attribute')) {
+            if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*Attribute')) {
                 $attr = str(substr($method, 10, -9))->snake()->toString();
 
                 data_fill($defaults, $attr, $this->$method());
@@ -129,8 +129,8 @@ class Config implements ArrayAccess, Arrayable
         // collect all validation rules
         $rules = $this->getValidationRules();
 
-        foreach (array_filter($methods, fn ($m) => $m !== 'getValidationRules') as $method) {
-            if (str($method)->is('get*ValidationRules')) {
+        foreach ($methods as $method) {
+            if ($method !== 'getValidationRules' && str($method)->is('get*ValidationRules')) {
                 $rules = array_merge($rules, $this->$method());
             }
         }
