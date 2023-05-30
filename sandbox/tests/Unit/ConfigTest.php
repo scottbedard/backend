@@ -14,7 +14,7 @@ use Tests\Unit\Classes\ParentConfig;
 use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
-use Tests\Unit\Traits\DynamicTestAttribute;
+use Tests\Unit\Traits\DynamicTrait;
 
 class ConfigTest extends TestCase
 {
@@ -41,7 +41,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            use DynamicTestAttribute;
+            use DynamicTrait;
 
             public function getDefaultConfig(): array
             {
@@ -70,22 +70,22 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getDefaultDynamicAttribute()
+            public function getDefaultDynamicConfig()
             {
                 return 'hello';
             }
 
-            public function setDynamicAttribute($value)
+            public function setDynamicConfig($value)
             {
                 return $value . ' world';
             }
 
-            public function setFooAttribute($value)
+            public function setFooConfig($value)
             {
                 return strtoupper($value);
             }
 
-            public function setMultiWordAttribute($value)
+            public function setMultiWordConfig($value)
             {
                 return $value * 2;
             }
@@ -163,6 +163,15 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
+            public function defineChildren(): array
+            {
+                return [
+                    'child' => InheritsName::class,
+                    'children' => [InheritsName::class],
+                    'keyed_children' => [InheritsName::class, 'id'],
+                ];
+            }
+
             public function getDefaultConfig(): array
             {
                 return [
@@ -178,17 +187,8 @@ class ConfigTest extends TestCase
                     ]
                 ];
             }
-
-            public function defineChildren(): array
-            {
-                return [
-                    'child' => InheritsName::class,
-                    'children' => [InheritsName::class],
-                    'keyed_children' => [InheritsName::class, 'id'],
-                ];
-            }
         };
-        
+
         $this->assertEquals('alice', $config->child->name);
         $this->assertEquals('alice', $config->children[0]->name);
 
@@ -320,5 +320,22 @@ class ConfigTest extends TestCase
             'name' => ['string', 'required'],
             'age' => ['integer'],
         ], $config->__rules);
+    }
+
+    public function test_normalizing_keyed_child_config()
+    {
+        $config = ParentConfig::create([
+            'keyed_children' => [
+                'foo' => [],
+                'bar' => [],
+            ],
+        ]);
+        
+        $this->assertEquals([
+            'keyed_children' => [
+                ['id' => 'foo'],
+                ['id' => 'bar'],
+            ],
+        ], $config->__config);
     }
 }

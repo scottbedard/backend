@@ -53,19 +53,38 @@ class Config implements ArrayAccess, Arrayable
         // set default attributes and parent instance
         $this->__parent = $parent;
 
-        $methods = get_class_methods($this);
-
         $defaults = $this->getDefaultConfig();
 
-        $inherited = $this->getInheritedConfig();
+        $methods = get_class_methods($this);
 
         foreach ($methods as $method) {
-            if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*Attribute')) {
-                $attr = str(substr($method, 10, -9))->snake()->toString();
+            if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*Config')) {
+                $attr = str(substr($method, strlen('getDefault'), -strlen('Config')))->snake()->toString();
 
                 data_fill($defaults, $attr, $this->$method());
             }
         }
+
+        $config = array_merge($defaults, $config);
+
+        // normalized keyed arrays
+        $children = $this->defineChildren();
+
+        foreach ($children as $key => $definition) {
+            if (array_key_exists($key, $config) && is_array($definition) && count($definition) === 2) {
+                [, $childKey] = $children[$key];
+
+                if (is_array($config[$key]) && is_string($childKey)) {
+                    $config[$key] = collect(KeyedArray::from($config[$key], $childKey))
+                        ->sortBy('order')
+                        ->values()
+                        ->toArray();
+                }
+            }
+        }
+
+        // set inherited attributes
+        $inherited = $this->defineInherited();
 
         foreach ($inherited as $key) {
             $parent = $this->climb(fn ($p) => array_key_exists($key, $p->__config));
@@ -75,17 +94,17 @@ class Config implements ArrayAccess, Arrayable
             }
         }
 
-        $this->__config = array_merge($defaults, $config);
+        // print_r ($config);
+
+        $this->__config = $config;
 
         // iterate over config and create child instances
         $data = [];
-
-        $children = $this->defineChildren();
         
         foreach ($this->__config as $configKey => $configValue) {
 
             // prefer custom setters over all else
-            $setter = str('set_' . $configKey . '_attribute')->camel()->toString();
+            $setter = str('set_' . $configKey . '_config')->camel()->toString();
 
             if (method_exists($this, $setter)) {
                 $data[$configKey] = $this->$setter($configValue);
@@ -95,26 +114,13 @@ class Config implements ArrayAccess, Arrayable
             elseif (array_key_exists($configKey, $children)) {
                 $child = $children[$configKey];
 
-                // map strings directly to their class names
+                // instantiate child configs
                 if (is_string($child)) {
                     $data[$configKey] = $child::create($configValue, $this);
-                }
-
-                // map single-entry arrays to their class name
-                elseif (is_array($child) && count($child) === 1) {
+                } elseif (is_array($child)) {
                     [$childClass] = $child;
 
                     $data[$configKey] = collect($configValue)->map(fn ($m) => $childClass::create($m, $this));
-                }
-
-                // map dual-entry arrays to their class name and keyed property
-                elseif (is_array($child) && count($child) === 2) {
-                    [$childClass, $childKey] = $child;
-
-                    $data[$configKey] = collect(KeyedArray::from($configValue, $childKey))
-                        ->map(fn ($child) => $childClass::create($child, $this))
-                        ->sortBy('order')
-                        ->values();
                 }
             }
 
@@ -126,7 +132,7 @@ class Config implements ArrayAccess, Arrayable
         
         $this->__data = $data;
 
-        // collect all validation rules
+        // collect validation rules
         $rules = $this->getValidationRules();
 
         foreach ($methods as $method) {
@@ -195,7 +201,7 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Define children
+     * Define child config
      *
      * @return array
      */
@@ -205,7 +211,17 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Execute callback on descendents
+     * Define inherited config
+     * 
+     * @return array
+     */
+    public function defineInherited(): array
+    {
+        return [];
+    }
+
+    /**
+     * Execute callback on all descendents
      *
      * @param callable $fn
      *
@@ -251,16 +267,6 @@ class Config implements ArrayAccess, Arrayable
      * @return array
      */
     public function getDefaultConfig(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get inherited config
-     * 
-     * @return array
-     */
-    public function getInheritedConfig(): array
     {
         return [];
     }
