@@ -179,7 +179,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getChildren(): array
+            public function defineChildren(): array
             {
                 return [
                     'child' => InheritsName::class,

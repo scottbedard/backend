@@ -80,7 +80,7 @@ class Config implements ArrayAccess, Arrayable
         // iterate over config and create child instances
         $data = [];
 
-        $children = $this->getChildren();
+        $children = $this->defineChildren();
         
         foreach ($this->__config as $configKey => $configValue) {
 
@@ -240,7 +240,7 @@ class Config implements ArrayAccess, Arrayable
      *
      * @return array
      */
-    public function getChildren(): array
+    public function defineChildren(): array
     {
         return [];
     }
