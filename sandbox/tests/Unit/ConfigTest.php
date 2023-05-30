@@ -262,7 +262,7 @@ class ConfigTest extends TestCase
         $this->assertEquals(['bar', 'baz', 'qux'], $descendents);
     }
 
-    public function test_invalid_config_throws_exception()
+    public function test_invalid_config_throws_exception_with_path()
     {
         $config = new class extends Config
         {
@@ -337,5 +337,18 @@ class ConfigTest extends TestCase
                 ['id' => 'bar'],
             ],
         ], $config->__config);
+    }
+
+    public function test_config_paths()
+    {
+        $config = ParentConfig::create([
+            'children' => [
+                [
+                    'child' => ['id' => 'foo'],
+                ],
+            ],
+        ]);
+
+        $this->assertEquals($config->children[0]->child->getFullConfigPath(), 'children.0.child');
     }
 }

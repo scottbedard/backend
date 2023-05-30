@@ -23,6 +23,13 @@ class Config implements ArrayAccess, Arrayable
     public readonly array $__config;
 
     /**
+     * Config path to this instance
+     *
+     * @var ?string
+     */
+    public readonly ?string $__config_path;
+
+    /**
      * Normalized config data
      *
      * @var array
@@ -46,13 +53,18 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Create config instance
      *
-     * @param array $__config
+     * @param array $config
+     * @param ?self $parent
+     * @param ?string $configPath
      */
-    public function __construct(array $config = [], self $parent = null)
+    public function __construct(array $config = [], self $parent = null, string $configPath = null)
     {
-        // set default attributes and parent instance
+        // store the relationship with our parent config
+        $this->__config_path = $configPath;
+
         $this->__parent = $parent;
 
+        // collect defaults and merge with the provided config
         $defaults = $this->getDefaultConfig();
 
         $methods = get_class_methods($this);
@@ -83,7 +95,7 @@ class Config implements ArrayAccess, Arrayable
             }
         }
 
-        // set inherited attributes
+        // inherit config from parent
         $inherited = $this->defineInherited();
 
         foreach ($inherited as $key) {
@@ -94,11 +106,9 @@ class Config implements ArrayAccess, Arrayable
             }
         }
 
-        // print_r ($config);
-
+        // save the normalized config and begin creating child data
         $this->__config = $config;
 
-        // iterate over config and create child instances
         $data = [];
         
         foreach ($this->__config as $configKey => $configValue) {
@@ -116,11 +126,11 @@ class Config implements ArrayAccess, Arrayable
 
                 // instantiate child configs
                 if (is_string($child)) {
-                    $data[$configKey] = $child::create($configValue, $this);
+                    $data[$configKey] = $child::create($configValue, $this, $configKey);
                 } elseif (is_array($child)) {
                     [$childClass] = $child;
 
-                    $data[$configKey] = collect($configValue)->map(fn ($m) => $childClass::create($m, $this));
+                    $data[$configKey] = collect($configValue)->map(fn ($m, $i) => $childClass::create($m, $this, "{$configKey}.{$i}"));
                 }
             }
 
@@ -157,6 +167,10 @@ class Config implements ArrayAccess, Arrayable
      */
     public function __get(string $name): mixed
     {
+        if (str_starts_with($name, '__')) {
+            return $this->$name;
+        }
+
         return $this->get($name);
     }
 
@@ -262,6 +276,24 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
+     * Get full config path
+     *
+     * @return ?string
+     */
+    public function getFullConfigPath(): ?string
+    {
+        $path = $this->__config_path;
+
+        $this->climb(function ($parent) use (&$path) {
+            if ($parent->__config_path) {
+                $path = $parent->__config_path . '.' . $path;
+            }
+        });
+        
+        return $path;
+    }
+
+    /**
      * Get default config
      *
      * @return array
@@ -349,7 +381,9 @@ class Config implements ArrayAccess, Arrayable
         );
 
         if ($validator->fails()) {
-            throw new ConfigurationException('path.to.config: ' . $validator->errors()->first());
+            $path = $this->getFullConfigPath() ?: 'Backend error';
+
+            throw new ConfigurationException("{$path}: " . $validator->errors()->first());
         }
 
         $this->descendents(fn ($child) => $child->validate());
