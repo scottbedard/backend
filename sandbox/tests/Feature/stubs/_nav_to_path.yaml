@@ -1,4 +1,0 @@
-nav:
-    to: /{backend}/{controller}/foobar
-
-path: hello

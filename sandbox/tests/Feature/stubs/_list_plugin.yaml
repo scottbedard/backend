@@ -1,7 +1,0 @@
-path: list-plugin
-
-routes:
-    parse_row_to:
-        plugin: list
-        options:
-            row_to: /{backend}/{controller}/users/{id}

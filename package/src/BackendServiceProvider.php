@@ -33,25 +33,6 @@ class BackendServiceProvider extends ServiceProvider
             __DIR__ . '/../public' => public_path('vendor/backend'),
         ], 'backend');
 
-        // // register validation rules
-        // Validator::extend('breakpoints', function ($attributes, $span) {
-        //     $check = fn ($val) => is_integer($val) && $val >= 0 && $val <= 12;
-
-        //     if (is_integer($span) && $check($span)) {
-        //         return true;
-        //     }
-            
-        //     if (Arr::isAssoc($span)) {
-        //         foreach ($span as $key => $val) {
-        //             if (!is_string($key) || !$check($val)) {
-        //                 return false;
-        //             }
-        //         }
-        //     }
-
-        //     return true;
-        // }, 'Span values must be an integer between 0 and 12');
-
         // register backend commands in console
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -66,18 +47,5 @@ class BackendServiceProvider extends ServiceProvider
         if ($super) {
             Gate::before(fn ($user, $ability) => $user->hasRole($super) ? true : null);
         }
-    }
-
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-        // register backend singleton
-        $this->app->singleton('backend', function () {
-            return Backend::create(__DIR__ . '/Backend', config('backend.backend_directory'));
-        });
     }
 }

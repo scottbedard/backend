@@ -195,6 +195,16 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
+     * Define children
+     *
+     * @return array
+     */
+    public function defineChildren(): array
+    {
+        return [];
+    }
+
+    /**
      * Execute callback on descendents
      *
      * @param callable $fn
@@ -233,16 +243,6 @@ class Config implements ArrayAccess, Arrayable
     public function get(string $key, $default = null)
     {
         return data_get($this->__data, $key, $default);
-    }
-
-    /**
-     * Get children definition
-     *
-     * @return array
-     */
-    public function defineChildren(): array
-    {
-        return [];
     }
 
     /**
