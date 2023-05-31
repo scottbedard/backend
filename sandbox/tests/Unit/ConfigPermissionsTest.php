@@ -32,6 +32,7 @@ class ConfigPermissionsTest extends TestCase
             }
         };
 
+        $this->assertEquals(['read'], $config->permissions);
         $this->assertEquals(['read', 'delete'], $config->child->permissions);
     }
 }
