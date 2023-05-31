@@ -14,6 +14,7 @@ use Tests\Unit\Classes\ParentConfig;
 use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
+use Tests\Unit\Classes\Permissions;
 use Tests\Unit\Traits\DynamicTrait;
 
 class ConfigTest extends TestCase

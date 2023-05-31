@@ -1,3 +1,6 @@
+permissions:
+    - read books
+
 nav:
     -
         title: Books
@@ -7,3 +10,5 @@ nav:
         title: Authors
         to: backend.authors
         order: 3
+        permissions:
+            - read authors

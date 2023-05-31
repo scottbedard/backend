@@ -3,7 +3,7 @@
 namespace Bedard\Backend\Classes;
 
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Collection;
+use Traversable;
 
 class Bouncer
 {
@@ -11,15 +11,13 @@ class Bouncer
      * Test if a user has all permissions
      *
      * @param \Illuminate\Foundation\Auth\User $user
-     * @param array|Collection $permissions
+     * @param Traversable $permissions
      *
      * @return bool
      */
-    public static function check(User $user, array|Collection $permissions): bool
+    public static function check(User $user, Traversable $permissions): bool
     {
-        $permissions = is_a($permissions, Collection::class)
-            ? $permissions
-            : collect($permissions);
+        $permissions = is_iterable($permissions) ? $permissions : [$permissions];
         
         foreach ($permissions as $permission) {
             if (!$user->can($permission)) {

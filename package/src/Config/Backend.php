@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config;
 
+use Bedard\Backend\Classes\Bouncer;
 use Bedard\Backend\Config\Traits\SharedChildren;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -68,7 +69,7 @@ class Backend extends Config
      */
     public function getNavAttribute(): Collection
     {
-        // @todo: permission filter
+        $user = auth()->user();
 
         return $this
             ->controllers

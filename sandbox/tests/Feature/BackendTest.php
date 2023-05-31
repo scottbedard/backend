@@ -3,20 +3,77 @@
 namespace Tests\Feature;
 
 use Bedard\Backend\Config\Backend;
-// use App\Models\User;
+use App\Models\User;
 // use Bedard\Backend\Configuration\Backend;
 // use Bedard\Backend\Configuration\Route;
 use Bedard\Backend\Exceptions\ConfigurationException;
 // use Bedard\Backend\Plugins\BladePlugin;
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
-// use Spatie\Permission\Models\Permission;
-// use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class BackendTest extends TestCase
 {
-    // use RefreshDatabase;
+    use RefreshDatabase;
+
+    public function login(User $user)
+    {
+        auth()->login($user);
+
+        return $user;
+    }
+
+    public function assignRole(User $user, string $name)
+    {
+        $user->assignRole($this->getRole($name));
+    }
+
+    public function getPermission(string $name): Permission
+    {
+        return Permission::where('name', $name)->first() ?: Permission::create(['name' => $name]);
+    }
+
+    public function getRole(string $name): Role
+    {
+        return Role::where('name', $name)->first() ?: Role::create(['name' => $name]);
+    }
+
+    public function givePermissionTo(User $user, string $name)
+    {
+        $user->givePermissionTo($this->getPermission($name));
+    }
+
+    public function loginAsSuperAdmin()
+    {
+        return $this->login($this->makeSuperAdmin());
+    }
+
+    public function loginAsUserThatCan(...$permissions)
+    {
+        return $this->login($this->makeUserThatCan(...$permissions));
+    }
+
+    public function makeUserThatCan(...$permissions)
+    {
+        $user = User::factory()->create();
+
+        foreach ($permissions as $permission) {
+            $user->givePermissionTo($permission);
+        }
+
+        return $user;
+    }
+
+    public function makeSuperAdmin(array $data = [])
+    {
+        $user = User::factory()->create($data);
+
+        $this->assignRole($user, config('backend.super_admin_role'));
+
+        return $user;
+    }
 
     public function test_creating_backend_from_directory()
     {
@@ -46,15 +103,25 @@ class BackendTest extends TestCase
 
     public function test_collecting_nav_items()
     {
+
+        $bob = User::factory()->create();
+        $this->givePermissionTo($bob, 'read books');
+
         $backend = Backend::create(__DIR__ . '/stubs/nav-items');
 
+        // alice has access to everything
+        $alice = $this->loginAsSuperAdmin();
+
         $this->assertInstanceOf(Collection::class, $backend->nav);
-
         $this->assertEquals(3, $backend->nav->count());
-
         $this->assertEquals('backend.books', $backend->nav[0]->to);
         $this->assertEquals('backend.shoes', $backend->nav[1]->to);
         $this->assertEquals('backend.authors', $backend->nav[2]->to);
+
+        // bob only has access to read books
+        $bob = $this->loginAsUserThatCan('read books');
+        
+        dd($backend->toArray());
     }
 
     // public function test_getting_controllers_and_navs()
