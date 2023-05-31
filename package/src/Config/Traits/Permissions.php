@@ -11,7 +11,7 @@ trait Permissions
 
     public function setPermissionsConfig(array $permissions = [])
     {
-        $parent = $this->climb(fn ($p) => array_key_exists('permissions', $p->__config));
+        $parent = $this->climb(fn ($p) => is_array(data_get($p->__config, 'permissions')));
     
         if (!$parent) {
             return $permissions;
