@@ -130,7 +130,11 @@ class Config implements ArrayAccess, Arrayable
                 } elseif (is_array($child)) {
                     [$childClass] = $child;
 
-                    $data[$configKey] = collect($configValue)->map(fn ($m, $i) => $childClass::create($m, $this, "{$configKey}.{$i}"));
+                    $data[$configKey] = collect($configValue)->map(function ($c, $i) use ($child, $childClass, $configKey) {
+                        $childKey = count($child) === 2 ? $c[$child[1]] : null;
+
+                        return $childClass::create($c, $this, "{$configKey}.{$childKey}");
+                    });
                 }
             }
 

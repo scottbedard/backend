@@ -9,7 +9,7 @@ use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Exceptions\ConfigurationException;
 // use Bedard\Backend\Plugins\BladePlugin;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Support\Collection;
+use Illuminate\Support\Collection;
 // use Spatie\Permission\Models\Permission;
 // use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -41,10 +41,20 @@ class BackendTest extends TestCase
     {
         $this->expectException(ConfigurationException::class);
 
-        $backend = Backend::create(
-            __DIR__ . '/stubs/_duplicate_id_a.yaml',
-            __DIR__ . '/stubs/_duplicate_id_b.yaml',
-        );
+        $backend = Backend::create(__DIR__ . '/stubs/duplicates');
+    }
+
+    public function test_collecting_nav_items()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/nav-items');
+
+        $this->assertInstanceOf(Collection::class, $backend->nav);
+
+        $this->assertEquals(3, $backend->nav->count());
+
+        $this->assertEquals('backend.books', $backend->nav[0]->to);
+        $this->assertEquals('backend.shoes', $backend->nav[1]->to);
+        $this->assertEquals('backend.authors', $backend->nav[2]->to);
     }
 
     // public function test_getting_controllers_and_navs()

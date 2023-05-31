@@ -1,0 +1,5 @@
+nav:
+    -
+        title: Shoes
+        to: backend.shoes
+        order: 2

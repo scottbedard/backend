@@ -1,0 +1,9 @@
+nav:
+    -
+        title: Books
+        to: backend.books
+        order: 1
+    -
+        title: Authors
+        to: backend.authors
+        order: 3

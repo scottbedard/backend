@@ -2,6 +2,8 @@
 
 namespace Bedard\Backend\Config;
 
+use Bedard\Backend\Config\Traits\SharedChildren;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
 
@@ -40,12 +42,9 @@ class Backend extends Config
 
         collect($files)->flatten()->each($parse);
         
-        parent::__construct(
-            config: [
-                'controllers' => $controllers,
-            ],
-            configPath: 'backend',
-        );
+        parent::__construct([
+            'controllers' => $controllers,
+        ]);
 
         $this->validate();
     }
@@ -60,6 +59,23 @@ class Backend extends Config
         return [
             'controllers' => [Controller::class, 'id'],
         ];
+    }
+
+    /**
+     * Get nav items
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getNavAttribute(): Collection
+    {
+        // @todo: permission filter
+
+        return $this
+            ->controllers
+            ->map(fn ($controller) => $controller->nav)
+            ->flatten()
+            ->sortBy('order')
+            ->values();
     }
 
     /**
