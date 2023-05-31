@@ -16,7 +16,7 @@ use Illuminate\Validation\Validator;
 class Config implements ArrayAccess, Arrayable
 {
     /**
-     * Raw yaml config
+     * Normalized config
      *
      * @var array
      */
@@ -30,7 +30,7 @@ class Config implements ArrayAccess, Arrayable
     public readonly ?string $__config_path;
 
     /**
-     * Normalized config data
+     * Instanciated config data
      *
      * @var array
      */
@@ -59,9 +59,9 @@ class Config implements ArrayAccess, Arrayable
      */
     public function __construct(array $config = [], self $parent = null, string $configPath = null)
     {
-        // store the relationship with our parent config
+        // store the raw config and set the relationship to our parent
         $this->__config_path = $configPath;
-
+    
         $this->__parent = $parent;
 
         // collect defaults and merge with the provided config
@@ -77,13 +77,23 @@ class Config implements ArrayAccess, Arrayable
             }
         }
 
+        // normalized child arrays and store the original config
         $config = array_merge($defaults, $config);
 
-        // normalized keyed arrays
+        $original = $config;
+
         $children = $this->defineChildren();
 
         foreach ($children as $key => $definition) {
-            if (array_key_exists($key, $config) && is_array($definition) && count($definition) === 2) {
+            if (!array_key_exists($key, $config) || !is_array($config[$key]) || !is_array($definition)) {
+                continue;
+            }
+
+            if (count($definition) === 1 && Arr::isAssoc($config[$key])) {
+                $config[$key] = [$config[$key]];
+            }
+
+            elseif (count($definition) === 2) {
                 [, $childKey] = $children[$key];
 
                 if (is_array($config[$key]) && is_string($childKey)) {
@@ -120,21 +130,32 @@ class Config implements ArrayAccess, Arrayable
                 $data[$configKey] = $this->$setter($configValue);
             }
 
-            // otherwise convert array into collections
+            // when no setter is present, begin instantiating children
             elseif (array_key_exists($configKey, $children)) {
                 $child = $children[$configKey];
 
-                // instantiate child configs
+                // string values represents a direct child
                 if (is_string($child)) {
                     $data[$configKey] = $child::create($configValue, $this, $configKey);
-                } elseif (is_array($child)) {
+                }
+                
+                // arrays represent a "has many" style relationship
+                elseif (is_array($child)) {
                     [$childClass] = $child;
 
-                    $data[$configKey] = collect($configValue)->map(function ($c, $i) use ($child, $childClass, $configKey) {
-                        $childKey = count($child) === 2 ? $c[$child[1]] : $i;
+                    $data[$configKey] = collect($configValue)
+                        ->map(function ($item, $i) use ($child, $childClass, $configKey, $original) {
+                            
+                            // simplify config path when using the "only child" syntax
+                            if (count($child) === 1 && Arr::isAssoc($original[$configKey])) {
+                                return $childClass::create($item, $this, $configKey);
+                            }
 
-                        return $childClass::create($c, $this, "{$configKey}.{$childKey}");
-                    });
+                            // otherwise append the index or key
+                            $childKey = count($child) === 2 ? $item[$child[1]] : $i;
+
+                            return $childClass::create($item, $this, "{$configKey}.{$childKey}");
+                        });
                 }
             }
 

@@ -123,6 +123,25 @@ class ConfigTest extends TestCase
         $this->assertEquals('bob', $parent->children[1]->name);
     }
 
+    public function test_parent_of_only_child()
+    {
+        $parent = ParentOfManyChildren::create([
+            'children' => [
+                'child' => ['name' => 'bob'],
+                'name' => 'alice',
+            ],
+        ]);
+        
+        $this->assertEquals([
+            'children' => [
+                [
+                    'child' => ['name' => 'bob'],
+                    'name' => 'alice',
+                ],
+            ],
+        ], $parent->toArray());
+    }
+
     public function test_parent_of_keyed_children()
     {
         $parent = ParentOfKeyedChildren::create([
@@ -339,19 +358,6 @@ class ConfigTest extends TestCase
         ], $config->__config);
     }
 
-    public function test_config_paths()
-    {
-        $config = ParentConfig::create([
-            'children' => [
-                [
-                    'child' => ['id' => 'foo'],
-                ],
-            ],
-        ]);
-
-        $this->assertEquals($config->children[0]->child->getFullConfigPath(), 'children.0.child');
-    }
-
     public function test_computed_property()
     {
         $config = new class extends Config
@@ -372,5 +378,100 @@ class ConfigTest extends TestCase
         $this->assertEquals($config->uppercaseName, 'ALICE');
 
         $this->assertEquals($config->uppercase_name, 'ALICE');
+    }
+
+
+    public function test_config_path_for_direct_child()
+    {
+        $config = new class extends Config
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'thing' => [],
+                ];
+            }
+
+            public function defineChildren(): array
+            {
+                return [
+                    'thing' => Config::class,
+                ];
+            }
+        };
+
+        $this->assertEquals('thing', $config->thing->getFullConfigPath());
+    }
+
+    public function test_config_path_for_indexed_children()
+    {
+        $config = new class extends Config
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'things' => [
+                        ['id' => 'foo'],
+                    ],
+                ];
+            }
+
+            public function defineChildren(): array
+            {
+                return [
+                    'things' => [Config::class],
+                ];
+            }
+        };
+
+        $this->assertEquals('things.0', $config->things[0]->getFullConfigPath());
+    }
+
+    public function test_config_path_for_keyed_children()
+    {
+        $config = new class extends Config
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'things' => [
+                        'foo' => ['id' => 'foo'],
+                    ],
+                ];
+            }
+
+            public function defineChildren(): array
+            {
+                return [
+                    'things' => [Config::class, 'id'],
+                ];
+            }
+        };
+
+        $this->assertEquals('things.foo', $config->things[0]->getFullConfigPath());
+    }
+
+    public function test_config_path_for_only_child()
+    {
+        $config = new class extends Config
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'things' => [
+                        'id' => 'foo',
+                    ],
+                ];
+            }
+
+            public function defineChildren(): array
+            {
+                return [
+                    'things' => [Config::class],
+                ];
+            }
+        };
+
+        $this->assertEquals('things', $config->things[0]->getFullConfigPath());
     }
 }
