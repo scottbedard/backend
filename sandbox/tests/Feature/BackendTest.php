@@ -10,70 +10,13 @@ use Bedard\Backend\Exceptions\ConfigurationException;
 // use Bedard\Backend\Plugins\BladePlugin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Permission;
+// use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class BackendTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function login(User $user)
-    {
-        auth()->login($user);
-
-        return $user;
-    }
-
-    public function assignRole(User $user, string $name)
-    {
-        $user->assignRole($this->getRole($name));
-    }
-
-    public function getPermission(string $name): Permission
-    {
-        return Permission::where('name', $name)->first() ?: Permission::create(['name' => $name]);
-    }
-
-    public function getRole(string $name): Role
-    {
-        return Role::where('name', $name)->first() ?: Role::create(['name' => $name]);
-    }
-
-    public function givePermissionTo(User $user, string $name)
-    {
-        $user->givePermissionTo($this->getPermission($name));
-    }
-
-    public function loginAsSuperAdmin()
-    {
-        return $this->login($this->makeSuperAdmin());
-    }
-
-    public function loginAsUserThatCan(...$permissions)
-    {
-        return $this->login($this->makeUserThatCan(...$permissions));
-    }
-
-    public function makeUserThatCan(...$permissions)
-    {
-        $user = User::factory()->create();
-
-        foreach ($permissions as $permission) {
-            $user->givePermissionTo($permission);
-        }
-
-        return $user;
-    }
-
-    public function makeSuperAdmin(array $data = [])
-    {
-        $user = User::factory()->create($data);
-
-        $this->assignRole($user, config('backend.super_admin_role'));
-
-        return $user;
-    }
 
     public function test_creating_backend_from_directory()
     {
@@ -99,6 +42,15 @@ class BackendTest extends TestCase
         $this->expectException(ConfigurationException::class);
 
         $backend = Backend::create(__DIR__ . '/stubs/duplicates');
+    }
+
+    public function test_backend_controller_permissions()
+    {
+        $bob = $this->loginAsUserThatCan('read books');
+
+        $backend = Backend::create(__DIR__ . '/stubs/controller-permissions');
+        
+        dd('final', $backend->controllers);
     }
 
     public function test_collecting_nav_items()

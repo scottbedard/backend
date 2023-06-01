@@ -10,12 +10,12 @@ class Bouncer
     /**
      * Test if a user has all permissions
      *
-     * @param \Illuminate\Foundation\Auth\User $user
+     * @param iterable $user
      * @param Traversable $permissions
      *
      * @return bool
      */
-    public static function check(User $user, Traversable $permissions): bool
+    public static function check(User $user, iterable $permissions): bool
     {
         $permissions = is_iterable($permissions) ? $permissions : [$permissions];
         

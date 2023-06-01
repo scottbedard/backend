@@ -1,0 +1,4 @@
+id: shoes
+
+permissions:
+    - read shoes

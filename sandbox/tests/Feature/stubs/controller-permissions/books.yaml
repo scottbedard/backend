@@ -1,0 +1,4 @@
+id: books
+
+permissions:
+    - read books

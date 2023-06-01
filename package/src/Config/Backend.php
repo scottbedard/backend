@@ -63,6 +63,19 @@ class Backend extends Config
     }
 
     /**
+     * Get controllers
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getControllersAttribute(): Collection
+    {
+        $user = auth()->user();
+        
+        return $this->__data['controllers']
+            ->filter(fn ($controller) => Bouncer::check($user, $controller->permissions));
+    }
+
+    /**
      * Get nav items
      *
      * @return \Illuminate\Support\Collection
