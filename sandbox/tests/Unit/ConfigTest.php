@@ -5,8 +5,12 @@ namespace Tests\Unit;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;
+use Tests\Unit\Classes\DefaultConfigBehavior;
 use Tests\Unit\Classes\Defaults;
+use Tests\Unit\Classes\FriendBehavior;
+use Tests\Unit\Classes\GetThingBehavior;
 use Tests\Unit\Classes\Grandchild;
 use Tests\Unit\Classes\InheritsName;
 use Tests\Unit\Classes\Noop;
@@ -15,6 +19,7 @@ use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Classes\Permissions;
+use Tests\Unit\Classes\SetThingBehavior;
 use Tests\Unit\Traits\DynamicTrait;
 
 class ConfigTest extends TestCase
@@ -76,17 +81,17 @@ class ConfigTest extends TestCase
                 return 'hello';
             }
 
-            public function setDynamicConfig($value)
+            public function setDynamicAttribute($value)
             {
                 return $value . ' world';
             }
 
-            public function setFooConfig($value)
+            public function setFooAttribute($value)
             {
                 return strtoupper($value);
             }
 
-            public function setMultiWordConfig($value)
+            public function setMultiWordAttribute($value)
             {
                 return $value * 2;
             }
@@ -474,5 +479,106 @@ class ConfigTest extends TestCase
         };
 
         $this->assertEquals('things', $config->things[0]->getFullConfigPath());
+    }
+
+    public function test_accessing_data_via_behavior()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    CatchphraseBehavior::class,
+                ];
+            }
+        };
+
+        $this->assertEquals('Wubba-lubba-dub-dub!', $config->catchphrase);
+    }
+
+    public function test_mutating_state_from_a_behavior()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    FriendBehavior::class,
+                ];
+            }
+        };
+        
+        $config->befriend('Bird person');
+
+        $this->assertEquals('Bird person', $config->friend);
+    }
+
+    public function test_setting_default_config_via_attribute()
+    {
+        $empty = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    DefaultConfigBehavior::class,
+                ];
+            }
+        };
+
+        $filled = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    DefaultConfigBehavior::class,
+                ];
+            }
+
+            public function getDefaultThingConfig()
+            {
+                return 'new value';
+            }
+        };
+
+        $this->assertEquals('thing', $empty->thing);
+
+        $this->assertEquals('new value', $filled->thing);
+    }
+
+    public function test_setting_data_via_attribute()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    SetThingBehavior::class,
+                ];
+            }
+
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'thing' => 'hello world',
+                ];
+            }
+        };
+        
+        $this->assertEquals('HELLO WORLD', $config->thing);
+    }
+
+    public function test_accessing_data_via_getter()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    GetThingBehavior::class,
+                ];
+            }
+        };
+
+        $this->assertEquals('hello world', $config->thing);
     }
 }

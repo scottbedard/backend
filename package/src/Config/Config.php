@@ -3,11 +3,13 @@
 namespace Bedard\Backend\Config;
 
 use ArrayAccess;
+use BadMethodCallException;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\ValidationException;
@@ -16,11 +18,18 @@ use Illuminate\Validation\Validator;
 class Config implements ArrayAccess, Arrayable
 {
     /**
+     * Behaviors
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    public readonly Collection $__behaviors;
+
+    /**
      * Normalized config
      *
      * @var array
      */
-    public readonly array $__config;
+    public array $__config;
 
     /**
      * Config path to this instance
@@ -34,7 +43,7 @@ class Config implements ArrayAccess, Arrayable
      *
      * @var array
      */
-    public readonly array $__data;
+    public array $__data;
 
     /**
      * Parent config instance
@@ -64,16 +73,32 @@ class Config implements ArrayAccess, Arrayable
     
         $this->__parent = $parent;
 
+        // instantiate behaviors
+        $this->__behaviors = collect($this->defineBehaviors())->map(fn ($class) => new $class($this));
+
         // collect defaults and merge with the provided config
         $defaults = $this->getDefaultConfig();
 
         $methods = get_class_methods($this);
 
+        foreach ($this->__behaviors as $behavior) {
+            $methods = array_unique(array_merge($methods, get_class_methods($behavior)));
+        }
+
         foreach ($methods as $method) {
             if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*Config')) {
                 $attr = str(substr($method, strlen('getDefault'), -strlen('Config')))->snake()->toString();
+                if (method_exists($this, $method)) {
+                    data_fill($defaults, $attr, $this->$method());
+                } else {
+                    foreach ($this->__behaviors as $behavior) {
+                        if (method_exists($behavior, $method)) {
+                            data_fill($defaults, $attr, $behavior->$method());
 
-                data_fill($defaults, $attr, $this->$method());
+                            continue 2;
+                        }
+                    }
+                }
             }
         }
 
@@ -124,10 +149,20 @@ class Config implements ArrayAccess, Arrayable
         foreach ($this->__config as $configKey => $configValue) {
 
             // prefer custom setters over all else
-            $setter = str('set_' . $configKey . '_config')->camel()->toString();
+            $setter = str('set_' . $configKey . '_attribute')->camel()->toString();
 
-            if (method_exists($this, $setter)) {
-                $data[$configKey] = $this->$setter($configValue);
+            if (in_array($setter, $methods)) {
+                if (method_exists($this, $setter)) {
+                    $data[$configKey] = $this->$setter($configValue);
+                } else {
+                    foreach ($this->__behaviors as $behavior) {
+                        if (method_exists($behavior, $setter)) {
+                            $data[$configKey] = $behavior->$setter($configValue);
+
+                            break;
+                        }
+                    }
+                }
             }
 
             // when no setter is present, begin instantiating children
@@ -186,9 +221,30 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
+     * Call a method
+     * 
+     * @param string $name
+     * @param array $arguments
+     * 
+     * @return mixed
+     */
+    public function __call(string $name, array $arguments): mixed
+    {
+        foreach ($this->__behaviors as $behavior) {
+            if (method_exists($behavior, $name)) {
+                return $behavior->$name(...$arguments);
+            }
+        }
+
+        throw new BadMethodCallException('Call to undefined method ' . get_class($this) . '::' . $name . '()');
+    }
+
+    /**
      * Get a piece of data
      *
-     * 
+     * @param string $name
+     *
+     * @return mixed
      */
     public function __get(string $name): mixed
     {
@@ -200,6 +256,12 @@ class Config implements ArrayAccess, Arrayable
 
         if (method_exists($this, $getter)) {
             return $this->$getter();
+        }
+
+        foreach ($this->__behaviors as $behavior) {
+            if (method_exists($behavior, $getter)) {
+                return $behavior->$getter();
+            }
         }
 
         return $this->get($name);
@@ -243,6 +305,16 @@ class Config implements ArrayAccess, Arrayable
     public static function create(...$args): static
     {
         return new static(...$args);
+    }
+
+    /**
+     * Define behaviors
+     *
+     * @return array
+     */
+    public function defineBehaviors(): array
+    {
+        return [];
     }
 
     /**
