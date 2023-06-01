@@ -10,8 +10,8 @@ use Tests\Unit\Classes\Child;
 use Tests\Unit\Classes\DefaultConfigBehavior;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\FriendBehavior;
-use Tests\Unit\Classes\GetThingBehavior;
 use Tests\Unit\Classes\Grandchild;
+use Tests\Unit\Classes\IdentityBehavior;
 use Tests\Unit\Classes\InheritsName;
 use Tests\Unit\Classes\Noop;
 use Tests\Unit\Classes\ParentConfig;
@@ -567,18 +567,42 @@ class ConfigTest extends TestCase
         $this->assertEquals('HELLO WORLD', $config->thing);
     }
 
-    public function test_accessing_data_via_getter()
+    public function test_calling_method_on_behavior()
     {
         $config = new class extends Config
         {
             public function defineBehaviors(): array
             {
                 return [
-                    GetThingBehavior::class,
+                    IdentityBehavior::class,
                 ];
             }
         };
 
-        $this->assertEquals('hello world', $config->thing);
+        $n = mt_rand() / mt_getrandmax();
+        
+        $this->assertEquals($n, $config->identity($n));
+    }
+
+    public function test_calling_overwritten_behavior_method()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    IdentityBehavior::class,
+                ];
+            }
+
+            public function identity()
+            {
+                return 'oops';
+            }
+        };
+
+        $n = mt_rand() / mt_getrandmax();
+        
+        $this->assertEquals('oops', $config->identity($n));
     }
 }
