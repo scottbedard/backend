@@ -605,4 +605,21 @@ class ConfigTest extends TestCase
         
         $this->assertEquals('oops', $config->identity($n));
     }
+
+    public function test_bad_method_call()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    IdentityBehavior::class,
+                ];
+            }
+        };
+
+        $this->expectException(\BadMethodCallException::class);
+
+        $config->foo();
+    }
 }
