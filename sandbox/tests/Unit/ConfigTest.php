@@ -715,7 +715,6 @@ class ConfigTest extends TestCase
             public function getValidationRules(): array
             {
                 return [
-                    'thing' => 'required',
                     'foo' => 'string',
                 ];
             }
