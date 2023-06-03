@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Bedard\Backend\Config\Controller;
+use Bedard\Backend\Exceptions\ConfigurationException;
 use Tests\TestCase;
 
 class ControllerTest extends TestCase
@@ -21,17 +22,34 @@ class ControllerTest extends TestCase
         $this->assertNull($controller->path);
     }
 
-    // public function test_controller_uses_null_path()
-    // {
-    //     $controller = Controller::create(['id' => 'foo', 'path' => null]);
+    public function test_controller_uses_null_path()
+    {
+        $controller = Controller::create(['id' => 'foo', 'path' => null]);
 
-    //     $this->assertNull($controller->get('path'));
-    // }
+        $this->assertNull($controller->path);
+    }
 
-    // public function test_controller_uses_explicit_path()
-    // {
-    //     $controller = Controller::create(['id' => 'foo', 'path' => 'bar']);
+    public function test_controller_uses_explicit_path()
+    {
+        $controller = Controller::create(['id' => 'foo', 'path' => 'bar']);
 
-    //     $this->assertEquals('bar', $controller->get('path'));
-    // }
+        $this->assertEquals('bar', $controller->path);
+    }
+
+    public function test_path_must_be_alpha_dash_string()
+    {
+        $controller = new class extends Controller
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'path' => 'some',
+                ];
+            }
+        };
+
+        $this->expectException(ConfigurationException::class);
+
+        $controller->validate();
+    }
 }

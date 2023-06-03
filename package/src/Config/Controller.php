@@ -32,6 +32,19 @@ class Controller extends Config
     }
 
     /**
+     * Define validation rules
+     *
+     * @return array
+     */
+    public function defineValidation(): array
+    {
+        return [
+            'id' => ['required', 'string', 'alpha_dash'],
+            'path' => ['required', 'nullable', 'string', 'alpha_dash'],
+        ];
+    }
+
+    /**
      * Set path attribute
      *
      * @param ?string $path
