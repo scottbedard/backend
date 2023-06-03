@@ -3,7 +3,6 @@
 namespace Bedard\Backend\Config;
 
 use Bedard\Backend\Classes\Bouncer;
-use Bedard\Backend\Config\Traits\SharedChildren;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
@@ -60,19 +59,6 @@ class Backend extends Config
         return [
             'controllers' => [Controller::class, 'id'],
         ];
-    }
-
-    /**
-     * Get controllers
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getControllersAttribute(): Collection
-    {
-        $user = auth()->user();
-
-        return $this->__data['controllers']
-            ->filter(fn ($controller) => Bouncer::check($user, $controller->permissions));
     }
 
     /**

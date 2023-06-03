@@ -15,8 +15,12 @@ class Bouncer
      *
      * @return bool
      */
-    public static function check(User $user, iterable $permissions): bool
+    public static function check(?User $user, iterable $permissions): bool
     {
+        if (!$user) {
+            return false;
+        }
+
         $permissions = is_iterable($permissions) ? $permissions : [$permissions];
         
         foreach ($permissions as $permission) {

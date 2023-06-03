@@ -49,6 +49,10 @@ class BackendTest extends TestCase
         $bob = $this->loginAsUserThatCan('read books');
 
         $backend = Backend::create(__DIR__ . '/stubs/controller-permissions');
+        
+        $this->assertEquals(2, $backend->controllers->count());
+        $this->assertEquals('books', $backend->controllers[0]->id);
+        $this->assertEquals('cars', $backend->controllers[1]->id);
     }
 
     public function test_collecting_nav_items()
