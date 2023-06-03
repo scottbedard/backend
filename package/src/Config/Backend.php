@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\Config;
 
-use Bedard\Backend\Classes\Bouncer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
@@ -62,23 +61,6 @@ class Backend extends Config
     }
 
     /**
-     * Get nav items
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getNavAttribute(): Collection
-    {
-        $user = auth()->user();
-
-        return $this
-            ->controllers
-            ->map(fn ($controller) => $controller->nav)
-            ->flatten()
-            ->sortBy('order')
-            ->values();
-    }
-
-    /**
      * Get validation rules
      *
      * @return array
@@ -88,5 +70,22 @@ class Backend extends Config
         return [
             'controllers.*.id' => ['distinct', 'required', 'string'],
         ];
+    }
+
+    /**
+     * Get nav items
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getNavAttribute(): Collection
+    {
+        $user = auth()->user();
+    
+        return $this
+            ->controllers
+            ->map(fn ($controller) => $controller->nav)
+            ->flatten()
+            ->sortBy('order')
+            ->values();
     }
 }

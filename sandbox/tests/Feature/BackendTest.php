@@ -57,104 +57,15 @@ class BackendTest extends TestCase
 
     public function test_collecting_nav_items()
     {
-
-        $bob = User::factory()->create();
-        $this->givePermissionTo($bob, 'read books');
+        $alice = $this->loginAsUserThatCan('read books', 'read shoes');
 
         $backend = Backend::create(__DIR__ . '/stubs/nav-items');
-
-        // alice has access to everything
-        $alice = $this->loginAsSuperAdmin();
-
+        
         $this->assertInstanceOf(Collection::class, $backend->nav);
-        $this->assertEquals(3, $backend->nav->count());
+        $this->assertEquals(2, $backend->nav->count());
         $this->assertEquals('backend.books', $backend->nav[0]->to);
-        $this->assertEquals('backend.shoes', $backend->nav[1]->to);
-        $this->assertEquals('backend.authors', $backend->nav[2]->to);
-
-        // bob only has access to read books
-        $bob = $this->loginAsUserThatCan('read books');
-        
-        dd($backend->toArray());
+        $this->assertEquals('backend.boots', $backend->nav[1]->to);      
     }
-
-    // public function test_getting_controllers_and_navs()
-    // {
-    //     $readBooks = Permission::firstOrCreate(['name' => 'read books']);
-    //     $readCategories = Permission::firstOrCreate(['name' => 'read categories']);
-    //     $readThings = Permission::firstOrCreate(['name' => 'read things']);
-    //     $superAdmin = Role::firstOrCreate(['name' => config('backend.super_admin_role')]);
-
-    //     $admin = Role::firstOrCreate(['name' => 'admin']);
-    //     $admin->givePermissionTo($readThings);
-    //     $admin->givePermissionTo($readBooks);
-
-    //     // alice has no permissions
-    //     $alice = User::factory()->create();
-
-    //     // bob can only access the controller
-    //     $bob = User::factory()->create();
-    //     $bob->givePermissionTo($readThings);
-
-    //     // cindy can read books
-    //     $cindy = User::factory()->create();
-    //     $cindy->givePermissionTo($readThings);
-    //     $cindy->givePermissionTo($readBooks);
-
-    //     // dave can read everything
-    //     $dave = User::factory()->create();
-    //     $dave->givePermissionTo($readThings);
-    //     $dave->givePermissionTo($readBooks);
-    //     $dave->givePermissionTo($readCategories);
-
-    //     // emily is a super-admin, and can access everything
-    //     $emily = User::factory()->create();
-    //     $emily->assignRole($superAdmin);
-
-    //     // frank can read things and books via a role
-    //     $frank = User::factory()->create();
-    //     $frank->assignRole($admin);
-
-    //     // everyone but alice can access the controller
-    //     $backend = Backend::create(__DIR__ . '/stubs/_protected_nav.yaml');
-        
-    //     $this->assertEquals(0, $backend->controllers($alice)->count());
-    //     $this->assertEquals(1, $backend->controllers($bob)->count());
-    //     $this->assertEquals(1, $backend->controllers($cindy)->count());
-    //     $this->assertEquals(1, $backend->controllers($dave)->count());
-    //     $this->assertEquals(1, $backend->controllers($emily)->count());
-    //     $this->assertEquals(1, $backend->controllers($frank)->count());
-
-    //     // alice has no nav
-    //     $this->assertEquals(0, $backend->nav($alice)->count());
-
-    //     // bob can only access unprotected navs
-    //     $bobNav = $backend->nav($bob);
-    //     $this->assertEquals(1, $bobNav->count());
-    //     $this->assertEquals('Home', $bobNav->first()->get('label'));
-
-    //     // cindy and dave can access protected nav
-    //     $cindyNav = $backend->nav($cindy);
-    //     $this->assertEquals(2, $cindyNav->count());
-    //     $this->assertEquals('Home', $cindyNav->first()->get('label'));
-    //     $this->assertEquals('Books', $cindyNav->last()->get('label'));
-
-    //     $daveNav = $backend->nav($dave);
-    //     $this->assertEquals(2, $daveNav->count());
-    //     $this->assertEquals('Home', $daveNav->first()->get('label'));
-    //     $this->assertEquals('Books', $daveNav->last()->get('label'));
-
-    //     // emily is super admin and can access everything
-    //     $emilyNav = $backend->nav($emily);
-    //     $this->assertEquals(2, $emilyNav->count());
-    //     $this->assertEquals('Home', $emilyNav->first()->get('label'));
-    //     $this->assertEquals('Books', $emilyNav->last()->get('label'));
-
-    //     // frank is admin and can access everything
-    //     $frankNav = $backend->nav($frank);
-    //     $this->assertEquals('Home', $frankNav->first()->get('label'));
-    //     $this->assertEquals('Books', $frankNav->last()->get('label'));
-    // }
 
     // public function test_getting_a_specific_controller()
     // {

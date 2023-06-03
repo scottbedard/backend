@@ -1,5 +1,14 @@
+permissions:
+    - read shoes
+
 nav:
     -
-        title: Shoes
-        to: backend.shoes
         order: 2
+        title: Boots
+        to: backend.boots
+    -
+        order: 4
+        permissions:
+            - read sandals
+        title: Sandals
+        to: backend.sandals
