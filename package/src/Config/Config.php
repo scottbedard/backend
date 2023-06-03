@@ -208,7 +208,8 @@ class Config implements ArrayAccess, Arrayable
 
                             return null;
                         })
-                        ->filter(fn ($identity) => $identity);
+                        ->filter(fn ($identity) => $identity)
+                        ->values();
                 }
             }
 

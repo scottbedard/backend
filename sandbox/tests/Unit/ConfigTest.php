@@ -671,4 +671,32 @@ class ConfigTest extends TestCase
         
         $this->assertNull($bob->child);
     }
+
+    public function test_rejecting_child_in_array_via_behavior()
+    {
+        $parent = new class extends Config
+        {
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'children' => [
+                        ['name' => 'alice'],
+                        ['name' => 'bob', 'reject' => true],
+                        ['name' => 'cindy'],
+                    ],
+                ];
+            }
+
+            public function defineChildren(): array
+            {
+                return [
+                    'children' => [Reject::class],
+                ];
+            }
+        };
+
+        $this->assertEquals(2, $parent->children->count());
+        $this->assertEquals('alice', $parent->children[0]->name);
+        $this->assertEquals('cindy', $parent->children[1]->name);
+    }
 }
