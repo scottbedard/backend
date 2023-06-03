@@ -17,7 +17,7 @@ class Bouncer
      */
     public static function check(?User $user, iterable $permissions): bool
     {
-        if (!$user) {
+        if (!$user && count($permissions) > 0) {
             return false;
         }
 
