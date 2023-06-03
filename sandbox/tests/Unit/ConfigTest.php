@@ -53,7 +53,7 @@ class ConfigTest extends TestCase
         {
             use DynamicTrait;
 
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'overwrite' => 'new value',
@@ -72,7 +72,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'foo' => 'bar',
@@ -201,7 +201,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'name' => 'alice',
@@ -284,7 +284,7 @@ class ConfigTest extends TestCase
 
         $descendents = [];
         
-        $parent->descendents(function ($child) use (&$descendents) {
+        $parent->descend(function ($child) use (&$descendents) {
             $descendents[] = $child->id;
         });
         
@@ -295,7 +295,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function getValidationRules(): array
+            public function defineValidation(): array
             {
                 return [
                     'name' => ['required', 'string'],
@@ -325,7 +325,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function getValidationRules(): array
+            public function defineValidation(): array
             {
                 return [
                     'name' => ['string'],
@@ -335,7 +335,7 @@ class ConfigTest extends TestCase
 
             public function getDynamicValidationRules(): array
             {
-                $rules = $this->getValidationRules();
+                $rules = $this->defineValidation();
 
                 return [
                     'name' => array_merge($rules['name'], ['required']), // <- make an existing rule required
@@ -372,7 +372,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'name' => 'alice',
@@ -395,7 +395,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'thing' => [],
@@ -410,14 +410,14 @@ class ConfigTest extends TestCase
             }
         };
 
-        $this->assertEquals('thing', $config->thing->getFullConfigPath());
+        $this->assertEquals('thing', $config->thing->getConfigPath());
     }
 
     public function test_config_path_for_indexed_children()
     {
         $config = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'things' => [
@@ -434,14 +434,14 @@ class ConfigTest extends TestCase
             }
         };
 
-        $this->assertEquals('things.0', $config->things[0]->getFullConfigPath());
+        $this->assertEquals('things.0', $config->things[0]->getConfigPath());
     }
 
     public function test_config_path_for_keyed_children()
     {
         $config = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'things' => [
@@ -458,14 +458,14 @@ class ConfigTest extends TestCase
             }
         };
 
-        $this->assertEquals('things.foo', $config->things[0]->getFullConfigPath());
+        $this->assertEquals('things.foo', $config->things[0]->getConfigPath());
     }
 
     public function test_config_path_for_only_child()
     {
         $config = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'things' => [
@@ -482,7 +482,7 @@ class ConfigTest extends TestCase
             }
         };
 
-        $this->assertEquals('things', $config->things[0]->getFullConfigPath());
+        $this->assertEquals('things', $config->things[0]->getConfigPath());
     }
 
     public function test_accessing_data_via_behavior()
@@ -560,7 +560,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'thing' => 'hello world',
@@ -638,7 +638,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'child' => [
@@ -659,7 +659,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'child' => [
@@ -677,7 +677,7 @@ class ConfigTest extends TestCase
     {
         $parent = new class extends Config
         {
-            public function getDefaultConfig(): array
+            public function defineDefaults(): array
             {
                 return [
                     'children' => [
@@ -712,7 +712,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function getValidationRules(): array
+            public function defineValidation(): array
             {
                 return [
                     'foo' => 'string',

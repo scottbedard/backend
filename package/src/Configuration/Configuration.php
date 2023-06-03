@@ -125,7 +125,7 @@ class Configuration implements ArrayAccess, Arrayable
         $validator = new Validator(
             translator: new Translator(new ArrayLoader, 'en'),
             data: $config,
-            rules: $this->getValidationRules(),
+            rules: $this->defineValidation(),
         );
 
         if ($validator->fails()) {
@@ -271,7 +271,7 @@ class Configuration implements ArrayAccess, Arrayable
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [];
     }

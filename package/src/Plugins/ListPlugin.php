@@ -43,7 +43,7 @@ class ListPlugin extends Plugin
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'actions' => ['present', 'array'],

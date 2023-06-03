@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Config;
 
 class Grandchild extends Config
 {
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'invalid' => 'prohibited', // <- allows us to force validation errors

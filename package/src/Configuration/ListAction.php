@@ -20,7 +20,7 @@ class ListAction extends Configuration
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'href' => ['nullable', 'string'],

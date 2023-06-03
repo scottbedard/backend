@@ -8,7 +8,7 @@ use Bedard\Backend\Exceptions\RejectConfigException;
 
 class RequireThingBehavior extends Behavior
 {
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'thing' => 'required',

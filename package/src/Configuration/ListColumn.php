@@ -25,7 +25,7 @@ class ListColumn extends Configuration
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'id' => ['distinct', 'required', 'string'],

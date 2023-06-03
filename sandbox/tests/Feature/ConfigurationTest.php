@@ -26,7 +26,7 @@ class ConfigurationTest extends TestCase
         $this->expectException(ConfigurationException::class);
 
         $config = new class extends Configuration {
-            public function getValidationRules(): array
+            public function defineValidation(): array
             {
                 return ['id' => 'required'];
             }
@@ -263,7 +263,7 @@ class ConfigurationTest extends TestCase
         $this->assertEquals([
             'foo' => ['string', 'nullable'],
             'bar' => ['string'],
-        ], $config->getValidationRules());
+        ], $config->defineValidation());
     }
 
     public function test_overwriting_validation_rules()
@@ -272,7 +272,7 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals([
             'foo' => ['integer'],
-        ], $config->getValidationRules());
+        ], $config->defineValidation());
     }
 
     public function test_configuration_attribute_setter()

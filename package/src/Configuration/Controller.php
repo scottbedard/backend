@@ -56,7 +56,7 @@ class Controller extends Configuration
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'id' => ['required', 'string'],

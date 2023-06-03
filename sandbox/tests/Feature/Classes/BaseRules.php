@@ -6,7 +6,7 @@ use Bedard\Backend\Configuration\Configuration;
 
 class BaseRules extends Configuration
 {
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'foo' => ['string'],

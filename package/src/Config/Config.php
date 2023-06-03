@@ -75,7 +75,7 @@ class Config implements ArrayAccess, Arrayable
         $this->__parent = $parent;
 
         // collect defaults and merge with the provided config
-        $defaults = $this->getDefaultConfig();
+        $defaults = $this->defineDefaults();
 
         $behaviors = $this->defineBehaviors();
         
@@ -92,7 +92,7 @@ class Config implements ArrayAccess, Arrayable
             ->toArray();
 
         foreach ($methods as $method) {
-            if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*Config')) {
+            if ($method !== 'defineDefaults' && str($method)->is('getDefault*Config')) {
                 $attr = str(substr($method, strlen('getDefault'), -strlen('Config')))->snake()->toString();
                 if (method_exists($this, $method)) {
                     data_fill($defaults, $attr, $this->$method());
@@ -223,14 +223,14 @@ class Config implements ArrayAccess, Arrayable
 
 
         // collect validation rules
-        $rules = $this->getValidationRules();
+        $rules = $this->defineValidation();
 
         foreach ($this->__behaviors as $behavior) {
-            $rules = array_merge($behavior->getValidationRules(), $rules);
+            $rules = array_merge($behavior->defineValidation(), $rules);
         }
 
         foreach ($methods as $method) {
-            if ($method !== 'getValidationRules' && str($method)->is('get*ValidationRules')) {
+            if ($method !== 'defineValidation' && str($method)->is('get*ValidationRules')) {
                 $rules = array_merge($rules, $this->$method());
             }
         }
@@ -352,11 +352,31 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
+     * Define default config
+     *
+     * @return array
+     */
+    public function defineDefaults(): array
+    {
+        return [];
+    }
+
+    /**
      * Define inherited config
      * 
      * @return array
      */
     public function defineInherited(): array
+    {
+        return [];
+    }
+
+    /**
+     * Define validation rules
+     *
+     * @return array
+     */
+    public function defineValidation(): array
     {
         return [];
     }
@@ -368,13 +388,13 @@ class Config implements ArrayAccess, Arrayable
      *
      * @return void
      */
-    public function descendents(callable $fn): void
+    public function descend(callable $fn): void
     {
         $walk = function ($child) use ($fn) {
             if (is_a($child, self::class) || is_subclass_of($child, self::class)) {
                 $fn($child);
 
-                $child->descendents($fn); 
+                $child->descend($fn); 
             }
         };
 
@@ -407,7 +427,7 @@ class Config implements ArrayAccess, Arrayable
      *
      * @return ?string
      */
-    public function getFullConfigPath(): ?string
+    public function getConfigPath(): ?string
     {
         $path = $this->__config_path;
 
@@ -418,26 +438,6 @@ class Config implements ArrayAccess, Arrayable
         });
         
         return $path;
-    }
-
-    /**
-     * Get default config
-     *
-     * @return array
-     */
-    public function getDefaultConfig(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get validation rules
-     *
-     * @return array
-     */
-    public function getValidationRules(): array
-    {
-        return [];
     }
 
     /**
@@ -508,11 +508,11 @@ class Config implements ArrayAccess, Arrayable
         );
 
         if ($validator->fails()) {
-            $path = $this->getFullConfigPath() ?: 'Backend error';
+            $path = $this->getConfigPath() ?: 'Backend error';
 
             throw new ConfigurationException("{$path}: " . $validator->errors()->first());
         }
 
-        $this->descendents(fn ($child) => $child->validate());
+        $this->descend(fn ($child) => $child->validate());
     }
 }

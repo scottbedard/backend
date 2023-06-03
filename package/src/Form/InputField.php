@@ -22,9 +22,9 @@ class InputField extends Field
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
-        return array_merge_recursive(parent::getValidationRules(), [
+        return array_merge_recursive(parent::defineValidation(), [
             'max' => ['number'],
             'maxlength' => ['number'],
             'min' => ['number'],

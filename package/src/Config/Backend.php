@@ -97,7 +97,7 @@ class Backend extends Config
      *
      * @return array
      */
-    public function getValidationRules(): array
+    public function defineValidation(): array
     {
         return [
             'controllers.*.id' => ['distinct', 'required', 'string'],
