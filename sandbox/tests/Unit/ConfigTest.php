@@ -6,10 +6,11 @@ use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigurationException;
 use Bedard\Backend\Exceptions\RejectConfigException;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\Classes\AttachThingBehavior;
 use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;
-use Tests\Unit\Classes\DefaultThingBehavior;
 use Tests\Unit\Classes\Defaults;
+use Tests\Unit\Classes\DefaultThingBehavior;
 use Tests\Unit\Classes\FriendBehavior;
 use Tests\Unit\Classes\Grandchild;
 use Tests\Unit\Classes\IdentityBehavior;
@@ -24,7 +25,6 @@ use Tests\Unit\Classes\Reject;
 use Tests\Unit\Classes\RejectBehavior;
 use Tests\Unit\Classes\RequireThingBehavior;
 use Tests\Unit\Classes\UppercaseThingBehavior;
-use Tests\Unit\Traits\DynamicTrait;
 
 class ConfigTest extends TestCase
 {
@@ -78,11 +78,15 @@ class ConfigTest extends TestCase
             {
                 return $value * 2;
             }
+
+            public function setNoDefaultAttribute()
+            {
+                return 'no default';
+            }
         };
 
-        // dd($config->__data);
-
         $this->assertEquals([
+            'no_default' => 'no default',
             'foo' => 'BAR',
             'multi_word' => 10,
             'dynamic' => 'hello world',
@@ -550,6 +554,21 @@ class ConfigTest extends TestCase
         };
         
         $this->assertEquals('HELLO WORLD', $config->thing);
+    }
+
+    public function test_setting_data_with_no_default_via_behavior()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    AttachThingBehavior::class,
+                ];
+            }
+        };
+
+        $this->assertEquals('Hello world', $config->thing);
     }
 
     public function test_calling_method_on_behavior()

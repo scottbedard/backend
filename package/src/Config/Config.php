@@ -94,6 +94,7 @@ class Config implements ArrayAccess, Arrayable
         foreach ($methods as $method) {
             if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*')) {
                 $attr = str(substr($method, strlen('getDefault')))->snake()->toString();
+
                 if (method_exists($this, $method)) {
                     data_fill($defaults, $attr, $this->$method());
                 } else {
@@ -151,7 +152,31 @@ class Config implements ArrayAccess, Arrayable
         // save the normalized config and begin creating child data
         $this->__config = $config;
 
-        $data = [];
+        $this->__data = [];
+
+        foreach ($this->__behaviors as $behavior) {
+            foreach (get_class_methods($behavior) as $method) {
+                if (str($method)->is('set*Attribute')) {
+                    $attr = str(substr($method, strlen('set'), -strlen('Attribute')))->snake()->toString();
+    
+                    $this->__data[$attr] = $behavior->$method(data_get($config, $attr));
+                }
+            }
+        }
+
+        foreach (get_class_methods($this) as $method) {
+            if (!str($method)->is('set*Attribute')) {
+                continue;
+            }
+
+            $attr = str(substr($method, strlen('set'), -strlen('Attribute')))->snake()->toString();
+
+            if (array_key_exists($attr, $this->__config)) {
+                continue;
+            }
+
+            $this->__data[$attr] = $this->$method(null);
+        }
         
         foreach ($this->__config as $configKey => $configValue) {
 
@@ -160,11 +185,11 @@ class Config implements ArrayAccess, Arrayable
 
             if (in_array($setter, $methods)) {
                 if (method_exists($this, $setter)) {
-                    $data[$configKey] = $this->$setter($configValue);
+                    $this->__data[$configKey] = $this->$setter($configValue);
                 } else {
                     foreach ($this->__behaviors as $behavior) {
                         if (method_exists($behavior, $setter)) {
-                            $data[$configKey] = $behavior->$setter($configValue);
+                            $this->__data[$configKey] = $behavior->$setter($configValue);
 
                             break;
                         }
@@ -179,7 +204,7 @@ class Config implements ArrayAccess, Arrayable
                 // string values represents a direct child
                 if (is_string($child)) {
                     try {
-                        $data[$configKey] = $child::create($configValue, $this, $configKey);
+                        $this->__data[$configKey] = $child::create($configValue, $this, $configKey);
                     } catch (RejectConfigException $e) {
                         // do nothing if the config is rejected
                     }
@@ -189,7 +214,7 @@ class Config implements ArrayAccess, Arrayable
                 elseif (is_array($child)) {
                     [$childClass] = $child;
 
-                    $data[$configKey] = collect($configValue)
+                    $this->__data[$configKey] = collect($configValue)
                         ->map(function ($item, $i) use ($child, $childClass, $configKey, $original) {
                             
                             // simplify config path when using the "only child" syntax
@@ -215,11 +240,9 @@ class Config implements ArrayAccess, Arrayable
 
             // finally, set all other static data
             else {
-                $data[$configKey] = $configValue;
+                $this->__data[$configKey] = $configValue;
             }
         }
-        
-        $this->__data = $data;
 
 
         // collect validation rules
