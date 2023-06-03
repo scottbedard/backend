@@ -34,6 +34,16 @@ class Behavior
     }
 
     /**
+     * Get validation rules
+     *
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return [];
+    }
+
+    /**
      * Eject the config
      * 
      * @throws \Bedard\Backend\Exceptions\EjectConfigException

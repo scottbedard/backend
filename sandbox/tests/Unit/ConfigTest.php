@@ -10,7 +10,6 @@ use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;
 use Tests\Unit\Classes\DefaultConfigBehavior;
 use Tests\Unit\Classes\Defaults;
-use Tests\Unit\Classes\RejectBehavior;
 use Tests\Unit\Classes\FriendBehavior;
 use Tests\Unit\Classes\Grandchild;
 use Tests\Unit\Classes\IdentityBehavior;
@@ -22,6 +21,8 @@ use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Classes\Permissions;
 use Tests\Unit\Classes\Reject;
+use Tests\Unit\Classes\RejectBehavior;
+use Tests\Unit\Classes\RequireThingBehavior;
 use Tests\Unit\Classes\UppercaseThingBehavior;
 use Tests\Unit\Traits\DynamicTrait;
 
@@ -698,5 +699,31 @@ class ConfigTest extends TestCase
         $this->assertEquals(2, $parent->children->count());
         $this->assertEquals('alice', $parent->children[0]->name);
         $this->assertEquals('cindy', $parent->children[1]->name);
+    }
+
+    public function test_adding_validation_rules_via_behavior()
+    {
+        $config = new class extends Config
+        {
+            public function defineBehaviors(): array
+            {
+                return [
+                    RequireThingBehavior::class,
+                ];
+            }
+
+            public function getValidationRules(): array
+            {
+                return [
+                    'thing' => 'required',
+                    'foo' => 'string',
+                ];
+            }
+        };
+
+        $this->assertEquals([
+            'thing' => 'required',
+            'foo' => 'string',
+        ], $config->__rules);
     }
 }

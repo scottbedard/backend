@@ -225,6 +225,10 @@ class Config implements ArrayAccess, Arrayable
         // collect validation rules
         $rules = $this->getValidationRules();
 
+        foreach ($this->__behaviors as $behavior) {
+            $rules = array_merge($behavior->getValidationRules(), $rules);
+        }
+
         foreach ($methods as $method) {
             if ($method !== 'getValidationRules' && str($method)->is('get*ValidationRules')) {
                 $rules = array_merge($rules, $this->$method());
@@ -427,15 +431,6 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Check offset existence
-     *
-     * @param $offset
-     */
-    public function offsetExists($offset) {
-        return isset($this->__data[$offset]);
-    }
-
-    /**
      * Get validation rules
      *
      * @return array
@@ -443,6 +438,15 @@ class Config implements ArrayAccess, Arrayable
     public function getValidationRules(): array
     {
         return [];
+    }
+
+    /**
+     * Check offset existence
+     *
+     * @param $offset
+     */
+    public function offsetExists($offset) {
+        return isset($this->__data[$offset]);
     }
 
     /**
