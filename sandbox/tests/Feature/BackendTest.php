@@ -50,7 +50,7 @@ class BackendTest extends TestCase
 
         $backend = Backend::create(__DIR__ . '/stubs/controller-permissions');
         
-        dd('final', $backend->controllers);
+        dd('final', $backend->toArray());
     }
 
     public function test_collecting_nav_items()

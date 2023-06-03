@@ -7,6 +7,7 @@ use BadMethodCallException;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
 use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\RejectConfigException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -73,17 +74,22 @@ class Config implements ArrayAccess, Arrayable
     
         $this->__parent = $parent;
 
-        // instantiate behaviors
-        $this->__behaviors = collect($this->defineBehaviors())->map(fn ($class) => new $class($this));
-
         // collect defaults and merge with the provided config
         $defaults = $this->getDefaultConfig();
 
-        $methods = get_class_methods($this);
+        $behaviors = $this->defineBehaviors();
+        
+        // instantiate behaviors, and track their methods
+        // these may throw RejectConfigException to exclude the current config
+        $this->__behaviors = collect($this->defineBehaviors())
+            ->map(fn ($class) => new $class($this, $config));
 
-        foreach ($this->__behaviors as $behavior) {
-            $methods = array_unique(array_merge($methods, get_class_methods($behavior)));
-        }
+        $methods = collect(get_class_methods($this))
+            ->concat($this->__behaviors->map(fn ($b) => get_class_methods($b)))
+            ->flatten()
+            ->filter(fn ($m) => !str_starts_with($m, '__'))
+            ->unique()
+            ->toArray();
 
         foreach ($methods as $method) {
             if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*Config')) {
@@ -107,6 +113,7 @@ class Config implements ArrayAccess, Arrayable
 
         $original = $config;
 
+        // begin instantiating children
         $children = $this->defineChildren();
 
         foreach ($children as $key => $definition) {
@@ -171,9 +178,13 @@ class Config implements ArrayAccess, Arrayable
 
                 // string values represents a direct child
                 if (is_string($child)) {
-                    $data[$configKey] = $child::create($configValue, $this, $configKey);
+                    try {
+                        $data[$configKey] = $child::create($configValue, $this, $configKey);
+                    } catch (RejectConfigException $e) {
+                        // do nothing if the config is rejected
+                    }
                 }
-                
+
                 // arrays represent a "has many" style relationship
                 elseif (is_array($child)) {
                     [$childClass] = $child;
@@ -183,14 +194,21 @@ class Config implements ArrayAccess, Arrayable
                             
                             // simplify config path when using the "only child" syntax
                             if (count($child) === 1 && Arr::isAssoc($original[$configKey])) {
-                                return $childClass::create($item, $this, $configKey);
+                                try {
+                                    return $childClass::create($item, $this, $configKey);
+                                } catch (RejectConfigException $e) { }
                             }
 
                             // otherwise append the index or key
                             $childKey = count($child) === 2 ? $item[$child[1]] : $i;
 
-                            return $childClass::create($item, $this, "{$configKey}.{$childKey}");
-                        });
+                            try {
+                                return $childClass::create($item, $this, "{$configKey}.{$childKey}");
+                            } catch (RejectConfigException $e) { }
+
+                            return null;
+                        })
+                        ->filter(fn ($identity) => $identity);
                 }
             }
 
@@ -201,6 +219,7 @@ class Config implements ArrayAccess, Arrayable
         }
         
         $this->__data = $data;
+
 
         // collect validation rules
         $rules = $this->getValidationRules();

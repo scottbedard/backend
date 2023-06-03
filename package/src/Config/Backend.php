@@ -70,7 +70,7 @@ class Backend extends Config
     public function getControllersAttribute(): Collection
     {
         $user = auth()->user();
-        
+
         return $this->__data['controllers']
             ->filter(fn ($controller) => Bouncer::check($user, $controller->permissions));
     }

@@ -1,25 +1,47 @@
 <?php
 
 namespace Bedard\Backend\Config;
+;
+use Bedard\Backend\Exceptions\RejectConfigException;
 
 class Behavior
 {
     /**
      * Config instance
      *
-     * @var \Bedard\Backend\Config\Config
+     * @var array
      */
     protected Config $config;
 
     /**
+     * Raw yaml data
+     *
+     * @var array
+     */
+    protected array $raw;
+
+    /**
      * Construct
      *
-     * @param \Bedard\Backend\Config\Config $config
-     *
-     * @return self
+     * @param \Bedard\Backend\Config $config
+     * @param array $raw
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, array $raw)
     {
         $this->config = $config;
+
+        $this->raw = $raw;
+    }
+
+    /**
+     * Eject the config
+     * 
+     * @throws \Bedard\Backend\Exceptions\EjectConfigException
+     *
+     * @return void
+     */
+    public function reject(): void
+    {
+        throw new RejectConfigException;
     }
 }

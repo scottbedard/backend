@@ -2,11 +2,21 @@
 
 namespace Bedard\Backend\Config;
 
-use Bedard\Backend\Config\Traits\Permissions;
+use Bedard\Backend\Config\Behaviors\Permissions;
 
 class Controller extends Config
 {
-    use Permissions;
+    /**
+     * Define behaviors
+     *
+     * @return array
+     */
+    public function defineBehaviors(): array
+    {
+        return [
+            Permissions::class,
+        ];
+    }
 
     /**
      * Define child config

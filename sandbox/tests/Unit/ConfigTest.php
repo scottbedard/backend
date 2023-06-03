@@ -4,11 +4,13 @@ namespace Tests\Unit;
 
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\RejectConfigException;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;
 use Tests\Unit\Classes\DefaultConfigBehavior;
 use Tests\Unit\Classes\Defaults;
+use Tests\Unit\Classes\RejectBehavior;
 use Tests\Unit\Classes\FriendBehavior;
 use Tests\Unit\Classes\Grandchild;
 use Tests\Unit\Classes\IdentityBehavior;
@@ -19,7 +21,8 @@ use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
 use Tests\Unit\Classes\Permissions;
-use Tests\Unit\Classes\SetThingBehavior;
+use Tests\Unit\Classes\Reject;
+use Tests\Unit\Classes\UppercaseThingBehavior;
 use Tests\Unit\Traits\DynamicTrait;
 
 class ConfigTest extends TestCase
@@ -552,7 +555,7 @@ class ConfigTest extends TestCase
             public function defineBehaviors(): array
             {
                 return [
-                    SetThingBehavior::class,
+                    UppercaseThingBehavior::class,
                 ];
             }
 
@@ -621,5 +624,51 @@ class ConfigTest extends TestCase
         $this->expectException(\BadMethodCallException::class);
 
         $config->foo();
+    }
+
+    public function test_rejecting_single_via_a_behavior()
+    {
+        $alice = new class extends Config
+        {
+            public function defineChildren(): array
+            {
+                return [
+                    'child' => Reject::class,
+                ];
+            }
+
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'child' => [
+                        'name' => 'alice',
+                    ],
+                ];
+            }
+        };
+        
+        $this->assertEquals('alice', $alice->child->name);
+
+        $bob = new class extends Config
+        {
+            public function defineChildren(): array
+            {
+                return [
+                    'child' => Reject::class,
+                ];
+            }
+
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'child' => [
+                        'name' => 'bob',
+                        'reject' => true,
+                    ],
+                ];
+            }
+        };
+        
+        $this->assertNull($bob->child);
     }
 }
