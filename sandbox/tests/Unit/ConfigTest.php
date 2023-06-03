@@ -8,7 +8,7 @@ use Bedard\Backend\Exceptions\RejectConfigException;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;
-use Tests\Unit\Classes\DefaultConfigBehavior;
+use Tests\Unit\Classes\DefaultThingBehavior;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\FriendBehavior;
 use Tests\Unit\Classes\Grandchild;
@@ -46,41 +46,20 @@ class ConfigTest extends TestCase
             'overwrite' => 'new value',
         ], $config->__config);
     }
-    
-    public function test_dynamic_default_values()
-    {
-        $config = new class extends Config
-        {
-            use DynamicTrait;
-
-            public function defineDefaults(): array
-            {
-                return [
-                    'overwrite' => 'new value',
-                ];
-            }
-        };
-
-        $this->assertEquals([
-            'overwrite' => 'new value',
-            'test' => 'hello',
-            'multi_word' => 'world',
-        ], $config->__config);
-    }
 
     public function test_custom_attribute_setter()
     {
         $config = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'foo' => 'bar',
-                    'multi_word' => 1,
+                    'multi_word' => 5,
                 ];
             }
 
-            public function getDefaultDynamicConfig()
+            public function getDefaultDynamic()
             {
                 return 'hello';
             }
@@ -101,10 +80,12 @@ class ConfigTest extends TestCase
             }
         };
 
+        // dd($config->__data);
+
         $this->assertEquals([
-            'dynamic' => 'hello world',
             'foo' => 'BAR',
-            'multi_word' => 2,
+            'multi_word' => 10,
+            'dynamic' => 'hello world',
         ], $config->__data);
     }
 
@@ -201,7 +182,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'name' => 'alice',
@@ -372,7 +353,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'name' => 'alice',
@@ -395,7 +376,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'thing' => [],
@@ -417,7 +398,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'things' => [
@@ -441,7 +422,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'things' => [
@@ -465,7 +446,7 @@ class ConfigTest extends TestCase
     {
         $config = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'things' => [
@@ -517,14 +498,14 @@ class ConfigTest extends TestCase
         $this->assertEquals('Bird person', $config->friend);
     }
 
-    public function test_setting_default_config_via_attribute()
+    public function test_setting_default_via_behavior()
     {
         $empty = new class extends Config
         {
             public function defineBehaviors(): array
             {
                 return [
-                    DefaultConfigBehavior::class,
+                    DefaultThingBehavior::class,
                 ];
             }
         };
@@ -534,11 +515,11 @@ class ConfigTest extends TestCase
             public function defineBehaviors(): array
             {
                 return [
-                    DefaultConfigBehavior::class,
+                    DefaultThingBehavior::class,
                 ];
             }
 
-            public function getDefaultThingConfig()
+            public function getDefaultThing()
             {
                 return 'new value';
             }
@@ -560,7 +541,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'thing' => 'hello world',
@@ -638,7 +619,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'child' => [
@@ -659,7 +640,7 @@ class ConfigTest extends TestCase
                 ];
             }
 
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'child' => [
@@ -677,7 +658,7 @@ class ConfigTest extends TestCase
     {
         $parent = new class extends Config
         {
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'children' => [

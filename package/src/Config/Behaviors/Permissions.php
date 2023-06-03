@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Behavior;
 
 class Permissions extends Behavior
 {
-    public function getDefaultPermissionsConfig(): array
+    public function getDefaultPermissions(): array
     {
         return [];
     }

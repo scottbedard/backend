@@ -75,7 +75,7 @@ class Config implements ArrayAccess, Arrayable
         $this->__parent = $parent;
 
         // collect defaults and merge with the provided config
-        $defaults = $this->defineDefaults();
+        $defaults = $this->getDefaultConfig();
 
         $behaviors = $this->defineBehaviors();
         
@@ -92,8 +92,8 @@ class Config implements ArrayAccess, Arrayable
             ->toArray();
 
         foreach ($methods as $method) {
-            if ($method !== 'defineDefaults' && str($method)->is('getDefault*Config')) {
-                $attr = str(substr($method, strlen('getDefault'), -strlen('Config')))->snake()->toString();
+            if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*')) {
+                $attr = str(substr($method, strlen('getDefault')))->snake()->toString();
                 if (method_exists($this, $method)) {
                     data_fill($defaults, $attr, $this->$method());
                 } else {
@@ -352,16 +352,6 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
-     * Define default config
-     *
-     * @return array
-     */
-    public function defineDefaults(): array
-    {
-        return [];
-    }
-
-    /**
      * Define inherited config
      * 
      * @return array
@@ -438,6 +428,16 @@ class Config implements ArrayAccess, Arrayable
         });
         
         return $path;
+    }
+
+    /**
+     * Get default config
+     *
+     * @return array
+     */
+    public function getDefaultConfig(): array
+    {
+        return [];
     }
 
     /**

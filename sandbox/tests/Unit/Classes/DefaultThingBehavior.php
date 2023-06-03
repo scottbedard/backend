@@ -5,9 +5,9 @@ namespace Tests\Unit\Classes;
 use Bedard\Backend\Config\Behavior;
 use Bedard\Backend\Config\Config;
 
-class DefaultConfigBehavior extends Behavior
+class DefaultThingBehavior extends Behavior
 {
-    public function getDefaultThingConfig()
+    public function getDefaultThing()
     {
         return 'thing';
     }

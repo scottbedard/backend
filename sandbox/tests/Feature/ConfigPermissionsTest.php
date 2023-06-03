@@ -21,7 +21,7 @@ class ConfigPermissionsTest extends TestCase
                 ];
             }
 
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'permissions' => ['access'],
@@ -57,7 +57,7 @@ class ConfigPermissionsTest extends TestCase
                 ];
             }
 
-            public function defineDefaults(): array
+            public function getDefaultConfig(): array
             {
                 return [
                     'permissions' => ['access'],
