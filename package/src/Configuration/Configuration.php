@@ -4,8 +4,8 @@ namespace Bedard\Backend\Configuration;
 
 use ArrayAccess;
 use Bedard\Backend\Classes\KeyedArray;
-use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigArrayAccessException;
+use Bedard\Backend\Exceptions\ConfigException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -129,7 +129,7 @@ class Configuration implements ArrayAccess, Arrayable
         );
 
         if ($validator->fails()) {
-            throw new ConfigurationException($this->getConfigurationPath() . ': ' . $validator->errors()->first());
+            throw new ConfigException($this->getConfigurationPath() . ': ' . $validator->errors()->first());
         }
 
         $this->config = $config;
@@ -300,11 +300,11 @@ class Configuration implements ArrayAccess, Arrayable
      * @param $offset
      * @param $value
      *
-     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     * @throws Bedard\Backend\Exceptions\ConfigArrayAccessException
      */
     public function offsetSet($offset, $value)
     {
-        throw new ConfigurationArrayAccessException;
+        throw new ConfigArrayAccessException;
     }
 
     /**
@@ -312,10 +312,10 @@ class Configuration implements ArrayAccess, Arrayable
      *
      * @param $offset
      *
-     * @throws Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     * @throws Bedard\Backend\Exceptions\ConfigArrayAccessException
      */
     public function offsetUnset($offset) {
-        throw new ConfigurationArrayAccessException;
+        throw new ConfigArrayAccessException;
     }
 
     /**

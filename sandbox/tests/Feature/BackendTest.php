@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use Bedard\Backend\Config\Backend;
-use App\Models\User;
 // use Bedard\Backend\Configuration\Backend;
 // use Bedard\Backend\Configuration\Route;
-use Bedard\Backend\Exceptions\ConfigurationException;
 // use Bedard\Backend\Plugins\BladePlugin;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Collection;
 // use Spatie\Permission\Models\Permission;
 // use Spatie\Permission\Models\Role;
+use App\Models\User;
+use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Exceptions\ConfigValidationException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class BackendTest extends TestCase
@@ -39,7 +39,7 @@ class BackendTest extends TestCase
 
     public function test_duplicate_controller_ids_throws_exception()
     {
-        $this->expectException(ConfigurationException::class);
+        $this->expectException(ConfigValidationException::class);
 
         $backend = Backend::create(__DIR__ . '/stubs/duplicates');
     }
@@ -65,6 +65,13 @@ class BackendTest extends TestCase
         $this->assertEquals(2, $backend->nav->count());
         $this->assertEquals('backend.books', $backend->nav[0]->to);
         $this->assertEquals('backend.boots', $backend->nav[1]->to);      
+    }
+
+    public function test_default_path_collision()
+    {
+        $this->expectException(ConfigValidationException::class);
+
+        Backend::create(__DIR__ . '/stubs/controller-path-collision');
     }
 
     // public function test_getting_a_specific_controller()

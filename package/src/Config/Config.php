@@ -5,8 +5,9 @@ namespace Bedard\Backend\Config;
 use ArrayAccess;
 use BadMethodCallException;
 use Bedard\Backend\Classes\KeyedArray;
-use Bedard\Backend\Exceptions\ConfigurationArrayAccessException;
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigArrayAccessException;
+use Bedard\Backend\Exceptions\ConfigException;
+use Bedard\Backend\Exceptions\ConfigValidationException;
 use Bedard\Backend\Exceptions\RejectConfigException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
@@ -73,14 +74,11 @@ class Config implements ArrayAccess, Arrayable
         $this->__config_path = $configPath;
     
         $this->__parent = $parent;
-
-        // collect defaults and merge with the provided config
-        $defaults = $this->getDefaultConfig();
-
-        $behaviors = $this->defineBehaviors();
         
         // instantiate behaviors, and track their methods
         // these may throw RejectConfigException to exclude the current config
+        $behaviors = $this->defineBehaviors();
+
         $this->__behaviors = collect($this->defineBehaviors())
             ->map(fn ($class) => new $class($this, $config));
 
@@ -91,16 +89,19 @@ class Config implements ArrayAccess, Arrayable
             ->unique()
             ->toArray();
 
+        // collect defaults and merge with the provided config
+        $defaults = $this->getDefaultConfig();
+
         foreach ($methods as $method) {
             if ($method !== 'getDefaultConfig' && str($method)->is('getDefault*')) {
                 $attr = str(substr($method, strlen('getDefault')))->snake()->toString();
 
                 if (method_exists($this, $method)) {
-                    data_fill($defaults, $attr, $this->$method());
+                    data_fill($defaults, $attr, $this->$method($config));
                 } else {
                     foreach ($this->__behaviors as $behavior) {
                         if (method_exists($behavior, $method)) {
-                            data_fill($defaults, $attr, $behavior->$method());
+                            data_fill($defaults, $attr, $behavior->$method($config));
 
                             continue 2;
                         }
@@ -487,11 +488,11 @@ class Config implements ArrayAccess, Arrayable
      * @param $offset
      * @param $value
      *
-     * @throws \Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     * @throws \Bedard\Backend\Exceptions\ConfigArrayAccessException
      */
     public function offsetSet($offset, $value)
     {
-        throw new ConfigurationArrayAccessException;
+        throw new ConfigArrayAccessException;
     }
 
     /**
@@ -499,10 +500,10 @@ class Config implements ArrayAccess, Arrayable
      *
      * @param $offset
      *
-     * @throws \Bedard\Backend\Exceptions\ConfigurationArrayAccessException
+     * @throws \Bedard\Backend\Exceptions\ConfigArrayAccessException
      */
     public function offsetUnset($offset) {
-        throw new ConfigurationArrayAccessException;
+        throw new ConfigArrayAccessException;
     }
 
     /**
@@ -518,7 +519,7 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Validate config
      *
-     * @throws \Bedard\Backend\Exceptions\ConfigurationException
+     * @throws \Bedard\Backend\Exceptions\ConfigValidationException
      *
      * @return void
      */
@@ -533,7 +534,7 @@ class Config implements ArrayAccess, Arrayable
         if ($validator->fails()) {
             $path = $this->getConfigPath() ?: 'Backend error';
 
-            throw new ConfigurationException("{$path}: " . $validator->errors()->first());
+            throw new ConfigValidationException("{$path}: " . $validator->errors()->first());
         }
 
         $this->descend(fn ($child) => $child->validate());

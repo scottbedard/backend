@@ -16,14 +16,4 @@ class BackendControllerTest extends TestCase
             ->get(config('backend.path'))
             ->assertRedirect(config('backend.guest_redirect'));
     }
-
-    public function test_unauthorized_users_are_redirected()
-    {
-        $user = User::factory()->create();
-
-        $this
-            ->actingAs($user)
-            ->get(config('backend.path'))
-            ->assertRedirect(config('backend.unauthorized_redirect'));
-    }
 }

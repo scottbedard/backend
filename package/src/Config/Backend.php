@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config;
 
+use Bedard\Backend\Rules\DistinctString;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
@@ -17,6 +18,7 @@ class Backend extends Config
      */
     public function __construct(...$files)
     {
+        // parse controller data from yaml files
         $controllers = [];
 
         $parse = function (string $path) use (&$controllers, &$parse) {
@@ -24,11 +26,9 @@ class Backend extends Config
                 collect(scandir($path))
                     ->filter(fn ($p) => str_ends_with($p, '.yaml'))
                     ->each(fn ($p) => $parse("{$path}/{$p}"));
-
-                return;
             }
 
-            if (File::isFile($path)) {
+            elseif (File::isFile($path)) {
                 $key = str($path)
                     ->lower()
                     ->rtrim('.yaml')
@@ -40,6 +40,22 @@ class Backend extends Config
         };
 
         collect($files)->flatten()->each($parse);
+
+        // set the default controller id and path
+        // this is set here rather than the controller so it's ready for distinct string validation
+        foreach ($controllers as $key => $controller) {
+            if (!array_key_exists('id', $controller)) {
+                $controllers[$key]['id'] = str_starts_with($key, '_')
+                    ? $key
+                    : str($key)->slug()->toString();
+            }
+
+            if (!array_key_exists('path', $controller)) {
+                $controllers[$key]['path'] = str_starts_with($key, '_')
+                    ? null
+                    : str($key)->slug()->toString();
+            }
+        }
         
         parent::__construct([
             'controllers' => $controllers,
@@ -68,7 +84,8 @@ class Backend extends Config
     public function defineValidation(): array
     {
         return [
-            'controllers.*.id' => ['distinct', 'required', 'string'],
+            'controllers.*.id' => ['required', new DistinctString('insensitive')],
+            'controllers.*.path' => ['present', new DistinctString('insensitive', 'nullable')],
         ];
     }
 

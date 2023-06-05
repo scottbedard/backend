@@ -2,7 +2,7 @@
 
 namespace Bedard\Backend\Configuration;
 
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Plugins\BladePlugin;
 use Bedard\Backend\Plugins\Plugin;
 use Bedard\Backend\Traits\Permissions;
@@ -104,7 +104,7 @@ class Route extends Configuration
         $class = data_get($plugins, $plugin, $plugin);
 
         if ($class !== Plugin::class && !is_subclass_of($class, Plugin::class)) {
-            throw new ConfigurationException('Invalid plugin class "' . $class . '"');
+            throw new ConfigException('Invalid plugin class "' . $class . '"');
         }
 
         return $class::create($this->config['options'], $this, $this->get('id'));

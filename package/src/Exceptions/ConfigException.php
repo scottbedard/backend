@@ -4,6 +4,6 @@ namespace Bedard\Backend\Exceptions;
 
 use Exception;
 
-class ConfigurationArrayAccessException extends Exception
+class ConfigException extends Exception
 {
 }

@@ -4,7 +4,7 @@ namespace Bedard\Backend\Form;
 
 use Bedard\Backend\Classes\Breakpoint;
 use Bedard\Backend\Configuration\Configuration;
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Rules\Breakpoints;
 use Illuminate\View\View;
 
@@ -56,7 +56,7 @@ class Field extends Configuration
     public static function createFromType(array $config = [], ?Configuration $parent = null, ?string $parentKey = null): self
     {
         if (!array_key_exists('type', $config)) {
-            throw new ConfigurationException('Missing field type');
+            throw new ConfigException('Missing field type');
         }
 
         $type = $config['type'];
@@ -71,7 +71,7 @@ class Field extends Configuration
             return new $fields[$type]($config, $parent, $parentKey);
         }
 
-        throw new ConfigurationException("Unknown field type \"{$type}\"");
+        throw new ConfigException("Unknown field type \"{$type}\"");
     }
 
     /**

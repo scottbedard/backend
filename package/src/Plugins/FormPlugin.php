@@ -5,7 +5,7 @@ namespace Bedard\Backend\Plugins;
 use Bedard\Backend\Classes\ArrayUtil;
 use Bedard\Backend\Configuration\FormAction;
 use Bedard\Backend\Configuration\Configuration;
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Form\Field;
 use Bedard\Backend\Form\InputField;
 use Illuminate\Database\Eloquent\Model;
@@ -60,7 +60,7 @@ class FormPlugin extends Plugin
             $base = $this->controller()->route($extends)?->plugin();
 
             if (!$base) {
-                throw new ConfigurationException("Failed to extend \"{$extends}\", form not found");
+                throw new ConfigException("Failed to extend \"{$extends}\", form not found");
             }
 
             $this->data['fields'] = $create(

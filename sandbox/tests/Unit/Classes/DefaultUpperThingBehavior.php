@@ -2,18 +2,11 @@
 
 namespace Tests\Unit\Classes;
 
+use Bedard\Backend\Config\Behavior;
 use Bedard\Backend\Config\Config;
 
-class Defaults extends Config
+class DefaultUpperThingBehavior extends Behavior
 {
-    public function getDefaultConfig(): array
-    {
-        return [
-            'foo' => 'bar',
-            'overwrite' => 'original value',
-        ];
-    }
-
     public function getDefaultUpperThing(array $config): string
     {
         return strtoupper(data_get($config, 'thing', ''));

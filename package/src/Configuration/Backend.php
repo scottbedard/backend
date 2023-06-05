@@ -4,7 +4,7 @@ namespace Bedard\Backend\Configuration;
 
 use Bedard\Backend\Classes\Bouncer;
 use Bedard\Backend\Classes\KeyedArray;
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigException;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -177,6 +177,6 @@ class Backend extends Configuration
             } 
         }
         
-        throw new ConfigurationException('Backend route not found: ' . $id);
+        throw new ConfigException('Backend route not found: ' . $id);
     }
 }

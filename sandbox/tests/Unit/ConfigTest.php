@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Bedard\Backend\Config\Config;
-use Bedard\Backend\Exceptions\ConfigurationException;
+use Bedard\Backend\Exceptions\ConfigValidationException;
 use Bedard\Backend\Exceptions\RejectConfigException;
 use PHPUnit\Framework\TestCase;
 use Tests\Unit\Classes\AttachThingBehavior;
@@ -11,6 +11,7 @@ use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;
 use Tests\Unit\Classes\Defaults;
 use Tests\Unit\Classes\DefaultThingBehavior;
+use Tests\Unit\Classes\DefaultUpperThing;
 use Tests\Unit\Classes\FriendBehavior;
 use Tests\Unit\Classes\Grandchild;
 use Tests\Unit\Classes\IdentityBehavior;
@@ -38,12 +39,15 @@ class ConfigTest extends TestCase
         $config = Defaults::create([
             'hello' => 'world',
             'overwrite' => 'new value',
+            'thing' => 'foo bar',
         ]);
 
         $this->assertEquals([
             'foo' => 'bar',
             'hello' => 'world',
             'overwrite' => 'new value',
+            'thing' => 'foo bar',
+            'upper_thing' => 'FOO BAR',
         ], $config->__config);
     }
 
@@ -288,7 +292,7 @@ class ConfigTest extends TestCase
             }
         };
 
-        $this->expectException(ConfigurationException::class);
+        $this->expectException(ConfigValidationException::class);
         
         $config->validate();
     }
@@ -301,7 +305,7 @@ class ConfigTest extends TestCase
             ],
         ]);
 
-        $this->expectException(ConfigurationException::class);
+        $this->expectException(ConfigValidationException::class);
         
         $parent->validate();
     }
@@ -502,7 +506,19 @@ class ConfigTest extends TestCase
         $this->assertEquals('Bird person', $config->friend);
     }
 
-    public function test_setting_default_via_behavior()
+    public function test_setting_default_config_via_behavior()
+    {
+        $config = DefaultUpperThing::create([
+            'thing' => 'hello world',
+        ]);
+        
+        $this->assertEquals([
+            'upper_thing' => 'HELLO WORLD',
+            'thing' => 'hello world',
+        ], $config->__config);
+    }
+
+    public function test_setting_default_data_via_behavior()
     {
         $empty = new class extends Config
         {
@@ -725,4 +741,25 @@ class ConfigTest extends TestCase
             'foo' => 'string',
         ], $config->__rules);
     }
+
+    // public function test_default_config_that_relies_on_raw_config()
+    // {
+    //     $config = new class extends Config
+    //     {
+    //         public function getDefaultConfig(): array
+    //         {
+    //             return [
+    //                 'thing' => 'hello world',
+    //             ];
+    //         }
+            
+    //         public function getDefaultThing(array $config): string
+    //         {
+    //             dd('yo', $config);
+    //             return strtoupper($config['thing']);
+    //         }
+    //     };
+
+    //     dd($config->toArray());
+    // }
 }
