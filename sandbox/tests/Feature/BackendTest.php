@@ -127,45 +127,14 @@ class BackendTest extends TestCase
         $this->assertEquals('authors', $route->id);
     }
 
-    // public function test_getting_a_specific_controller()
-    // {
-    //     $backend = Backend::create(__DIR__ . '/stubs/_blank.yaml');
+    public function test_getting_a_specific_controller()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 
-    //     $controller = $backend->controller('_blank');
+        $controller = $backend->controller('books');
         
-    //     $this->assertEquals('_blank', $controller->get('id'));
-    // }
-
-    // public function test_getting_controller_from_route_id()
-    // {
-    //     $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
-        
-    //     $route = $backend->route('backend.books.create');
-
-    //     $this->assertEquals('create', $route->get('id'));
-    //     $this->assertEquals('books', $route->controller()->get('id'));
-    // }
-
-    // public function test_getting_index_route_from_controller_id()
-    // {
-    //     $backend = Backend::create(__DIR__ . '/stubs/books.yaml');
-        
-    //     $route = $backend->route('backend.books');
-
-    //     $this->assertEquals('index', $route->get('id'));
-    //     $this->assertEquals('books', $route->controller()->get('id'));
-    // }
-
-    // public function test_default_controller_paths()
-    // {
-    //     $backend = Backend::create(
-    //         __DIR__ . '/stubs/_blank.yaml',
-    //         __DIR__ . '/stubs/books.yaml',
-    //     );
-        
-    //     $this->assertNull($backend->controller('_blank')->path());
-    //     $this->assertEquals('books', $backend->controller('books')->path());
-    // }
+        $this->assertEquals('books', $controller->id);
+    }
 
     // public function test_ordered_controller_navs()
     // {

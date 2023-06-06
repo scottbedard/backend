@@ -65,6 +65,18 @@ class Backend extends Config
     }
 
     /**
+     * Get controller
+     *
+     * @param string $id
+     *
+     * @return ?\Bedard\Backend\Config\Controller
+     */
+    public function controller(string $id): ?Controller
+    {
+        return $this->controllers->first(fn ($controller) => $controller->id === $id);
+    }
+
+    /**
      * Define children
      *
      * @return array
