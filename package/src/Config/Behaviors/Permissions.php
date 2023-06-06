@@ -9,6 +9,15 @@ use Bedard\Backend\Exceptions\ConfigException;
 
 class Permissions extends Behavior
 {
+    /**
+     * Construct
+     *
+     * @param Config $config
+     * @param array $raw
+     * @param string $for
+     *
+     * @return void
+     */
     public function __construct(Config $config, array $raw)
     {
         parent::__construct($config, $raw);
@@ -25,6 +34,11 @@ class Permissions extends Behavior
         }
     }
 
+    /**
+     * Get default permissions
+     *
+     * @return array
+     */
     public function getDefaultPermissions(): array
     {
         return [];

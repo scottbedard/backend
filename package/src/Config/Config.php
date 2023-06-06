@@ -207,7 +207,7 @@ class Config implements ArrayAccess, Arrayable
                     try {
                         $this->__data[$configKey] = $child::create($configValue, $this, $configKey);
                     } catch (RejectConfigException $e) {
-                        // do nothing if the config is rejected
+                        $this->__data[$configKey] = null;
                     }
                 }
 

@@ -13,13 +13,4 @@ class RestrictedThing extends Config
             Permissions::class,
         ];
     }
-
-    public function defineChildren(): array
-    {
-        return [
-            'thing' => self::class,
-            'things' => [self::class],
-            'keyed_things' => [self::class, 'id'],
-        ];
-    }
 }
