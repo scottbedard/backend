@@ -3,7 +3,6 @@
 namespace Bedard\Backend\View\Components;
 
 use Bedard\Backend\Classes\ViteManifest;
-use Bedard\Backend\Facades\Backend;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
