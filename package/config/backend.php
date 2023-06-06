@@ -61,14 +61,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Backend directory
+    | Backend directories
     |--------------------------------------------------------------------------
     |
     | Directory to scan for backend .yaml files.
     |
     */
 
-    'backend_directory' => app_path(env('BACKEND_DIRECTORY', 'Backend')),
+    'backend_directories' => [
+        __DIR__ . '/../packages/bedard/backend/src/Backend',
+    ],
     
     /*
     |--------------------------------------------------------------------------

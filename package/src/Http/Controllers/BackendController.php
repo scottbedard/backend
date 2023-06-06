@@ -2,7 +2,7 @@
 
 namespace Bedard\Backend\Http\Controllers;
 
-use Bedard\Backend\Facades\Backend;
+use Bedard\Backend\Config\Backend;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -28,24 +28,28 @@ class BackendController extends Controller
             return redirect(config('backend.guest_redirect'));
         }
 
-        // find the route
-        $id = $controller === null
-            ? null
-            : ($route === null
-                ? "backend.{$controller}"
-                : "backend.{$controller}.{$route}");
+        $backend = Backend::create(config('backend.backend_directories'));
+        
+        dd($backend->toArray());
 
-        $route = Backend::route($id);
+        // // find the route
+        // $id = $controller === null
+        //     ? null
+        //     : ($route === null
+        //         ? "backend.{$controller}"
+        //         : "backend.{$controller}.{$route}");
 
-        // ensure user has permission to access the route
-        foreach ($route->get('permissions', []) as $permission) {
-            if ($permission) {
-                dd('perm', $permission);
-            }
-            if (!$user->can($permission)) {
-                return redirect(config('backend.unauthorized_redirect'));
-            }
-        }
+        // $route = Backend::route($id);
+
+        // // ensure user has permission to access the route
+        // foreach ($route->get('permissions', []) as $permission) {
+        //     if ($permission) {
+        //         dd('perm', $permission);
+        //     }
+        //     if (!$user->can($permission)) {
+        //         return redirect(config('backend.unauthorized_redirect'));
+        //     }
+        // }
 
         // if ($request->method() === 'GET') {
         //     return $route->plugin()->render($request);
