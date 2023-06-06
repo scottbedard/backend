@@ -2,7 +2,6 @@ disabled:
     - concat_without_spaces
 enabled:
     - concat_with_spaces
-    - laravel_phpdoc_separation
 finder:
     exclude:
         - 'node_modules'
