@@ -53,7 +53,7 @@ class Backend extends Config
             if (!array_key_exists('path', $controller)) {
                 $controllers[$key]['path'] = str_starts_with($key, '_')
                     ? null
-                    : str($key)->slug()->toString();
+                    : str($controllers[$key]['id'])->slug()->toString();
             }
         }
         

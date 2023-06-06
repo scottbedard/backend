@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Bedard\Backend\Config\Controller;
-use Bedard\Backend\Exceptions\ConfigException;
+use Bedard\Backend\Exceptions\ConfigValidationException;
 use Tests\TestCase;
 
 class ControllerTest extends TestCase
@@ -48,7 +48,7 @@ class ControllerTest extends TestCase
             }
         };
 
-        $this->expectException(ConfigException::class);
+        $this->expectException(ConfigValidationException::class);
 
         $controller->validate();
     }

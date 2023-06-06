@@ -74,6 +74,23 @@ class BackendTest extends TestCase
         Backend::create(__DIR__ . '/stubs/controller-path-collision');
     }
 
+    public function test_default_controller_id_and_path()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/controller-default-id-path');
+        
+        $this->assertEquals('_index', $backend->controllers[0]->id);
+        $this->assertNull($backend->controllers[0]->path);
+
+        $this->assertEquals('books', $backend->controllers[1]->id);
+        $this->assertEquals('books', $backend->controllers[1]->path);
+
+        $this->assertEquals('vehicles', $backend->controllers[2]->id);
+        $this->assertEquals('vehicles', $backend->controllers[2]->path);
+
+        $this->assertEquals('shoes', $backend->controllers[3]->id);
+        $this->assertEquals('footwear', $backend->controllers[3]->path);
+    }
+
     // public function test_getting_a_specific_controller()
     // {
     //     $backend = Backend::create(__DIR__ . '/stubs/_blank.yaml');
