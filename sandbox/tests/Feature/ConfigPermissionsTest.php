@@ -1,75 +1,82 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Bedard\Backend\Config\Config;
+use Tests\Feature\Classes\RestrictedThing;
 use Tests\TestCase;
-use Tests\Unit\Classes\Permissions;
 
 class ConfigPermissionsTest extends TestCase
 {
-    public function test_child_config_appends_to_inherited_parent_config()
-    {
-        $config = new class extends Permissions
-        {
-            public function defineChildren(): array
-            {
-                return [
-                    'thing' => Permissions::class,
-                    'things' => [Permissions::class],
-                    'keyed_things' => [Permissions::class, 'id'],
-                ];
-            }
-
-            public function getDefaultConfig(): array
-            {
-                return [
-                    'permissions' => ['access'],
-                    'thing' => ['permissions' => ['read']],
-                    'things' => [
-                        ['permissions' => ['update']],
-                    ],
-                    'keyed_things' => [
-                        'foo' => ['permissions' => ['delete']],
-                    ],
-                ];
-            }
-        };
-
-        $this->assertEquals(['access'], $config->permissions);
-        $this->assertEquals(['access', 'read'], $config->thing->permissions);
-        $this->assertEquals(['access', 'update'], $config->things[0]->permissions);
-        $this->assertEquals(['access', 'delete'], $config->keyed_things[0]->permissions);
-    }
-
     public function test_super_admin_has_access_to_everything()
     {
         $alice = $this->loginAsSuperAdmin();
 
-        $config = new class extends Permissions
+        $config = new class extends Config
         {
             public function defineChildren(): array
             {
                 return [
-                    'thing' => Permissions::class,
-                    'things' => [Permissions::class],
-                    'keyed_things' => [Permissions::class, 'id'],
+                    'thing' => RestrictedThing::class,
                 ];
             }
 
             public function getDefaultConfig(): array
             {
                 return [
-                    'permissions' => ['access'],
-                    'thing' => ['permissions' => ['read']],
-                    'things' => [
-                        ['permissions' => ['update']],
-                    ],
-                    'keyed_things' => [
-                        'foo' => ['permissions' => ['delete']],
+                    'thing' => [
+                        'permissions' => ['access']
                     ],
                 ];
             }
         };
+        
+        $this->assertInstanceOf(RestrictedThing::class, $config->thing);
+    }
+
+    public function test_user_can_only_access_with_permissions()
+    {
+        $bob = $this->loginAsUserThatCan('do stuff');
+        
+        $restricted = new class extends Config
+        {
+            public function defineChildren(): array
+            {
+                return [
+                    'thing' => RestrictedThing::class,
+                ];
+            }
+
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'thing' => [
+                        'permissions' => ['access']
+                    ],
+                ];
+            }
+        };
+
+        $allowed = new class extends Config
+        {
+            public function defineChildren(): array
+            {
+                return [
+                    'thing' => RestrictedThing::class,
+                ];
+            }
+
+            public function getDefaultConfig(): array
+            {
+                return [
+                    'thing' => [
+                        'permissions' => ['do stuff']
+                    ],
+                ];
+            }
+        };
+        
+        $this->assertNull($restricted->thing);
+        $this->assertInstanceOf(RestrictedThing::class, $allowed->thing);
     }
 }

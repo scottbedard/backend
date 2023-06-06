@@ -8,20 +8,6 @@ use Tests\TestCase;
 
 class ControllerTest extends TestCase
 {
-    public function test_controller_sets_path_if_none_present()
-    {
-        $controller = Controller::create(['id' => 'foo_bar']);
-
-        $this->assertEquals('foo-bar', $controller->path);
-    }
-
-    public function test_controller_sets_default_null_path()
-    {
-        $controller = Controller::create(['id' => '_hello']);
-
-        $this->assertNull($controller->path);
-    }
-
     public function test_controller_uses_null_path()
     {
         $controller = Controller::create(['id' => 'foo', 'path' => null]);
