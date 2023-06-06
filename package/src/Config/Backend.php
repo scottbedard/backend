@@ -105,4 +105,36 @@ class Backend extends Config
             ->sortBy('order')
             ->values();
     }
+
+    /**
+     * All backend routes
+     *
+     * @param string|null $controller
+     * @param string|null $route
+     *
+     * @return ?\Bedard\Backend\Config\Route
+     */
+    public function getRoutesAttribute()
+    {
+        return $this
+            ->controllers
+            ->map(fn ($controller) => $controller->routes)
+            ->flatten()
+            ->values();
+    }
+
+    /**
+     * Get route
+     *
+     * @param string|null $controller
+     * @param string|null $route
+     * 
+     * @return ?\Bedard\Backend\Config\Route
+     */
+    public function route(?string $controller = null, ?string $route = null): ?Route
+    {
+        return $this
+            ->routes
+            ->first(fn ($r) => $r->__parent->path === $controller && $r->path === $route);
+    }
 }

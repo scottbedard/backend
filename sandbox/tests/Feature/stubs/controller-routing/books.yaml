@@ -1,0 +1,6 @@
+routes:
+    books:
+        path: null
+
+    authors:
+        path: authors

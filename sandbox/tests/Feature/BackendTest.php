@@ -2,13 +2,9 @@
 
 namespace Tests\Feature;
 
-// use Bedard\Backend\Configuration\Backend;
-// use Bedard\Backend\Configuration\Route;
-// use Bedard\Backend\Plugins\BladePlugin;
-// use Spatie\Permission\Models\Permission;
-// use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Config\Route;
 use Bedard\Backend\Exceptions\ConfigValidationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
@@ -89,6 +85,46 @@ class BackendTest extends TestCase
 
         $this->assertEquals('shoes', $backend->controllers[3]->id);
         $this->assertEquals('footwear', $backend->controllers[3]->path);
+    }
+
+    public function test_finding_index()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
+        
+        $route = $backend->route(null, null);
+
+        $this->assertInstanceOf(Route::class, $route);
+
+        $this->assertEquals('index', $route->id);
+    }
+
+    public function test_finding_page()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
+        
+        $route = $backend->route(null, 'about');
+
+        $this->assertInstanceOf(Route::class, $route);
+
+        $this->assertEquals('about', $route->id);
+    }
+
+    public function test_finding_controller_index()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
+
+        $route = $backend->route('books', null);
+
+        $this->assertEquals('books', $route->id);
+    }
+
+    public function test_finding_controller_page()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
+
+        $route = $backend->route('books', 'authors');
+
+        $this->assertEquals('authors', $route->id);
     }
 
     // public function test_getting_a_specific_controller()

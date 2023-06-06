@@ -1,0 +1,8 @@
+# id: index
+
+routes:
+    index:
+        path: null
+
+    about:
+        path: about
