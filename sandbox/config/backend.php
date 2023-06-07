@@ -95,9 +95,7 @@ return [
     */
 
     'plugins' => [
-        'blade' => \Bedard\Backend\Plugins\BladePlugin::class,
-        'form' => \Bedard\Backend\Plugins\FormPlugin::class,
-        'list' => \Bedard\Backend\Plugins\ListPlugin::class,
+        'blade' => \Bedard\Backend\Config\Plugins\BladePlugin::class,
     ],
 
     /*
@@ -110,6 +108,6 @@ return [
     */
 
     'fields' => [
-        'input' => \Bedard\Backend\Form\InputField::class,
+        // ...
     ],
 ];

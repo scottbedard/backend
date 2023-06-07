@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Config;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class BladePlugin extends Config
+class BladePlugin extends Plugin
 {
     /**
      * Render

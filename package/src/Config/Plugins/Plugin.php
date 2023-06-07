@@ -8,6 +8,14 @@ use Illuminate\View\View;
 
 class Plugin extends Config
 {
+    public function getDefaultConfig(): array
+    {
+        return [
+            'plugin' => 'blade',
+            'options' => [],
+        ];
+    }
+
     /**
      * Render
      *
@@ -17,6 +25,6 @@ class Plugin extends Config
      */
     public function handle(Request $request): View|array
     {
-        return view('backend::missing-plugin');
+        return view('backend::blade-plugin');
     }
 }

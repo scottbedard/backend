@@ -64,6 +64,17 @@ class Backend extends Config
         $this->validate();
     }
 
+    public static function create(...$args): static
+    {
+        if (count($args) === 0) {
+            $directories = config('backend.backend_directories', []);
+
+            return new static($directories);
+        }
+
+        return new static(...$args);
+    }
+
     /**
      * Get controller
      *

@@ -4,6 +4,7 @@ namespace Bedard\Backend\Config;
 
 use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Plugins\Plugin;
+use Bedard\Backend\Exceptions\ConfigException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -66,8 +67,17 @@ class Route extends Config
             );
         }
 
-        $default = config('backend.default_plugins');
+        $aliases = config('backend.plugins');
 
-        dd($default);
+        foreach ($aliases as $alias => $class) {
+            if ($plugin === $alias) {
+                return $class::create(
+                    config: $this->__config['options'],
+                    parent: $this,
+                );
+            }
+        }
+        
+        throw new ConfigException("Plugin [{$plugin}] not found");
     }
 }

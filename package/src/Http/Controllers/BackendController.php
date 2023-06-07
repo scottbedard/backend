@@ -15,11 +15,11 @@ class BackendController extends Controller
     /**
      * Handle a backend request
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $req
      * @param ?string $controller
      * @param ?string $routeName
      */
-    public function route(Request $request, ?string $controller = null, ?string $route = null, ?string $params = null)
+    public function route(Request $req, ?string $controller = null, ?string $route = null)
     {
         // redirect users who aren't authenticated
         $user = auth()->user();
@@ -28,35 +28,8 @@ class BackendController extends Controller
             return redirect(config('backend.guest_redirect'));
         }
 
-        $backend = Backend::create(config('backend.backend_directories'));
+        $backend = Backend::create();
         
-        $response = $backend->route($controller, $route)->handle($request);
-
-        dd($response);
-
-        // // find the route
-        // $id = $controller === null
-        //     ? null
-        //     : ($route === null
-        //         ? "backend.{$controller}"
-        //         : "backend.{$controller}.{$route}");
-
-        // $route = Backend::route($id);
-
-        // // ensure user has permission to access the route
-        // foreach ($route->get('permissions', []) as $permission) {
-        //     if ($permission) {
-        //         dd('perm', $permission);
-        //     }
-        //     if (!$user->can($permission)) {
-        //         return redirect(config('backend.unauthorized_redirect'));
-        //     }
-        // }
-
-        // if ($request->method() === 'GET') {
-        //     return $route->plugin()->render($request);
-        // }
-
-        // throw new \Exception('Not implemented yet');
+        return $backend->route($controller, $route)?->plugin->handle($req);
     }
 }
