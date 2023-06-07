@@ -3,8 +3,8 @@ disabled:
     - laravel_phpdoc_separation
 enabled:
     - concat_with_spaces
-    - phpdoc_annotation_without_dot
     - phpdoc_separation
+    - phpdoc_summary
 finder:
     exclude:
         - 'node_modules'
