@@ -19,7 +19,7 @@ class BackendController extends Controller
      * @param ?string $controller
      * @param ?string $routeName
      */
-    public function route(Request $request, ?string $controller = null, ?string $route = null)
+    public function route(Request $request, ?string $controller = null, ?string $route = null, ?string $params = null)
     {
         // redirect users who aren't authenticated
         $user = auth()->user();
@@ -30,7 +30,9 @@ class BackendController extends Controller
 
         $backend = Backend::create(config('backend.backend_directories'));
         
-        dd($backend->toArray());
+        $routeConfig = $backend->route($controller, $route);
+
+        dd($routeConfig);
 
         // // find the route
         // $id = $controller === null
