@@ -59,9 +59,15 @@ class Route extends Config
             return new Plugin;
         }
 
-        return $plugin::create(
-            config: $this->__config['options'],
-            parent: $this,
-        );
+        if (class_exists($plugin)) {
+            return $plugin::create(
+                config: $this->__config['options'],
+                parent: $this,
+            );
+        }
+
+        $default = config('backend.default_plugins');
+
+        dd($default);
     }
 }

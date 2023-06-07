@@ -41,6 +41,10 @@ class RouteTest extends TestCase
 
         $output = trim($route->plugin->handle($req)->render());
 
+        $this->assertInstanceOf(HelloPlugin::class, $route->plugin);
+
+        $this->assertEquals('Alice', $route->plugin->name);
+
         $this->assertEquals('<div>Hello Alice</div>', $output);
     }
 }
