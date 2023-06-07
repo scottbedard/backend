@@ -71,7 +71,7 @@ return [
     'backend_directories' => [
         __DIR__ . '/../packages/bedard/backend/src/Backend',
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Super admin role

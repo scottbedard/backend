@@ -11,14 +11,15 @@ class Banner extends Component
     /**
      * Create a new component instance.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return void
      */
     public function __construct(
         public string|null $header = null,
         public string|null $icon = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

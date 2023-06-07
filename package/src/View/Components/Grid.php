@@ -11,14 +11,15 @@ class Grid extends Component
     /**
      * Create a new component instance.
      *
-     * @param int $cols
+     * @param  int  $cols
      *
      * @return void
      */
     public function __construct(
         public bool $padded = false,
         public int $cols = 12,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use Bedard\Backend\Console\AssignRoleCommand;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class AssignRoleCommandTest extends TestCase
@@ -44,7 +43,7 @@ class AssignRoleCommandTest extends TestCase
         $this->artisan('backend:assign-role ' . $user->id . ' "' . config('backend.super_admin_role') . '"')
             ->expectsConfirmation(AssignRoleCommand::$confirm, 'no')
             ->assertExitCode(1);
-        
+
         $this->assertEquals(0, $user->roles()->count());
     }
 }

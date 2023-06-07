@@ -5,7 +5,6 @@ namespace Bedard\Backend\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Symfony\Component\Yaml\Yaml;
 
 class MakeControllerCommand extends Command
 {
@@ -45,13 +44,13 @@ class MakeControllerCommand extends Command
         $name = $this->argument('name');
         $singular = strtolower(Str::singular($name));
         $plural = strtolower(Str::plural($name));
-            
+
         foreach ($lines as $line) {
             // remove comments
             if (!$this->option('docs') && str_contains($line, '#')) {
                 continue;
             }
-            
+
             $output .= $line . PHP_EOL;
         }
 

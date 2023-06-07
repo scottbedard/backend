@@ -79,7 +79,7 @@ class ListPlugin extends Plugin
 
         return Paginator::for($query);
     }
-    
+
     /**
      * Render
      *

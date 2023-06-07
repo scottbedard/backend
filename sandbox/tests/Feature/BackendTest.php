@@ -45,7 +45,7 @@ class BackendTest extends TestCase
         $bob = $this->loginAsUserThatCan('read books');
 
         $backend = Backend::create(__DIR__ . '/stubs/controller-permissions');
-        
+
         $this->assertEquals(2, $backend->controllers->count());
         $this->assertEquals('books', $backend->controllers[0]->id);
         $this->assertEquals('cars', $backend->controllers[1]->id);
@@ -56,11 +56,11 @@ class BackendTest extends TestCase
         $alice = $this->loginAsUserThatCan('read books', 'read shoes');
 
         $backend = Backend::create(__DIR__ . '/stubs/nav-items');
-        
+
         $this->assertInstanceOf(Collection::class, $backend->nav);
         $this->assertEquals(2, $backend->nav->count());
         $this->assertEquals('backend.books', $backend->nav[0]->to);
-        $this->assertEquals('backend.boots', $backend->nav[1]->to);      
+        $this->assertEquals('backend.boots', $backend->nav[1]->to);
     }
 
     public function test_default_path_collision()
@@ -73,7 +73,7 @@ class BackendTest extends TestCase
     public function test_default_controller_id_and_path()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-default-id-path');
-        
+
         $this->assertEquals('_index', $backend->controllers[0]->id);
         $this->assertNull($backend->controllers[0]->path);
 
@@ -90,7 +90,7 @@ class BackendTest extends TestCase
     public function test_finding_index()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
-        
+
         $route = $backend->route(null, null);
 
         $this->assertInstanceOf(Route::class, $route);
@@ -101,7 +101,7 @@ class BackendTest extends TestCase
     public function test_finding_page()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
-        
+
         $route = $backend->route(null, 'about');
 
         $this->assertInstanceOf(Route::class, $route);
@@ -132,7 +132,7 @@ class BackendTest extends TestCase
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 
         $controller = $backend->controller('books');
-        
+
         $this->assertEquals('books', $controller->id);
     }
 
@@ -143,16 +143,16 @@ class BackendTest extends TestCase
     //         __DIR__ . '/stubs/_nav_order_2.yaml',
     //         __DIR__ . '/stubs/_nav_double.yaml',
     //     );
-        
+
     //     $nav = $backend->nav();
 
     //     $this->assertInstanceOf(Collection::class, $nav);
     //     $this->assertEquals(4, $nav->count());
-        
-    //     $this->assertEquals('Zero', $nav->get('0')->get('label'));     
-    //     $this->assertEquals('One', $nav->get('1')->get('label'));     
-    //     $this->assertEquals('Two', $nav->get('2')->get('label'));     
-    //     $this->assertEquals('Three', $nav->get('3')->get('label'));        
+
+    //     $this->assertEquals('Zero', $nav->get('0')->get('label'));
+    //     $this->assertEquals('One', $nav->get('1')->get('label'));
+    //     $this->assertEquals('Two', $nav->get('2')->get('label'));
+    //     $this->assertEquals('Three', $nav->get('3')->get('label'));
     // }
 
     // public function test_getting_protected_subnavs()

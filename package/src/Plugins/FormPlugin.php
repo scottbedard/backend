@@ -3,8 +3,8 @@
 namespace Bedard\Backend\Plugins;
 
 use Bedard\Backend\Classes\ArrayUtil;
-use Bedard\Backend\Configuration\FormAction;
 use Bedard\Backend\Configuration\Configuration;
+use Bedard\Backend\Configuration\FormAction;
 use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Form\Field;
 use Bedard\Backend\Form\InputField;
@@ -35,8 +35,8 @@ class FormPlugin extends Plugin
     /**
      * Construct
      *
-     * @param array $yaml
-     * @param ?\Bedard\Backend\Configuration\Configuration $parent
+     * @param  array  $yaml
+     * @param  ?\Bedard\Backend\Configuration\Configuration  $parent
      */
     public function __construct(array $config = [], ?Configuration $parent = null)
     {

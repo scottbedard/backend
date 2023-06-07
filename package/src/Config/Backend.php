@@ -11,8 +11,8 @@ class Backend extends Config
 {
     /**
      * Create backend config instance
-     * 
-     * @param array $files
+     *
+     * @param  array  $files
      *
      * @return self
      */
@@ -26,9 +26,7 @@ class Backend extends Config
                 collect(scandir($path))
                     ->filter(fn ($p) => str_ends_with($p, '.yaml'))
                     ->each(fn ($p) => $parse("{$path}/{$p}"));
-            }
-
-            elseif (File::isFile($path)) {
+            } elseif (File::isFile($path)) {
                 $key = str($path)
                     ->lower()
                     ->rtrim('.yaml')
@@ -56,7 +54,7 @@ class Backend extends Config
                     : str($controllers[$key]['id'])->slug()->toString();
             }
         }
-        
+
         parent::__construct([
             'controllers' => $controllers,
         ]);
@@ -67,7 +65,7 @@ class Backend extends Config
     /**
      * Get controller
      *
-     * @param string $id
+     * @param  string  $id
      *
      * @return ?\Bedard\Backend\Config\Controller
      */
@@ -109,7 +107,7 @@ class Backend extends Config
     public function getNavAttribute(): Collection
     {
         $user = auth()->user();
-    
+
         return $this
             ->controllers
             ->map(fn ($controller) => $controller->nav)
@@ -121,8 +119,8 @@ class Backend extends Config
     /**
      * All backend routes
      *
-     * @param string|null $controller
-     * @param string|null $route
+     * @param  string|null  $controller
+     * @param  string|null  $route
      *
      * @return ?\Bedard\Backend\Config\Route
      */
@@ -138,9 +136,9 @@ class Backend extends Config
     /**
      * Get route
      *
-     * @param string|null $controller
-     * @param string|null $route
-     * 
+     * @param  string|null  $controller
+     * @param  string|null  $route
+     *
      * @return ?\Bedard\Backend\Config\Route
      */
     public function route(?string $controller = null, ?string $route = null): ?Route

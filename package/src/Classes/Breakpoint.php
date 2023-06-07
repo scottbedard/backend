@@ -7,8 +7,8 @@ class Breakpoint
     /**
      * Create a breakpoints array.
      *
-     * @param array|int $span
-     * @param int $cols
+     * @param  array|int  $span
+     * @param  int  $cols
      *
      * @return array
      */

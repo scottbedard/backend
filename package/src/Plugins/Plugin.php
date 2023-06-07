@@ -5,7 +5,6 @@ namespace Bedard\Backend\Plugins;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Configuration\Controller;
 use Bedard\Backend\Configuration\Route;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class Plugin extends Configuration

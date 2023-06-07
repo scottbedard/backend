@@ -3,7 +3,6 @@
 namespace Bedard\Backend\Config;
 
 use Bedard\Backend\Config\Behaviors\Permissions;
-use Bedard\Backend\Exceptions\ConfigException;
 
 class Controller extends Config
 {

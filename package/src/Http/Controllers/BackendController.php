@@ -11,13 +11,13 @@ use Illuminate\Routing\Controller;
 class BackendController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
-    
+
     /**
      * Handle a backend request
      *
-     * @param \Illuminate\Http\Request $request
-     * @param ?string $controller
-     * @param ?string $routeName
+     * @param  \Illuminate\Http\Request  $request
+     * @param  ?string  $controller
+     * @param  ?string  $routeName
      */
     public function route(Request $request, ?string $controller = null, ?string $route = null)
     {
@@ -29,7 +29,7 @@ class BackendController extends Controller
         }
 
         $backend = Backend::create(config('backend.backend_directories'));
-        
+
         dd($backend->toArray());
 
         // // find the route

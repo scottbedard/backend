@@ -33,11 +33,11 @@ class KeyedArrayTest extends TestCase
 
         $this->assertEquals([
             [
-                'id' => 'foo', 
+                'id' => 'foo',
                 'value' => 1,
             ],
             [
-                'id' => 'bar', 
+                'id' => 'bar',
                 'value' => 2,
             ],
         ], KeyedArray::from($source, 'id'));
@@ -47,22 +47,22 @@ class KeyedArrayTest extends TestCase
     {
         $source = [
             [
-                'id' => 'foo', 
+                'id' => 'foo',
                 'value' => 1,
             ],
             [
-                'id' => 'bar', 
+                'id' => 'bar',
                 'value' => 2,
             ],
         ];
 
         $this->assertEquals([
             [
-                'id' => 'foo', 
+                'id' => 'foo',
                 'value' => 1,
             ],
             [
-                'id' => 'bar', 
+                'id' => 'bar',
                 'value' => 2,
             ],
         ], KeyedArray::from($source, 'id'));

@@ -12,7 +12,7 @@ class ConfigPermissionsTest extends TestCase
     public function test_protecting_config_behind_permissions()
     {
         $bob = $this->loginAsUserThatCan('thing', 'other things', 'keyed things');
-        
+
         $config = new class extends Config
         {
             public function defineChildren(): array
@@ -31,7 +31,7 @@ class ConfigPermissionsTest extends TestCase
                 return [
                     'thing' => [
                         'id' => 'foo',
-                        'permissions' => ['thing']
+                        'permissions' => ['thing'],
                     ],
                     'restricted_thing' => [
                         'permissions' => ['restricted'],
@@ -65,7 +65,7 @@ class ConfigPermissionsTest extends TestCase
         };
 
         $this->assertInstanceOf(RestrictedThing::class, $config->thing);
-        
+
         $this->assertNull($config->restricted_thing);
 
         $this->assertInstanceOf(Collection::class, $config->other_things);

@@ -9,8 +9,8 @@ class KeyedArray
     /**
      * Create keyed array from associative array
      *
-     * @param array $source
-     * @param string $key
+     * @param  array  $source
+     * @param  string  $key
      *
      * @return array
      */

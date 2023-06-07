@@ -1,7 +1,7 @@
 <?php
 
 namespace Bedard\Backend\Config;
-;
+
 use Bedard\Backend\Exceptions\RejectConfigException;
 
 class Behavior
@@ -23,8 +23,8 @@ class Behavior
     /**
      * Construct
      *
-     * @param \Bedard\Backend\Config $config
-     * @param array $raw
+     * @param  \Bedard\Backend\Config  $config
+     * @param  array  $raw
      */
     public function __construct(Config $config, array $raw)
     {
@@ -45,10 +45,10 @@ class Behavior
 
     /**
      * Eject the config
-     * 
-     * @throws \Bedard\Backend\Exceptions\EjectConfigException
      *
      * @return void
+     *
+     * @throws \Bedard\Backend\Exceptions\EjectConfigException
      */
     public function reject(): void
     {

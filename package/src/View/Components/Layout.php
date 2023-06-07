@@ -5,9 +5,7 @@ namespace Bedard\Backend\View\Components;
 use Bedard\Backend\Classes\ViteManifest;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class Layout extends Component
 {
@@ -16,7 +14,8 @@ class Layout extends Component
      */
     public function __construct(
         public bool $padded = false,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.
@@ -36,7 +35,7 @@ class Layout extends Component
         $route = []; //Backend::route(request()->route()->getName());
 
         $subnav = []; //$route->controller()->subnav($user);
-        
+
         return view('backend::components.layout', [
             'dev' => $dev,
             'logout' => config('backend.logout_href'),

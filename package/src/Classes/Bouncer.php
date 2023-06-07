@@ -10,8 +10,8 @@ class Bouncer
     /**
      * Test if a user has all permissions
      *
-     * @param iterable $user
-     * @param Traversable $permissions
+     * @param  iterable  $user
+     * @param  Traversable  $permissions
      *
      * @return bool
      */
@@ -22,7 +22,7 @@ class Bouncer
         }
 
         $permissions = is_iterable($permissions) ? $permissions : [$permissions];
-        
+
         foreach ($permissions as $permission) {
             if (!$user->can($permission)) {
                 return false;

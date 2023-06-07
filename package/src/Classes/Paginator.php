@@ -4,7 +4,6 @@ namespace Bedard\Backend\Classes;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class Paginator
 {

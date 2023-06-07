@@ -6,7 +6,6 @@ use ArrayAccess;
 use BadMethodCallException;
 use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Exceptions\ConfigArrayAccessException;
-use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Exceptions\ConfigValidationException;
 use Bedard\Backend\Exceptions\RejectConfigException;
 use Illuminate\Contracts\Support\Arrayable;
@@ -14,7 +13,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
 class Config implements ArrayAccess, Arrayable
@@ -64,17 +62,17 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Create config instance
      *
-     * @param array $config
-     * @param ?self $parent
-     * @param ?string $configPath
+     * @param  array  $config
+     * @param  ?self  $parent
+     * @param  ?string  $configPath
      */
     public function __construct(array $config = [], self $parent = null, string $configPath = null)
     {
         // store the raw config and set the relationship to our parent
         $this->__config_path = $configPath;
-    
+
         $this->__parent = $parent;
-        
+
         // instantiate behaviors, and track their methods
         // these may throw RejectConfigException to exclude the current config
         $behaviors = $this->defineBehaviors();
@@ -125,9 +123,7 @@ class Config implements ArrayAccess, Arrayable
 
             if (count($definition) === 1 && Arr::isAssoc($config[$key])) {
                 $config[$key] = [$config[$key]];
-            }
-
-            elseif (count($definition) === 2) {
+            } elseif (count($definition) === 2) {
                 [, $childKey] = $children[$key];
 
                 if (is_array($config[$key]) && is_string($childKey)) {
@@ -159,7 +155,7 @@ class Config implements ArrayAccess, Arrayable
             foreach (get_class_methods($behavior) as $method) {
                 if (str($method)->is('set*Attribute')) {
                     $attr = str(substr($method, strlen('set'), -strlen('Attribute')))->snake()->toString();
-    
+
                     $this->__data[$attr] = $behavior->$method(data_get($config, $attr));
                 }
             }
@@ -178,9 +174,8 @@ class Config implements ArrayAccess, Arrayable
 
             $this->__data[$attr] = $this->$method(null);
         }
-        
-        foreach ($this->__config as $configKey => $configValue) {
 
+        foreach ($this->__config as $configKey => $configValue) {
             // prefer custom setters over all else
             $setter = str('set_' . $configKey . '_attribute')->camel()->toString();
 
@@ -217,12 +212,12 @@ class Config implements ArrayAccess, Arrayable
 
                     $this->__data[$configKey] = collect($configValue)
                         ->map(function ($item, $i) use ($child, $childClass, $configKey, $original) {
-                            
                             // simplify config path when using the "only child" syntax
                             if (count($child) === 1 && Arr::isAssoc($original[$configKey])) {
                                 try {
                                     return $childClass::create($item, $this, $configKey);
-                                } catch (RejectConfigException $e) { }
+                                } catch (RejectConfigException $e) {
+                                }
                             }
 
                             // otherwise append the index or key
@@ -230,7 +225,8 @@ class Config implements ArrayAccess, Arrayable
 
                             try {
                                 return $childClass::create($item, $this, "{$configKey}.{$childKey}");
-                            } catch (RejectConfigException $e) { }
+                            } catch (RejectConfigException $e) {
+                            }
 
                             return null;
                         })
@@ -244,7 +240,6 @@ class Config implements ArrayAccess, Arrayable
                 $this->__data[$configKey] = $configValue;
             }
         }
-
 
         // collect validation rules
         $rules = $this->defineValidation();
@@ -270,10 +265,10 @@ class Config implements ArrayAccess, Arrayable
 
     /**
      * Call a method
-     * 
-     * @param string $name
-     * @param array $arguments
-     * 
+     *
+     * @param  string  $name
+     * @param  array  $arguments
+     *
      * @return mixed
      */
     public function __call(string $name, array $arguments): mixed
@@ -290,7 +285,7 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Get a piece of data
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return mixed
      */
@@ -318,7 +313,7 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Find ancestor
      *
-     * @param callable $fn
+     * @param  callable  $fn
      *
      * @return ?self
      */
@@ -346,7 +341,7 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Static constructor
      *
-     * @param mixed ...$args
+     * @param  mixed  ...$args
      *
      * @return static
      */
@@ -377,7 +372,7 @@ class Config implements ArrayAccess, Arrayable
 
     /**
      * Define inherited config
-     * 
+     *
      * @return array
      */
     public function defineInherited(): array
@@ -398,7 +393,7 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Execute callback on all descendents
      *
-     * @param callable $fn
+     * @param  callable  $fn
      *
      * @return void
      */
@@ -408,7 +403,7 @@ class Config implements ArrayAccess, Arrayable
             if (is_a($child, self::class) || is_subclass_of($child, self::class)) {
                 $fn($child);
 
-                $child->descend($fn); 
+                $child->descend($fn);
             }
         };
 
@@ -426,8 +421,8 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Get config value
      *
-     * @param string $key
-     * @param mixed $default
+     * @param  string  $key
+     * @param  mixed  $default
      *
      * @return mixed
      */
@@ -450,7 +445,7 @@ class Config implements ArrayAccess, Arrayable
                 $path = $parent->__config_path . '.' . $path;
             }
         });
-        
+
         return $path;
     }
 
@@ -469,7 +464,8 @@ class Config implements ArrayAccess, Arrayable
      *
      * @param $offset
      */
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->__data[$offset]);
     }
 
@@ -478,7 +474,8 @@ class Config implements ArrayAccess, Arrayable
      *
      * @param $offset
      */
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return isset($this->__data[$offset]) ? $this->__data[$offset] : null;
     }
 
@@ -502,7 +499,8 @@ class Config implements ArrayAccess, Arrayable
      *
      * @throws \Bedard\Backend\Exceptions\ConfigArrayAccessException
      */
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         throw new ConfigArrayAccessException;
     }
 
@@ -519,9 +517,9 @@ class Config implements ArrayAccess, Arrayable
     /**
      * Validate config
      *
-     * @throws \Bedard\Backend\Exceptions\ConfigValidationException
-     *
      * @return void
+     *
+     * @throws \Bedard\Backend\Exceptions\ConfigValidationException
      */
     public function validate(): void
     {

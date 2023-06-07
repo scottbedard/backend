@@ -12,9 +12,9 @@ class Button extends Component
     /**
      * Create a new component instance.
      *
-     * @param ?string $href
-     * @param ?string $icon
-     * @param ?string $theme
+     * @param  ?string  $href
+     * @param  ?string  $icon
+     * @param  ?string  $theme
      *
      * @return void
      */
@@ -23,7 +23,8 @@ class Button extends Component
         public ?string $icon = null,
         public ?string $theme = 'default',
         public ?string $to = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.
