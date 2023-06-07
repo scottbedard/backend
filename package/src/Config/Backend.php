@@ -143,13 +143,28 @@ class Backend extends Config
      * 
      * @return ?\Bedard\Backend\Config\Route
      */
-    public function route(?string $controller = null, ?string $route = null): ?Route
+    public function route(?string $controllerOrRoute = null, ?string $route = null): ?Route
     {
+        // search for routes first
+        if ($controllerOrRoute && !$route) {
+            return $this
+                ->routes
+                ->first(fn ($r) => $r->__parent->path === null && $r->path === $controllerOrRoute);
+        }
+
         return $this
             ->routes
-            ->first(fn ($r) => $r->__parent->path === $controller && $r->path === $route);
+            ->first(fn ($r) => $r->__parent->path === $controllerOrRoute && $r->path === $route);
     }
 
+    /**
+     * Get subnav items
+     *
+     * @param string|null $controller
+     * @param string|null $route
+     *
+     * @return array
+     */
     public function subnav(?string $controller = null, ?string $route = null): array
     {
         $route = $this->route($controller, $route);

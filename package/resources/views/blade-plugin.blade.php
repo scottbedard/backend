@@ -1,3 +1,3 @@
-<x-backend::layout>
+<x-backend::layout :controller="$controller" :route="$route">
   Hello world
 </x-backend::layout>

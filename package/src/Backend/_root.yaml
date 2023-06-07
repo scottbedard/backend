@@ -9,3 +9,9 @@ routes:
         plugin: blade
         options:
             view: backend::index
+
+    about:
+        path: about
+        plugin: blade
+        options:
+            view: backend::about

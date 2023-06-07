@@ -25,7 +25,6 @@ class Plugin extends Config
      */
     public function handle(Request $req): View|array
     {
-        dd('hello', $req->controller);
         return view('backend::blade-plugin');
     }
 }
