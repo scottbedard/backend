@@ -20,15 +20,15 @@
 
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <nav class="flex-1 flex gap-x-10 items-center">
-        @foreach ($nav as $button)
+        @foreach ($backend->nav as $button)
           <a
             class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white"
-            href="{{ $button->href() }}">
-            @if ($button->get('icon'))
-              <x-backend::icon :name="$button->get('icon')" size="20" />
+            href="{{ $button->href }}">
+            @if ($button->icon)
+              <x-backend::icon :name="$button->icon" size="20" />
             @endif
 
-            {{ $button->get('label') }}
+            {{ $button->label }}
           </a>
         @endforeach
       </nav>
@@ -44,17 +44,17 @@
     </header>
 
     <div class="flex flex-1">
-      @if (count($subnav) > 0)
+      @if ($backend->subnav($controller, $route) > 0)
         <aside class="bg-gray-100 flex-col gap-6 hidden items-center p-6 w-20 md:flex">
-          @foreach ($subnav as $link)
+          @foreach ($backend->subnav($controller, $route) as $link)
             <a
               class="aspect-square flex flex-col gap-1 items-center justify-center text-center"
-              href="{{ $link->href() }}">
+              href="{{ $link->href }}">
               <x-backend::icon
-                :name="$link->get('icon')"
+                :name="$link->icon"
                 size="24" />
 
-              <div class="px-2 text-xs">{{ $link->get('label') }}</div>
+              <div class="px-2 text-xs">{{ $link->label }}</div>
             </a>
           @endforeach
         </aside>

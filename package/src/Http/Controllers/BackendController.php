@@ -28,7 +28,7 @@ class BackendController extends Controller
             return redirect(config('backend.guest_redirect'));
         }
 
-        $backend = Backend::create();
+        $backend = Backend::create(config('backend.backend_directories'));
         
         return $backend->route($controller, $route)?->plugin->handle($req);
     }

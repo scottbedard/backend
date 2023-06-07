@@ -64,17 +64,6 @@ class Backend extends Config
         $this->validate();
     }
 
-    public static function create(...$args): static
-    {
-        if (count($args) === 0) {
-            $directories = config('backend.backend_directories', []);
-
-            return new static($directories);
-        }
-
-        return new static(...$args);
-    }
-
     /**
      * Get controller
      *
@@ -159,5 +148,12 @@ class Backend extends Config
         return $this
             ->routes
             ->first(fn ($r) => $r->__parent->path === $controller && $r->path === $route);
+    }
+
+    public function subnav(?string $controller = null, ?string $route = null): array
+    {
+        $route = $this->route($controller, $route);
+
+        return [];
     }
 }

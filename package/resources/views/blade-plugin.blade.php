@@ -1,3 +1,3 @@
-<div>
-  Blade plugin
-</div>
+<x-backend::layout>
+  Hello world
+</x-backend::layout>

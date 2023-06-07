@@ -29,6 +29,7 @@ class Controller extends Config
         return [
             'nav' => [Nav::class],
             'routes' => [Route::class, 'id'],
+            'subnav' => [Subnav::class],
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace Bedard\Backend\View\Components;
 
 use Bedard\Backend\Classes\ViteManifest;
+use Bedard\Backend\Config\Backend;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
@@ -15,6 +16,8 @@ class Layout extends Component
      * Create a new component instance.
      */
     public function __construct(
+        public ?string $controller = null,
+        public ?string $route = null,
         public bool $padded = false,
     ) {}
 
@@ -29,22 +32,15 @@ class Layout extends Component
 
         $user = auth()->user();
 
-        // dd('ctrl', request()->route('controller'), request()->route('route'));
-
-        $nav = []; //Backend::nav($user);
-
-        $route = []; //Backend::route(request()->route()->getName());
-
-        $subnav = []; //$route->controller()->subnav($user);
+        $backend = Backend::create(config('backend.backend_directories'));
         
         return view('backend::components.layout', [
+            'backend' => $backend,
             'dev' => $dev,
             'logout' => config('backend.logout_href'),
             'manifest' => $manifest,
-            'nav' => $nav,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
-            'subnav' => $subnav,
         ]);
     }
 }

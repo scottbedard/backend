@@ -19,12 +19,13 @@ class Plugin extends Config
     /**
      * Render
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $req
      *
      * @return \Illuminate\View\View|array
      */
-    public function handle(Request $request): View|array
+    public function handle(Request $req): View|array
     {
+        dd('hello', $req->controller);
         return view('backend::blade-plugin');
     }
 }

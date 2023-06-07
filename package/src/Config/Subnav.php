@@ -5,7 +5,7 @@ namespace Bedard\Backend\Config;
 use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Behaviors\ToHref;
 
-class Nav extends Config
+class Subnav extends Config
 {
     public function defineBehaviors(): array
     {
