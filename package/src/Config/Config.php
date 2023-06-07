@@ -12,10 +12,7 @@ use Bedard\Backend\Exceptions\RejectConfigException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Translation\ArrayLoader;
-use Illuminate\Translation\Translator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class Config implements ArrayAccess, Arrayable
 {
@@ -525,12 +522,8 @@ class Config implements ArrayAccess, Arrayable
      */
     public function validate(): void
     {
-        $validator = new Validator(
-            translator: new Translator(new ArrayLoader, 'en'),
-            data: $this->__config,
-            rules: $this->__rules,
-        );
-
+        $validator = Validator::make($this->__config, $this->__rules);
+ 
         if ($validator->fails()) {
             $path = $this->getConfigPath() ?: 'Backend error';
 

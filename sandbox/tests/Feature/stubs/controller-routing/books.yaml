@@ -1,6 +1,9 @@
 routes:
     books:
         path: null
+        plugin: null
 
     authors:
         path: authors
+        plugin: null
+

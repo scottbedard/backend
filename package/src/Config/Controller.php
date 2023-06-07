@@ -44,4 +44,14 @@ class Controller extends Config
             'path' => ['present', 'nullable', 'string', 'alpha_dash'],
         ];
     }
+
+    /**
+     * Get default config
+     *
+     * @return array
+     */
+    public function getDefaultConfig(): array
+    {
+        return [];
+    }
 }

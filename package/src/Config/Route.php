@@ -4,6 +4,8 @@ namespace Bedard\Backend\Config;
 
 use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Plugins\Plugin;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class Route extends Config
 {
@@ -27,8 +29,8 @@ class Route extends Config
     public function defineValidation(): array
     {
         return [
-            'options' => ['present', 'array'],
-            'plugin' => ['required', 'string'],
+            // 'options' => ['array'],
+            // 'plugin' => ['string'],
         ];
     }
 
@@ -39,7 +41,9 @@ class Route extends Config
      */
     public function getDefaultOptions(): array
     {
-        return [];
+        return [
+            'plugin' => null,
+        ];
     }
 
     /**
@@ -49,8 +53,13 @@ class Route extends Config
      */
     public function setPluginAttribute(): Plugin
     {
-        
-        return Plugin::create(
+        $plugin = data_get($this->__config, 'plugin');
+
+        if (!$plugin) {
+            return new Plugin;
+        }
+
+        return $plugin::create(
             config: $this->__config['options'],
             parent: $this,
         );

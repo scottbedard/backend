@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Exceptions\ConfigValidationException;

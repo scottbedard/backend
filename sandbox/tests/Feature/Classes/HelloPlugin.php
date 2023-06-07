@@ -1,15 +1,15 @@
 <?php
 
-namespace Bedard\Backend\Config\Plugins;
+namespace Tests\Feature\Classes;
 
-use Bedard\Backend\Config\Config;
+use Bedard\Backend\Config\Plugins\Plugin;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class Plugin extends Config
+class HelloPlugin extends Plugin
 {
     /**
-     * Render
+     * Handle request
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -17,6 +17,8 @@ class Plugin extends Config
      */
     public function handle(Request $request): View|array
     {
-        return view('backend::missing-plugin');
+        return view('backend::tests.hello', [
+            'name' => $this->name,
+        ]);
     }
 }

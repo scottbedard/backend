@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigValidationException;
 use Bedard\Backend\Exceptions\RejectConfigException;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Tests\Unit\Classes\AttachThingBehavior;
 use Tests\Unit\Classes\CatchphraseBehavior;
 use Tests\Unit\Classes\Child;

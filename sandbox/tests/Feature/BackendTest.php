@@ -132,7 +132,7 @@ class BackendTest extends TestCase
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 
         $controller = $backend->controller('books');
-        
+
         $this->assertEquals('books', $controller->id);
     }
 

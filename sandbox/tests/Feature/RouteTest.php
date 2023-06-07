@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Bedard\Backend\Config\Plugins\Plugin;
 use Bedard\Backend\Config\Route;
+use Tests\Feature\Classes\HelloPlugin;
 use Tests\TestCase;
 
 class RouteTest extends TestCase
@@ -22,5 +23,24 @@ class RouteTest extends TestCase
         $this->assertEquals([
             'foo' => 'bar',
         ], $route->plugin->__config);
+    }
+
+    public function test_rendering_a_plugin_view()
+    {
+        $req = request()->duplicate([
+            'controller' => null,
+            'route' => null,
+        ]);
+
+        $route = Route::create([
+            'options' => [
+                'name' => 'Alice',
+            ],
+            'plugin' => HelloPlugin::class,
+        ]);
+
+        $output = trim($route->plugin->handle($req)->render());
+
+        $this->assertEquals('<div>Hello Alice</div>', $output);
     }
 }
