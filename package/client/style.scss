@@ -9,6 +9,13 @@ input[type='number'] {
 }
 
 //
+// <h1>
+//
+h1 {
+  @apply font-bold text-2xl;
+}
+
+//
 // <x-backend::button>
 //
 .backend-btn {

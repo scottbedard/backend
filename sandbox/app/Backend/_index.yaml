@@ -1,0 +1,9 @@
+routes:
+    index:
+        path: null
+        plugin: blade
+        options:
+            view: backend.index
+
+    blade:
+        plugin: blade

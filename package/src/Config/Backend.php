@@ -154,7 +154,7 @@ class Backend extends Config
                 ->filter(fn ($controller) => $controller->path === null)
                 ->map(fn ($controller) => $controller->routes)
                 ->flatten()
-                ->first(fn ($r) => $r->path === $route);
+                ->last(fn ($r) => $r->path === $route);
                 
             if ($config) {
                 return $config;
@@ -165,9 +165,9 @@ class Backend extends Config
 
         $config = $this
             ->controllers
-            ->first(fn ($c) => $c->path === $controller)
+            ->last(fn ($c) => $c->path === $controller)
             ?->routes
-            ->first(fn ($r) => $r->path === $route);
+            ->last(fn ($r) => $r->path === $route);
 
         if ($config) {
             return $config;
