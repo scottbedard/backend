@@ -27,17 +27,17 @@ class Backend extends Config
                 collect(scandir($path))
                     ->filter(fn ($p) => str_ends_with($p, '.yaml'))
                     ->each(fn ($p) => $parse("{$path}/{$p}"));
+                
+                return;
             }
 
-            elseif (File::isFile($path)) {
-                $key = str($path)
-                    ->lower()
-                    ->rtrim('.yaml')
-                    ->explode('/')
-                    ->last();
+            $key = str($path)
+                ->lower()
+                ->rtrim('.yaml')
+                ->explode('/')
+                ->last();
 
-                $controllers[$key] = Yaml::parseFile($path) ?? [];
-            }
+            $controllers[$key] = Yaml::parseFile($path) ?? [];
         };
 
         collect($files)->flatten()->each($parse);
@@ -154,14 +154,13 @@ class Backend extends Config
                 ->filter(fn ($controller) => $controller->path === null)
                 ->map(fn ($controller) => $controller->routes)
                 ->flatten()
-                ->values()
                 ->first(fn ($r) => $r->path === $route);
                 
             if ($config) {
                 return $config;
             }
 
-            throw new ConfigException("Route not found [{$route}]");
+            throw new ConfigException("Core route not found [{$route}]");
         }
 
         $config = $this
@@ -174,7 +173,7 @@ class Backend extends Config
             return $config;
         }
 
-        throw new ConfigException("Route not found [{$controller}.{$route}]");
+        throw new ConfigException("Controller route not found [{$controller}.{$route}]");
     }
 
     /**

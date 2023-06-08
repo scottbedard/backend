@@ -12,14 +12,26 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class Layout extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(
-        public ?string $controller = null,
-        public ?string $route = null,
-        public bool $padded = false,
-    ) {}
+    protected ?string $controller;
+
+    protected ?string $route;
+
+    protected bool $padded;
+
+    public function __construct(?string $controller = null, ?string $route = null, bool $padded = false)
+    {
+        if ($controller && !$route) {
+            $route = $controller;
+
+            $controller = null;
+        }
+
+        $this->controller = $controller;
+
+        $this->route = $route;
+
+        $this->padded = $padded;
+    }
 
     /**
      * Get the view / contents that represent the component.
@@ -36,9 +48,12 @@ class Layout extends Component
         
         return view('backend::components.layout', [
             'backend' => $backend,
+            'controller' => $this->controller,
             'dev' => $dev,
             'logout' => config('backend.logout_href'),
             'manifest' => $manifest,
+            'padded' => $this->padded,
+            'route' => $this->route,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
         ]);

@@ -741,25 +741,4 @@ class ConfigTest extends TestCase
             'foo' => 'string',
         ], $config->__rules);
     }
-
-    // public function test_default_config_that_relies_on_raw_config()
-    // {
-    //     $config = new class extends Config
-    //     {
-    //         public function getDefaultConfig(): array
-    //         {
-    //             return [
-    //                 'thing' => 'hello world',
-    //             ];
-    //         }
-            
-    //         public function getDefaultThing(array $config): string
-    //         {
-    //             dd('yo', $config);
-    //             return strtoupper($config['thing']);
-    //         }
-    //     };
-
-    //     dd($config->toArray());
-    // }
 }

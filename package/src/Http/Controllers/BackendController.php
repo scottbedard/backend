@@ -29,6 +29,12 @@ class BackendController extends Controller
         }
 
         $backend = Backend::create(config('backend.backend_directories'));
+
+        if ($controller && !$route) {
+            $route = $controller;
+
+            $controller = null;
+        }
         
         $routeConfig = $backend->route(
             controller: $controller,

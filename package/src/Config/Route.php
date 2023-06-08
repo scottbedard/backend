@@ -36,13 +36,14 @@ class Route extends Config
     }
 
     /**
-     * Get default options
+     * Get default config
      *
      * @return array
      */
-    public function getDefaultOptions(): array
+    public function getDefaultConfig(): array
     {
         return [
+            'id' => null,
             'plugin' => null,
         ];
     }
@@ -79,5 +80,19 @@ class Route extends Config
         }
         
         throw new ConfigException("Plugin [{$plugin}] not found");
+    }
+
+    /**
+     * Set path
+     *
+     * @return ?string
+     */
+    public function setPathAttribute(): ?string
+    {
+        if (array_key_exists('path', $this->__config)) {
+            return $this->__config['path'];
+        }
+        
+        return str($this->__config['id'])->slug()->toString();
     }
 }
