@@ -17,12 +17,10 @@ class RouteTest extends TestCase
             ],
             'plugin' => Plugin::class,
         ]);
-        
+
         $this->assertInstanceOf(Plugin::class, $route->plugin);
 
-        $this->assertEquals([
-            'foo' => 'bar',
-        ], $route->plugin->__config);
+        $this->assertEquals('bar', $route->plugin->foo);
     }
 
     public function test_rendering_a_plugin_view()

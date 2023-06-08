@@ -1,7 +1,7 @@
 # id: index
 
 routes:
-    index:
+    foo:
         path: null
 
     about:

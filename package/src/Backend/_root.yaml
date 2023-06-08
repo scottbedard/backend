@@ -1,7 +1,8 @@
 nav:
-    icon: shield-check
-    label: bedard/backend
-    to: backend._root.index
+    -
+        icon: shield-check
+        label: bedard/backend
+        to: backend._root.index
 
 routes:
     index:

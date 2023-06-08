@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config;
 
+use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Rules\DistinctString;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -143,18 +144,36 @@ class Backend extends Config
      * 
      * @return ?\Bedard\Backend\Config\Route
      */
-    public function route(?string $controllerOrRoute = null, ?string $route = null): ?Route
+    public function route(?string $controller = null, ?string $route = null): ?Route
     {
-        // search for routes first
-        if ($controllerOrRoute && !$route) {
-            return $this
-                ->routes
-                ->first(fn ($r) => $r->__parent->path === null && $r->path === $controllerOrRoute);
+        // root pages
+        if ($controller === null) {
+            $config = $this
+                ->controllers
+                ->filter(fn ($controller) => $controller->path === null)
+                ->map(fn ($controller) => $controller->routes)
+                ->flatten()
+                ->values()
+                ->first(fn ($r) => $r->path === $route);
+                
+            if ($config) {
+                return $config;
+            }
+
+            throw new ConfigException("Route not found [{$route}]");
         }
 
-        return $this
-            ->routes
-            ->first(fn ($r) => $r->__parent->path === $controllerOrRoute && $r->path === $route);
+        $config = $this
+            ->controllers
+            ->first(fn ($c) => $c->path === $controller)
+            ?->routes
+            ->first(fn ($r) => $r->path === $route);
+
+        if ($config) {
+            return $config;
+        }
+
+        throw new ConfigException("Route not found [{$controller}.{$route}]");
     }
 
     /**

@@ -1,0 +1,5 @@
+index:
+    path: null
+    plugin: blade
+    options:
+        view: backend::about

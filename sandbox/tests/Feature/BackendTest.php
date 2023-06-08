@@ -87,22 +87,28 @@ class BackendTest extends TestCase
         $this->assertEquals('footwear', $backend->controllers[3]->path);
     }
 
-    public function test_finding_index()
+    public function test_finding_root_index()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
         
-        $route = $backend->route(null, null);
+        $route = $backend->route(
+            controller: null,
+            route: null,
+        );
 
         $this->assertInstanceOf(Route::class, $route);
 
-        $this->assertEquals('index', $route->id);
+        $this->assertEquals('foo', $route->id);
     }
 
-    public function test_finding_page()
+    public function test_finding_root_page()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
         
-        $route = $backend->route(null, 'about');
+        $route = $backend->route(
+            controller: null,
+            route: 'about',
+        );
 
         $this->assertInstanceOf(Route::class, $route);
 
@@ -113,12 +119,15 @@ class BackendTest extends TestCase
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 
-        $route = $backend->route('books', null);
+        $route = $backend->route(
+            controller: 'books',
+            route: null,
+        );
 
         $this->assertEquals('books', $route->id);
     }
 
-    public function test_finding_controller_page()
+    public function s()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 

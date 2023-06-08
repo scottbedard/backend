@@ -30,12 +30,15 @@ class BackendController extends Controller
 
         $backend = Backend::create(config('backend.backend_directories'));
         
-        $route = $backend->route($controller, $route);
+        $routeConfig = $backend->route(
+            controller: $controller,
+            route: $route,
+        );
         
-        if ($route) {
-            return $route->plugin->handle($req);
+        if ($routeConfig) {
+            return $routeConfig->plugin->handle($req);
         }
 
-        throw new \Exception('Backend not found: ' . ($controller ?: '-') . ' . ' . ($route ?: '-'));
+        throw new \Exception('Backend 404: ' . ($controller ?: '-') . ' . ' . ($route ?: '-'));
     }
 }
