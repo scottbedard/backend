@@ -3,7 +3,6 @@
 namespace Bedard\Backend\Config\Behaviors;
 
 use Bedard\Backend\Classes\Bouncer;
-use Bedard\Backend\Config\Behavior;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigException;
 

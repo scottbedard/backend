@@ -1,7 +1,8 @@
 <?php
 
-namespace Bedard\Backend\Config;
-;
+namespace Bedard\Backend\Config\Behaviors;
+
+use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\RejectConfigException;
 
 class Behavior
