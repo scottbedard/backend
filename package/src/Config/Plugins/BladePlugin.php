@@ -20,7 +20,7 @@ class BladePlugin extends Plugin
     {
         $backend = Backend::create(config('backend.backend_directories'));
 
-        return view('backend::blade-plugin', [
+        return view($this->view ?: 'backend::blade-plugin', [
             'backend' => $backend,
             'controller' => $request->controller,
             'route' => $request->route,
