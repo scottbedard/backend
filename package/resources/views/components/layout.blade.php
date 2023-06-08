@@ -21,15 +21,19 @@
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <nav class="flex-1 flex gap-x-10 items-center">
         @foreach ($backend->nav as $button)
-          <a
-            class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white"
-            href="{{ $button->href }}">
-            @if ($button->icon)
-              <x-backend::icon :name="$button->icon" size="20" />
-            @endif
+          @if ($button)
+            <a
+              class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white"
+              href="{{ $button->href }}">
+              @if ($button->icon)
+                <x-backend::icon :name="$button->icon" size="20" />
+              @endif
 
-            {{ $button->label }}
-          </a>
+              {{ $button->label }}
+            </a>
+          @else
+            nope, {{ $button }}
+          @endif
         @endforeach
       </nav>
 

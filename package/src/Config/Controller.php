@@ -53,6 +53,10 @@ class Controller extends Config
      */
     public function getDefaultConfig(): array
     {
-        return [];
+        return [
+            'nav' => null,
+            'routes' => [],
+            'subnav' => [],
+        ];
     }
 }

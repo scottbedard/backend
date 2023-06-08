@@ -114,6 +114,7 @@ class Backend extends Config
         return $this
             ->controllers
             ->map(fn ($controller) => $controller->nav)
+            ->filter(fn ($controller) => $controller)
             ->flatten()
             ->sortBy('order')
             ->values();
