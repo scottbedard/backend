@@ -91,10 +91,7 @@ class BackendTest extends TestCase
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
         
-        $route = $backend->route(
-            controller: null,
-            route: null,
-        );
+        $route = $backend->route(null, null);
 
         $this->assertInstanceOf(Route::class, $route);
 
@@ -105,10 +102,7 @@ class BackendTest extends TestCase
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
         
-        $route = $backend->route(
-            controller: null,
-            route: 'about',
-        );
+        $route = $backend->route(null, 'about');
 
         $this->assertInstanceOf(Route::class, $route);
 
@@ -119,15 +113,12 @@ class BackendTest extends TestCase
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 
-        $route = $backend->route(
-            controller: 'books',
-            route: null,
-        );
+        $route = $backend->route('books', null);
 
         $this->assertEquals('books', $route->id);
     }
 
-    public function s()
+    public function test_controller_routing()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
 

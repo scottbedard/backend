@@ -12,29 +12,19 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class Layout extends Component
 {
-    protected ?string $controller;
-
-    protected ?string $route;
-
-    protected bool $padded;
-
-    public function __construct(?string $controller = null, ?string $route = null, bool $padded = false)
-    {
-        if ($controller && !$route) {
-            $route = $controller;
-
-            $controller = null;
-        }
-
-        $this->controller = $controller;
-
-        $this->route = $route;
-
-        $this->padded = $padded;
-    }
+    /**
+     * Construct
+     *
+     * @param ?bool $padded
+     */
+    public function __construct(
+        public bool $padded = false,
+    ) {}
 
     /**
-     * Get the view / contents that represent the component.
+     * Render
+     *
+     * @return \Illuminate\Contracts\View\View|Closure|string
      */
     public function render(): View|Closure|string
     {
@@ -42,18 +32,12 @@ class Layout extends Component
 
         $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
 
-        $user = auth()->user();
-
         $backend = Backend::create(config('backend.backend_directories'));
         
         return view('backend::components.layout', [
             'backend' => $backend,
-            'controller' => $this->controller,
             'dev' => $dev,
-            'logout' => config('backend.logout_href'),
             'manifest' => $manifest,
-            'padded' => $this->padded,
-            'route' => $this->route,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
         ]);

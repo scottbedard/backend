@@ -19,8 +19,8 @@ class BackendController extends Controller
      * @param ?string $controller
      * @param ?string $routeName
      */
-    public function route(Request $req, ?string $controller = null, ?string $route = null)
-    {
+    public function route(Request $req, ?string $controllerOrRoute = null, ?string $route = null)
+    {        
         // redirect users who aren't authenticated
         $user = auth()->user();
 
@@ -29,22 +29,11 @@ class BackendController extends Controller
         }
 
         $backend = Backend::create(config('backend.backend_directories'));
-
-        if ($controller && !$route) {
-            $route = $controller;
-
-            $controller = null;
-        }
         
-        $routeConfig = $backend->route(
-            controller: $controller,
-            route: $route,
-        );
-        
-        if ($routeConfig) {
-            return $routeConfig->plugin->handle($req);
+        if ($backend->currentRoute) {
+            return $backend->currentRoute->plugin->handle($req);
         }
 
-        throw new \Exception('Backend 404: ' . ($controller ?: '-') . ' . ' . ($route ?: '-'));
+        throw new \Exception('Backend 404: ' . ($controllerOrRoute ?: '-') . ' . ' . ($route ?: '-'));
     }
 }

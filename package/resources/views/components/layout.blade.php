@@ -40,7 +40,7 @@
       <div>
         <a
           class="text-gray-100/80 hover:text-white"
-          href="{{ $logout }}"
+          href="{{ config('backend.logout_href') }}"
           data-cy="logout">
           <x-backend::icon name="log-out" size="20" />
         </a>
@@ -48,21 +48,20 @@
     </header>
 
     <div class="flex flex-1">
-      @if ($backend->subnav($controller, $route) > 0)
-        <aside class="bg-gray-100 flex-col gap-6 hidden items-center p-6 w-20 md:flex">
-          @foreach ($backend->subnav($controller, $route) as $link)
-            <a
-              class="aspect-square flex flex-col gap-1 items-center justify-center text-center"
-              href="{{ $link->href }}">
-              <x-backend::icon
-                :name="$link->icon"
-                size="24" />
+      {{-- whitespace is commented out for the :empty selector to work --}}
+      <aside class="bg-gray-100 flex-col hidden items-center w-20 md:flex empty:hidden">{{--
+    --}}@foreach ($backend->currentRoute->controller->subnav as $link)
+          <a
+            class="aspect-square flex flex-col gap-1 items-center justify-center p-1 text-center w-full"
+            href="{{ $link->href }}">
+            <x-backend::icon
+              :name="$link->icon"
+              size="24" />
 
-              <div class="px-2 text-xs">{{ $link->label }}</div>
-            </a>
-          @endforeach
-        </aside>
-      @endif
+            <div class="px-2 text-xs">{{ $link->label }}</div>
+          </a>
+        @endforeach{{--
+  --}}</aside>
 
       <main {{ $attributes->merge(['class' => $padded ? 'flex-1 p-6' : 'flex-1']) }}>
         {{ $slot }}

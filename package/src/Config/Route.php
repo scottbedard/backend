@@ -36,6 +36,16 @@ class Route extends Config
     }
 
     /**
+     * Get controller
+     *
+     * @return \Bedard\Backend\Config\Controller
+     */
+    public function getControllerAttribute(): Controller
+    {
+        return $this->closest(Controller::class);
+    }
+
+    /**
      * Get default config
      *
      * @return array

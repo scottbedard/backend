@@ -121,6 +121,16 @@ class Backend extends Config
     }
 
     /**
+     * Get route for the current request
+     *
+     * @return ?\Bedard\Backend\Config\Route
+     */
+    public function getCurrentRouteAttribute(): ?Route
+    {
+        return $this->route(request('controllerOrRoute'), request('route'));
+    }
+
+    /**
      * All backend routes
      *
      * @param string|null $controller
@@ -140,54 +150,65 @@ class Backend extends Config
     /**
      * Get route
      *
-     * @param string|null $controller
+     * @param \Illuminate\Http\Request|string|null $controllerOrRoute
      * @param string|null $route
      * 
      * @return ?\Bedard\Backend\Config\Route
      */
-    public function route(?string $controller = null, ?string $route = null): ?Route
+    public function route(?string $controllerOrRoute = null, ?string $route = null): ?Route
     {
-        // root pages
-        if ($controller === null) {
-            $config = $this
+        // find top-level index
+        if ($controllerOrRoute === null && $route === null) {
+            $topLevelIndex = $this
                 ->controllers
                 ->filter(fn ($controller) => $controller->path === null)
                 ->map(fn ($controller) => $controller->routes)
                 ->flatten()
-                ->last(fn ($r) => $r->path === $route);
-                
-            if ($config) {
-                return $config;
+                ->last(fn ($r) => $r->path === null);
+
+            if ($topLevelIndex) {
+                return $topLevelIndex;
             }
 
-            throw new ConfigException("Core route not found [{$route}]");
+            throw new ConfigException("Backend index not found");
         }
 
-        $config = $this
+        // find index or top-level route
+        if ($route === null) {
+            $controllerIndex = $this
+                ->controller($controllerOrRoute)
+                ?->routes
+                ->first(fn ($r) => $r->path === null);
+
+            if ($controllerIndex) {
+                return $controllerIndex;
+            }
+            
+            $topLevelRoute = $this
+                ->controllers
+                ->filter(fn ($controller) => $controller->path === null)
+                ->map(fn ($controller) => $controller->routes)
+                ->flatten()
+                ->first(fn ($r) => $r->path === $controllerOrRoute);
+                
+            if ($topLevelRoute) {
+                return $topLevelRoute;
+            }
+
+            throw new ConfigException("Backend route not found [{$route}]");
+        }
+
+        // otherwise find controller routes
+        $controllerRoute = $this
             ->controllers
-            ->last(fn ($c) => $c->path === $controller)
+            ->first(fn ($c) => $c->path === $controllerOrRoute)
             ?->routes
-            ->last(fn ($r) => $r->path === $route);
+            ->first(fn ($r) => $r->path === $route);
 
-        if ($config) {
-            return $config;
+        if ($controllerRoute) {
+            return $controllerRoute;
         }
 
-        throw new ConfigException("Controller route not found [{$controller}.{$route}]");
-    }
-
-    /**
-     * Get subnav items
-     *
-     * @param string|null $controller
-     * @param string|null $route
-     *
-     * @return array
-     */
-    public function subnav(?string $controller = null, ?string $route = null): array
-    {
-        $route = $this->route($controller, $route);
-
-        return [];
+        throw new ConfigException("Backend route not found [{$controllerOrRoute}.{$route}]");
     }
 }

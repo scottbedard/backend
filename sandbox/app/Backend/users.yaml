@@ -1,0 +1,29 @@
+nav:
+    icon: users
+    label: Users
+    to: backend.users.index
+
+subnav:
+    -
+        icon: users
+        label: Users
+        to: backend.users.index
+    -
+        icon: shield-check
+        label: Roles
+        to: backend.users.roles
+    -
+        icon: key-round
+        label: Permissions
+        to: backend.users.permissions
+        
+routes:
+    index:
+        path: null
+        plugin: blade
+
+    roles:
+        plugin: blade
+
+    permissions:
+        plugin: blade

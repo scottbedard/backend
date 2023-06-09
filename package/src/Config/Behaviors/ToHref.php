@@ -67,7 +67,7 @@ class ToHref extends Behavior
 
         if (str($to)->is('backend.*.*')) {
             [, $controllerId, $routeId] = explode('.', $to);
-            
+
             $controller = $this
                 ->config
                 ->closest(Backend::class)
@@ -80,8 +80,8 @@ class ToHref extends Behavior
 
                 if ($route) {
                     return route('backend.controller.route', [
-                        'controller' => $controller->path ?: $route->path,
-                        'route' => $controller->path ? $route->path : null,
+                        'controllerOrRoute' => $controller->path,
+                        'route' => $route->path,
                     ]);
                 }
             }          
