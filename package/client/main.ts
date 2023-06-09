@@ -13,8 +13,8 @@ const plugins: Record<string, (el: HTMLElement) => void> = {
   list,
 }
 
-document.querySelectorAll('[data-backend-plugin]').forEach(async (el) => {
-  const pluginName = el.getAttribute('data-backend-plugin');
+document.querySelectorAll('[data-backend]').forEach(async (el) => {
+  const pluginName = el.getAttribute('data-backend');
   
   if (pluginName && pluginName in plugins && el instanceof HTMLElement) {
     const plugin = plugins[pluginName]

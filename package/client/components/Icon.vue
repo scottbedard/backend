@@ -1,7 +1,7 @@
 <template>
   <i
+    :data-lucide="name"
     :height="size"
-    :icon-name="name"
     :width="size" />
 </template>
 

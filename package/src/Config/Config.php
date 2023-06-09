@@ -137,7 +137,7 @@ class Config implements ArrayAccess, Arrayable
         }
 
         // inherit config from parent
-        $inherited = $this->defineInherited();
+        $inherited = $this->defineInherits();
 
         foreach ($inherited as $key) {
             $parent = $this->climb(fn ($p) => array_key_exists($key, $p->__config));
@@ -377,7 +377,7 @@ class Config implements ArrayAccess, Arrayable
      * 
      * @return array
      */
-    public function defineInherited(): array
+    public function defineInherits(): array
     {
         return [];
     }

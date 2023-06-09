@@ -6,7 +6,7 @@ use Bedard\Backend\Config\Config;
 
 class InheritsName extends Config
 {
-    public function defineInherited(): array
+    public function defineInherits(): array
     {
         return ['name'];
     }

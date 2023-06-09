@@ -1,7 +1,7 @@
 <span style="width: {{ $size }}px">
   <i
+    data-lucide="{{ $name }}"
     height="{{ $size }}"
-    icon-name="{{ $name }}"
     width="{{ $size }}"
     {{ $attributes }}
   ></i>

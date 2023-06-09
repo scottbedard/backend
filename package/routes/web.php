@@ -8,8 +8,8 @@ Route::group([
     'prefix' => config('backend.path'),
 ], function () {
 
-    Route::get('/{controllerOrRoute?}/{route?}/{params?}', [BackendController::class, 'route'])
+    Route::get('/{controllerOrRoute?}/{route?}/{extra?}', [BackendController::class, 'route'])
         ->name('backend.controller.route')
-        ->where('params', '.*');
+        ->where('extra', '.*');
 
 });

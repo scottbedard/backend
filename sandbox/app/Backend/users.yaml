@@ -7,7 +7,7 @@ subnav:
     -
         icon: users
         label: Users
-        to: backend.users.index
+        to: backend.users.users
     -
         icon: shield-check
         label: Roles
@@ -20,6 +20,11 @@ subnav:
 routes:
     index:
         path: null
+        plugin: blade
+        options:
+            view: backend.users
+
+    users:
         plugin: crud
         options:
             columns:
@@ -30,7 +35,6 @@ routes:
                 updated_at:
                     label: Updated
             model: App\Models\User
-
 
     roles:
         plugin: blade
