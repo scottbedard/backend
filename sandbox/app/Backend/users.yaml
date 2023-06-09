@@ -20,7 +20,17 @@ subnav:
 routes:
     index:
         path: null
-        plugin: blade
+        plugin: crud
+        options:
+            columns:
+                id:
+                    label: ID
+                created_at:
+                    label: Created
+                updated_at:
+                    label: Updated
+            model: App\Models\User
+
 
     roles:
         plugin: blade
