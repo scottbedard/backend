@@ -74,6 +74,7 @@ class Route extends Config
         if (class_exists($plugin)) {
             return $plugin::create(
                 config: data_get($this->__config, 'options', []),
+                configPath: 'plugin',
                 parent: $this,
             );
         }
@@ -84,6 +85,7 @@ class Route extends Config
             if ($plugin === $alias) {
                 return $class::create(
                     config: data_get($this->__config, 'options', []),
+                    configPath: 'plugin',
                     parent: $this,
                 );
             }

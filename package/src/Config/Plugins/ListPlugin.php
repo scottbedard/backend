@@ -2,6 +2,8 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
+use Bedard\Backend\Classes\KeyedArray;
+use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Config;
 use Illuminate\Http\Request;
@@ -29,7 +31,9 @@ class ListPlugin extends Plugin
     public function defineValidation(): array
     {
         return [
+            'checkboxes' => ['present', 'boolean'],
             'columns' => ['present', 'array'],
+            'columns.*.type' => ['in:blade,date,text,timeago'],
             'model' => ['required', 'string'],
         ];
     }
@@ -41,13 +45,14 @@ class ListPlugin extends Plugin
      */
     public function props(Request $request)
     {
-        $models = $this->model::query()
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+        $models = $this->model::query();
         
         return [
-            'columns' => $this->columns,
-            'models' => $models,
+            'data' => Paginator::for($models),
+            'options' => [
+                'checkboxes' => $this->checkboxes,
+                'columns' => KeyedArray::from($this->columns, 'id'),
+            ],
         ];
     }
 

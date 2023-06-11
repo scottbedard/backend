@@ -36,15 +36,37 @@ class CrudPlugin extends Plugin
     }
 
     /**
+     * Default config
+     *
+     * @return array
+     */
+    public function getDefaultConfig(): array
+    {
+        return [
+            'checkboxes' => false,
+            'columns' => [],
+            'models' => [],
+        ];
+    }
+
+    /**
      * List
      *
      * @return \Bedard\Backend\Config\Plugins\ListPlugin
      */
     public function list()
     {
-        return ListPlugin::create([
+        $props = [
+            'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
-        ], $this, $this->configPath . '.list');
+            'models' => $this->models,
+        ];
+        
+        $list = ListPlugin::create($props, $this);
+
+        $list->validate();
+
+        return $list;
     }
 
     /**

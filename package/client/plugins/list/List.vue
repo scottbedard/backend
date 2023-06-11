@@ -1,12 +1,21 @@
 <template>
-  <div class="gap-y-6 grid py-6">
-    <pre>{{ { columns, models } }}</pre>
+  <div>
+    <div class="p-6">
+      Tables coming soon
+    </div>
+
+    <Table
+      :data="data"
+      :options="options" />
   </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{
-  columns: any
-  models: any
+import { Table } from '@/components'
+import { TableData, TableOptions } from '@/types'
+
+defineProps<{
+  data: TableData
+  options: TableOptions
 }>()
 </script>

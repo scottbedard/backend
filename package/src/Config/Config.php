@@ -448,7 +448,7 @@ class Config implements ArrayAccess, Arrayable
             }
         });
         
-        return $path;
+        return trim($path, '.');
     }
 
     /**
