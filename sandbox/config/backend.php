@@ -114,8 +114,6 @@ return [
     'columns' => [
         'blade' => \Bedard\Backend\Config\Plugins\List\BladeColumn::class,
         'date' => \Bedard\Backend\Config\Plugins\List\DateColumn::class,
-        'text' => \Bedard\Backend\Config\Plugins\List\TextColumn::class,
-        'timeago' => \Bedard\Backend\Config\Plugins\List\TimeagoColumn::class,
     ],
 
     /*

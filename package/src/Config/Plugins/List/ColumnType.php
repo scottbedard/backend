@@ -14,12 +14,10 @@ class ColumnType extends Config
      * 
      * @param Model $model
      *
-     * @return Illuminate\View\View
+     * @return Illuminate\View\View|string
      */
-    public function render(Model $model): View
+    public function render(Model $model): View|string
     {
-        return view('backend::list.text-column', [
-            'value' => $model->{$this->__parent->id},
-        ]);
+        return $model->{$this->__parent->id};
     }
 }

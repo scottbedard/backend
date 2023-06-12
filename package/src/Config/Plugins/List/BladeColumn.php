@@ -14,9 +14,9 @@ class BladeColumn extends ColumnType
      * 
      * @param Model $model
      *
-     * @return Illuminate\View\View
+     * @return Illuminate\View\View|string
      */
-    public function render(Model $model): View
+    public function render(Model $model): View|string
     {
         return view($this->__parent->view, [
             'model' => $model,
