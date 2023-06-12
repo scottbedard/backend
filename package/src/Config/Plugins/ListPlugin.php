@@ -6,11 +6,24 @@ use Bedard\Backend\Classes\KeyedArray;
 use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Config;
+use Bedard\Backend\Config\Plugins\List\Column;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
 {
+    /**
+     * Define child config
+     *
+     * @return array
+     */
+    public function defineChildren(): array
+    {
+        return [
+            'columns' => [Column::class, 'id'],
+        ];
+    }
+
     /**
      * Define inherits
      * 
@@ -33,26 +46,7 @@ class ListPlugin extends Plugin
         return [
             'checkboxes' => ['present', 'boolean'],
             'columns' => ['present', 'array'],
-            'columns.*.type' => ['in:blade,date,text,timeago'],
             'model' => ['required', 'string'],
-        ];
-    }
-
-    /**
-     * Props
-     *
-     * @return array
-     */
-    public function props(Request $request)
-    {
-        $models = $this->model::query();
-        
-        return [
-            'data' => Paginator::for($models),
-            'options' => [
-                'checkboxes' => $this->checkboxes,
-                'columns' => KeyedArray::from($this->columns, 'id'),
-            ],
         ];
     }
 
@@ -77,8 +71,15 @@ class ListPlugin extends Plugin
      */
     public function handle(Request $request): View|array
     {
+        $columns = KeyedArray::from($this->columns, 'id');
+
+        $models = $this->model::query();
+
+        $paginator = Paginator::for($models);
+
         return view('backend::list', [
-            'props' => $this->props($request),
+            'columns' => $columns,
+            'paginator' => $paginator,
         ]);
     }
 }

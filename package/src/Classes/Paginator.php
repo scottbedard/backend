@@ -8,21 +8,45 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class Paginator
 {
+    public readonly int $currentPage;
+
+    public readonly array $items;
+
+    public readonly int $lastPage;
+
+    public readonly int $perPage;
+
+    public readonly int $total;
+
     /**
-     * Normalize a length-aware paginator
+     * Static constructor
      *
-     * @return array
+     * @param mixed ...$args
+     *
+     * @return static
      */
-    public static function for(EloquentBuilder|QueryBuilder $query)
+    public static function for(...$args): static
+    {
+        return new static(...$args);
+    }
+
+    /**
+     * Create a paginator
+     *
+     * @param EloquentBuilder|QueryBuilder $query
+     */
+    public function __construct(EloquentBuilder|QueryBuilder $query)
     {
         $paginator = $query->paginate(20);
 
-        return [
-            'currentPage' => $paginator->currentPage(),
-            'items' => $paginator->items(),
-            'lastPage' => $paginator->lastPage(),
-            'perPage' => $paginator->perPage(),
-            'total' => $paginator->total(),
-        ];
+        $this->currentPage = $paginator->currentPage();
+
+        $this->items = $paginator->items();
+
+        $this->lastPage = $paginator->lastPage();
+
+        $this->perPage = $paginator->perPage();
+
+        $this->total = $paginator->total();
     }
 }

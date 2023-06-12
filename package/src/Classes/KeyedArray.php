@@ -3,19 +3,24 @@
 namespace Bedard\Backend\Classes;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class KeyedArray
 {
     /**
      * Create keyed array from associative array
      *
-     * @param array $source
+     * @param \Illuminate\Support\Collection|array $source
      * @param string $key
      *
      * @return array
      */
-    public static function from(array $source, string $key): array
+    public static function from(Collection|array $source, string $key): array
     {
+        if ($source instanceof Collection) {
+            $source = $source->toArray();
+        }
+
         if (Arr::isAssoc($source)) {
             $output = [];
 

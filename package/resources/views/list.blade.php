@@ -1,6 +1,11 @@
 <x-backend::layout>
-  <div
-    data-backend="list"
-    data-backend-props="{{ json_encode($props) }}"
-  ></div>
+  <div class="gap-6">
+    <div class="p-6">
+      Tables are under construction
+    </div>
+
+    <x-backend::table
+      :columns="$columns"
+      :paginator="$paginator" />
+  </div>
 </x-backend::layout>

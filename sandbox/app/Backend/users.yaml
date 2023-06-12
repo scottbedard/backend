@@ -27,13 +27,21 @@ routes:
     users:
         plugin: crud
         options:
+            checkboxes: true
             columns:
                 id:
                     label: ID
+                foo:
+                    type: blade
+                    label: Foo
+                name:
+                    label: Name
                 created_at:
                     label: Created
+                    type: date
                 updated_at:
                     label: Updated
+                    type: timeago
             model: App\Models\User
 
     roles:
