@@ -3,8 +3,9 @@ const colors = require('tailwindcss/colors')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './resources/**/*.blade.php',
+    '../sandbox/**/*.blade.php',
     './client/**/*.{ts,vue}',
+    './resources/**/*.blade.php',
   ],
   theme: {
     colors: {

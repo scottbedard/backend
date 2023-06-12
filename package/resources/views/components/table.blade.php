@@ -1,20 +1,29 @@
-<div class="border border-danger-500 table w-full">
+<div class="table w-full">
   <div class="table-row">
     @foreach ($columns as $column)
-      <div class="table-cell px-3 first:pl-6 last:pr-6">
-        {{ $column['label'] }}
-      </div>
+      <div @class([
+        'font-semibold table-cell px-3 py-3 first:pl-6 last:pr-6',
+        'text-center' => $column->align === 'center',
+        'text-right' => $column->align === 'right',
+      ])>{{--
+    --}}{{ $column['label'] }}{{--
+  --}}</div>
     @endforeach
   </div>
 
   @foreach ($paginator->items as $item)
-    <div class="table-row">
+    <a
+      class="table-row hover:bg-gray-100/50">
       @foreach ($columns as $column)
-        <div class="h-12 p-3 table-cell first:pl-6 last:pr-6 border border-[blue]">
-          {{ $column->type->render($item) }}
-        </div>
+        <div @class([
+          'align-middle border-t border-gray-300 h-12 p-3 table-cell first:pl-6 last:pr-6',
+          'text-center' => $column->align === 'center',
+          'text-right' => $column->align === 'right',
+        ])>{{--
+      --}}{{ $column->type->render($item) }}{{--
+    --}}</div>
       @endforeach
-    </div>
+    </a>
   @endforeach
 
   {{-- <div

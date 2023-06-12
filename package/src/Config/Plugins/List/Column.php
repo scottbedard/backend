@@ -17,8 +17,9 @@ class Column extends Config
     public function defineValidation(): array
     {
         return [
-            'label' => ['present', 'nullable', 'string'],
+            'align' => ['required', 'string', 'in:left,right,center'],
             'id' => ['required', 'nullable', 'string'],
+            'label' => ['present', 'nullable', 'string'],
             'type' => ['present', 'nullable', 'string', 'in:blade,date,text,timeago'],
         ];
     }
@@ -31,6 +32,7 @@ class Column extends Config
     public function getDefaultConfig(): array
     {
         return [
+            'align' => 'left',
             'id' => null,
             'label' => null,
             'span' => 12,

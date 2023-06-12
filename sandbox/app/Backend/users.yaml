@@ -31,15 +31,16 @@ routes:
             columns:
                 id:
                     label: ID
-                foo:
+                user:
+                    label: User
                     type: blade
-                    label: Foo
-                name:
-                    label: Name
+                    view: backend.user-column
                 created_at:
+                    align: right
                     label: Created
                     type: date
                 updated_at:
+                    align: right
                     label: Updated
                     type: timeago
             model: App\Models\User
