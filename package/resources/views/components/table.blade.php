@@ -11,7 +11,7 @@
     <div class="table-row">
       @foreach ($columns as $column)
         <div class="h-12 p-3 table-cell first:pl-6 last:pr-6 border border-[blue]">
-          {{ data_get($item, $column['id']) }}
+          {{ $column->type->render($item) }}
         </div>
       @endforeach
     </div>
