@@ -8,6 +8,7 @@ use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Config\Plugins\List\Column;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
@@ -71,14 +72,12 @@ class ListPlugin extends Plugin
      */
     public function handle(Request $request): View|array
     {
-        $columns = KeyedArray::from($this->columns, 'id');
-
         $models = $this->model::query();
 
         $paginator = Paginator::for($models);
 
         return view('backend::list', [
-            'columns' => $columns,
+            'columns' => $this->columns,
             'paginator' => $paginator,
         ]);
     }

@@ -2,16 +2,16 @@
 
 namespace Bedard\Backend\View\Components;
 
-use Bedard\Backend\Classes\Href;
 use Bedard\Backend\Classes\Paginator;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
 class Table extends Component
 {
     public function __construct(
-        public readonly array $columns = [],
+        public readonly Collection $columns,
         public readonly Paginator $paginator,
     ) {}
 
