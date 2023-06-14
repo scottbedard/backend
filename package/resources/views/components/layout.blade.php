@@ -52,7 +52,10 @@
       <aside class="bg-gray-100 flex-col hidden items-center w-20 md:flex empty:hidden">{{--
     --}}@foreach ($backend->currentRoute->controller->subnav as $link)
           <a
-            class="aspect-square flex flex-col gap-1 items-center justify-center p-1 text-center w-full"
+            @class([
+              'aspect-square flex flex-col gap-1 items-center justify-center p-1 text-center w-full hover:text-primary-500',
+              'text-primary-500' => $link->isActive(),
+            ])
             href="{{ $link->href }}">
             <x-backend::icon
               :name="$link->icon"
