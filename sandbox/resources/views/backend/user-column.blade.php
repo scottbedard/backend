@@ -1,5 +1,5 @@
-<div class="flex gap-x-2 items-center">
-  <div class="aspect-square bg-gray-100 flex h-10 items-center justify-center rounded-full">
+<div class="flex gap-x-3 items-center">
+  <div class="aspect-square bg-gray-300/50 flex h-11 items-center justify-center rounded-full">
     <x-backend::icon name="user" />
   </div>
   

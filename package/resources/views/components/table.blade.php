@@ -2,7 +2,7 @@
   <div class="table-row">
     @foreach ($columns as $column)
       <div @class([
-        'font-semibold table-cell px-3 py-3 first:pl-6 last:pr-6',
+        'font-semibold table-cell px-3 py-2 first:pl-6 last:pr-6',
         'text-center' => $column->align === 'center',
         'text-right' => $column->align === 'right',
       ])>{{--
@@ -16,7 +16,7 @@
       class="table-row hover:bg-gray-100/50">
       @foreach ($columns as $column)
         <div @class([
-          'align-middle border-t border-gray-300 h-12 p-3 table-cell first:pl-6 last:pr-6',
+          'align-middle border-t border-gray-300 h-12 px-3 py-2 table-cell first:pl-6 last:pr-6',
           'text-center' => $column->align === 'center',
           'text-right' => $column->align === 'right',
         ])>{{--

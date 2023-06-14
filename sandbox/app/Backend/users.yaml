@@ -45,7 +45,41 @@ routes:
             model: App\Models\User
 
     roles:
-        plugin: blade
+        plugin: crud
+        options:
+            checkboxes: true
+            columns:
+                id:
+                    label: ID
+                name:
+                    label: Role
+                guard_name:
+                    label: Guard
+                created_at:
+                    label: Created
+                    type: date
+                updated_at:
+                    diff_for_humans: true
+                    label: Updated
+                    type: date
+            model: Spatie\Permission\Models\Role
 
     permissions:
-        plugin: blade
+        plugin: crud
+        options:
+            checkboxes: true
+            columns:
+                id:
+                    label: ID
+                name:
+                    label: Permission
+                guard_name:
+                    label: Guard
+                created_at:
+                    label: Created
+                    type: date
+                updated_at:
+                    diff_for_humans: true
+                    label: Updated
+                    type: date
+            model: Spatie\Permission\Models\Permission
