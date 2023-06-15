@@ -25,7 +25,6 @@ class Plugin extends Config
      */
     public function handle(Request $request)
     {
-        return redirect();
         return view('backend::blade-plugin');
     }
 }

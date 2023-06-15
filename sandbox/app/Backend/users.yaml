@@ -1,7 +1,7 @@
 nav:
     icon: users
     label: Users
-    to: backend.users.users
+    to: backend.users.index
 
 subnav:
     -
@@ -19,6 +19,7 @@ subnav:
         
 routes:
     index:
+        path: null
         plugin: redirect
         options:
             to: backend.users.users

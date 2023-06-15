@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
+use Bedard\Backend\Classes\To;
 use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Config;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +20,6 @@ class RedirectPlugin extends Plugin
      */
     public function handle(Request $request)
     {
-        return redirect('/');
+        return redirect(To::href($this->to, $this));
     }
 }
