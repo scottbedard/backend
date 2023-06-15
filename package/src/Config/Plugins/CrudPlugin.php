@@ -76,7 +76,7 @@ class CrudPlugin extends Plugin
      *
      * @return \Illuminate\View\View|array
      */
-    public function handle(Request $request): View|array
+    public function handle(Request $request)
     {
         $path = str(
             str($request->extra)

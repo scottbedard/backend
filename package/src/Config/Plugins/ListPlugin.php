@@ -70,7 +70,7 @@ class ListPlugin extends Plugin
      *
      * @return \Illuminate\View\View|array
      */
-    public function handle(Request $request): View|array
+    public function handle(Request $request)
     {
         $models = $this->model::query();
 

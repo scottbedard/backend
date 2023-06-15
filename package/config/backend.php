@@ -100,6 +100,7 @@ return [
         'crud' => \Bedard\Backend\Config\Plugins\CrudPlugin::class,
         'form' => \Bedard\Backend\Config\Plugins\FormPlugin::class,
         'list' => \Bedard\Backend\Config\Plugins\ListPlugin::class,
+        'redirect' => \Bedard\Backend\Config\Plugins\RedirectPlugin::class,
     ],
 
     /*

@@ -504,6 +504,16 @@ class Config implements ArrayAccess, Arrayable
     }
 
     /**
+     * Get root config instance
+     *
+     * @return static
+     */
+    public function root(): self
+    {
+        return $this->__parent ? $this->__parent->root() : $this;
+    }
+
+    /**
      * Cast to array
      *
      * @return array

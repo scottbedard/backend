@@ -2,20 +2,14 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
+use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Config;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class Plugin extends Config
+class RedirectPlugin extends Plugin
 {
-    public function getDefaultConfig(): array
-    {
-        return [
-            'plugin' => 'blade',
-            'options' => [],
-        ];
-    }
-
     /**
      * Handle the request
      *
@@ -25,7 +19,6 @@ class Plugin extends Config
      */
     public function handle(Request $request)
     {
-        return redirect();
-        return view('backend::blade-plugin');
+        return redirect('/');
     }
 }
