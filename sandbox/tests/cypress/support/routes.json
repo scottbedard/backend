@@ -1,59 +1,9 @@
 {
-  "backend._root.index": {
-    "name": "backend._root.index",
+  "backend.controller.route": {
+    "name": "backend.controller.route",
     "domain": null,
-    "action": "Bedard\\Backend\\BackendController@index",
-    "uri": "backend",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.admin.users": {
-    "name": "backend.admin.users",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@users",
-    "uri": "backend/admin/users",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.admin.show": {
-    "name": "backend.admin.show",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@show",
-    "uri": "backend/admin/users/{id}",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.admin.create": {
-    "name": "backend.admin.create",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@create",
-    "uri": "backend/admin/users/create",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.admin.update": {
-    "name": "backend.admin.update",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@update",
-    "uri": "backend/admin/users/{id}/update",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "backend.admin.roles": {
-    "name": "backend.admin.roles",
-    "domain": null,
-    "action": "Bedard\\Backend\\BackendController@roles",
-    "uri": "backend/admin/roles",
+    "action": "Bedard\\Backend\\Http\\Controllers\\BackendController@route",
+    "uri": "backend/{controllerOrRoute?}/{route?}/{extra?}",
     "method": [
       "GET",
       "HEAD"

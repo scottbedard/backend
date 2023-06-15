@@ -1,4 +1,4 @@
-describe('sandbox auth', () => {
+describe('auth', () => {
   beforeEach(() => {
     cy.logout()
   })
