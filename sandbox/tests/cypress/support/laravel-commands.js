@@ -9,6 +9,10 @@
  */
 Cypress.Commands.add('login', (attributes = {}) => {
   // Are we using the new object system.
+  if (Object.keys(attributes).length === 0) {
+    attributes.email = 'admin@example.com'
+  }
+
   let requestBody = attributes.attributes || attributes.state || attributes.load ? attributes : { attributes }
 
   return cy
