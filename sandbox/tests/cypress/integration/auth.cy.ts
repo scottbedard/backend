@@ -12,8 +12,8 @@ describe('auth', () => {
       .get('input[type="password"]')
       .clear()
       .type('secret')
-      .get('button[type="submit"]')
-      .click()
+      .get('form')
+      .submit()
       .url()
       .then(url => {
         throw new Error('URL: ' + url);
