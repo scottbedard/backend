@@ -1,8 +1,4 @@
 describe('auth', () => {
-  before(() => {
-    cy.refreshDatabase()
-  })
-
   it('log in', () => {
     cy
       .visit('/')
