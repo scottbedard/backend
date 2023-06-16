@@ -14,10 +14,7 @@ describe('auth', () => {
       .type('secret')
       .get('button[type="submit"]')
       .click()
-      .url()
-      .then(url => {
-        expect(url.endsWith('/backend')).to.be.true
-      })
+      .assertUrlEndsWith('/backend')
   })
 
   it('log out', () => {

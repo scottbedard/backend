@@ -3,6 +3,14 @@
 declare namespace Cypress {
     interface Chainable<Subject> {
         /**
+         * Assert url ends with string
+         *
+         * @example
+         * cy.url().assertEndsWith('/somewhere/awesome')
+         */
+        assertUrlEndsWith(str: string): Chainable<any>;
+
+        /**
          * Assert request redirected to a path.
          *
          * @example
