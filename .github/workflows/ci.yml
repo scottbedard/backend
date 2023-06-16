@@ -45,10 +45,10 @@ jobs:
           npm install
           npm run build
 
-      # - name: Vitest
-      #   run: |
-      #     cd package
-      #     npm test
+      - name: Vitest
+        run: |
+          cd package
+          npm test
 
       - name: Configure directories
         run: |
@@ -69,13 +69,13 @@ jobs:
         run: php artisan key:generate
 
       - name: Run migrations
-        run: php artisan migrate:fresh --seed
+        run: php artisan migrate:fresh --seed # seeding is necessary for common cypress data
 
       - name: Publish assets
         run: php artisan vendor:publish --tag backend
 
-      # - name: PHPUnit
-      #   run: php artisan test
+      - name: PHPUnit
+        run: php artisan test
 
       - name: Cypress
         run: |
