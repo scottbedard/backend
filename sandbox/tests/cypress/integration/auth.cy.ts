@@ -16,7 +16,7 @@ describe('auth', () => {
       .click()
       .url()
       .then(url => {
-        console.log('URL', { url });
+        throw new Error('URL: ' + url);
         expect(url.endsWith('/backend')).to.be.true
       })
   })
@@ -29,7 +29,7 @@ describe('auth', () => {
       .click()
       .url()
       .then(url => {
-        console.log('URL', { url });
+        throw new Error('URL: ' + url);
         expect(url.endsWith('/login')).to.be.true
       })
   })

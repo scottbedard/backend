@@ -12,6 +12,7 @@
 /public/storage
 /public/vendor/backend
 /storage/*.key
+tests/cypress/screenshots
 tests/cypress/videos
 /vendor
 auth.json
