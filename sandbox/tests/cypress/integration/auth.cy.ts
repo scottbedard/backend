@@ -12,11 +12,11 @@ describe('auth', () => {
       .get('input[type="password"]')
       .clear()
       .type('secret')
-      .get('form')
-      .submit()
+      .get('button[type="submit"]')
+      .click()
       .url()
       .then(url => {
-        throw new Error('URL: ' + url);
+        throw new Error('BAD URL: ' + url)
         expect(url.endsWith('/backend')).to.be.true
       })
   })
@@ -29,7 +29,7 @@ describe('auth', () => {
       .click()
       .url()
       .then(url => {
-        throw new Error('URL: ' + url);
+        throw new Error('BAD URL: ' + url)
         expect(url.endsWith('/login')).to.be.true
       })
   })
