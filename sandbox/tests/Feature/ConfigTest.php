@@ -97,6 +97,19 @@ class ConfigTest extends TestCase
         ], $config->__data);
     }
 
+    public function test_accessing_root_node()
+    {
+        $root = ParentConfig::create([
+            'child' => [
+                'child' => ['name' => 'alice'],
+            ],
+        ]);
+        
+        $this->assertEquals($root, $root->root());
+        $this->assertEquals($root, $root->child->root());
+        $this->assertEquals($root, $root->child->child->root());
+    }
+
     public function test_parent_of_single_child()
     {
         $parent = ParentOfSingleChild::create([
