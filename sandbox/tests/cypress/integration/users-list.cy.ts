@@ -1,8 +1,14 @@
 describe('users list', () => {
-  it('redirects from the index', () => {
-      cy
-        .login()
-        .visit('/backend/users')
-        .assertUrlEndsWith('/backend/users/users')
-  });
-});
+  it('blocks unauthorized users', () => {
+    // ...
+  })
+
+  it('registers a nav item', () => {
+    cy
+      .login()
+      .visit('/backend')
+      .get('[data-nav-to="backend.users.index"]')
+      .click()
+      .assertUrlEndsWith('/backend/users/users')
+  })
+})

@@ -20,19 +20,20 @@
 
     <header class="bg-gray-900 flex gap-6 p-6 text-gray-100">
       <nav class="flex-1 flex gap-x-10 items-center">
-        @foreach ($backend->nav as $button)
-          @if ($button)
+        @foreach ($backend->nav as $item)
+          @if ($item)
             <a
               class="flex font-bold gap-x-2 items-center tracking-wide text-gray-100/60 hover:text-white"
-              href="{{ $button->href }}">
-              @if ($button->icon)
-                <x-backend::icon :name="$button->icon" size="20" />
+              data-nav-to="{{ $item->to }}"
+              href="{{ $item->href }}">
+              @if ($item->icon)
+                <x-backend::icon :name="$item->icon" size="20" />
               @endif
 
-              {{ $button->label }}
+              {{ $item->label }}
             </a>
           @else
-            nope, {{ $button }}
+            nope, {{ $item }}
           @endif
         @endforeach
       </nav>
@@ -56,10 +57,11 @@
               'aspect-square flex flex-col gap-1 items-center justify-center p-1 text-center w-full hover:text-primary-500',
               'text-primary-500' => $link->isActive(),
             ])
+            data-subnav-to="{{ $link->to }}"
             href="{{ $link->href }}">
-            <x-backend::icon
-              :name="$link->icon"
-              size="24" />
+            @if ($link->icon)
+              <x-backend::icon :name="$link->icon" size="24" />
+            @endif
 
             <div class="px-2 text-xs">{{ $link->label }}</div>
           </a>
