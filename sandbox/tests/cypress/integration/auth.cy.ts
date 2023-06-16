@@ -1,6 +1,6 @@
 describe('auth', () => {
-  beforeEach(() => {
-    cy.logout()
+  before(() => {
+    cy.refreshDatabase()
   })
 
   it('log in', () => {
