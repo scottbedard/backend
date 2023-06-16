@@ -16,6 +16,7 @@ describe('auth', () => {
       .click()
       .url()
       .then(url => {
+        throw new Error('BAD URL: ' + url)
         expect(url.endsWith('/backend')).to.be.true
       })
   })
