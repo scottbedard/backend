@@ -69,7 +69,7 @@ jobs:
         run: php artisan key:generate
 
       - name: Run migrations
-        run: php artisan migrate
+        run: php artisan migrate:fresh --seed
 
       - name: Publish assets
         run: php artisan vendor:publish --tag backend
