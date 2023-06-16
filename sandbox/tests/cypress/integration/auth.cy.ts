@@ -24,8 +24,6 @@ describe('auth', () => {
       .get('[data-cy="logout"]')
       .click()
       .url()
-      .then(url => {
-        expect(url.endsWith('/login')).to.be.true
-      })
+      .assertUrlEndsWith('/login')
   })
 })
