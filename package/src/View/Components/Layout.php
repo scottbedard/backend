@@ -33,6 +33,8 @@ class Layout extends Component
         $manifest = new ViteManifest(env('BACKEND_MANIFEST_PATH', public_path('vendor/backend/manifest.json')));
 
         $backend = Backend::create(config('backend.backend_directories'));
+
+        $user = auth()->user();
         
         return view('backend::components.layout', [
             'backend' => $backend,
@@ -40,6 +42,7 @@ class Layout extends Component
             'manifest' => $manifest,
             'scripts' => $manifest->scripts(),
             'styles' => $manifest->styles(),
+            'user' => $user,
         ]);
     }
 }

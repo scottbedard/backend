@@ -164,7 +164,7 @@ options:
 
 ## Permissions
 
-Permissions are provided by the excellent [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
+Permissions are provided by the excellent [`laravel-permission`](https://github.com/spatie/laravel-permission) package. By default, a `super-admin` role enables all other roles and permissions, **<ins>including the ability to create other super admins</ins>**. To create a super admin, execute the following command.
 
 ```sh
 php artisan backend:assign-role {id} 'super admin'

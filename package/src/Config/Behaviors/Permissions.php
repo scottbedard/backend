@@ -23,14 +23,22 @@ class Permissions extends Behavior
 
         // reject if the user doesn't have access to this config
         $permissions = data_get($raw, 'permissions', []);
+
+        if (is_string($permissions)) {
+            if (Bouncer::check(auth()->user(), $permissions)) {
+                return;
+            }
+        }
         
-        if (!is_array($permissions) || array_sum(array_map('is_string', $permissions)) !== count($permissions)) {
-            throw new ConfigException("{$config->getConfigPath()}: Permissions must be an array of strings");
+        elseif (!is_array($permissions) || array_sum(array_map('is_string', $permissions)) !== count($permissions)) {
+            throw new ConfigException("{$config->getConfigPath()}: Permissions must be a string or array of strings");
         }
 
-        if (!Bouncer::check(auth()->user(), $permissions)) {
-            $this->reject();
+        elseif (Bouncer::check(auth()->user(), $permissions)) {
+            return;
         }
+
+        $this->reject();
     }
 
     /**

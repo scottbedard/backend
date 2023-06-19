@@ -83,7 +83,19 @@ return [
     |
     */
 
-    'super_admin_role' => env('BACKEND_SUPER_ADMIN_ROLE', 'super admin'),
+    'super_admin_role' => env('BACKEND_SUPER_ADMIN_ROLE', 'super-admin'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin permission
+    |--------------------------------------------------------------------------
+    |
+    | The name of your admin role. Any user who accesses the backend will
+    | need to have this permission.
+    |
+    */
+
+    'admin_permission' => env('BACKEND_ADMIN_PERMISSION', 'admin'),
 
     /*
     |--------------------------------------------------------------------------

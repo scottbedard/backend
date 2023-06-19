@@ -14,6 +14,6 @@ class BackendControllerTest extends TestCase
     {
         $this
             ->get(config('backend.path'))
-            ->assertRedirect(config('backend.guest_redirect'));
+            ->assertStatus(403);
     }
 }

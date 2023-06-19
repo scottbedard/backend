@@ -28,6 +28,14 @@ declare namespace Cypress {
         login(attributes?: object): Chainable<any>;
 
         /**
+         * Log in via email address
+         *
+         * @example
+         * cy.loginAs('super-admin@example.com')
+         */
+        loginAs(email?: string): Chainable<any>;
+
+        /**
          * Log out the current user.
          *
          * @example

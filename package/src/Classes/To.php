@@ -26,7 +26,7 @@ class To
                 $route = $controller
                     ->routes
                     ->first(fn ($r) => $r->id === $routeId);
-
+    
                 if ($route) {
                     return route('backend.controller.route', [
                         'controllerOrRoute' => $controller->path,

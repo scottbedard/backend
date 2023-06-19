@@ -4,7 +4,7 @@ use Bedard\Backend\Http\Controllers\BackendController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => ['web'],
+    'middleware' => ['web', \Spatie\Permission\Middlewares\PermissionMiddleware::class.':admin'],
     'prefix' => config('backend.path'),
 ], function () {
 

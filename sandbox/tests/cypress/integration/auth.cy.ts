@@ -4,7 +4,7 @@ describe('auth', () => {
       .visit('/')
       .get('input[type="email"]')
       .clear()
-      .type('admin@example.com')
+      .type('super-admin@example.com')
       .get('input[type="password"]')
       .clear()
       .type('secret')
@@ -15,7 +15,7 @@ describe('auth', () => {
 
   it('log out', () => {
     cy
-      .login({ email: 'admin@example.com' })
+      .loginAs('super-admin@example.com')
       .visit('/backend')
       .get('[data-cy="logout"]')
       .click()

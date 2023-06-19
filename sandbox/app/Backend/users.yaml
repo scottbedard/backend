@@ -3,6 +3,8 @@ nav:
     label: Users
     to: backend.users.index
 
+permissions: users.read
+
 subnav:
     -
         icon: users
@@ -12,17 +14,21 @@ subnav:
         icon: shield-check
         label: Roles
         to: backend.users.roles
+        permissions: roles.access
     -
         icon: key-round
         label: Permissions
         to: backend.users.permissions
+        permissions: permissions.access
         
 routes:
     index:
         path: null
+        permissions: users.read
         plugin: redirect
         options:
             to: backend.users.users
+
 
     users:
         plugin: crud

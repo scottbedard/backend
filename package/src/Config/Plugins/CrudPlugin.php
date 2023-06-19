@@ -3,6 +3,7 @@
 namespace Bedard\Backend\Config\Plugins;
 
 use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Config;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -32,7 +33,23 @@ class CrudPlugin extends Plugin
      */
     public function __construct(array $config = [], Config $parent = null, string $configPath = null)
     {
+        if (!array_key_exists('permissions', $config)) {
+            $config['permissions'] = str($parent->id)->plural()->toString() . '.read';
+        }
+
         parent::__construct($config, $parent, $configPath . '.crud');
+    }
+
+    /**
+     * Define behaviors
+     *
+     * @return array
+     */
+    public function defineBehaviors(): array
+    {
+        return [
+            Permissions::class,
+        ];
     }
 
     /**

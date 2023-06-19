@@ -22,9 +22,9 @@
             autofocus
             id="email"
             name="email"
-            placeholder="admin@example.com"
+            placeholder="super-admin@example.com"
             type="email"
-            value="admin@example.com" />
+            value="super-admin@example.com" />
         </div>
 
         <div>
