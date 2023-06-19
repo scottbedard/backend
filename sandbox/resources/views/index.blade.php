@@ -6,34 +6,38 @@
       <span>Welcome back</span>
     </h1>
 
-    <x-card>
-      <form
-        action="{{ route('logout') }}"
-        class="gap-6 grid"
-        method="post">
-        @csrf
+    <div>
+      <x-card>
+        <form
+          action="{{ route('logout') }}"
+          class="gap-6 grid"
+          method="post">
+          @csrf
 
-        <div class="text-center">
-          You're logged in as {{ $user->email }}
-        </div>
+          <div class="text-center">
+            You're logged in as {{ $user->email }}
+          </div>
 
-        <div class="flex flex-wrap gap-6 justify-between">
-          <a
-            class="bg-gray-300 flex font-bold h-12 items-center justify-center px-3 rounded-md text-gray-600 transition-colors tracking-wide whitespace-nowrap w-full hover:bg-gray-200 hover:text-black sm:flex-1"
-            href="{{ route('backend.controller.route') }}">
-            &larr; Backend
-          </a>
+          <div class="flex flex-wrap gap-6 justify-between">
+            <x-button
+              class="flex-1"
+              icon-left="key-square"
+              href="{{ route('backend.controller.route') }}">
+              Backend
+            </x-button>
 
-          <a
-            class="bg-red-500 flex font-bold h-12 items-center justify-center px-3 rounded-md text-white transition-colors tracking-wide whitespace-nowrap w-full hover:bg-red-400 sm:flex-1"
-            href="{{ route('logout') }}">
-            Log out &rarr;
-          </a>
-        </div>
-      </form>
-    </x-card>
+            <x-button
+              class="flex-1"
+              icon-left="log-out"
+              theme="primary">
+              Log out
+            </x-button>
+          </div>
+        </form>
+      </x-card>
+    </div>
 
-    <div class="flex flex-wrap gap-x-12 gap-y-2 justify-between gap-3 text-xs text-gray-600">
+    <div class="flex flex-wrap gap-x-12 gap-y-2 justify-between gap-3 text-sm text-gray-600">
       <a
         class="flex gap-1 items-center justify-center tracking-wide hover:text-red-500 w-full sm:w-auto"
         href="https://github.com/scottbedard/backend">

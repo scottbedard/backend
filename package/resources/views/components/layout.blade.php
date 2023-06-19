@@ -32,8 +32,6 @@
 
               {{ $item->label }}
             </a>
-          @else
-            nope, {{ $item }}
           @endif
         @endforeach
       </nav>

@@ -170,7 +170,7 @@ class Backend extends Config
                 return $topLevelIndex;
             }
 
-            throw new ConfigException("Backend index not found");
+            abort(404);
         }
 
         // find index or top-level route
@@ -195,7 +195,7 @@ class Backend extends Config
                 return $topLevelRoute;
             }
 
-            throw new ConfigException("Backend route not found [{$route}]");
+            abort(404);
         }
 
         // otherwise find controller routes
@@ -209,6 +209,6 @@ class Backend extends Config
             return $controllerRoute;
         }
 
-        throw new ConfigException("Backend route not found [{$controllerOrRoute}.{$route}]");
+        abort(404);
     }
 }

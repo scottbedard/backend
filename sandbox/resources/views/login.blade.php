@@ -40,7 +40,10 @@
             value="secret" />
         </div>
         
-        <x-button>
+        <x-button
+          icon-left="key-square"
+          theme="primary"
+          type="submit">
           Log in
         </x-button>
       </form>

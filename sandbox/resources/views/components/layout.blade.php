@@ -12,10 +12,11 @@
     <link href="/assets/css/main.css" rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    {{-- <script>lucide.createIcons()</script> --}}
   </head>
   <body class="bg-gray-100 flex min-h-screen justify-center items-center p-6">
     {{ $slot }}
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>lucide.createIcons()</script>
   </body>
 </html>

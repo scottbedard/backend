@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
     protected function seedUsers(): void
     {
         $admin = Permission::create(['name' => 'admin']);
+        $booksCrud = Bouncer::crud('books', 'books.manager');
         $usersCrud = Bouncer::crud('users', 'users.manager');
 
         // create super admin
@@ -49,8 +50,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('secret'),
         ]);
 
-        Bouncer::crud('books', 'librarian');
-        $alice->assignRole('librarian');
+        $alice->assignRole('books.manager');
 
         // bob is a music teacher
         // he can read users and can manage books, but cannot delete them
