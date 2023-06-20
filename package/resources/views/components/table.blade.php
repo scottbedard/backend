@@ -54,8 +54,10 @@
   </div>
 
   {{-- pagination controls --}}
-  <div class="flex gap-x-6 h-12 items-center justify-end px-6 py-2 text-sm">
-    <div>Displaying {{ number_format($paginator->firstItem()) }} - {{ number_format($paginator->lastItem()) }} of {{ number_format($paginator->total()) }}</div>
+  <div class="flex flex-wrap gap-x-6 gap-y-2 min-h-12 items-center justify-center px-6 py-2 text-center text-sm md:justify-end md:flex-nowrap">
+    <div class="w-full md:w-auto">
+      Displaying {{ number_format($paginator->firstItem()) }} - {{ number_format($paginator->lastItem()) }} of {{ number_format($paginator->total()) }}
+    </div>
 
     <div class="flex gap-x-2 items-center">
       <a
@@ -73,7 +75,7 @@
           'p-1 rounded hover:bg-gray-100',
           'text-gray-500' => $paginator->currentPage() > 1,
         ])
-        href="{{ $pageUrl(1) }}"
+        href="{{ $pageUrl(max(1, $paginator->currentPage() - 1)) }}"
         title="Previous page">
         <x-backend::icon name="chevron-left" size="16" />
       </a>
