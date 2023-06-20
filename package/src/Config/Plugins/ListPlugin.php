@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
-use Bedard\Backend\Classes\Paginator;
 use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Config\Plugins\List\Column;
 use Illuminate\Http\Request;
@@ -76,8 +75,8 @@ class ListPlugin extends Plugin
             $query->orderBy($sort->column, $sort->direction === 1 ? 'asc' : 'desc');
         }
 
-        // paginate the results
-        $paginator = Paginator::for($query);
+        // fetch paginated data
+        $paginator = $query->paginate(20);
 
         return view('backend::list', [
             'columns' => $this->columns,

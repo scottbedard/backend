@@ -7,13 +7,17 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class Paginator
 {
+    public readonly array $items;
+
     public readonly int $currentPage;
 
-    public readonly array $items;
+    public readonly int $from;
 
     public readonly int $lastPage;
 
     public readonly int $perPage;
+
+    public readonly int $to;
 
     public readonly int $total;
 
@@ -47,5 +51,9 @@ class Paginator
         $this->perPage = $paginator->perPage();
 
         $this->total = $paginator->total();
+
+        $this->firstItem = $paginator->firstItem();
+
+        $this->lastItem = $paginator->lastItem();
     }
 }
