@@ -3,15 +3,13 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/scottbedard/backend/ci.yml?style=flat-square)](https://github.com/scottbedard/backend/actions)
 [![License](https://img.shields.io/github/license/scottbedard/backend?style=flat-square&color=blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
-Every application eventually needs a backend. This is sometimes an after thought though, and a rushed backend can become the source of endless tech debt. The goal here is to be a "backend as config" solution to the problem.
-
-The process will look something like this...
+It's to soon to tell what this is, but for now, it's an attempt to create powerful backends from simple yaml files. I envision the final product looking something like this,
 
 1. Composer install
 2. Artisan generate a few `yaml` files
-3. Enjoy an awesome backend with fine-grained permissions
+3. Enjoy an awesome backend with find grained permissions
 
-That said, this is in very early development, take everything you see with a grain of salt.
+You're welcome to take a look around, but remember things may not work.
 
 [View live sandbox →](https://backend.scottbedard.net)
 
