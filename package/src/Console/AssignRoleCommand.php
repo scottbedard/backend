@@ -2,11 +2,9 @@
 
 namespace Bedard\Backend\Console;
 
-use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AssignRoleCommand extends Command
@@ -58,7 +56,7 @@ class AssignRoleCommand extends Command
         // confirm super admin
         if ($role === config('backend.super_admin_role') && !$this->option('force')) {
             $this->warn(' You\'re about to create a super admin. This grants all roles and permissions, including the ability to create other super admins.');
-            
+
             if (!$this->confirm('Are you sure you wish to continue?')) {
                 $this->error('Action aborted, no roles were granted.');
 

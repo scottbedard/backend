@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\Config;
 
-use Bedard\Backend\Exceptions\ConfigException;
 use Bedard\Backend\Rules\DistinctString;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -12,8 +11,8 @@ class Backend extends Config
 {
     /**
      * Create backend config instance
-     * 
-     * @param array $files
+     *
+     * @param  array  $files
      *
      * @return self
      */
@@ -27,7 +26,7 @@ class Backend extends Config
                 collect(scandir($path))
                     ->filter(fn ($p) => str_ends_with($p, '.yaml'))
                     ->each(fn ($p) => $parse("{$path}/{$p}"));
-                
+
                 return;
             }
 
@@ -57,7 +56,7 @@ class Backend extends Config
                     : str($controllers[$key]['id'])->slug()->toString();
             }
         }
-        
+
         parent::__construct([
             'controllers' => $controllers,
         ]);
@@ -68,7 +67,7 @@ class Backend extends Config
     /**
      * Get controller
      *
-     * @param string $id
+     * @param  string  $id
      *
      * @return ?\Bedard\Backend\Config\Controller
      */
@@ -110,7 +109,7 @@ class Backend extends Config
     public function getNavAttribute(): Collection
     {
         $user = auth()->user();
-    
+
         return $this
             ->controllers
             ->map(fn ($controller) => $controller->nav)
@@ -133,8 +132,8 @@ class Backend extends Config
     /**
      * All backend routes
      *
-     * @param string|null $controller
-     * @param string|null $route
+     * @param  string|null  $controller
+     * @param  string|null  $route
      *
      * @return ?\Bedard\Backend\Config\Route
      */
@@ -150,9 +149,9 @@ class Backend extends Config
     /**
      * Get route
      *
-     * @param \Illuminate\Http\Request|string|null $controllerOrRoute
-     * @param string|null $route
-     * 
+     * @param  \Illuminate\Http\Request|string|null  $controllerOrRoute
+     * @param  string|null  $route
+     *
      * @return ?\Bedard\Backend\Config\Route
      */
     public function route(?string $controllerOrRoute = null, ?string $route = null): ?Route
@@ -183,14 +182,14 @@ class Backend extends Config
             if ($controllerIndex) {
                 return $controllerIndex;
             }
-            
+
             $topLevelRoute = $this
                 ->controllers
                 ->filter(fn ($controller) => $controller->path === null)
                 ->map(fn ($controller) => $controller->routes)
                 ->flatten()
                 ->first(fn ($r) => $r->path === $controllerOrRoute);
-                
+
             if ($topLevelRoute) {
                 return $topLevelRoute;
             }

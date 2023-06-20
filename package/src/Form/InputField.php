@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\Form;
 
-use Bedard\Backend\Form\Field;
 use Illuminate\View\View;
 
 class InputField extends Field

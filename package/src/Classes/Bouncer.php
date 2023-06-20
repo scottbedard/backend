@@ -11,8 +11,8 @@ class Bouncer
     /**
      * Test if a user has all permissions
      *
-     * @param \Illuminate\Foundation\Auth\User $user
-     * @param string|iterable $permissions
+     * @param  \Illuminate\Foundation\Auth\User  $user
+     * @param  string|iterable  $permissions
      *
      * @return bool
      */
@@ -27,7 +27,7 @@ class Bouncer
         }
 
         $permissions = is_iterable($permissions) ? $permissions : [$permissions];
-        
+
         foreach ($permissions as $permission) {
             if (!$user->can($permission)) {
                 return false;

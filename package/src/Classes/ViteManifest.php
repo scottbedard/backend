@@ -24,7 +24,7 @@ class ViteManifest
     /**
      * Create a new manifest instance
      *
-     * @param string $path
+     * @param  string  $path
      */
     public function __construct(string $path)
     {
@@ -36,7 +36,7 @@ class ViteManifest
     /**
      * Get a script by name
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return string
      */

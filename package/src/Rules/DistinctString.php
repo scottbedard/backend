@@ -1,10 +1,10 @@
 <?php
- 
+
 namespace Bedard\Backend\Rules;
- 
+
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
- 
+
 class DistinctString implements ValidationRule
 {
     /**
@@ -24,7 +24,7 @@ class DistinctString implements ValidationRule
     /**
      * Construct
      *
-     * @param array $flags
+     * @param  array  $flags
      *
      * @return self
      */
@@ -35,11 +35,11 @@ class DistinctString implements ValidationRule
 
     /**
      * Validate
-     * 
-     * @param string $attribute
-     * @param mixed $value
-     * @param \Closure $fail
-     * 
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  \Closure  $fail
+     *
      * @return void
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void

@@ -4,15 +4,14 @@ namespace Bedard\Backend\Config\Plugins\List;
 
 use Bedard\Backend\Config\Config;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ColumnType extends Config
 {
     /**
      * Render
-     * 
-     * @param Model $model
+     *
+     * @param  Model  $model
      *
      * @return Illuminate\View\View|string
      */

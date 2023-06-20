@@ -11,16 +11,16 @@ use Illuminate\Routing\Controller;
 class BackendController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
-    
+
     /**
      * Handle a backend request
      *
-     * @param \Illuminate\Http\Request $req
-     * @param ?string $controller
-     * @param ?string $routeName
+     * @param  \Illuminate\Http\Request  $req
+     * @param  ?string  $controller
+     * @param  ?string  $routeName
      */
     public function route(Request $req, ?string $controllerOrRoute = null, ?string $route = null)
-    {        
+    {
         // redirect users who aren't authenticated
         $user = auth()->user();
 
@@ -29,7 +29,7 @@ class BackendController extends Controller
         }
 
         $backend = Backend::create(config('backend.backend_directories'));
-        
+
         if ($backend->currentRoute) {
             return $backend->currentRoute->plugin->handle($req);
         }

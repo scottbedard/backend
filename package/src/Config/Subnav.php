@@ -30,7 +30,7 @@ class Subnav extends Config
         $route = request()->route();
 
         $controllerOrRoute = $route->parameter('controllerOrRoute');
-        
+
         $route = $route->parameter('route');
 
         return $this->to === "backend.{$controllerOrRoute}.{$route}";

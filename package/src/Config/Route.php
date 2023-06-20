@@ -5,8 +5,6 @@ namespace Bedard\Backend\Config;
 use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Plugins\Plugin;
 use Bedard\Backend\Exceptions\ConfigException;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class Route extends Config
 {
@@ -90,7 +88,7 @@ class Route extends Config
                 );
             }
         }
-        
+
         throw new ConfigException("Plugin [{$plugin}] not found");
     }
 
@@ -104,7 +102,7 @@ class Route extends Config
         if (array_key_exists('path', $this->__config)) {
             return $this->__config['path'];
         }
-        
+
         return str($this->__config['id'])->slug()->toString();
     }
 }

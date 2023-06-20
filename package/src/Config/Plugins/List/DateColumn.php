@@ -2,10 +2,8 @@
 
 namespace Bedard\Backend\Config\Plugins\List;
 
-use Bedard\Backend\Config\Config;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DateColumn extends ColumnType
@@ -38,8 +36,8 @@ class DateColumn extends ColumnType
 
     /**
      * Render
-     * 
-     * @param Model $model
+     *
+     * @param  Model  $model
      *
      * @return Illuminate\View\View|string
      */

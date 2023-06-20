@@ -2,11 +2,10 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
-use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Classes\Paginator;
+use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Config\Plugins\List\Column;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class ListPlugin extends Plugin
 {
@@ -24,7 +23,7 @@ class ListPlugin extends Plugin
 
     /**
      * Define inherits
-     * 
+     *
      * @return array
      */
     public function defineInherits(): array
@@ -72,7 +71,7 @@ class ListPlugin extends Plugin
 
         // sort the query if params are present
         $sort = Sort::create($request->fullUrl());
-        
+
         if ($sort->column && $sort->direction !== 0) {
             $query->orderBy($sort->column, $sort->direction === 1 ? 'asc' : 'desc');
         }

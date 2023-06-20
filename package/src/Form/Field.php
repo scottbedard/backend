@@ -5,7 +5,6 @@ namespace Bedard\Backend\Form;
 use Bedard\Backend\Classes\Breakpoint;
 use Bedard\Backend\Configuration\Configuration;
 use Bedard\Backend\Exceptions\ConfigException;
-use Bedard\Backend\Rules\Breakpoints;
 use Illuminate\View\View;
 
 class Field extends Configuration
@@ -31,9 +30,9 @@ class Field extends Configuration
     /**
      * Construct
      *
-     * @param array $config
-     * @param ?\Bedard\Backend\Configuration\Configuration $parent
-     * @param ?string $parentKey
+     * @param  array  $config
+     * @param  ?\Bedard\Backend\Configuration\Configuration  $parent
+     * @param  ?string  $parentKey
      */
     public function __construct(array $config = [], ?Configuration $parent = null, ?string $parentKey = null)
     {
@@ -47,10 +46,10 @@ class Field extends Configuration
     /**
      * Create a field from it's type
      *
-     * @param array $config
-     * @param ?\Bedard\Backend\Configuration\Configuration $parent
-     * @param ?string $parentKey
-     * 
+     * @param  array  $config
+     * @param  ?\Bedard\Backend\Configuration\Configuration  $parent
+     * @param  ?string  $parentKey
+     *
      * @return self
      */
     public static function createFromType(array $config = [], ?Configuration $parent = null, ?string $parentKey = null): self

@@ -2,13 +2,8 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
-use Bedard\Backend\Classes\To;
-use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Behaviors\ToHref;
-use Bedard\Backend\Config\Config;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class RedirectPlugin extends Plugin
 {

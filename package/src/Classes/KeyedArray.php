@@ -10,8 +10,8 @@ class KeyedArray
     /**
      * Create keyed array from associative array
      *
-     * @param \Illuminate\Support\Collection|array $source
-     * @param string $key
+     * @param  \Illuminate\Support\Collection|array  $source
+     * @param  string  $key
      *
      * @return array
      */

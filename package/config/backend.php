@@ -72,7 +72,7 @@ return [
         __DIR__ . '/../packages/bedard/backend/src/Backend',
         __DIR__ . '/../app/Backend',
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Super admin role
