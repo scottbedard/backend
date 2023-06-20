@@ -54,8 +54,8 @@
   </div>
 
   {{-- pagination controls --}}
-  <div class="flex flex-wrap gap-x-6 gap-y-2 min-h-12 items-center justify-center px-6 py-2 text-center text-sm md:justify-end md:flex-nowrap">
-    <div class="w-full md:w-auto">
+  <div class="flex flex-wrap gap-x-6 gap-y-2 min-h-12 items-center justify-center px-6 py-2 text-center text-sm sm:justify-end sm:flex-nowrap">
+    <div class="w-full sm:w-auto">
       Displaying {{ number_format($paginator->firstItem()) }} - {{ number_format($paginator->lastItem()) }} of {{ number_format($paginator->total()) }}
     </div>
 
@@ -65,6 +65,7 @@
           'p-1 rounded hover:bg-gray-100',
           'text-gray-500' => $paginator->currentPage() > 1,
         ])
+        data-paginate-first
         href="{{ $pageUrl(1) }}"
         title="First page">
         <x-backend::icon name="chevrons-left" size="16" />
@@ -75,6 +76,7 @@
           'p-1 rounded hover:bg-gray-100',
           'text-gray-500' => $paginator->currentPage() > 1,
         ])
+        data-paginate-previous
         href="{{ $pageUrl(max(1, $paginator->currentPage() - 1)) }}"
         title="Previous page">
         <x-backend::icon name="chevron-left" size="16" />
@@ -83,6 +85,7 @@
       <div class="flex items-center justify-between relative rounded hover:bg-gray-100">
         <select
           class="appearance-none bg-transparent cursor-pointer flex-1 h-6 outline-none pl-1.5 pr-6 text-center tracking-wide w-full"
+          data-paginate-select
           title="Current page"
           onchange="window.location.href = window.location.href.replace(/page=\d/i, 'page=' + this.value)">
           @for ($i = 1; $i <= $paginator->lastPage(); $i++)
@@ -107,6 +110,7 @@
           'p-1 rounded hover:bg-gray-100',
           'text-gray-500' => $paginator->currentPage() > 1,
         ])
+        data-paginate-next
         href="{{ $pageUrl(min($paginator->lastPage(), $paginator->currentPage() + 1)) }}"
         title="Next page">
         <x-backend::icon name="chevron-right" size="16" />
@@ -117,6 +121,7 @@
           'p-1 rounded hover:bg-gray-100',
           'text-gray-500' => $paginator->currentPage() > 1,
         ])
+        data-paginate-last
         href="{{ $pageUrl($paginator->lastPage()) }}"
         title="Last page">
         <x-backend::icon name="chevrons-right" size="16" />
