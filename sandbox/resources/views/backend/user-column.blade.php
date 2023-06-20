@@ -1,6 +1,6 @@
-<div class="flex gap-x-3 items-center">
-  <div class="aspect-square bg-gray-300/50 flex h-11 items-center justify-center rounded-full">
-    <x-backend::icon name="user" />
+<div class="flex items-center gap-x-2">
+  <div class="aspect-square bg-gray-300/50 flex h-8 items-center justify-center rounded-full">
+    <x-backend::icon name="user" size="20" />
   </div>
   
   <div class="flex-1">
@@ -8,7 +8,7 @@
       {{ $model->name }}
     </div>
     
-    <div class="text-sm text-gray-600">
+    <div class="text-xs text-gray-600 tracking-wide">
       {{ $model->email }}
     </div>
   </div>

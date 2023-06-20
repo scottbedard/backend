@@ -1,4 +1,4 @@
-<span style="width: {{ $size }}px">
+<span {{ $attributes->merge(['style' => "width: {$size}px"]) }}>
   <i
     data-lucide="{{ $name }}"
     height="{{ $size }}"

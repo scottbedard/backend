@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config\Plugins\List;
 
+use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigException;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class Column extends Config
             'align' => ['required', 'string', 'in:left,right,center'],
             'id' => ['required', 'nullable', 'string'],
             'label' => ['present', 'nullable', 'string'],
+            'sortable' => ['present', 'boolean'],
             'type' => ['present', 'nullable', 'string', 'in:blade,date,text,timeago'],
         ];
     }
@@ -35,9 +37,50 @@ class Column extends Config
             'align' => 'left',
             'id' => null,
             'label' => null,
+            'sortable' => false,
             'span' => 12,
             'type' => null,
         ];
+    }
+
+    /**
+     * Sort href
+     *
+     * @return ?string
+     */
+    public function getSortHrefAttribute(): ?string
+    {
+        if (!$this->sortable) {
+            return null;
+        }
+
+        $req = request();
+
+        if ($this->sort->column !== $this->id || $this->sort->direction === 0) {
+            return urldecode($req->fullUrlWithQuery(['sort' => "{$this->id},asc"]));
+        }
+
+        if ($this->sort->direction === 1) {
+            return urldecode($req->fullUrlWithQuery(['sort' => "{$this->id},desc"]));
+        }
+            
+        if ($this->sort->direction === -1) {
+            $url = $req->fullUrlWithQuery(['sort' => null]);
+
+            return $url === $req->url() . '?' ? $req->url() : $url;
+        }
+
+        return null;
+    }
+
+    /**
+     * Sort
+     *
+     * @return \Bedard\Backend\Classes\Sort
+     */
+    public function getSortAttribute(): Sort
+    {
+        return Sort::create(request()->fullUrl(), $this->id);
     }
 
     /**

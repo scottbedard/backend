@@ -37,16 +37,20 @@ routes:
             columns:
                 id:
                     label: ID
-                user:
+                    sortable: true
+                name:
                     label: User
+                    sortable: true
                     type: blade
                     view: backend.user-column
                 created_at:
                     label: Signed up
+                    sortable: true
                     type: date
                 updated_at:
                     diff_for_humans: true
                     label: Last seen
+                    sortable: true
                     type: date
             model: App\Models\User
 

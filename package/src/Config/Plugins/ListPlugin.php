@@ -2,13 +2,10 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
-use Bedard\Backend\Classes\KeyedArray;
+use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Classes\Paginator;
-use Bedard\Backend\Config\Backend;
-use Bedard\Backend\Config\Config;
 use Bedard\Backend\Config\Plugins\List\Column;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class ListPlugin extends Plugin
@@ -67,14 +64,21 @@ class ListPlugin extends Plugin
      * Render
      *
      * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\View\View|array
      */
     public function handle(Request $request)
     {
-        $models = $this->model::query();
+        // create query builder
+        $query = $this->model::query();
 
-        $paginator = Paginator::for($models);
+        // sort the query if params are present
+        $sort = Sort::create($request->fullUrl());
+        
+        if ($sort->column && $sort->direction !== 0) {
+            $query->orderBy($sort->column, $sort->direction === 1 ? 'asc' : 'desc');
+        }
+
+        // paginate the results
+        $paginator = Paginator::for($query);
 
         return view('backend::list', [
             'columns' => $this->columns,
