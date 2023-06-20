@@ -1,7 +1,7 @@
 # `bedard/backend`
 
-[![CI](https://github.com/scottbedard/backend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/scottbedard/backend/actions)
-[![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
+[![Build](https://img.shields.io/github/actions/workflow/status/scottbedard/backend/ci.yml?style=flat-square)](https://github.com/scottbedard/backend/actions)
+[![License](https://img.shields.io/github/license/scottbedard/backend?style=flat-square&color=blue)](https://github.com/scottbedard/backend/blob/main/LICENSE)
 
 Every application eventually needs a backend. This is sometimes an after thought though, and a rushed backend can become the source of endless tech debt. The goal here is to be a "backend as config" solution to the problem.
 
