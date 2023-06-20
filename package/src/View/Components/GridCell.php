@@ -11,13 +11,14 @@ class GridCell extends Component
     /**
      * Create a new component instance.
      *
-     * @param array $span
+     * @param  array  $span
      *
      * @return void
      */
     public function __construct(
         public array $span = [],
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

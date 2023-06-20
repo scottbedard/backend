@@ -4,7 +4,6 @@ namespace Bedard\Backend\Classes;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class Paginator
 {
@@ -21,7 +20,7 @@ class Paginator
     /**
      * Static constructor
      *
-     * @param mixed ...$args
+     * @param  mixed  ...$args
      *
      * @return static
      */
@@ -33,7 +32,7 @@ class Paginator
     /**
      * Create a paginator
      *
-     * @param EloquentBuilder|QueryBuilder $query
+     * @param  EloquentBuilder|QueryBuilder  $query
      */
     public function __construct(EloquentBuilder|QueryBuilder $query)
     {

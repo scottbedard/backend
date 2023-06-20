@@ -11,9 +11,9 @@ class Permissions extends Behavior
     /**
      * Construct
      *
-     * @param Config $config
-     * @param array $raw
-     * @param string $for
+     * @param  Config  $config
+     * @param  array  $raw
+     * @param  string  $for
      *
      * @return void
      */
@@ -28,13 +28,9 @@ class Permissions extends Behavior
             if (Bouncer::check(auth()->user(), $permissions)) {
                 return;
             }
-        }
-        
-        elseif (!is_array($permissions) || array_sum(array_map('is_string', $permissions)) !== count($permissions)) {
+        } elseif (!is_array($permissions) || array_sum(array_map('is_string', $permissions)) !== count($permissions)) {
             throw new ConfigException("{$config->getConfigPath()}: Permissions must be a string or array of strings");
-        }
-
-        elseif (Bouncer::check(auth()->user(), $permissions)) {
+        } elseif (Bouncer::check(auth()->user(), $permissions)) {
             return;
         }
 

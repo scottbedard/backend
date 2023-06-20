@@ -13,7 +13,8 @@ class Table extends Component
     public function __construct(
         public readonly Collection $columns,
         public readonly Paginator $paginator,
-    ) {}
+    ) {
+    }
 
     public function render(): View|Closure|string
     {

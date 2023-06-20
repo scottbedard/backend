@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Route;
 use Bedard\Backend\Exceptions\ConfigValidationException;
@@ -45,7 +44,7 @@ class BackendTest extends TestCase
         $bob = $this->loginAsUserThatCan('read books');
 
         $backend = Backend::create(__DIR__ . '/stubs/controller-permissions');
-        
+
         $this->assertEquals(2, $backend->controllers->count());
         $this->assertEquals('books', $backend->controllers[0]->id);
         $this->assertEquals('cars', $backend->controllers[1]->id);
@@ -56,11 +55,11 @@ class BackendTest extends TestCase
         $alice = $this->loginAsUserThatCan('read books', 'read shoes');
 
         $backend = Backend::create(__DIR__ . '/stubs/nav-items');
-        
+
         $this->assertInstanceOf(Collection::class, $backend->nav);
         $this->assertEquals(2, $backend->nav->count());
         $this->assertEquals('backend.books', $backend->nav[0]->to);
-        $this->assertEquals('backend.boots', $backend->nav[1]->to);      
+        $this->assertEquals('backend.boots', $backend->nav[1]->to);
     }
 
     public function test_default_path_collision()
@@ -73,7 +72,7 @@ class BackendTest extends TestCase
     public function test_default_controller_id_and_path()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-default-id-path');
-        
+
         $this->assertEquals('_index', $backend->controllers[0]->id);
         $this->assertNull($backend->controllers[0]->path);
 
@@ -90,7 +89,7 @@ class BackendTest extends TestCase
     public function test_finding_root_index()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
-        
+
         $route = $backend->route(null, null);
 
         $this->assertInstanceOf(Route::class, $route);
@@ -101,7 +100,7 @@ class BackendTest extends TestCase
     public function test_finding_root_page()
     {
         $backend = Backend::create(__DIR__ . '/stubs/controller-routing');
-        
+
         $route = $backend->route(null, 'about');
 
         $this->assertInstanceOf(Route::class, $route);

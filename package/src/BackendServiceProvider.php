@@ -2,11 +2,8 @@
 
 namespace Bedard\Backend;
 
-use Bedard\Backend\Configuration\Backend;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
@@ -26,7 +23,7 @@ class BackendServiceProvider extends ServiceProvider
 
         // register components
         Blade::componentNamespace('Bedard\\Backend\\View\\Components', 'backend');
- 
+
         // public assets
         $this->publishes([
             __DIR__ . '/../config/backend.php' => config_path('backend.php'),

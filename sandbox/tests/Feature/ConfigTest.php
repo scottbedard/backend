@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigValidationException;
-use Bedard\Backend\Exceptions\RejectConfigException;
 use Tests\TestCase;
 use Tests\Unit\Classes\AttachThingBehavior;
 use Tests\Unit\Classes\CatchphraseBehavior;
@@ -21,9 +20,7 @@ use Tests\Unit\Classes\ParentConfig;
 use Tests\Unit\Classes\ParentOfKeyedChildren;
 use Tests\Unit\Classes\ParentOfManyChildren;
 use Tests\Unit\Classes\ParentOfSingleChild;
-use Tests\Unit\Classes\Permissions;
 use Tests\Unit\Classes\Reject;
-use Tests\Unit\Classes\RejectBehavior;
 use Tests\Unit\Classes\RequireThingBehavior;
 use Tests\Unit\Classes\UppercaseThingBehavior;
 
@@ -104,7 +101,7 @@ class ConfigTest extends TestCase
                 'child' => ['name' => 'alice'],
             ],
         ]);
-        
+
         $this->assertEquals($root, $root->root());
         $this->assertEquals($root, $root->child->root());
         $this->assertEquals($root, $root->child->child->root());
@@ -143,7 +140,7 @@ class ConfigTest extends TestCase
                 'name' => 'alice',
             ],
         ]);
-        
+
         $this->assertEquals([
             'children' => [
                 [
@@ -162,7 +159,7 @@ class ConfigTest extends TestCase
                 'bob' => ['age' => 40],
             ],
         ]);
-        
+
         $this->assertEquals('alice', $parent->keyed_children[0]->name);
         $this->assertEquals(35, $parent->keyed_children[0]->age);
 
@@ -179,13 +176,13 @@ class ConfigTest extends TestCase
                 ['name' => 'cindy', 'age' => 45, 'order' => 0],
             ],
         ]);
-        
+
         $this->assertEquals('cindy', $parent->keyed_children[0]->name);
         $this->assertEquals(45, $parent->keyed_children[0]->age);
 
         $this->assertEquals('bob', $parent->keyed_children[1]->name);
         $this->assertEquals(40, $parent->keyed_children[1]->age);
-        
+
         $this->assertEquals('alice', $parent->keyed_children[2]->name);
         $this->assertEquals(35, $parent->keyed_children[2]->age);
     }
@@ -215,7 +212,7 @@ class ConfigTest extends TestCase
                     'keyed_children' => [
                         'foo' => [],
                         'bar' => ['name' => 'cindy'],
-                    ]
+                    ],
                 ];
             }
         };
@@ -242,7 +239,7 @@ class ConfigTest extends TestCase
         ]);
 
         $grandchild = $parent->child->child;
-        
+
         $this->assertInstanceOf(Child::class, $grandchild->climb(fn ($p) => $p->depth === 1));
 
         $this->assertInstanceOf(ParentConfig::class, $grandchild->climb(fn ($p) => $p->depth === 0));
@@ -285,11 +282,11 @@ class ConfigTest extends TestCase
         ]);
 
         $descendents = [];
-        
+
         $parent->descend(function ($child) use (&$descendents) {
             $descendents[] = $child->id;
         });
-        
+
         $this->assertEquals(['bar', 'baz', 'qux'], $descendents);
     }
 
@@ -306,7 +303,7 @@ class ConfigTest extends TestCase
         };
 
         $this->expectException(ConfigValidationException::class);
-        
+
         $config->validate();
     }
 
@@ -319,7 +316,7 @@ class ConfigTest extends TestCase
         ]);
 
         $this->expectException(ConfigValidationException::class);
-        
+
         $parent->validate();
     }
 
@@ -361,7 +358,7 @@ class ConfigTest extends TestCase
                 'bar' => [],
             ],
         ]);
-        
+
         $this->assertEquals([
             'keyed_children' => [
                 ['id' => 'foo'],
@@ -391,7 +388,6 @@ class ConfigTest extends TestCase
 
         $this->assertEquals($config->uppercase_name, 'ALICE');
     }
-
 
     public function test_config_path_for_direct_child()
     {
@@ -513,7 +509,7 @@ class ConfigTest extends TestCase
                 ];
             }
         };
-        
+
         $config->befriend('Bird person');
 
         $this->assertEquals('Bird person', $config->friend);
@@ -524,7 +520,7 @@ class ConfigTest extends TestCase
         $config = DefaultUpperThing::create([
             'thing' => 'hello world',
         ]);
-        
+
         $this->assertEquals([
             'upper_thing' => 'HELLO WORLD',
             'thing' => 'hello world',
@@ -581,7 +577,7 @@ class ConfigTest extends TestCase
                 ];
             }
         };
-        
+
         $this->assertEquals('HELLO WORLD', $config->thing);
     }
 
@@ -613,7 +609,7 @@ class ConfigTest extends TestCase
         };
 
         $n = mt_rand() / mt_getrandmax();
-        
+
         $this->assertEquals($n, $config->identity($n));
     }
 
@@ -635,7 +631,7 @@ class ConfigTest extends TestCase
         };
 
         $n = mt_rand() / mt_getrandmax();
-        
+
         $this->assertEquals('oops', $config->identity($n));
     }
 
@@ -676,7 +672,7 @@ class ConfigTest extends TestCase
                 ];
             }
         };
-        
+
         $this->assertEquals('alice', $alice->child->name);
 
         $bob = new class extends Config
@@ -698,7 +694,7 @@ class ConfigTest extends TestCase
                 ];
             }
         };
-        
+
         $this->assertNull($bob->child);
     }
 

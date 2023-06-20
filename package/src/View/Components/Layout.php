@@ -6,20 +6,19 @@ use Bedard\Backend\Classes\ViteManifest;
 use Bedard\Backend\Config\Backend;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class Layout extends Component
 {
     /**
      * Construct
      *
-     * @param ?bool $padded
+     * @param  ?bool  $padded
      */
     public function __construct(
         public bool $padded = false,
-    ) {}
+    ) {
+    }
 
     /**
      * Render
@@ -35,7 +34,7 @@ class Layout extends Component
         $backend = Backend::create(config('backend.backend_directories'));
 
         $user = auth()->user();
-        
+
         return view('backend::components.layout', [
             'backend' => $backend,
             'dev' => $dev,

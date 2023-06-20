@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Classes;
 
-use Bedard\Backend\Config\Config;
 use Bedard\Backend\Config\Behaviors\Permissions;
+use Bedard\Backend\Config\Config;
 
 class RestrictedThing extends Config
 {

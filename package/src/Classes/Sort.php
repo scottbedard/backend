@@ -28,8 +28,8 @@ class Sort
     /**
      * Construct
      *
-     * @param string $url
-     * @param string $id
+     * @param  string  $url
+     * @param  string  $id
      */
     public function __construct(string $url, ?string $column = null)
     {
@@ -42,9 +42,9 @@ class Sort
         }
 
         $query = [];
-        
+
         parse_str($parts['query'], $query);
-        
+
         if (!array_key_exists('sort', $query)) {
             return;
         }
@@ -61,7 +61,7 @@ class Sort
     /**
      * Static constructor
      *
-     * @param mixed ...$args
+     * @param  mixed  ...$args
      *
      * @return static
      */

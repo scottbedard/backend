@@ -5,8 +5,6 @@ namespace Bedard\Backend\Config\Plugins\List;
 use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigException;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class Column extends Config
 {
@@ -63,7 +61,7 @@ class Column extends Config
         if ($this->sort->direction === 1) {
             return urldecode($req->fullUrlWithQuery(['sort' => "{$this->id},desc"]));
         }
-            
+
         if ($this->sort->direction === -1) {
             $url = $req->fullUrlWithQuery(['sort' => null]);
 

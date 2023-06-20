@@ -11,14 +11,15 @@ class Icon extends Component
     /**
      * Create a new component instance.
      *
-     * @param string $name
+     * @param  string  $name
      *
      * @return void
      */
     public function __construct(
         public string $name,
         public string|int $size = 24,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

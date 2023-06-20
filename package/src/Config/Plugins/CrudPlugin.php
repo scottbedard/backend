@@ -2,11 +2,9 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
-use Bedard\Backend\Config\Backend;
 use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Config;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class CrudPlugin extends Plugin
 {
@@ -27,9 +25,9 @@ class CrudPlugin extends Plugin
     /**
      * Create plugin instance
      *
-     * @param array $config
-     * @param Config $parent
-     * @param ?string $configPath
+     * @param  array  $config
+     * @param  Config  $parent
+     * @param  ?string  $configPath
      */
     public function __construct(array $config = [], Config $parent = null, string $configPath = null)
     {
@@ -78,7 +76,7 @@ class CrudPlugin extends Plugin
             'columns' => $this->columns,
             'models' => $this->models,
         ];
-        
+
         $list = ListPlugin::create($props, $this);
 
         $list->validate();
@@ -116,7 +114,7 @@ class CrudPlugin extends Plugin
 
             throw new \Exception("edit [$id]");
         }
-        
+
         throw new \Exception('404');
     }
 }
