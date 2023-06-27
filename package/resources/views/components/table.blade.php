@@ -2,11 +2,11 @@
   {{-- mobile table --}}
   <div class="grid text-sm @3xl:hidden">
     @foreach ($paginator->items() as $item)
-      <a class="border-t border-danger-500 py-1 px-3 last:border-b hover:bg-primary-300/20" href="javascript:;">
-        <table class="border-separate border-spacing-1">
+      <a class="border-t border-gray-300 py-2 px-3 last:border-b hover:bg-primary-300/20" href="javascript:;">
+        <table class="border-separate border-spacing-y-1">
           @foreach ($columns as $column)
           <tr>
-            <td class="font-semibold">{{ $column->label }}</td>
+            <td class="pr-6 font-semibold">{{ $column->label }}</td>
             <td>{{ $column->type->render($item) }}</td>
           </tr>
           @endforeach
