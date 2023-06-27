@@ -66,6 +66,24 @@ class CrudPlugin extends Plugin
     }
 
     /**
+     * Form
+     *
+     * @return \Bedard\Backend\Config\Plugins\FormPlugin
+     */
+    public function form()
+    {
+        $props = [
+            // ...
+        ];
+
+        $form = FormPlugin::create($props, $this);
+
+        $form->validate();
+
+        return $form;
+    }
+
+    /**
      * List
      *
      * @return \Bedard\Backend\Config\Plugins\ListPlugin
@@ -76,7 +94,7 @@ class CrudPlugin extends Plugin
             'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
             'models' => $this->models,
-            'row_to' => $this->row_to,
+            'row_to' => $this->row_to ?: ':backend/:controller/:route/edit/{id}',
         ];
 
         $list = ListPlugin::create($props, $this);
@@ -112,9 +130,7 @@ class CrudPlugin extends Plugin
         }
 
         if ($path->is('edit/*')) {
-            $id = $path->after('edit/')->before('/');
-
-            throw new \Exception("edit [$id]");
+            return $this->form()->handle($request);
         }
 
         throw new \Exception('404');

@@ -47,6 +47,7 @@ class ListPlugin extends Plugin
             'checkboxes' => ['present', 'boolean'],
             'columns' => ['present', 'array'],
             'model' => ['required', 'string'],
+            'row_to' => ['present', 'nullable', 'string'],
         ];
     }
 
@@ -59,6 +60,7 @@ class ListPlugin extends Plugin
     {
         return [
             'columns' => [],
+            'row_to' => null,
         ];
     }
 

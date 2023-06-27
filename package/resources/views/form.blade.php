@@ -1,5 +1,6 @@
 <x-backend::layout padded>
-  <div class="gap-6 grid">
+  Forms coming soon
+  {{-- <div class="gap-6 grid">
     <x-backend::grid padded>
       @foreach ($fields as $field)
         <x-backend::grid-cell :span="$field->get('span', 12)">
@@ -20,5 +21,5 @@
         </x-backend::button>
       @endforeach
     </div>
-  </div>
+  </div> --}}
 </x-backend::layout>

@@ -39,10 +39,10 @@ class To
 
             $ctrl = $backend->controller($controllerId);
 
-            if (is_string($ctrl)) {
+            if ($ctrl) {
                 $route = $ctrl->route($routeId);
 
-                if (is_string($route)) {
+                if ($route) {
                     return route('backend.controller.route', [
                         'controllerOrRoute' => $ctrl->path,
                         'route' => $route->path,

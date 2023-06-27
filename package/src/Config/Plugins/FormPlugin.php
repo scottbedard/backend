@@ -15,6 +15,6 @@ class FormPlugin extends Plugin
      */
     public function handle(Request $request)
     {
-        throw new \Exception('Not implemented');
+        return view('backend::form');
     }
 }
