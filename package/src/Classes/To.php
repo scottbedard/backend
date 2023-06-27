@@ -2,12 +2,12 @@
 
 namespace Bedard\Backend\Classes;
 
-use Bedard\Backend\Config\Config;
+use Bedard\Backend\Config\Backend;
 use Illuminate\Support\Facades\Route;
 
 class To
 {
-    public static function href($to, Config $config)
+    public static function href($to, ?Backend $backend = null)
     {
         if (!is_string($to)) {
             return $to;
@@ -17,15 +17,13 @@ class To
             return route($to);
         }
 
-        if (str($to)->is('backend.*.*')) {
+        if ($backend && str($to)->is('backend.*.*')) {
             [, $controllerId, $routeId] = explode('.', $to);
 
-            $controller = $config->root()->controller($controllerId);
+            $controller = $backend->controller($controllerId);
 
             if ($controller) {
-                $route = $controller
-                    ->routes
-                    ->first(fn ($r) => $r->id === $routeId);
+                $route = $controller->route($routeId);
 
                 if ($route) {
                     return route('backend.controller.route', [

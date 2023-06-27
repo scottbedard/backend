@@ -35,7 +35,7 @@ Route::get('/login', function () {
         if ($model) {
             auth()->login($model);
 
-            return redirect(route('backend.controller.route'));
+            return redirect(route('backend.controllerOrRoute.route'));
         }
     }
 
@@ -49,5 +49,9 @@ Route::get('/login', function () {
         'user' => $user,
     ]);
 })->name('login');
+
+Route::get('/200', function () {
+    return response('', 200);
+})->name('status.200');
 
 require __DIR__ . '/auth.php';
