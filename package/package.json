@@ -14,6 +14,7 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
     "@types/node": "^20.3.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.14",
