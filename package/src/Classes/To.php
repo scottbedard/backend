@@ -2,7 +2,6 @@
 
 namespace Bedard\Backend\Classes;
 
-use ArrayAccess;
 use Bedard\Backend\Config\Backend;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +23,7 @@ class To
         ?Backend $backend = null,
         ?string $controller = null,
         ?string $route = null,
-        ?ArrayAccess $data = null,
+        $data = null,
     )
     {
         if (!is_string($to)) {
@@ -38,14 +37,14 @@ class To
         if ($backend && str($to)->is('backend.*.*')) {
             [, $controllerId, $routeId] = explode('.', $to);
 
-            $controller = $backend->controller($controllerId);
+            $ctrl = $backend->controller($controllerId);
 
-            if (is_string($controller)) {
-                $route = $controller->route($routeId);
+            if (is_string($ctrl)) {
+                $route = $ctrl->route($routeId);
 
                 if (is_string($route)) {
                     return route('backend.controller.route', [
-                        'controllerOrRoute' => $controller->path,
+                        'controllerOrRoute' => $ctrl->path,
                         'route' => $route->path,
                     ]);
                 }
@@ -60,8 +59,8 @@ class To
                     ':route',
                 ], [
                     config('backend.path', ''),
-                    $controller?->path ?? '',
-                    $route?->path ?? '',
+                    $controller ?? '',
+                    $route ?? '',
                 ])
                 ->explode('/')
                 ->map(function ($part) use ($data) {

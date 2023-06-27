@@ -4,7 +4,10 @@ namespace Bedard\Backend\Config\Plugins;
 
 use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Classes\To;
+use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Config\Plugins\List\Column;
+use Bedard\Backend\Config\Route;
 use Illuminate\Http\Request;
 
 class ListPlugin extends Plugin
@@ -82,9 +85,9 @@ class ListPlugin extends Plugin
         $hrefs = $paginator
             ->map(fn ($row) => To::href(
                 backend: $this->closest(Backend::class),
-                controller: $this->closest(Controller::class),
+                controller: $this->closest(Controller::class)?->path ?? '',
                 data: $row,
-                route: $this->closest(Route::class),
+                route: $this->closest(Route::class)?->path ?? '',
                 to: $this->row_to,
             ))
             ->toArray();
