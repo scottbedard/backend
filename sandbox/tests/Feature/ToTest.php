@@ -23,4 +23,19 @@ class ToTest extends TestCase
 
         $this->assertEquals(url('/backend/foo/bar'), $href);
     }
+
+    public function test_to_interpolate_href_data()
+    {
+        $backend = Backend::create(__DIR__ . '/stubs/to');
+
+        $href = To::href(
+            backend: $backend,
+            controller: 'foo',
+            route: 'bar',
+            to: ':backend/:controller/:route/edit/{id}',
+            data: ['id' => 123],
+        );
+        
+        $this->assertEquals(url('backend/foo/bar/edit/123'), $href);
+    }
 }

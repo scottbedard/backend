@@ -27,10 +27,7 @@ class Route extends Config
      */
     public function defineValidation(): array
     {
-        return [
-            // 'options' => ['array'],
-            // 'plugin' => ['string'],
-        ];
+        return [];
     }
 
     /**

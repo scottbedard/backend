@@ -53,6 +53,7 @@ routes:
                     sortable: true
                     type: date
             model: App\Models\User
+            row_to: :backend/:controller/:route/edit/{id}
 
     roles:
         plugin: crud

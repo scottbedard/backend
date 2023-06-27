@@ -6,6 +6,7 @@
 
     <x-backend::table
       :columns="$columns"
+      :hrefs="$hrefs"
       :paginator="$paginator" />
   </div>
 </x-backend::layout>

@@ -61,6 +61,7 @@ class CrudPlugin extends Plugin
             'checkboxes' => false,
             'columns' => [],
             'models' => [],
+            'row_to' => null,
         ];
     }
 
@@ -75,6 +76,7 @@ class CrudPlugin extends Plugin
             'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
             'models' => $this->models,
+            'row_to' => $this->row_to,
         ];
 
         $list = ListPlugin::create($props, $this);

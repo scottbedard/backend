@@ -1,8 +1,10 @@
 <div class="@container">
   {{-- mobile table --}}
   <div class="grid text-sm md:hidden">
-    @foreach ($paginator->items() as $item)
-      <a class="border-t border-gray-300 py-2 px-3 last:border-b hover:bg-primary-300/20" href="javascript:;">
+    @foreach ($paginator->items() as $index => $item)
+      <a
+        class="border-t border-gray-300 py-2 px-3 last:border-b hover:bg-primary-300/20"
+        href="{{ $hrefs[$index] }}">
         <table class="border-separate border-spacing-y-1">
           @foreach ($columns as $column)
           <tr>
@@ -51,10 +53,10 @@
       @endforeach
     </div>
 
-    @foreach ($paginator->items() as $item)
+    @foreach ($paginator->items() as $index => $item)
       <a
         class="table-row group hover:bg-primary-300/20 last:border-b"
-        href="javascript:;">
+        href="{{ $hrefs[$index] }}">
         @foreach ($columns as $column)
           <div @class([
             'align-middle border-t border-gray-300 h-14 px-3 py-2 table-cell group-last:border-b first:pl-6 last:pr-6',

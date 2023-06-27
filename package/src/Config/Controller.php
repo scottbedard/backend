@@ -58,4 +58,16 @@ class Controller extends Config
             'subnav' => [],
         ];
     }
+
+    /**
+     * Get route by ID
+     *
+     * @return ?\Bedard\Backend\Config\Route
+     */
+    public function route(string $routeId): ?Route
+    {
+        return $this
+            ->routes
+            ->first(fn ($route) => $route->id === $routeId);
+    }
 }
