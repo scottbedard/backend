@@ -1,6 +1,6 @@
 <div class="@container">
   {{-- mobile table --}}
-  <div class="grid text-sm @3xl:hidden">
+  <div class="grid text-sm md:hidden">
     @foreach ($paginator->items() as $item)
       <a class="border-t border-gray-300 py-2 px-3 last:border-b hover:bg-primary-300/20" href="javascript:;">
         <table class="border-separate border-spacing-y-1">
@@ -16,7 +16,7 @@
   </div>
 
   {{-- full table --}}
-  <div class="hidden w-full @3xl:table">
+  <div class="hidden w-full md:table">
     <div class="table-row">
       @foreach ($columns as $column)
         <div
@@ -53,11 +53,11 @@
 
     @foreach ($paginator->items() as $item)
       <a
-        class="table-row hover:bg-primary-300/20"
+        class="table-row group hover:bg-primary-300/20 last:border-b"
         href="javascript:;">
         @foreach ($columns as $column)
           <div @class([
-            'align-middle border-t border-gray-300 h-12 px-3 py-2 table-cell first:pl-6 last:pr-6',
+            'align-middle border-t border-gray-300 h-14 px-3 py-2 table-cell group-last:border-b first:pl-6 last:pr-6',
             'text-center' => $column->align === 'center',
             'text-right' => $column->align === 'right',
           ])>
@@ -69,8 +69,8 @@
   </div>
 
   {{-- pagination controls --}}
-  <div class="flex flex-wrap gap-x-6 gap-y-2 min-h-12 items-center justify-center px-6 py-2 text-center text-sm 3xl:justify-end 3xl:flex-nowrap">
-    <div class="w-full 3xl:w-auto">
+  <div class="flex flex-wrap gap-x-6 gap-y-2 min-h-12 items-center justify-center px-6 py-3 text-center text-sm md:justify-end md:flex-nowrap">
+    <div class="w-full md:w-auto">
       Displaying {{ number_format($paginator->firstItem()) }} - {{ number_format($paginator->lastItem()) }} of {{ number_format($paginator->total()) }}
     </div>
 
