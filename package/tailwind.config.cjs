@@ -34,12 +34,6 @@ module.exports = {
         sans: 'Quicksand, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
     },
-    safelist: [
-      {
-        pattern: /col-span-\d{1,2}/,
-        variants: Object.keys(screens),
-      },
-    ],
     screens: screens,
   },
   plugins: [

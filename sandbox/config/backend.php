@@ -140,5 +140,6 @@ return [
 
     'fields' => [
         'blade' => \Bedard\Backend\Config\Plugins\Form\BladeField::class,
+        'date' => \Bedard\Backend\Config\Plugins\Form\DateField::class,
     ],
 ];

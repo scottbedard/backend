@@ -12,9 +12,9 @@ class BladeField extends ColumnType
      *
      * @param  Model  $model
      *
-     * @return Illuminate\View\View|string
+     * @return Illuminate\View\View
      */
-    public function render(Model $model): View|string
+    public function render(Model $model): View
     {
         return view($this->__parent->view, [
             'model' => $model,

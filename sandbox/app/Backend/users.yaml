@@ -63,9 +63,11 @@ routes:
                 created_at:
                     label: Signed up
                     span: 6
+                    type: date
                 updated_at:
                     label: Last seen
                     span: 6
+                    type: date
             model: App\Models\User
 
     roles:

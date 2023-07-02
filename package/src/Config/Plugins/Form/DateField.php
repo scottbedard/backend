@@ -2,11 +2,10 @@
 
 namespace Bedard\Backend\Config\Plugins\Form;
 
-use Bedard\Backend\Config\Plugins\Form\Field;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 
-class TextField extends FieldType
+class DateField extends FieldType
 {
     /**
      * Render
@@ -15,10 +14,11 @@ class TextField extends FieldType
      *
      * @return Illuminate\View\View
      */
-    public function render(?Model $model = null): View
+    public function render(Model $model = null): View
     {
-        return view('backend::form.text-field', [
+        return view('backend::form.date-field', [
             'field' => $this->closest(Field::class),
+            'model' => $model,
         ]);
     }
 }
