@@ -7,7 +7,7 @@ const gridCellEls = document.querySelectorAll<HTMLElement>('[data-backend-grid-c
 const resize = () => {
   const width = window.innerWidth
 
-  let screen: TailwindScreen = 'xs'
+  let screen: TailwindScreen | null = null
 
   sortedScreens.forEach(([key, value]) => {
     if (width >= value) {
@@ -22,8 +22,10 @@ const resize = () => {
       if (json) {
         const span = parse(json)
         
-        if (screen in span) {
-          el.style.gridColumnEnd = `span ${span[screen]}`
+        if (screen && screen in span) {
+          el.style.gridColumn = `span ${span[screen]} / span ${span[screen]}`
+        } else {
+          el.style.gridColumn = '1 / -1'
         }
       }
     } catch {}

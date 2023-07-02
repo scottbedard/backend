@@ -38,5 +38,9 @@
     @if ($field->required)
       required
     @endif
+
+    @if ($field->type)
+      type="{{ $field->type }}"
+    @endif
   />
 </div>

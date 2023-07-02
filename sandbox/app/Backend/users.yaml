@@ -56,9 +56,12 @@ routes:
                 id:
                     label: ID
                     readonly: true
-                    span: 6
                 email:
+                    type: email
                     label: Email
+                    placeholder: Email address
+                    span: 6
+                name:
                     span: 6
                 created_at:
                     label: Signed up

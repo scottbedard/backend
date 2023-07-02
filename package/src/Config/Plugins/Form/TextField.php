@@ -18,7 +18,7 @@ class TextField extends FieldType
     public function render(?Model $model = null): View
     {
         return view('backend::form.text-field', [
-            'field' => $this->closest(Field::class),
+            'field' => $this,
         ]);
     }
 }

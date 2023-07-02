@@ -44,22 +44,18 @@ class Field extends Config
     {
         $type = data_get($this->__config, 'type');
 
-        if (!is_string($type)) {
-            return TextField::create($this->__config, $this, 'type');
-        }
+        if (is_string($type)) {
+            if (class_exists($type)) {
+                return $type::create($this->__config, $this, 'type');
+            }
 
-        if (class_exists($type)) {
-            return $type::create($this->__config, $this, 'type');
-        }
-
-        foreach (config('backend.fields') as $alias => $class) {
-            if (trim(strtolower($type)) === trim(strtolower($alias))) {
-                return $class::create($this->__config, $this, 'type');
+            foreach (config('backend.fields') as $alias => $class) {
+                if (trim(strtolower($type)) === trim(strtolower($alias))) {
+                    return $class::create($this->__config, $this, 'type');
+                }
             }
         }
 
-        $path = $this->getConfigPath();
-
-        throw new ConfigException("{$path}: Invalid field type [{$type}]");
+        return TextField::create($this->__config, $this, 'type');
     }
 }
