@@ -52,6 +52,20 @@ routes:
                     label: Last seen
                     sortable: true
                     type: date
+            fields:
+                id:
+                    label: ID
+                    readonly: true
+                    span: 6
+                email:
+                    label: Email
+                    span: 6
+                created_at:
+                    label: Signed up
+                    span: 6
+                updated_at:
+                    label: Last seen
+                    span: 6
             model: App\Models\User
 
     roles:

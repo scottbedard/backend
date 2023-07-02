@@ -36,7 +36,6 @@ class Column extends Config
             'id' => null,
             'label' => null,
             'sortable' => false,
-            'span' => 12,
             'type' => null,
         ];
     }

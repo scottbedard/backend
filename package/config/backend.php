@@ -139,6 +139,6 @@ return [
     */
 
     'fields' => [
-        // ...
+        'blade' => \Bedard\Backend\Config\Plugins\Form\BladeField::class,
     ],
 ];

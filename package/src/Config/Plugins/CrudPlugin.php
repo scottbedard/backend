@@ -60,6 +60,7 @@ class CrudPlugin extends Plugin
         return [
             'checkboxes' => false,
             'columns' => [],
+            'fields' => [],
             'models' => [],
             'row_to' => null,
         ];
@@ -73,7 +74,7 @@ class CrudPlugin extends Plugin
     public function form()
     {
         $props = [
-            // ...
+            'fields' => $this->fields,
         ];
 
         $form = FormPlugin::create($props, $this);

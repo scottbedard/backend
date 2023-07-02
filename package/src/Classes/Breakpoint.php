@@ -18,7 +18,7 @@ class Breakpoint
             return [
                 'xs' => $cols,
                 'sm' => $cols,
-                'md' => $cols,
+                'md' => $span,
                 'lg' => $span,
                 'xl' => $span,
                 '2xl' => $span,

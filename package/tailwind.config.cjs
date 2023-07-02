@@ -1,5 +1,14 @@
 const colors = require('tailwindcss/colors')
 
+const screens = {
+  'xs': '480px',
+  'sm': '640px',
+  'md': '768px',
+  'lg': '1024px',
+  'xl': '1280px',
+  '2xl': '1536px',
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -25,14 +34,13 @@ module.exports = {
         sans: 'Quicksand, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
     },
-    screens: {
-      'xs': '480px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
-    },
+    safelist: [
+      {
+        pattern: /col-span-\d{1,2}/,
+        variants: Object.keys(screens),
+      },
+    ],
+    screens: screens,
   },
   plugins: [
     require('@tailwindcss/container-queries'),
