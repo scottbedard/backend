@@ -17,8 +17,8 @@ class DateField extends FieldType
     public function render(Model $model = null): View
     {
         return view('backend::form.date-field', [
-            'field' => $this->closest(Field::class),
-            'model' => $model,
+            'field' => $this,
+            'value' => $this->value($model),
         ]);
     }
 }

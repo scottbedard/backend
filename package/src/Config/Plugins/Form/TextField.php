@@ -19,6 +19,7 @@ class TextField extends FieldType
     {
         return view('backend::form.text-field', [
             'field' => $this,
+            'value' => $this->value($model),
         ]);
     }
 }

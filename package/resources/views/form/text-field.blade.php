@@ -3,6 +3,19 @@
 
   <input
     class="border border-gray-300 h-11 px-3 rounded-md w-full"
+    value="{{ $value }}"
+    @if ($field->autocomplete)
+      autocomplete="{{ $field->autocomplete }}"
+    @endif
+
+    @if ($field->autofocus)
+      autofocus
+    @endif
+
+    @if ($field->disabled)
+      disabled
+    @endif
+
     @if ($field->placeholder)
       placeholder="{{ $field->placeholder }}"
     @endif

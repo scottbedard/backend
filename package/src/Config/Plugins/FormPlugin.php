@@ -20,6 +20,18 @@ class FormPlugin extends Plugin
     }
 
     /**
+     * Define inherits
+     *
+     * @return array
+     */
+    public function defineInherits(): array
+    {
+        return [
+            'model',
+        ];
+    }
+
+    /**
      * Define validation rules
      *
      * @return array
@@ -40,6 +52,7 @@ class FormPlugin extends Plugin
     {
         return [
             'fields' => [],
+            'key' => 'id',
         ];
     }
 
@@ -52,8 +65,33 @@ class FormPlugin extends Plugin
      */
     public function handle(Request $request)
     {
+        $path = str(
+            str($request->extra)
+                ->lower()
+                ->explode('/')
+                ->map(fn ($seg) => trim($seg))
+                ->implode('/')
+        );
+
+        $context = 'create';
+
+        $id = null;
+
+        $model = null;
+
+        if ($path->is('edit/*')) {
+            $context = 'edit';
+
+            $id = str($path)->match('/edit\/(.*)/');
+        }
+
+        if ($id) {
+            $model = $this->model::where($this->key, $id)->firstOrFail();
+        }
+
         return view('backend::form', [
             'fields' => $this->fields,
+            'model' => $model,
         ]);
     }
 }

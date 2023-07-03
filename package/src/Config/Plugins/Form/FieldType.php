@@ -38,4 +38,16 @@ class FieldType extends Config
             'id' => $this->id,
         ]);
     }
+
+    /**
+     * Value
+     *
+     * @param Model $model
+     *
+     * @return string
+     */
+    public function value(?Model $model = null)
+    {
+        return $model ? $model->{$this->id} : null;
+    }
 }
