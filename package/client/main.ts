@@ -1,3 +1,4 @@
+import '@/components/datepicker'
 import '@/components/grid'
 import '@/style.scss'
 import { createIcons, icons } from 'lucide'
