@@ -3,6 +3,7 @@
   
   <x-backend::datepicker
     :disabled="$field->disabled"
+    :format="$field->format"
     :placeholder="$field->placeholder"
     :readonly="$field->readonly"
     :required="$field->required"

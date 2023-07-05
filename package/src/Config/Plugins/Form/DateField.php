@@ -8,6 +8,30 @@ use Illuminate\View\View;
 class DateField extends FieldType
 {
     /**
+     * Define validation rules
+     *
+     * @return array
+     */
+    public function defineValidation(): array
+    {
+        return [
+            'format' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * Get default config
+     *
+     * @return array
+     */
+    public function getDefaultConfig(): array
+    {
+        return [
+            'format' => 'yyyy-MM-dd HH:mm:ss',
+        ];
+    }
+
+    /**
      * Render
      *
      * @param  Model  $model

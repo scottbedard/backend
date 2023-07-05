@@ -1,5 +1,6 @@
 <div
   class="relative"
+  data-backend-datepicker-format="{{ isset($format) ? $format : '' }}"
   data-backend-datepicker="{{ $value->toDateTimeString() }}">
   <x-backend::input
     :disabled="isset($disabled) ? (bool) $disabled : false"
