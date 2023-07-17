@@ -61,6 +61,7 @@ class CrudPlugin extends Plugin
             'checkboxes' => false,
             'columns' => [],
             'fields' => [],
+            'form_actions' => [],
             'models' => [],
             'row_to' => null,
         ];
@@ -74,6 +75,7 @@ class CrudPlugin extends Plugin
     public function form()
     {
         $props = [
+            'actions' => $this->form_actions,
             'fields' => $this->fields,
         ];
 

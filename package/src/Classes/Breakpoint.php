@@ -46,4 +46,12 @@ class Breakpoint
             '2xl' => $xxl,
         ];
     }
+
+    /**
+     * Return breakpoints as json
+     */
+    public static function json(...$args)
+    {
+        return json_encode(static::create(...$args));
+    }
 }

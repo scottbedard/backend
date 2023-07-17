@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
+use Bedard\Backend\Config\Plugins\Form\Action;
 use Bedard\Backend\Config\Plugins\Form\Field;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ class FormPlugin extends Plugin
     public function defineChildren(): array
     {
         return [
+            'actions' => [Action::class],
             'fields' => [Field::class, 'id'],
         ];
     }
@@ -39,6 +41,7 @@ class FormPlugin extends Plugin
     public function defineValidation(): array
     {
         return [
+            'actions' => ['present', 'array'],
             'fields' => ['present', 'array'],
         ];
     }
@@ -51,6 +54,7 @@ class FormPlugin extends Plugin
     public function getDefaultConfig(): array
     {
         return [
+            'actions' => [],
             'fields' => [],
             'key' => 'id',
         ];
@@ -90,6 +94,7 @@ class FormPlugin extends Plugin
         }
 
         return view('backend::form', [
+            'actions' => $this->actions,
             'fields' => $this->fields,
             'model' => $model,
         ]);

@@ -44,6 +44,10 @@ h1 {
   &.backend-btn-primary {
     @apply bg-primary-600 hover:bg-primary-600/90 hover:text-white;
   }
+
+  &.backend-btn-text {
+    @apply text-gray-900 hover:text-primary-500;
+  }
 }
 
 //

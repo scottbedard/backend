@@ -29,7 +29,6 @@ routes:
         options:
             to: backend.users.users
 
-
     users:
         plugin: crud
         options:
@@ -68,10 +67,28 @@ routes:
                     label: Signed up
                     span: 6
                     type: date
+                    format: MMMM do yyyy, h:mm:ss a
                 updated_at:
                     label: Last seen
                     span: 6
                     type: date
+            form_actions:
+                -
+                    icon: arrow-left
+                    label: Cancel
+                    secondary: true
+                    theme: text
+                    to: login
+                -
+                    action: delete
+                    label: Delete
+                    icon: trash-2
+                -
+                    type: submit
+                    icon: save
+                    label: Save user
+                    to: backend.users.users
+                    theme: primary
             model: App\Models\User
 
     roles:

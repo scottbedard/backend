@@ -1,3 +1,5 @@
-<div data-backend-grid-cell="{{ json_encode($span) }}" {{ $attributes->merge() }}>
+<div
+  data-backend-grid-cell="{{ \Bedard\Backend\Classes\Breakpoint::json($span) }}"
+  {{ $attributes->merge() }}>
   {{ $slot }}
 </div>

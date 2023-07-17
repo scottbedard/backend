@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="visible"
-    class="absolute border border-gray-300 gap-3 max-w-xs my-3 p-3 right-0 rounded-md text-sm w-full"
+    class="absolute bg-white border border-gray-300 gap-3 max-w-xs my-3 p-3 right-0 rounded-md text-sm w-full"
     key="days">
 
     <!-- days -->
@@ -34,6 +34,7 @@
           'text-gray-400 hover:text-gray-500': day < cursorMonthStart || day > cursorMonthEnd,
           'bg-primary-100 hover:bg-primary-200': startOfDay(day).getTime() === startOfDay(currentDate).getTime(),
         }]"
+        :data-date="day"
         @click="currentDate = day" />
     </div>
 
@@ -73,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-import { addDays, addMonths, addYears, differenceInDays, endOfMonth, endOfWeek, format, parse, setMonth, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns'
+import { addDays, addMonths, addYears, differenceInDays, endOfMonth, endOfWeek, format, getHours, getMinutes, getSeconds, parse, setHours, setMinutes, setMonth, setSeconds, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns'
 import { ChevronLeft, ChevronRight } from 'lucide'
 import { computed, ref } from 'vue'
 import { datetime } from '@/utils'
@@ -93,14 +94,14 @@ enum Screen {
 
 const screen = ref(Screen.Days)
 
-// date format
-const dateFormat = computed(() => props.targetEl.dataset.backendDatepickerFormat || 'yyyy-MM-dd hh:mm:ss')
+// input element
+const inputEl = computed(() => props.targetEl.querySelector('input'))
 
 // visibility toggle
 const visible = ref(false)
 
 // current date
-const _currentDate = ref(parse(datetime(props.targetEl.dataset.backendDatepicker), 'yyyy-MM-dd hh:mm:ss', new Date()))
+const _currentDate = ref(parse(datetime(inputEl.value?.value), 'yyyy-MM-dd hh:mm:ss', new Date()))
 
 const currentDate = computed({
   get() {
@@ -110,7 +111,7 @@ const currentDate = computed({
     const inputEl = props.targetEl.querySelector('input')
 
     if (inputEl) {
-      inputEl.value = format(d, dateFormat.value)
+      inputEl.value = format(d, 'yyyy-MM-dd hh:mm:ss')
     }
 
     _currentDate.value = d
@@ -129,7 +130,12 @@ const calendarDays = computed(() => {
 
   const to = addDays(endOfWeek(endOfMonth(cursorDate.value)), 1)
 
-  return range(differenceInDays(to, from)).map((n: number) => addDays(from, n))
+  const h = getHours(cursorDate.value)
+  const m = getMinutes(cursorDate.value)
+  const s = getSeconds(cursorDate.value)
+
+  return range(differenceInDays(to, from))
+    .map((n: number) => setSeconds(setMinutes(setHours(addDays(from, n), h), m), s))
 })
 
 // setter utils

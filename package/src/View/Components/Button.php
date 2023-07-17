@@ -2,7 +2,10 @@
 
 namespace Bedard\Backend\View\Components;
 
-use Bedard\Backend\Classes\Href;
+use Bedard\Backend\Classes\To;
+use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Config\Controller;
+use Bedard\Backend\Config\Route;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -31,10 +34,12 @@ class Button extends Component
      */
     public function render(): View|Closure|string
     {
-        $href = $this->href ?? Href::format($this->to);
+        $href = '';
+        $theme = $this->theme;
 
         return view('backend::components.button', [
             'href' => $href,
+            'theme' => $theme,
         ]);
     }
 }

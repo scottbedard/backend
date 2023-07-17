@@ -7,6 +7,7 @@
         'backend-btn-danger' => $theme === 'danger',
         'backend-btn-default' => $theme === 'default',
         'backend-btn-primary' => $theme === 'primary',
+        'backend-btn-text' => $theme === 'text',
       ])
     }}>
     @if ($icon)
@@ -22,6 +23,7 @@
       'backend-btn-danger' => $theme === 'danger',
       'backend-btn-default' => $theme === 'default',
       'backend-btn-primary' => $theme === 'primary',
+      'backend-btn-text' => $theme === 'text',
     ])
   }}>
     @if ($icon)
