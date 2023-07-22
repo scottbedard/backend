@@ -14,7 +14,7 @@ class BreakpointTest extends TestCase
         $this->assertEquals([
             'xs' => 12,
             'sm' => 12,
-            'md' => 12,
+            'md' => 6,
             'lg' => 6,
             'xl' => 6,
             '2xl' => 6,
