@@ -84,11 +84,10 @@ routes:
                     label: Delete
                     icon: trash-2
                 -
-                    type: submit
                     icon: save
                     label: Save user
-                    to: backend.users.users
                     theme: primary
+                    type: submit
             model: App\Models\User
 
     roles:

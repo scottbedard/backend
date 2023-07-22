@@ -18,6 +18,7 @@ class Grid extends Component
     public function __construct(
         public bool $padded = false,
         public int $cols = 12,
+        public string $tag = 'div',
     ) {
     }
 

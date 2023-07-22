@@ -10,6 +10,16 @@ use Bedard\Backend\Config\Plugins\Form\Field;
 class FieldType extends Config
 {
     /**
+     * Name
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return "model[{$this->id}]";
+    }
+
+    /**
      * Set field type
      *
      * @return string

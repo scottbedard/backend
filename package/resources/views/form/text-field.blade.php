@@ -9,6 +9,7 @@
     :maxlength="$field->maxlength"
     :min="$field->min"
     :minlength="$field->minlength"
+    :name="$field->name"
     :pattern="$field->pattern"
     :placeholder="$field->placeholder"
     :readonly="$field->readonly"

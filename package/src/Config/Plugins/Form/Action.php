@@ -13,6 +13,18 @@ use Illuminate\View\View;
 class Action extends Config
 {
     /**
+     * Define validation rules
+     *
+     * @return array
+     */
+    public function defineValidation(): array
+    {
+        return [
+            'type' => 'in:button,submit',
+        ];
+    }
+
+    /**
      * Get default config
      *
      * @return array
@@ -25,7 +37,7 @@ class Action extends Config
             'secondary' => false,
             'theme' => 'default',
             'to' => null,
-            'type' => 'submit',
+            'type' => 'button',
         ];
     }
 
