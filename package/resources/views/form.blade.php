@@ -1,8 +1,12 @@
 <x-backend::layout padded>
   <x-backend::grid
+    action=""
     id="backend-form"
+    method="post"
     padded
     tag="form">
+    @csrf
+
     @foreach ($fields as $field)
       <x-backend::grid-cell :span="$field->span">
         {{ $field->type->render($model) }}
@@ -22,7 +26,7 @@
             :theme="$action->theme"
             :type="$action->type"
             :value="$action->action">
-            {{ $action->label }} {{ $action->href }}
+            {{ $action->label }}
           </x-backend::button>
         @endforeach
       </div>
@@ -43,4 +47,6 @@
       </div>
     </x-backend::grid-cell>
   </x-backend::grid>
+
+  Flash message here
 </x-backend::layout>

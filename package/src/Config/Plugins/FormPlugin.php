@@ -2,6 +2,7 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
+use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Config\Plugins\Form\Action;
 use Bedard\Backend\Config\Plugins\Form\Field;
 use Illuminate\Http\Request;
@@ -43,6 +44,8 @@ class FormPlugin extends Plugin
         return [
             'actions' => ['present', 'array'],
             'fields' => ['present', 'array'],
+            'key' => ['required', 'string'],
+            'name' => ['present', 'nullable', 'string'],
         ];
     }
 
@@ -57,7 +60,19 @@ class FormPlugin extends Plugin
             'actions' => [],
             'fields' => [],
             'key' => 'id',
+            'name' => null,
         ];
+    }
+
+    public function getNameAttribute(): string
+    {
+        $name = data_get($this->__data, 'name');
+
+        if ($name) {
+            return $name;
+        }
+
+        return str(str($this->route()->plugin->model)->explode('\\')->last())->title();
     }
 
     /**
@@ -69,6 +84,7 @@ class FormPlugin extends Plugin
      */
     public function handle(Request $request)
     {
+        // normalize the route path and param
         $path = str(
             str($request->extra)
                 ->lower()
@@ -77,26 +93,53 @@ class FormPlugin extends Plugin
                 ->implode('/')
         );
 
-        $context = 'create';
+        $id = $path->is('edit/*')
+            ? $path->match('/edit\/(.*)/')
+            : null;
 
-        $id = null;
+        $model = $id
+            ? $this->model::where($this->key, $id)->first()
+            : null;
 
-        $model = null;
+        // show form on get
+        $method = $request->method();
 
-        if ($path->is('edit/*')) {
-            $context = 'edit';
-
-            $id = str($path)->match('/edit\/(.*)/');
+        if ($method === 'GET') {
+            return view('backend::form', [
+                'actions' => $this->actions,
+                'fields' => $this->fields,
+                'model' => $model,
+            ]);
         }
 
-        if ($id) {
-            $model = $this->model::where($this->key, $id)->firstOrFail();
+        // save or create a model
+        if ($request->method() === 'POST') {
+            $data = $request->all();
+
+            foreach ($data['model'] as $key => $value) {
+                $model->{$key} = $value;
+            }
+
+            if ($id) {
+                $model->save();
+            } else {
+                $model->create();
+            }
         }
 
-        return view('backend::form', [
-            'actions' => $this->actions,
-            'fields' => $this->fields,
-            'model' => $model,
+        // delete a model
+        else if ($request->method() === 'DELETE') {
+            throw new \Exception('Not implemented');
+        }
+
+        return to_route('backend.controller.route', [
+            'controllerOrRoute' => $request->route()->controllerOrRoute,
+            'extra' => $request->route()->extra,
+            'route' => $request->route()->route,
+        ])->with('message', [
+            'icon' => 'check',
+            'status' => 'success',
+            'text' => 'The ' . $this->name . ' was saved!',
         ]);
     }
 }

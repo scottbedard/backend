@@ -116,6 +116,10 @@ class CrudPlugin extends Plugin
      */
     public function handle(Request $request)
     {
+        if ($request->method() === 'POST') {
+            return $this->form()->handle($request);
+        }
+
         $path = str(
             str($request->extra)
                 ->lower()

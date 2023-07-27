@@ -24,6 +24,7 @@ module.exports = {
       gray: colors.slate,
       primary: colors.blue,
       secondary: colors.blue,
+      success: colors.emerald,
       transparent: 'transparent',
       warning: colors.yellow,
       white: '#fff',

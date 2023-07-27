@@ -13,7 +13,7 @@
       @endforeach
     @endif
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col relative">
     <script>
       window.context = {}
     </script>
@@ -75,6 +75,31 @@
         {{ $slot }}
       </main>
     </div>
+
+    <button popovertarget="my-popover">Open Popover</button>
+
+<div popover id="my-popover">Greetings, one and all!</div>
+
+    @if (session()->has('message'))
+      @php($message = session('message'))
+
+      <button
+        class="absolute left-1/2 -translate-x-1/2 px-3 py-6 w-full md:w-auto"
+        id="backend-flash-message">
+        <div @class([
+          'cursor-pointer flex gap-x-2 font-bold px-4 py-2 rounded-md shadow text-sm tracking-wide',
+          'bg-success-500 text-white hover:bg-success-400' => data_get($message, 'status', 'success') === 'success',
+        ])>
+          @if (session('message.icon'))
+            <div>
+              <x-backend::icon :name="session('message.icon')" size="24" />
+            </div>
+          @endif
+
+          {{ data_get($message, 'text', '')}}
+        </div>
+      </button>
+    @endif
 
     @if ($dev)
       <script type="module" src="http://localhost:3000/@@vite/client"></script>
