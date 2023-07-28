@@ -47,6 +47,4 @@
       </div>
     </x-backend::grid-cell>
   </x-backend::grid>
-
-  Flash message here
 </x-backend::layout>

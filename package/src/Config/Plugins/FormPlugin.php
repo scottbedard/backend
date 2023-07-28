@@ -45,7 +45,7 @@ class FormPlugin extends Plugin
             'actions' => ['present', 'array'],
             'fields' => ['present', 'array'],
             'key' => ['required', 'string'],
-            'name' => ['present', 'nullable', 'string'],
+            'model_name' => ['present', 'nullable', 'string'],
         ];
     }
 
@@ -60,11 +60,16 @@ class FormPlugin extends Plugin
             'actions' => [],
             'fields' => [],
             'key' => 'id',
-            'name' => null,
+            'model_name' => null,
         ];
     }
 
-    public function getNameAttribute(): string
+    /**
+     * Get name attribute
+     * 
+     * @return string
+     */
+    public function getModelNameAttribute(): string
     {
         $name = data_get($this->__data, 'name');
 
@@ -131,6 +136,8 @@ class FormPlugin extends Plugin
         else if ($request->method() === 'DELETE') {
             throw new \Exception('Not implemented');
         }
+        
+        
 
         return to_route('backend.controller.route', [
             'controllerOrRoute' => $request->route()->controllerOrRoute,
@@ -139,7 +146,7 @@ class FormPlugin extends Plugin
         ])->with('message', [
             'icon' => 'check',
             'status' => 'success',
-            'text' => 'The ' . $this->name . ' was saved!',
+            'text' => $this->modelName . ' ' . $id . ' has been saved!',
         ]);
     }
 }

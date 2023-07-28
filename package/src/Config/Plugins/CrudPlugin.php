@@ -62,6 +62,7 @@ class CrudPlugin extends Plugin
             'columns' => [],
             'fields' => [],
             'form_actions' => [],
+            'model_name' => null,
             'models' => [],
             'row_to' => null,
         ];
@@ -77,6 +78,7 @@ class CrudPlugin extends Plugin
         $props = [
             'actions' => $this->form_actions,
             'fields' => $this->fields,
+            'model_name' => $this->model_name,
         ];
 
         $form = FormPlugin::create($props, $this);
