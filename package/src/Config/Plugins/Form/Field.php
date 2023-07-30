@@ -2,9 +2,11 @@
 
 namespace Bedard\Backend\Config\Plugins\Form;
 
+use Bedard\Backend\Config\Behaviors\Permissions;
 use Bedard\Backend\Config\Behaviors\Span;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Exceptions\ConfigException;
+use Bedard\Backend\Rules\ColumnSpan;
 
 class Field extends Config
 {
@@ -16,7 +18,23 @@ class Field extends Config
     public function defineBehaviors(): array
     {
         return [
+            Permissions::class,
             Span::class,
+        ];
+    }
+
+    /**
+     * Define validation rules
+     *
+     * @return array
+     */
+    public function defineValidation(): array
+    {
+        return [
+            'label' => ['present', 'nullable', 'string'],
+            'rules' => ['present'],
+            'span' => ['required', new ColumnSpan],
+            'type' => ['present', 'nullable', 'string'],
         ];
     }
 
@@ -30,6 +48,7 @@ class Field extends Config
         return [
             'id' => null,
             'label' => null,
+            'rules' => [],
             'span' => 12,
             'type' => null,
         ];

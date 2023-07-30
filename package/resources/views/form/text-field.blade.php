@@ -3,7 +3,7 @@
 
   <x-backend::input
     :autocomplete="$field->autocomplete"
-    :autofocus="$field->autofocus"
+    :autofocus="$field->autofocus || session('message.property') === $field->id"
     :disabled="$field->disabled"
     :max="$field->max"
     :maxlength="$field->maxlength"

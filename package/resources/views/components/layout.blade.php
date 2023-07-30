@@ -76,23 +76,20 @@
       </main>
     </div>
 
-    <button popovertarget="my-popover">Open Popover</button>
-
-<div popover id="my-popover">Greetings, one and all!</div>
-
     @if (session()->has('message'))
       @php($message = session('message'))
-
+      @php($status = data_get($message, 'status'))
       <button
         class="absolute left-1/2 -translate-x-1/2 px-3 py-6 w-full md:w-auto"
         id="backend-flash-message">
         <div @class([
           'cursor-pointer flex gap-x-2 font-bold px-4 py-2 rounded-md shadow text-sm tracking-wide',
-          'bg-success-500 text-white hover:bg-success-400' => data_get($message, 'status', 'success') === 'success',
+          'bg-success-500 text-white hover:bg-success-400' => $status === 'success',
+          'bg-danger-500 text-white hover:bg-danger-400' => $status === 'error',
         ])>
           @if (session('message.icon'))
             <div>
-              <x-backend::icon :name="session('message.icon')" size="24" />
+              <x-backend::icon :name="session('message.icon')" size="20" />
             </div>
           @endif
 

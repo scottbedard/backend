@@ -6,6 +6,7 @@ use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Config\Plugins\Form\Action;
 use Bedard\Backend\Config\Plugins\Form\Field;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FormPlugin extends Plugin
 {
@@ -121,6 +122,30 @@ class FormPlugin extends Plugin
         if ($request->method() === 'POST') {
             $data = $request->all();
 
+            $validator = Validator::make($data['model'], $this->rules);
+     
+            if ($validator->fails()) {
+                $errorKey = null;
+                $errorMessage = null;
+
+                foreach ($validator->errors()->getMessages() as $key => $message) {
+                    $errorKey = $key;
+                    $errorMessage = $message[0];
+                    break;
+                }
+
+                return redirect()->back()->with([
+                    'errors' => $validator->errors(),
+                    'message' => [
+                        'icon' => 'alert-triangle',
+                        'property' => $errorKey,
+                        'status' => 'error',
+                        'text' => $errorMessage,
+                    ],
+                    'model' => $data['model'],
+                ]);
+            }
+
             foreach ($data['model'] as $key => $value) {
                 $model->{$key} = $value;
             }
@@ -136,8 +161,6 @@ class FormPlugin extends Plugin
         else if ($request->method() === 'DELETE') {
             throw new \Exception('Not implemented');
         }
-        
-        
 
         return to_route('backend.controller.route', [
             'controllerOrRoute' => $request->route()->controllerOrRoute,
@@ -148,5 +171,25 @@ class FormPlugin extends Plugin
             'status' => 'success',
             'text' => $this->modelName . ' ' . $id . ' has been saved!',
         ]);
+    }
+
+    /**
+     * Validate form data
+     *
+     * @return array
+     */
+    public function getRulesAttribute(): array
+    {
+        if (array_key_exists('rules', $this->__data)) {
+            return $this->__data['rules'];
+        }
+
+        $rules = [];
+        
+        foreach ($this->fields as $field) {
+            $rules[$field->id] = $field->rules;
+        }
+
+        return $rules;
     }
 }

@@ -58,6 +58,10 @@ class FieldType extends Config
      */
     public function value(?Model $model = null)
     {
+        if (session()->has('model')) {
+            return session('model.' . $this->id);
+        }
+
         return $model ? $model->{$this->id} : null;
     }
 }

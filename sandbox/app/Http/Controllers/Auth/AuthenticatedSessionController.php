@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect(route('backend.controller.route'));
+        return to_route('backend.controller.route');
     }
 
     /**
@@ -32,6 +32,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect(route('login'));
+        return to_route('login');
     }
 }

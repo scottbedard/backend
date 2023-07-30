@@ -57,10 +57,12 @@ routes:
                     label: ID
                 name:
                     placeholder: Name
+                    rules: required|string
                     span: 6
                 email:
                     label: Email
                     placeholder: Email address
+                    rules: required|email
                     span: 6
                     type: email
                 created_at:
