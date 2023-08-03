@@ -6,6 +6,12 @@
       <span>Log in</span>
     </h1>
 
+    @error('message')
+      <div class="text-center">
+        {{ $message }}
+      </div>
+    @enderror
+
     <x-card>
       <form
         action="{{ route('login') }}"
