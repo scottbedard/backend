@@ -4,6 +4,7 @@ namespace Bedard\Backend\Config\Plugins\Form;
 
 use Bedard\Backend\Classes\To;
 use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Config\Common\Confirmation;
 use Bedard\Backend\Config\Config;
 use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Config\Route;
@@ -13,6 +14,18 @@ use Illuminate\View\View;
 class Action extends Config
 {
     /**
+     * Define child config
+     *
+     * @return array
+     */
+    public function defineChildren(): array
+    {
+        return [
+            'confirmation' => Confirmation::class,
+        ];
+    }
+
+    /**
      * Define validation rules
      *
      * @return array
@@ -20,6 +33,7 @@ class Action extends Config
     public function defineValidation(): array
     {
         return [
+            'theme' => 'in:default,danger,primary,text',
             'type' => 'in:button,submit',
         ];
     }
