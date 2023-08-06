@@ -46,9 +46,4 @@ document
 
       app.mount(containerEl)
     })
-
-
-      console.log({ data })
-    document.body.appendChild(containerEl)
-    app.mount(containerEl)
   })
