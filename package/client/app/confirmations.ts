@@ -1,6 +1,6 @@
 import { ButtonTheme } from '@/types'
 import { createApp } from 'vue'
-import Confirmation from '@/components/confirmation.vue'
+import Confirmation from '@/components/Confirmation.vue'
 
 type Confirmation = {
   accept: string
@@ -8,10 +8,27 @@ type Confirmation = {
   theme: ButtonTheme
 }
 
+const mount = (data: Confirmation) => {
+  const containerEl = document.body.appendChild(document.createElement('div'))
+
+  const app = createApp(Confirmation, {
+    ...data,
+    onClose() {
+      app.unmount()
+
+      containerEl.remove()
+    },
+    onConfirm() {
+      console.log('confirm')
+    },
+  })
+
+  app.mount(containerEl)
+}
+
 document
   .querySelectorAll<HTMLElement>('[data-backend-confirmation]')
   .forEach(confirmationEl => {
-    // parse confirmation data
     let data: Confirmation = {
       accept: '',
       message: '',
@@ -25,25 +42,11 @@ document
       return;
     }
 
-    // mount the confirmation app with a teardown function
-    const containerEl = document.createElement('div')
-
-    const app = createApp(Confirmation, {
-      ...data,
-      onClose: () => {
-        app.unmount()
-
-        containerEl.remove()
-      },
-    })
-
-    const eventName = confirmationEl.tagName.toLowerCase() === 'FORM' ? 'submit' : 'click'
+    const eventName = confirmationEl.tagName.toLowerCase() === 'form' ? 'submit' : 'click'
 
     confirmationEl.addEventListener(eventName, e => {
       e.preventDefault()
 
-      document.body.appendChild(containerEl)
-
-      app.mount(containerEl)
+      mount(data)
     })
   })

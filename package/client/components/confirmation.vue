@@ -1,6 +1,6 @@
 <template>
   <dialog
-    class="p-0"
+    class="p-0 rounded-md shadow-2xl"
     ref="dialogEl"
     @click="close">
     
@@ -10,11 +10,12 @@
 
       <div class="flex justify-end">
         <button
-          :class="['backend-btn', {
+          :class="['backend-btn w-full md:w-auto', {
             'backend-btn-danger': theme === 'danger',
             'backend-btn-default': theme === 'default',
             'backend-btn-primary': theme === 'primary',
-          }]">
+          }]"
+          @click="$emit('confirm')">
           <Icon
             v-if="icon"
             :name="icon" />
@@ -34,6 +35,7 @@ import Icon from './Icon.vue'
 
 const emit = defineEmits<{
   (name: 'close'): void
+  (name: 'confirm'): void
 }>()
 
 const props = defineProps<{
@@ -55,3 +57,9 @@ function close(e: Event) {
   emit('close')
 }
 </script>
+
+<style scoped>
+dialog::backdrop {
+  @apply bg-gray-500/50;
+}
+</style>

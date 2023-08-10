@@ -6,12 +6,15 @@
 </template>
 
 <script lang="ts" setup>
-import { createElement } from 'lucide'
+import { createElement, createIcons, icons } from 'lucide'
+import { onMounted } from 'vue'
 
 const props = withDefaults(defineProps<{
   name: Parameters<typeof createElement>[0]
   size?: number | string
 }>(), {
-  size: 24,
+  size: 18,
 })
+
+onMounted(() => createIcons({ icons }))
 </script>
