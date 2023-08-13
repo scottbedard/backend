@@ -33,6 +33,7 @@ class Action extends Config
     public function defineValidation(): array
     {
         return [
+            'action' => 'present|nullable|string',
             'theme' => 'in:default,danger,primary,text',
             'type' => 'in:button,submit',
         ];
@@ -46,6 +47,7 @@ class Action extends Config
     public function getDefaultConfig(): array
     {
         return [
+            'action' => null,
             'icon' => null,
             'label' => null,
             'secondary' => false,

@@ -20,6 +20,7 @@
                 @foreach ($actions->where('secondary', true) as $action)
                 <x-backend::button
                     class="w-full"
+                    :backend-action="$action->action"
                     :confirmation="$action->confirmation"
                     :href="$action->href"
                     :icon="$action->icon"
@@ -35,6 +36,7 @@
                 @foreach ($actions->where('secondary', false) as $action)
                 <x-backend::button
                     class="w-full md:w-auto"
+                    :backend-action="$action->action"
                     :confirmation="$action->confirmation"
                     :href="$action->href"
                     :icon="$action->icon"

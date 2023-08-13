@@ -15,9 +15,9 @@ class Confirmation extends Config
     {
         return [
             'confirm' => 'required|string',
-            'message' => 'required|string',
-            'theme' => 'present|in:danger,default,primary,text',
             'icon' => 'present|nullable|string',
+            'message' => 'required|string',
+            'theme' => 'required|in:danger,default,primary,text',
         ];
     }
 
