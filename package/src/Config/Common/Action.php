@@ -1,6 +1,6 @@
 <?php
 
-namespace Bedard\Backend\Config\Plugins\Form;
+namespace Bedard\Backend\Config\Common;
 
 use Bedard\Backend\Classes\To;
 use Bedard\Backend\Config\Backend;

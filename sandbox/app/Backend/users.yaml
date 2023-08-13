@@ -96,6 +96,11 @@ routes:
                     label: Save user
                     theme: primary
                     type: submit
+            list_actions:
+                -
+                    href: create
+                    icon: plus
+                    label: Create thing
             model: App\Models\User
 
     roles:

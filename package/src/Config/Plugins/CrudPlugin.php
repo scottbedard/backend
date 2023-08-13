@@ -62,6 +62,7 @@ class CrudPlugin extends Plugin
             'columns' => [],
             'fields' => [],
             'form_actions' => [],
+            'list_actions' => [],
             'model_name' => null,
             'models' => [],
             'row_to' => null,
@@ -96,6 +97,7 @@ class CrudPlugin extends Plugin
     public function list()
     {
         $props = [
+            'actions' => $this->list_actions,
             'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
             'models' => $this->models,

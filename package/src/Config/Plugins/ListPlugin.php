@@ -5,6 +5,7 @@ namespace Bedard\Backend\Config\Plugins;
 use Bedard\Backend\Classes\Sort;
 use Bedard\Backend\Classes\To;
 use Bedard\Backend\Config\Backend;
+use Bedard\Backend\Config\Common\Action;
 use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Config\Plugins\List\Column;
 use Bedard\Backend\Config\Route;
@@ -20,6 +21,7 @@ class ListPlugin extends Plugin
     public function defineChildren(): array
     {
         return [
+            'actions' => [Action::class],
             'columns' => [Column::class, 'id'],
         ];
     }
@@ -44,6 +46,7 @@ class ListPlugin extends Plugin
     public function defineValidation(): array
     {
         return [
+            'actions' => ['present', 'array'],
             'checkboxes' => ['present', 'boolean'],
             'columns' => ['present', 'array'],
             'model' => ['required', 'string'],
@@ -59,6 +62,7 @@ class ListPlugin extends Plugin
     public function getDefaultConfig(): array
     {
         return [
+            'actions' => [],
             'columns' => [],
             'row_to' => null,
         ];
@@ -95,6 +99,7 @@ class ListPlugin extends Plugin
             ->toArray();
 
         return view('backend::list', [
+            'actions' => $this->actions,
             'columns' => $this->columns,
             'config' => $this,
             'hrefs' => $hrefs,

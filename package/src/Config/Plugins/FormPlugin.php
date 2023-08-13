@@ -2,8 +2,8 @@
 
 namespace Bedard\Backend\Config\Plugins;
 
+use Bedard\Backend\Config\Common\Action;
 use Bedard\Backend\Config\Controller;
-use Bedard\Backend\Config\Plugins\Form\Action;
 use Bedard\Backend\Config\Plugins\Form\Field;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;

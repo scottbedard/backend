@@ -1,7 +1,18 @@
 <x-backend::layout>
   <div class="gap-6">
-    <div class="p-6">
-      Tables are under construction
+    <div class="border-b border-gray-300 flex gap-6 p-6">
+      @foreach ($actions as $action)
+        <x-backend::button
+            :confirmation="$action->confirmation"
+            :data-backend-action="$action->action"
+            :href="$action->href"
+            :icon="$action->icon"
+            :theme="$action->theme"
+            :type="$action->type"
+            :value="$action->action">
+            {{ $action->label }}
+        </x-backend::button>
+      @endforeach
     </div>
 
     <x-backend::table

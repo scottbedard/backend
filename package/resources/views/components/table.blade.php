@@ -23,7 +23,7 @@
       @foreach ($columns as $column)
         <div
           @class([
-            'font-semibold table-cell px-3 py-2 first:pl-6 last:pr-6',
+            'align-middle font-semibold h-14 table-cell px-3 py-2 first:pl-6 last:pr-6',
             'text-center' => $column->align === 'center',
             'text-right' => $column->align === 'right',
           ])
