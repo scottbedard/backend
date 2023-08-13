@@ -237,6 +237,7 @@ class FormPlugin extends Plugin
 
         return to_route('backend.controller.route', [
             'controllerOrRoute' => $request->route()->controllerOrRoute,
+            'route' => $request->route()->route,
         ])->with('message', [
             'icon' => 'check',
             'status' => 'success',
