@@ -15,7 +15,6 @@ document
   .forEach(confirmationEl => {
     // parse confirmation data
     let data: Confirmation = {
-      action: null,
       confirm: 'Confirm',
       icon: null,
       message: '',
@@ -58,7 +57,7 @@ document
             actionEl.setAttribute('value', action)
             formEl.appendChild(actionEl)
           }
-          
+
           formEl.submit()
         },
       })

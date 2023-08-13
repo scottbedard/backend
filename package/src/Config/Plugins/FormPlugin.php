@@ -5,6 +5,7 @@ namespace Bedard\Backend\Config\Plugins;
 use Bedard\Backend\Config\Controller;
 use Bedard\Backend\Config\Plugins\Form\Action;
 use Bedard\Backend\Config\Plugins\Form\Field;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -82,6 +83,26 @@ class FormPlugin extends Plugin
     }
 
     /**
+     * Validate form data
+     *
+     * @return array
+     */
+    public function getRulesAttribute(): array
+    {
+        if (array_key_exists('rules', $this->__data)) {
+            return $this->__data['rules'];
+        }
+
+        $rules = [];
+        
+        foreach ($this->fields as $field) {
+            $rules[$field->id] = $field->rules;
+        }
+
+        return $rules;
+    }
+
+    /**
      * Render
      *
      * @param  \Illuminate\Http\Request  $request
@@ -118,48 +139,76 @@ class FormPlugin extends Plugin
             ]);
         }
 
-        // save or create a model
+        // handle actions
         if ($request->method() === 'POST') {
             $data = $request->all();
+            $action = data_get($data, 'action');
 
-            $validator = Validator::make($data['model'], $this->rules);
-     
-            if ($validator->fails()) {
-                $errorKey = null;
-                $errorMessage = null;
-
-                foreach ($validator->errors()->getMessages() as $key => $message) {
-                    $errorKey = $key;
-                    $errorMessage = $message[0];
-                    break;
-                }
-
-                return redirect()->back()->with([
-                    'errors' => $validator->errors(),
-                    'message' => [
-                        'icon' => 'alert-triangle',
-                        'property' => $errorKey,
-                        'status' => 'error',
-                        'text' => $errorMessage,
-                    ],
-                    'model' => $data['model'],
-                ]);
+            if ($action === 'delete') {
+                return $this->handleDelete(
+                    id: $id,
+                    model: $model,
+                    request: $request,
+                );
             }
 
-            foreach ($data['model'] as $key => $value) {
-                $model->{$key} = $value;
-            }
-
-            if ($id) {
-                $model->save();
-            } else {
-                $model->create();
-            }
+            return $this->handleCreateOrSave(
+                data: $data,
+                id: $id,
+                model: $model,
+                request: $request,
+            );
         }
 
-        // delete a model
-        else if ($request->method() === 'DELETE') {
-            throw new \Exception('Not implemented');
+        return redirect()->back()->with('message', [
+            'icon' => 'alert-triangle',
+            'status' => 'error',
+            'text' => 'Unknown form action',
+        ]);
+    }
+
+    /**
+     * Handle create or save
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @param  string|null  $id
+     * @param  array  $data
+     */
+    public function handleCreateOrSave(Request $request, ?Model $model, ?string $id, array $data)
+    {
+        $validator = Validator::make($data['model'], $this->rules);
+     
+        if ($validator->fails()) {
+            $errorKey = null;
+            $errorMessage = null;
+
+            foreach ($validator->errors()->getMessages() as $key => $message) {
+                $errorKey = $key;
+                $errorMessage = $message[0];
+                break;
+            }
+
+            return redirect()->back()->with([
+                'errors' => $validator->errors(),
+                'message' => [
+                    'icon' => 'alert-triangle',
+                    'property' => $errorKey,
+                    'status' => 'error',
+                    'text' => $errorMessage,
+                ],
+                'model' => $data['model'],
+            ]);
+        }
+
+        foreach ($data['model'] as $key => $value) {
+            $model->{$key} = $value;
+        }
+
+        if ($id) {
+            $model->save();
+        } else {
+            $model->create();
         }
 
         return to_route('backend.controller.route', [
@@ -174,22 +223,24 @@ class FormPlugin extends Plugin
     }
 
     /**
-     * Validate form data
+     * Handle delete
      *
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @param  string  $id
      */
-    public function getRulesAttribute(): array
+    public function handleDelete(Request $request, ?Model $model, string $id)
     {
-        if (array_key_exists('rules', $this->__data)) {
-            return $this->__data['rules'];
+        if ($model) {
+            $model->delete();
         }
 
-        $rules = [];
-        
-        foreach ($this->fields as $field) {
-            $rules[$field->id] = $field->rules;
-        }
-
-        return $rules;
+        return to_route('backend.controller.route', [
+            'controllerOrRoute' => $request->route()->controllerOrRoute,
+        ])->with('message', [
+            'icon' => 'check',
+            'status' => 'success',
+            'text' => $this->modelName . ' ' . $id . ' has been deleted!',
+        ]);
     }
 }
