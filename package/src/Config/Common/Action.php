@@ -34,6 +34,7 @@ class Action extends Config
     {
         return [
             'action' => 'present|nullable|string',
+            'data' => 'present|array',
             'theme' => 'in:default,danger,primary,text',
             'type' => 'in:button,submit',
         ];
@@ -48,6 +49,7 @@ class Action extends Config
     {
         return [
             'action' => null,
+            'data' => [],
             'icon' => null,
             'label' => null,
             'secondary' => false,
@@ -55,6 +57,22 @@ class Action extends Config
             'to' => null,
             'type' => 'button',
         ];
+    }
+
+    /**
+     * Label
+     *
+     * @return string
+     */
+    public function label(array $data = []): string
+    {
+        $label = str($this->__data['label']);
+
+        foreach ($data as $key => $value) {
+            $label = $label->replace(":$key", $value);
+        }
+        
+        return $label->toString();
     }
 
     /**

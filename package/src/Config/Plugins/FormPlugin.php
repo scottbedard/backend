@@ -47,7 +47,8 @@ class FormPlugin extends Plugin
             'actions' => ['present', 'array'],
             'fields' => ['present', 'array'],
             'key' => ['required', 'string'],
-            'model_name' => ['present', 'nullable', 'string'],
+            'plural' => ['present', 'nullable', 'string'],
+            'singular' => ['present', 'nullable', 'string'],
         ];
     }
 
@@ -59,10 +60,9 @@ class FormPlugin extends Plugin
     public function getDefaultConfig(): array
     {
         return [
-            'actions' => [],
-            'fields' => [],
             'key' => 'id',
-            'model_name' => null,
+            'plural' => null,
+            'singular' => null,
         ];
     }
 

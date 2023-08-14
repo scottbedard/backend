@@ -14,6 +14,7 @@ class Table extends Component
         public readonly Collection $columns,
         public readonly LengthAwarePaginator $paginator,
         public readonly array $hrefs,
+        public readonly bool $checkboxes = false,
     ) { }
 
     public function render(): View|Closure|string
@@ -23,6 +24,7 @@ class Table extends Component
         $pageUrl = fn (int $p) => urldecode(url()->current() . '?' . http_build_query(array_merge(request()->except('page'), ['page' => $p])));
         
         return view('backend::components.table', [
+            'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
             'hrefs' => $this->hrefs,
             'pageUrl' => $pageUrl,

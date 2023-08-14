@@ -50,7 +50,9 @@ class ListPlugin extends Plugin
             'checkboxes' => ['present', 'boolean'],
             'columns' => ['present', 'array'],
             'model' => ['required', 'string'],
+            'plural' => ['present', 'nullable', 'string'],
             'row_to' => ['present', 'nullable', 'string'],
+            'singular' => ['present', 'nullable', 'string'],
         ];
     }
 
@@ -64,8 +66,50 @@ class ListPlugin extends Plugin
         return [
             'actions' => [],
             'columns' => [],
+            'plural' => null,
             'row_to' => null,
+            'singular' => null,
         ];
+    }
+
+    /**
+     * Plural
+     *
+     * @return string
+     */
+    public function getPluralAttribute(): ?string
+    {
+        $value = data_get($this->__data, 'plural');
+        
+        if (is_string($value)) {
+            return $value;
+        }
+
+        return str($this->model)
+            ->classBasename()
+            ->headline()
+            ->plural()
+            ->toString();
+    }
+
+    /**
+     * Singular
+     *
+     * @return string
+     */
+    public function getSingularAttribute(): ?string
+    {
+        $value = data_get($this->__data, 'singular');
+        
+        if (is_string($value)) {
+            return $value;
+        }
+
+        return str($this->model)
+            ->classBasename()
+            ->headline()
+            ->singular()
+            ->toString();
     }
 
     /**
@@ -99,7 +143,12 @@ class ListPlugin extends Plugin
             ->toArray();
 
         return view('backend::list', [
+            'actionData' => [
+                'plural' => $this->plural,
+                'singular' => $this->singular,
+            ],
             'actions' => $this->actions,
+            'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
             'config' => $this,
             'hrefs' => $hrefs,

@@ -62,10 +62,12 @@ class CrudPlugin extends Plugin
             'columns' => [],
             'fields' => [],
             'form_actions' => [],
+            'key' => 'id',
             'list_actions' => [],
-            'model_name' => null,
             'models' => [],
+            'plural' => null,
             'row_to' => null,
+            'singular' => null,
         ];
     }
 
@@ -79,7 +81,9 @@ class CrudPlugin extends Plugin
         $props = [
             'actions' => $this->form_actions,
             'fields' => $this->fields,
-            'model_name' => $this->model_name,
+            'key' => $this->key,
+            'plural' => $this->plural,
+            'singular' => $this->singular,
         ];
 
         $form = FormPlugin::create($props, $this);
@@ -101,7 +105,9 @@ class CrudPlugin extends Plugin
             'checkboxes' => $this->checkboxes,
             'columns' => $this->columns,
             'models' => $this->models,
+            'plural' => $this->plural,
             'row_to' => $this->row_to ?: ':backend/:controller/:route/edit/{id}',
+            'singular' => $this->singular,
         ];
 
         $list = ListPlugin::create($props, $this);

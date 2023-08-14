@@ -1,3 +1,4 @@
+import '@/app/click-filter'
 import '@/app/confirmations'
 import '@/app/flash-messages'
 import '@/app/grid'

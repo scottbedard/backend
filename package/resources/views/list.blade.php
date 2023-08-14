@@ -10,12 +10,13 @@
             :theme="$action->theme"
             :type="$action->type"
             :value="$action->action">
-            {{ $action->label }}
+            {{ $action->label($actionData) }}
         </x-backend::button>
       @endforeach
     </div>
 
     <x-backend::table
+      :checkboxes="$checkboxes"
       :columns="$columns"
       :hrefs="$hrefs"
       :paginator="$paginator" />

@@ -100,7 +100,7 @@ routes:
                 -
                     href: create
                     icon: plus
-                    label: Create thing
+                    label: Create :singular
             model: App\Models\User
 
     roles:

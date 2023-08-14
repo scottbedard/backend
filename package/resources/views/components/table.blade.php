@@ -20,6 +20,12 @@
   {{-- full table --}}
   <div class="hidden w-full md:table">
     <div class="table-row">
+      @if ($checkboxes)
+        <div class="align-middle h-14 table-cell px-3 py-2 first:pl-6 last:pr-6">
+          <x-backend::checkbox />
+        </div>
+      @endif
+
       @foreach ($columns as $column)
         <div
           @class([
@@ -56,7 +62,16 @@
     @foreach ($paginator->items() as $index => $item)
       <a
         class="table-row group hover:bg-primary-300/20 last:border-b"
+        data-backend-click-filter
         href="{{ $hrefs[$index] }}">
+        @if ($checkboxes)
+          <div
+            class="border border-[red] align-middle h-14 px-3 py-2 table-cell group-last:border-b first:pl-6 last:pr-6 w-14"
+            data-backend-click-prevent>
+            <x-backend::checkbox data-backend-click-stop />
+          </div>
+        @endif
+      
         @foreach ($columns as $column)
           <div @class([
             'align-middle border-t border-gray-300 h-14 px-3 py-2 table-cell group-last:border-b first:pl-6 last:pr-6',
