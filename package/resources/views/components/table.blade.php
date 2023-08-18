@@ -66,7 +66,7 @@
         href="{{ $hrefs[$index] }}">
         @if ($checkboxes)
           <div
-            class="border border-[red] align-middle h-14 px-3 py-2 table-cell group-last:border-b first:pl-6 last:pr-6 w-14"
+            class="align-middle border-t border-gray-300 h-14 px-3 py-2 table-cell group-last:border-b first:pl-6 last:pr-6 w-14"
             data-backend-click-prevent>
             <x-backend::checkbox data-backend-click-stop />
           </div>

@@ -66,6 +66,36 @@ h1 {
 }
 
 //
+// <x-backend::checkbox />
+//
+.backend-checkbox span {
+  @apply aspect-square border border-gray-300 bg-white cursor-pointer flex items-center justify-center relative rounded text-primary-500 w-6;
+
+  &:hover {
+    @apply border-gray-400;
+  }
+}
+
+.backend-checkbox svg {
+  @apply fill-none;
+}
+
+.backend-checkbox label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.backend-checkbox input {
+  display: none;
+  visibility: hidden;
+}
+
+.backend-checkbox input:checked + span svg {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 50ms ease-out;
+}
+
+//
 // <pre class="debug" />
 //
 .debug {
